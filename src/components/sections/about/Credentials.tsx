@@ -22,7 +22,9 @@ const TICKET_TILT: Record<string, number> = { IG: -2.2, PD: 1.6, GH: -1.2, SG: 2
 function Dymo({ item, tilt }: { item: Credential; tilt: number }) {
   return (
     <span className="pm-ab-dymo" style={{ '--rot': `${tilt}deg` } as CSSProperties}>
-      <span className="pm-ab-dymo__t">{item.title}</span>
+      <span className="pm-ab-dymo__t" data-t={item.title}>
+        {item.title}
+      </span>
       {item.year && <span className="pm-ab-dymo__y">{item.year}</span>}
     </span>
   )

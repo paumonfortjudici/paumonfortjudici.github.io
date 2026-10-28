@@ -6,8 +6,9 @@
 
 .w-plana-p1 {
   container: w-plana-p1 / inline-size;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(min-content, 1fr) auto;
   background: var(--wheat); /* the sky's own colour: the story text sits on it (over the sky on a wide plate, under the deck on a phone) */
 }
 
@@ -19,7 +20,9 @@
 /* ---- sky --------------------------------------------------------------------------------------------------------- */
 .w-plana-sky {
   position: relative;
-  flex: 1 0 auto;
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%; /* the row is as tall as the plate needs: the sky fills it, so the symbol always stands on the horizon */
   overflow: hidden;
   aspect-ratio: 880 / 480;
   background: var(--wheat);
@@ -30,7 +33,7 @@
   z-index: 2;
   top: 3.5cqw;
   left: 3.6cqw;
-  width: 40cqw;
+  width: 36cqw; /* ends before the symbol starts (it begins about 41cqw from the left) */
   pointer-events: none;
 }
 
@@ -43,7 +46,7 @@
   margin: 0;
   color: var(--holm);
   font-family: var(--font-display);
-  font-size: 5.7cqw;
+  font-size: 5.5cqw;
   font-weight: 800;
   letter-spacing: -0.048em;
   line-height: 0.95;
@@ -55,11 +58,11 @@
 }
 
 .w-plana-p1__lede {
-  max-width: 31cqw;
-  margin: 1.7cqw 0 0;
+  max-width: 34cqw;
+  margin: 1.5cqw 0 0;
   color: var(--night);
-  font-size: max(0.9375rem, 1.75cqw);
-  line-height: 1.45;
+  font-size: max(1.125rem, 2.1cqw);
+  line-height: 1.42;
 }
 
 /* the symbol stands on the horizon (the bottom edge of the sky) and rises from behind it */
@@ -271,6 +274,7 @@ html.js .w-plana-sticker[data-in='false'] {
 
 /* ---- deck: the horizon, the slider and the caption --------------------------------------------------------------------- */
 .w-plana-deck {
+  grid-area: 2 / 1;
   display: grid;
   gap: max(0.8rem, 1.5cqw);
   padding: max(0.7rem, 1.1cqw) 3.6cqw max(1rem, 2.2cqw);
@@ -284,7 +288,7 @@ html.js .w-plana-sticker[data-in='false'] {
 
 /* the range: a horizon line with a little poppy sun for a thumb */
 .w-plana-range {
-  --track: linear-gradient(90deg, var(--wheat) 0 var(--p), var(--field) var(--p) 100%);
+  --track: linear-gradient(90deg, var(--wheat) 0 var(--p), var(--field) var(--p) 100%); /* taste-skill-ignore: a hard split showing how far the slider has gone, not a blend */
 
   display: block;
   width: 100%;
@@ -483,41 +487,45 @@ html.js .w-plana-sticker[data-in='false'] {
   gap: 0.6rem;
 }
 
+/* last in the DOM (tab order: the slider first), drawn in the sky's bottom left corner */
 .w-plana-days--sky {
-  position: absolute;
+  position: relative;
   z-index: 2;
-  bottom: 2.2cqw;
-  left: 3.3cqw;
+  grid-area: 1 / 1;
+  align-self: end;
+  justify-self: start;
+  margin: 0 0 2.4cqw 3.6cqw;
+  gap: clamp(0.5rem, 1.2cqw, 0.9rem);
 }
 
 .w-plana-days--sky .w-plana-day {
-  width: clamp(4.4rem, 9.6cqw, 6.6rem);
-  color: var(--night);
-}
-
-.w-plana-days--sky .w-plana-day[aria-pressed='true'] {
-  background: var(--holm);
-  color: var(--paper);
+  width: clamp(5.6rem, 12.2cqw, 9rem);
 }
 
 .w-plana-days--deck {
   display: none;
 }
 
+/* a day window is a little printed card with a tab along its foot: raised (hard Night shadow) until you press it, then it sits in the page */
 .w-plana-day {
   display: grid;
-  justify-items: center;
-  gap: 0.3rem;
+  overflow: hidden;
+  justify-items: stretch;
   width: clamp(4.2rem, 8.6cqw, 6.2rem);
-  padding: 0.35rem 0.25rem 0.4rem;
+  padding: 0.4rem 0.4rem 0;
+  border: 3px solid var(--night);
   border-radius: 12px;
+  background: var(--paper);
+  box-shadow: 3px 4px 0 var(--night);
   color: var(--paper);
   font-family: var(--font-label);
   font-size: 0.8125rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-align: center;
-  transition: transform 0.2s var(--ease-spring);
+  transition:
+    transform 0.2s var(--ease-spring),
+    box-shadow 0.2s var(--ease-spring);
 }
 
 .w-plana-day__sym {
@@ -525,14 +533,28 @@ html.js .w-plana-sticker[data-in='false'] {
   height: auto;
 }
 
+.w-plana-day__t {
+  margin: 0.35rem -0.4rem 0;
+  padding: 0.3rem 0.2rem 0.35rem;
+  background: var(--night);
+  color: var(--paper);
+}
+
 .w-plana-day[aria-pressed='true'] {
-  background: var(--wheat);
+  background: var(--holm);
+  box-shadow: 0 0 0 var(--night);
+  transform: translate(3px, 4px);
+}
+
+.w-plana-day[aria-pressed='true'] .w-plana-day__t {
+  background: var(--poppy);
   color: var(--night);
 }
 
 @media (hover: hover) {
-  .w-plana-day:hover {
+  .w-plana-day[aria-pressed='false']:hover {
     transform: translateY(-3px);
+    box-shadow: 3px 7px 0 var(--night);
   }
 }
 
@@ -548,19 +570,15 @@ html.js .w-plana-sticker[data-in='false'] {
     display: grid;
     align-content: start;
     justify-items: center;
-    order: 1;
     aspect-ratio: auto;
     padding: 1.3rem 1rem 0;
-  }
-
-  .w-plana-deck {
-    order: 2;
   }
 
   /* the story goes under the slider, on the sky's own wheat: the symbol and the slider fill the first screen of a phone */
   .w-plana-sky__text {
     position: static;
-    order: 3;
+    grid-row: 3;
+    grid-column: 1;
     width: auto;
     padding: 1.1rem 1rem 1.3rem;
     border-top: var(--outline) solid var(--night);
@@ -649,6 +667,14 @@ html.js .w-plana-sticker[data-in='false'] {
 
   .w-plana-step__text {
     font-size: 1rem;
+  }
+}
+
+/* a plate of 640 to 859 px (a tablet, or a small laptop where the hero shares the row with the title block): the sky has room for the headline and the
+   day windows but not for the paragraph too; the deck's own caption tells the same story, so the paragraph steps aside rather than run under the windows */
+@container w-plana-p1 (min-width: 640px) and (max-width: 859px) {
+  .w-plana-p1__lede {
+    display: none;
   }
 }
 

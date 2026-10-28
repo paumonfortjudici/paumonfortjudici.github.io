@@ -23,6 +23,9 @@ const Wall = lazy(() => import('./concept-brand/Wall'))
 
 type View = 'board' | 'index'
 
+/** the height of the folded sheet (handle + CONCEPT strip), read from the stylesheet so CSS and the camera agree */
+const foldPx = (el: HTMLElement): number => parseFloat(getComputedStyle(el).getPropertyValue('--cb-fold')) || 118
+
 const announce = (sel: Selection): string => {
   if (sel.item) return isMascotId(sel.item) ? MASCOT_COPY[sel.item].name : (HOT[sel.item]?.title ?? '')
   return sel.group ? GROUP_LABEL[sel.group] : 'The whole board'
@@ -124,6 +127,8 @@ export default function ConceptBrandWorld() {
   const chipsRef = useRef<HTMLDivElement>(null)
   const tourRef = useRef<HTMLElement>(null)
   const touring = tour !== null
+  // on desktop the docket moves into the panel column during the tour (the details step aside), so the board keeps the whole canvas
+  const dockTour = touring && !sheet
   const [reserve, setReserve] = useState({ top: 70, bottom: 14, left: 14, right: 14 })
   useLayoutEffect(() => {
     const main = mainRef.current
@@ -136,9 +141,9 @@ export default function ConceptBrandWorld() {
       const top = rail ? 14 : Math.round(c.bottom - m.top + 12)
       const left = rail ? Math.round(c.right - m.left + 14) : 14
       // the three tabs stand on the bottom edge of the wall (60 px): the board stops above them
-      let bottom = sheet ? (sheetOpen ? Math.round(m.height * 0.56) + 10 : 86) : 62
+      let bottom = sheet ? (sheetOpen ? Math.round(m.height * 0.56) + 10 : foldPx(main) + 8) : dockTour ? 16 : 62
       const slip = tourRef.current
-      if (slip) bottom = Math.max(bottom, (sheet ? 88 : 16) + slip.offsetHeight + 14)
+      if (slip) bottom = Math.max(bottom, (sheet ? foldPx(main) + 12 : 16) + slip.offsetHeight + 14)
       // in the rail layout the zoom controls stand in a column on the right edge of the wall: keep the board clear of it
       const right = rail ? 84 : 14
       setReserve((r) => (r.top === top && r.bottom === bottom && r.left === left && r.right === right ? r : { top, bottom, left, right }))
@@ -149,7 +154,7 @@ export default function ConceptBrandWorld() {
     ro.observe(chips)
     if (tourRef.current) ro.observe(tourRef.current)
     return () => ro.disconnect()
-  }, [view, sheet, sheetOpen, touring, tour, rail])
+  }, [view, sheet, sheetOpen, touring, tour, rail, dockTour])
 
   // the index scrolls inside the world (the shell's own scroller stays still), so give it the arrow keys on arrival
   const indexRef = useRef<HTMLDivElement>(null)
@@ -191,12 +196,12 @@ export default function ConceptBrandWorld() {
               <Chips ref={chipsRef} group={sel.group} onGroup={onChip} />
             </div>
             <Suspense fallback={<Hanging />}>
-              <Wall sel={sel} colourway={colourway} still={still} tourActive={tour !== null} reserve={reserve} onSelect={select} onSkip={skipToPanel} onFitChange={setAtFit} />
+              <Wall sel={sel} colourway={colourway} still={still} tourActive={tour !== null} reserve={reserve} onSelect={select} onSkip={skipToPanel} onFitChange={setAtFit} furniture={rail} />
             </Suspense>
             <div className="w-concept-brand-stampwrap" data-on={atFit && !sel.group && !kit && tour === null ? 'true' : 'false'} aria-hidden="true">
               <Stamp text="Concept" sub="An invented bar" tone="butter" blend="normal" rotate={-9} size="1.5rem" decorative />
             </div>
-            {tour !== null && <Tour ref={tourRef} step={tour} onPrev={() => stop(tour - 1)} onNext={() => stop(tour + 1)} onSkip={endTour} />}
+            {tour !== null && !dockTour && <Tour ref={tourRef} step={tour} onPrev={() => stop(tour - 1)} onNext={() => stop(tour + 1)} onSkip={endTour} />}
             {kit && <Kit onClose={closeKit} />}
             <p className="w-concept-brand-sr" role="status" aria-live="polite">
               {announce(sel)}
@@ -214,6 +219,7 @@ export default function ConceptBrandWorld() {
             open={sheetOpen}
             onToggle={() => setSheetOpen((o) => !o)}
             still={still}
+            tourSlot={dockTour && tour !== null ? <Tour step={tour} onPrev={() => stop(tour - 1)} onNext={() => stop(tour + 1)} onSkip={endTour} onGo={stop} docked /> : undefined}
           />
         </>
       ) : (

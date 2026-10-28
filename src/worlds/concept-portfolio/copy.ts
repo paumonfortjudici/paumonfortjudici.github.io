@@ -23,6 +23,16 @@ export const COPY = {
     ] as const,
   },
 
+  wrap: {
+    head: 'That’s a wrap',
+    day: 'Take 1',
+    rows: [
+      ['Scene', 'Five of five, the last slide'],
+      ['Client', 'Invented, like her phone number'],
+      ['Next', 'Roll the credits: how this deck was made'],
+    ] as const,
+  },
+
   bar: {
     label: 'Deck tools',
     stage: 'Presentation room',
@@ -57,6 +67,7 @@ export const COPY = {
     on: 'Loupe on. The arrow keys move it, Enter or Escape puts it away.',
     off: 'Loupe off.',
     laneHint: 'Press Enter to open the loupe on this slide.',
+    hint: 'Tiny print? Try the loupe',
   },
 
   notes: {
@@ -80,7 +91,7 @@ export const COPY = {
   sheet: {
     title: 'Contact sheet',
     sub: 'Five frames, one deck. Pick one and the lane goes there.',
-    close: 'Close',
+    close: 'Back to the deck',
     frame: (n: number, title: string): string => `Frame ${n}: ${title}`,
   },
 
@@ -97,7 +108,7 @@ export const COPY = {
 
   panel: {
     tab: 'About Ona',
-    close: 'Close',
+    close: 'Back to the deck',
     invented: 'Invented client',
     inventedLine: 'Ona Ribas, her studios, films, e-mail and phone number are all made up.',
     projectsTitle: 'Three projects, all invented',

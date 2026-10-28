@@ -40,25 +40,24 @@
   container-name: sm;
 }
 
-/* light text on the sky: a dark halo (not a glow) keeps it readable when the bright Earth limb scrolls behind it */
-.w-space-monkey-title,
+/* light text on the sky: a scrim (a soft cloud of space black on the text's own box, not a glyph shadow) keeps it readable when the
+   bright Earth limb scrolls behind it */
 .w-space-monkey-h3,
 .w-space-monkey-tape-legend,
-.w-space-monkey-tape-gap,
 .w-space-monkey-brief-hint,
 .w-space-monkey-seal-note,
 .w-space-monkey-tiltctl,
 .w-space-monkey-end > .w-space-monkey-facts .pm-wf__note {
-  --halo: 0 0 3px rgb(2 3 8 / 0.95), 0 0 10px rgb(2 3 8 / 0.85), 0 1px 14px rgb(2 3 8 / 0.7);
+  border-radius: 0.8em;
+  box-shadow:
+    0 0 14px 8px rgb(2 3 8 / 0.62),
+    0 0 36px 20px rgb(2 3 8 / 0.34);
 }
-.w-space-monkey-h3,
-.w-space-monkey-tape-legend,
-.w-space-monkey-tape-gap,
-.w-space-monkey-brief-hint,
-.w-space-monkey-seal-note,
-.w-space-monkey-tiltctl,
-.w-space-monkey-end > .w-space-monkey-facts .pm-wf__note {
-  text-shadow: var(--halo);
+/* the two labels that sit right against the yellow tape get a solid space-black plate instead (a cloud would smudge the tape) */
+.w-space-monkey-tape-gap > span:first-child {
+  display: inline-block;
+  background: var(--sm-space);
+  border-radius: 4px;
 }
 
 /* the margin notes wait (at most 0.9 s) for Gochi Hand, so the fallback handwriting never flashes */
@@ -150,6 +149,7 @@ html.js .w-space-monkey[data-hand='pending'] :is(.w-space-monkey-brief-hint, .w-
 }
 
 .w-space-monkey-title {
+  position: relative;
   align-self: start;
   margin: 0;
   font-family: var(--font-display);
@@ -163,9 +163,22 @@ html.js .w-space-monkey[data-hand='pending'] :is(.w-space-monkey-brief-hint, .w-
   /* reads from the bottom up, like a spine label */
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  /* a hard offset in the uniform's blue: the misregistered-print look, and a nod to SMITH (the element is turned, so the offset is too) */
-  text-shadow: -0.032em -0.04em 0 var(--sm-royal), var(--halo);
   font-variation-settings: normal;
+}
+/* a hard offset in the uniform's blue: the misregistered-print look, and a nod to SMITH. It is a second, aria-hidden copy of the
+   words under the cream one (the heading is turned, so the offset is turned with it). */
+.w-space-monkey-title-face {
+  position: relative;
+}
+.w-space-monkey-title-ink > span::before {
+  content: attr(data-t);
+}
+.w-space-monkey-title-ink {
+  position: absolute;
+  inset: 0;
+  color: var(--sm-royal);
+  transform: translate(-0.032em, -0.04em);
+  pointer-events: none;
 }
 html.js .w-space-monkey-title {
   animation: var(--sm-wipe) 1s 0.1s var(--ease-out) both;
@@ -319,6 +332,11 @@ html.js .w-space-monkey-art:not([data-loaded]) {
   aspect-ratio: 1.16;
   transform: translate(-50%, -50%) rotate(-8deg);
   pointer-events: none;
+}
+
+/* the dark ring under the yellow one (same seeded path, just fatter): the yellow grease pencil stays readable on the epaulette next to it */
+.w-space-monkey-sleeve > .w-space-monkey-sleeve-under {
+  opacity: 0.72;
 }
 
 /* ---- 4. the foil (holographic layers on the front; all move by transform / opacity only) -------------------------------- */
@@ -581,6 +599,15 @@ html.js .w-space-monkey-art:not([data-loaded]) {
 .w-space-monkey-chip:focus-visible {
   transform: translateY(-3px) rotate(0deg) scale(1.04);
 }
+/* the two-tone ring of the whole site, redrawn for a paint chip so it cannot be mistaken for the chip's own ink border:
+   a paper gap, then a thick ultraviolet ring, then a thin ink line round it */
+.w-space-monkey-chip:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--paper),
+    0 0 0 6.5px var(--ultraviolet),
+    0 0 0 8.5px var(--ink);
+}
 .w-space-monkey-chip:active {
   transform: translateY(1px) scale(0.98);
   box-shadow: 0 1px 0 var(--ink);
@@ -758,12 +785,16 @@ html.js .w-space-monkey-art:not([data-loaded]) {
 }
 
 /* ---- 6. the rail: margin note, patch, brief ------------------------------------------------------------------------------ */
+/* The rail is a container of its own (wide layouts only: below 1100px it is display: contents): the patch, the note and the brief are
+   sized from its width, so at 1920 and above they grow with the posters and the rail reads as one column, not three loose items. */
 .w-space-monkey-rail {
+  container-type: inline-size;
+  container-name: smrail;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 22px;
+  gap: clamp(18px, 2.4vh, 40px);
   min-width: 0;
   min-height: calc(var(--sm-ph) + var(--sm-strip));
 }
@@ -776,7 +807,7 @@ html.js .w-space-monkey-art:not([data-loaded]) {
   margin: 0;
   padding-left: 2px;
   font-family: var(--font-hand);
-  font-size: clamp(1.45rem, 1.1rem + 0.9vw, 2.35rem);
+  font-size: clamp(1.45rem, 9cqw, 2.9rem);
   line-height: 0.98;
   color: var(--cream);
   text-align: left;
@@ -803,7 +834,8 @@ html.js .w-space-monkey-art:not([data-loaded]) {
 }
 .w-space-monkey-patch {
   display: block;
-  width: clamp(11rem, 15.5cqw, 20rem);
+  /* as wide as the rail, never past 30rem: the cut-out inside is only 181 px native, so it never goes much past 1.3x */
+  width: clamp(11rem, 100cqw, 30rem);
   height: auto;
   overflow: visible;
   transform: rotate(-9deg);
@@ -816,10 +848,10 @@ html.js .w-space-monkey-art:not([data-loaded]) {
   letter-spacing: 0.08em;
 }
 .w-space-monkey-seal-note {
-  max-width: clamp(15rem, 14cqw, 19rem);
+  max-width: min(100cqw, 24rem);
   margin: 0;
   font-family: var(--font-hand);
-  font-size: clamp(1.45rem, 1.1rem + 0.9vw, 2.3rem);
+  font-size: clamp(1.45rem, 9cqw, 2.8rem);
   line-height: 1.05;
   color: var(--cream);
   transform: rotate(-2deg);
@@ -831,7 +863,7 @@ html.js .w-space-monkey-art:not([data-loaded]) {
   max-width: 100%;
 }
 .w-space-monkey-brief-folder {
-  width: min(100%, clamp(16rem, 17cqw, 22rem));
+  width: min(100%, clamp(16rem, 100cqw, 34rem));
   transform: rotate(-1.6deg);
 }
 .w-space-monkey-brief-body {
@@ -845,7 +877,7 @@ html.js .w-space-monkey-art:not([data-loaded]) {
   gap: 10px;
   margin: 10px 0 0;
   font-family: var(--font-hand);
-  font-size: clamp(1.15rem, 1rem + 0.45vw, 1.5rem);
+  font-size: clamp(1.15rem, 6cqw, 1.9rem);
   line-height: 1;
   /* a deeper violet than the folder's own: ultraviolet on this beige paper measures 4.3:1 once the grain is counted, this is 5.7:1 */
   color: color-mix(in srgb, var(--ultraviolet) 78%, var(--ink));
@@ -864,7 +896,7 @@ html.js .w-space-monkey[data-hand='pending'] .w-space-monkey-brief-more {
 .w-space-monkey-brief-lead {
   margin: 0;
   font-family: var(--font-body);
-  font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.25rem);
+  font-size: clamp(0.95rem, 4.7cqw, 1.5rem);
   font-weight: 500;
   line-height: 1.42;
   text-wrap: pretty;
@@ -881,10 +913,16 @@ html.js .w-space-monkey[data-hand='pending'] .w-space-monkey-brief-more {
   text-transform: uppercase;
   color: var(--cream);
 }
+/* the mid block: tape, log and slate. --rail is the room the tape keeps above and below its band for the tags; the slate climbs into
+   the empty half of the lower rail, so nothing is left as a black band between the tape and the log */
+.w-space-monkey-mid {
+  --rail: 120px;
+  --sm-block: clamp(20px, 2.6vw, 44px); /* the one vertical gap of the lower half */
+}
 .w-space-monkey-tape-section {
   display: grid;
   row-gap: clamp(8px, 1.4vw, 18px);
-  padding: clamp(24px, 4vw, 64px) calc(var(--sm-frame) + var(--sm-pad));
+  padding: clamp(36px, 4.4vw, 72px) calc(var(--sm-frame) + var(--sm-pad)) 4px;
 }
 .w-space-monkey-tape-head {
   display: flex;
@@ -902,7 +940,6 @@ html.js .w-space-monkey[data-hand='pending'] .w-space-monkey-brief-more {
 }
 .w-space-monkey-tape {
   --band: clamp(58px, 4.4cqw, 84px);
-  --rail: 120px; /* room above and below the band for the tags */
   --stem: 34px;
   position: relative;
   height: calc(var(--band) + 2 * var(--rail));
@@ -1023,6 +1060,33 @@ html.js .w-space-monkey[data-hand='pending'] .w-space-monkey-brief-more {
 .w-space-monkey-tape-mark[data-strong='true'] .w-space-monkey-tape-tag b {
   color: var(--ink);
 }
+/* the five days between the two files: a bracket under the band (its right end is the stem of the SMITH tag), label under it */
+.w-space-monkey-tape-span {
+  position: absolute;
+  left: calc(var(--from) * 100%);
+  width: calc((var(--to) - var(--from)) * 100%);
+  top: calc(var(--rail) + var(--band) + 12px);
+  height: 11px;
+  border: 2px solid var(--cream);
+  border-top: 0;
+}
+.w-space-monkey-tape-span > span:first-child {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 4px;
+  padding-right: 8px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: var(--cream);
+  padding-left: 6px;
+  background: var(--sm-space);
+  border-radius: 4px;
+}
+
 /* the span between the last save and opening day: the two stems are its ends, this line joins them */
 .w-space-monkey-tape-gap {
   position: absolute;
@@ -1051,7 +1115,7 @@ html.js .w-space-monkey[data-hand='pending'] .w-space-monkey-brief-more {
   grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
   gap: clamp(24px, 4vw, 72px);
   align-items: start;
-  padding: clamp(10px, 2vw, 30px) calc(var(--sm-frame) + var(--sm-pad)) calc(var(--sm-frame) + clamp(110px, 16vh, 190px));
+  padding: 0 calc(var(--sm-frame) + var(--sm-pad)) calc(var(--sm-frame) + clamp(110px, 16vh, 190px));
 }
 .w-space-monkey-log {
   min-width: 0;
@@ -1087,7 +1151,7 @@ html.js .w-space-monkey[data-hand='pending'] .w-space-monkey-brief-more {
 }
 .w-space-monkey-sheet-title {
   color: var(--ink);
-  text-shadow: none; /* on paper, not on the sky: no halo */
+  box-shadow: none; /* on paper, not on the sky: no scrim */
 }
 .w-space-monkey-sheet-sub {
   margin: 6px 0 18px;
@@ -1147,15 +1211,17 @@ html.js .w-space-monkey[data-hand='pending'] .w-space-monkey-brief-more {
 }
 
 /* ---- 9. facts + the way back ------------------------------------------------------------------------------------------------------------ */
+/* the right column: the slate, then the two posters in miniature fanned across the column, then the tab. Every gap is --sm-block. The
+   column rides up into the lower rail of the tape (the tape's bottom half is empty on this side). */
 .w-space-monkey-end {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  align-self: stretch;
-  gap: 26px;
+  align-items: stretch;
+  align-self: start;
+  gap: var(--sm-block);
   min-width: 0;
-  padding-top: clamp(22px, 3vw, 44px);
+  margin-top: calc(var(--rail) * -0.45);
+  padding-top: 0;
 }
 .w-space-monkey-facts {
   min-width: 0;
@@ -1179,15 +1245,16 @@ html.js .w-space-monkey[data-hand='pending'] .w-space-monkey-brief-more {
 /* the way back: the two posters in miniature, taped up, and the tab that scrolls to them */
 .w-space-monkey-return {
   display: grid;
-  justify-items: start;
-  row-gap: 14px;
+  justify-items: center;
+  row-gap: var(--sm-block);
   min-width: 0;
 }
 .w-space-monkey-minis {
-  --mw: clamp(104px, 9.6cqw, 156px);
+  /* about twice what they were: the pair fans across the whole column (about 2 x 19 % of the page) */
+  --mw: clamp(104px, 18.6cqw, 380px);
   position: relative;
   width: calc(var(--mw) * 1.98);
-  height: calc(var(--mw) * 1.52 + 18px);
+  height: calc(var(--mw) * 1.54 + 18px);
 }
 .w-space-monkey-mini {
   position: absolute;
@@ -1258,7 +1325,9 @@ html[data-motion='paused'] .w-space-monkey-sheet-shadow {
     writing-mode: horizontal-tb;
     transform: none;
     font-size: var(--sm-title);
-    text-shadow: 0.032em 0.04em 0 var(--sm-royal), var(--halo);
+  }
+  .w-space-monkey-title-ink {
+    transform: translate(0.032em, 0.04em);
   }
   .w-space-monkey-deck {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -1294,22 +1363,36 @@ html[data-motion='paused'] .w-space-monkey-sheet-shadow {
     font-size: clamp(1.3rem, 1.05rem + 0.9cqw, 1.65rem);
     text-align: center;
   }
+  .w-space-monkey-brief-lead {
+    font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.25rem);
+  }
+  .w-space-monkey-brief-more {
+    font-size: clamp(1.15rem, 1rem + 0.45vw, 1.5rem);
+  }
 }
 
-/* a narrower rail (1100 to 1299px) or a short screen: the margin note goes (each poster has its own labelled Flip tab), the patch and
-   the brief shrink so the rail never grows taller than the posters */
-@container sm (min-width: 1100px) and (max-width: 1299px) {
+/* a narrower rail (1100 to 1299px): the margin note stays from 1200px (below that each poster's own labelled Flip tab is enough), the
+   patch and the brief are capped so the rail never grows taller than the posters */
+@container sm (min-width: 1100px) and (max-width: 1199px) {
   .w-space-monkey-brief-hint {
     display: none;
   }
+}
+@container sm (min-width: 1100px) and (max-width: 1299px) {
+  .w-space-monkey-brief-hint {
+    font-size: clamp(1.3rem, 8cqw, 1.6rem);
+  }
   .w-space-monkey-patch {
-    width: 11rem;
+    width: clamp(11rem, 100cqw, 15rem);
   }
   .w-space-monkey-seal-note {
     font-size: clamp(1.3rem, 1.05rem + 0.9cqw, 1.6rem);
   }
   .w-space-monkey-brief-lead {
-    font-size: 0.95rem;
+    font-size: clamp(0.95rem, 4.4cqw, 1.1rem);
+  }
+  .w-space-monkey-brief-more {
+    font-size: 1.2rem;
   }
   .w-space-monkey-brief-body {
     --fpad: 14px;
@@ -1331,7 +1414,8 @@ html[data-motion='paused'] .w-space-monkey-sheet-shadow {
     white-space: normal;
     line-height: 0.96;
   }
-  .w-space-monkey-title > span {
+  .w-space-monkey-title-face > span,
+  .w-space-monkey-title-ink > span {
     display: block;
   }
   .w-space-monkey-deck {
@@ -1450,6 +1534,9 @@ html[data-motion='paused'] .w-space-monkey-sheet-shadow {
     right: calc(50% + var(--band) / 2 + var(--stem));
     left: auto;
   }
+  .w-space-monkey-tape-span {
+    display: none;
+  }
   .w-space-monkey-tape-gap {
     top: calc(var(--from) * 100%);
     left: calc(50% + var(--band) / 2 + 12px);
@@ -1473,6 +1560,9 @@ html[data-motion='paused'] .w-space-monkey-sheet-shadow {
 @container sm (max-width: 899px) {
   .w-space-monkey-close {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .w-space-monkey-end {
+    margin-top: 0;
   }
   .w-space-monkey-sheet-shadow {
     transform: none;
@@ -1504,5 +1594,49 @@ html[data-motion='paused'] .w-space-monkey-sheet-shadow {
   }
   .w-space-monkey-tape-mark[data-strong='true'] .w-space-monkey-tape-tag {
     max-width: 14rem;
+  }
+}
+
+/* a tablet (720 to 999px): the tape turns (day 0 at the top) and the log sits beside it instead of under it, so the black field is
+   used on both sides of the page; the slate and the miniatures share the row below */
+@container sm (min-width: 720px) and (max-width: 999px) {
+  .w-space-monkey-mid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
+    grid-template-areas:
+      'tape log'
+      'end end';
+    column-gap: clamp(18px, 3.4cqw, 36px);
+    align-items: start;
+    padding: 0 calc(var(--sm-frame) + var(--sm-pad)) calc(var(--sm-frame) + clamp(110px, 16vh, 190px));
+  }
+  .w-space-monkey-tape-section {
+    grid-area: tape;
+    padding-inline: 0;
+  }
+  .w-space-monkey-close {
+    display: contents;
+  }
+  .w-space-monkey-log {
+    grid-area: log;
+    padding-top: clamp(36px, 4.4vw, 56px);
+  }
+  .w-space-monkey-log-lines > li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+  .w-space-monkey-sheet {
+    padding-left: 44px;
+  }
+  .w-space-monkey-end {
+    grid-area: end;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    column-gap: clamp(18px, 3.4cqw, 36px);
+    margin-top: var(--sm-block);
+  }
+  .w-space-monkey-minis {
+    --mw: clamp(120px, 17cqw, 190px);
   }
 }

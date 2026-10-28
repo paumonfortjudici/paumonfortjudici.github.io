@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0e0912" />
+    <title>Folder not found · Pau Monfort</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style>
+      @font-face { font-family: 'Fraunces'; src: url('/fonts/fraunces-latin-full-normal.woff2') format('woff2'); font-weight: 100 900; font-style: normal; font-display: swap; }
+      @font-face { font-family: 'Karla'; src: url('/fonts/karla-latin-wght-normal.woff2') format('woff2'); font-weight: 200 800; font-display: swap; }
+      @font-face { font-family: 'Courier Prime'; src: url('/fonts/courier-prime-latin-700-normal.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+      :root { --ink: #17101b; --cream: #fff2da; --tomato: #ff4b2b; --marigold: #ffb81c; --violet: #5b3df5; --desk: #0e0912; }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { background: var(--desk); }
+      body {
+        min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; justify-content: space-between; overflow-x: hidden;
+        color: var(--cream); font: 500 clamp(1.05rem, 0.9rem + 0.6vw, 1.35rem)/1.5 'Karla', system-ui, sans-serif;
+        background:
+          radial-gradient(900px 420px at 105% -10%, rgba(255, 184, 28, 0.28), transparent 62%),
+          radial-gradient(760px 520px at -8% 108%, rgba(91, 61, 245, 0.34), transparent 60%),
+          var(--desk);
+      }
+      main { padding: clamp(28px, 6vw, 72px) clamp(20px, 5vw, 64px) 0; max-width: 1200px; width: 100%; margin: 0 auto; }
+      .tag { font: 700 clamp(0.8rem, 0.75rem + 0.25vw, 1rem) 'Courier Prime', monospace; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255, 242, 218, 0.72); }
+      h1 {
+        margin: 0.1em 0 0; font-family: 'Fraunces', Georgia, serif; font-weight: 900; line-height: 0.95; letter-spacing: -0.02em;
+        font-size: clamp(6.5rem, 4rem + 18vw, 17rem); color: var(--cream); font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+        text-shadow: 0.04em 0.04em 0 var(--tomato), 0.08em 0.08em 0 var(--violet);
+      }
+      h2 { margin-top: 0.1em; font-family: 'Fraunces', Georgia, serif; font-weight: 800; font-size: clamp(1.7rem, 1.1rem + 2.6vw, 3.2rem); line-height: 1.08; max-width: 18ch; font-variation-settings: 'SOFT' 100, 'WONK' 1; }
+      h2 i { font-weight: 500; color: var(--marigold); }
+      p { margin-top: 0.9em; max-width: 44ch; color: rgba(255, 242, 218, 0.86); }
+      .back {
+        display: inline-block; margin-top: 1.6em; padding: 0.75em 1.5em 0.7em; border-radius: 14px 14px 0 0; background: var(--marigold); color: var(--ink);
+        font: 700 clamp(0.95rem, 0.9rem + 0.3vw, 1.15rem) 'Courier Prime', monospace; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; min-height: 48px;
+      }
+      .back:hover { background: var(--cream); }
+      .back:focus-visible { outline: 3px solid var(--cream); outline-offset: 4px; }
+      .empty { display: none; }
+      @media (min-width: 900px) {
+        main { position: relative; }
+        h2 { max-width: 13ch; }
+        p { max-width: 32ch; }
+        .empty {
+          display: block; position: absolute; right: clamp(16px, 3vw, 60px); top: clamp(100px, 15vh, 160px); width: clamp(280px, 28vw, 430px); aspect-ratio: 1.3;
+          background: var(--tomato); border-radius: 22px 22px 0 0; transform: rotate(5deg); box-shadow: -14px 14px 0 rgba(91, 61, 245, 0.9), inset 0 4px 0 rgba(255, 255, 255, 0.25);
+        }
+        .empty .tab { position: absolute; left: 7%; top: -34px; height: 36px; padding: 0 22px; display: flex; align-items: center; border-radius: 14px 14px 0 0; background: var(--tomato); color: var(--ink); font: 700 17px 'Courier Prime', monospace; letter-spacing: 0.14em; }
+        .empty b { position: absolute; inset: 0; display: grid; place-items: center; font-family: 'Fraunces', Georgia, serif; font-weight: 900; font-size: clamp(3rem, 6vw, 6.4rem); letter-spacing: -0.02em; color: var(--ink); font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144; }
+        .empty i { position: absolute; right: 8%; bottom: 10%; font: 700 18px 'Courier Prime', monospace; letter-spacing: 0.14em; color: var(--ink); text-transform: uppercase; font-style: normal; }
+      }
+      .deck { display: flex; margin-top: clamp(32px, 6vw, 72px); padding-left: clamp(8px, 2vw, 28px); }
+      .deck span { flex: 1 1 0; min-width: 0; height: clamp(70px, 12vw, 150px); margin-right: -2.2%; border-radius: 14px 14px 0 0; box-shadow: -8px 0 16px rgba(0, 0, 0, 0.35), inset 0 3px 0 rgba(255, 255, 255, 0.22); }
+      .deck span:nth-child(even) { margin-top: 14px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="tag">Pau Monfort &middot; Portfolio</div>
+      <h1>404</h1>
+      <h2>That folder isn&rsquo;t in the <i>cabinet.</i></h2>
+      <p>The link may be old or mistyped. Every project lives one click from the cover.</p>
+      <a class="back" href="/">Back to the cover</a>
+      <div class="empty" aria-hidden="true"><span class="tab">FILE ??</span><b>EMPTY</b><i>nothing filed here</i></div>
+    </main>
+    <div class="deck" aria-hidden="true">
+      <span style="background: #ff4b2b"></span><span style="background: #1f5c46"></span><span style="background: #ffb81c"></span><span style="background: #8a1b3d"></span><span style="background: #5b3df5"></span>
+      <span style="background: #ff8fc1"></span><span style="background: #0f9aa8"></span><span style="background: #86a22f"></span><span style="background: #fbe79a"></span><span style="background: #b79cff"></span>
+    </div>
+  </body>
+</html>

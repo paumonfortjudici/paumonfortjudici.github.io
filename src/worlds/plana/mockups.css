@@ -30,13 +30,15 @@
 }
 
 .w-plana-rail__track {
-  --item-w: min(86cqw, 40rem);
+  --gap: clamp(0.9rem, 2.4cqw, 1.6rem);
+  --peek: clamp(44px, 15.5cqw, 150px); /* how much of the next print shows at the right edge: enough to read as a card you can pull in */
+  --item-w: min(calc(100cqw - 16px - var(--peek) - var(--gap)), 40rem);
 
   position: relative;
   display: flex;
   width: max-content;
-  align-items: stretch;
-  gap: clamp(0.9rem, 2.4cqw, 1.6rem);
+  align-items: flex-start;
+  gap: var(--gap);
   padding: clamp(1.1rem, 3cqw, 1.8rem) 16px clamp(0.9rem, 2.4cqw, 1.4rem);
   user-select: none;
 }
@@ -100,8 +102,17 @@
   border-radius: 0 0 14px 14px;
   background: var(--paper);
   box-shadow: var(--shadow-x) var(--shadow-y) 0 var(--night);
-  font-size: 0.9375rem;
+  font-size: clamp(1rem, 0.94rem + 0.2vw, 1.1rem);
   line-height: 1.4;
+}
+
+/* only the print you are on is captioned: the next one, peeking in, is a picture to pull in, not a clipped paragraph */
+.w-plana-shot__label > * {
+  transition: opacity 0.3s ease;
+}
+
+.w-plana-shot:not([data-here='true']) .w-plana-shot__label > * {
+  opacity: 0;
 }
 
 .w-plana-shot__label strong {

@@ -104,7 +104,8 @@ function paintField(ctx: CanvasRenderingContext2D, w: number, h: number, px: num
 }
 
 export async function renderLaptopPng(snap: BoardSnapshot): Promise<Blob> {
-  const px = Math.min(2.5, Math.max(1.5, 1800 / snap.lid.w))
+  // about 1500 px of laptop: crisp for a wallpaper or a share, and a file of a few MB (the brushed metal is noisy, so PNGs of it are heavy)
+  const px = Math.min(2, Math.max(1.5, 1500 / snap.lid.w))
   const W = Math.round(snap.lid.w * px)
   const H = Math.round(snap.lid.h * px)
   const hinge = Math.round(16 * px)
@@ -145,7 +146,7 @@ export async function renderLaptopPng(snap: BoardSnapshot): Promise<Blob> {
   ctx.font = `600 ${Math.max(13, 13 * px * 0.55)}px "Karla Variable", Arial, sans-serif`
   ctx.fillStyle = 'rgba(40,28,52,0.34)'
   ctx.textBaseline = 'alphabetic'
-  ctx.fillText('Designed in Cardedeu. Stickered in the browser.', 22 * px, H - 20 * px)
+  ctx.fillText('Art-directed by Pau. Stickered in the browser.', 22 * px, H - 20 * px)
   ctx.restore()
 
   // stickers, back to front

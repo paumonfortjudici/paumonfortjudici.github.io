@@ -14,8 +14,10 @@ import { Tape } from '../../primitives'
 import { Thumb } from './Thumb'
 
 /** size of the card in css px (keep in sync with .pm-cat-peek): used to keep it inside the viewport */
-const CARD_W = 196
-const CARD_H = 276
+const CARD_W = 160
+const CARD_H = 226
+/** how far the card keeps clear of the pointer (right of it and above it), so the band under the pointer stays readable */
+const GAP = 40
 const NAV_CLEAR = 78
 
 const TAPES = ['butter', 'bubblegum', 'lagoon', 'lilac'] as const
@@ -32,11 +34,11 @@ export function CatalogPreview({ enabled, openSlug }: PreviewProps) {
   const sx = useSpring(mx, { stiffness: 320, damping: 30, mass: 0.6 })
   const sy = useSpring(my, { stiffness: 270, damping: 28, mass: 0.7 })
   const tilt = useSpring(useTransform(useVelocity(sx), [-1800, 0, 1800], [-9, 0, 9], { clamp: true }), { stiffness: 170, damping: 15 })
-  // the card rides above and to the right of the pointer; near the top of the screen it swings under it (the offset is its own spring,
+  // the card rides above and to the right of the pointer (clear of it by GAP); near the top of the screen it swings under it (the offset is its own spring,
   // so the swing is a move, not a jump)
-  const offY = useMotionValue(-(CARD_H + 22))
+  const offY = useMotionValue(-(CARD_H + GAP))
   const offS = useSpring(offY, { stiffness: 240, damping: 26 })
-  const x = useTransform(sx, (v) => Math.min(v + 30, window.innerWidth - CARD_W - 16))
+  const x = useTransform(sx, (v) => Math.min(v + GAP, window.innerWidth - CARD_W - 16))
   const y = useTransform([sy, offS], ([v, o]: number[]) => Math.min(Math.max(v + o, NAV_CLEAR), window.innerHeight - CARD_H - 12))
 
   const [slug, setSlug] = useState<string | null>(null)
@@ -71,7 +73,7 @@ export function CatalogPreview({ enabled, openSlug }: PreviewProps) {
       ly = event.clientY
       mx.set(lx)
       my.set(ly)
-      offY.set(ly - CARD_H - 22 < NAV_CLEAR ? 30 : -(CARD_H + 22))
+      offY.set(ly - CARD_H - GAP < NAV_CLEAR ? GAP : -(CARD_H + GAP))
       pick(under(event.target instanceof Element ? event.target : null))
     }
     // the page scrolled, or a band opened or closed, under a still pointer: look again at what is under it

@@ -1,7 +1,7 @@
 // 02 Catalog: the index of the cabinet. Ten bands in a stack (a filmstrip of folders), one per project, each in its own folder colour and
 // its own typeface, an accordion with one open band at a time; a typewritten index card that searches all of it live; group tabs; a
 // cursor-following preview on a mouse and inline thumbnails on touch. Docs: docs/api/sections-catalog.md
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { CATALOG, SHEET_META } from '@/lib/copy'
 import { useInView, useMotion, usePointerFine } from '@/lib/hooks'
 import { WORKS } from '@/lib/works'
@@ -13,22 +13,20 @@ import { CatalogPreview } from './catalog/Preview'
 import { groupCounts, searchWorks, type SearchResult } from './catalog/search'
 import { SearchCard } from './catalog/SearchCard'
 import { Shelf } from './catalog/Shelf'
+import { Spines } from './catalog/Spines'
 import { CAT_UI, type GroupFilter } from './catalog/strings'
 import { useHold } from './catalog/useHold'
 import { useReturn } from './catalog/useReturn'
 import './catalog.css'
 
-/** the Folder primitive's inset of a tab from the band's corners (body radius + tab shoulder: docs/api/primitives.md, `placeTab`) */
-const TAB_INSET = 30
-/** where the arrow's point is across its drawing, used when the path cannot be read */
-const ARROW_TIP = 0.775
-
-/** which band is open after the filter changed: keep it while it still matches, otherwise the best match (nothing when nothing matches) */
+/**
+ * which band is open after the filter changed: keep it while it still matches, otherwise fold it shut. A match never opens by itself while the
+ * visitor types (a band opening off the screen under a moving stack reads as the page jumping): Enter or the Down arrow opens the best match.
+ */
 function nextOpen(prev: string | null, result: SearchResult): string | null {
   if (!result.active) return prev
-  if (result.ranked.length === 0) return null
   if (prev && result.hits.has(prev)) return prev
-  return result.ranked[0]
+  return null
 }
 
 export function Catalog() {
@@ -49,10 +47,7 @@ export function Catalog() {
 
   const stackRef = useRef<HTMLOListElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const noteRef = useRef<HTMLDivElement>(null)
   const heads = useRef(new Map<string, HTMLButtonElement>())
-  /** where the first band's tab has to stand for the hand-drawn arrow to land on it (null: the arrow is hidden, the default position stays) */
-  const [tab1, setTab1] = useState<number | null>(null)
 
   const result = useMemo(() => searchWorks(query, group), [query, group])
   const counts = useMemo(() => groupCounts(query), [query])
@@ -72,58 +67,6 @@ export function Catalog() {
     const el = sheetRef.current
     if (!el) return
     return observeOnce(el, () => loadCatalogFaces(WORKS[0]?.slug), { rootMargin: '100% 0px 100% 0px' })
-  }, [])
-
-  // the arrow from the index card points at the first folder's tab: the card is pinned to the right edge and the tab is placed along the
-  // band, so on a wide sheet they drift apart. Measure the arrow's point and stand the tab under it (the Folder takes a 0..1 position).
-  useLayoutEffect(() => {
-    const sheet = sheetRef.current
-    const note = noteRef.current
-    if (!sheet || !note) return
-    let raf = 0
-    const fit = (): void => {
-      raf = 0
-      const arrow = note.querySelector<SVGSVGElement>('svg')
-      const band = stackRef.current?.querySelector<HTMLElement>('.pm-cat-band')
-      const tab = band?.querySelector<HTMLElement>('.pm-folder__tab')
-      if (!arrow || !band || !tab || getComputedStyle(note.querySelector<HTMLElement>('.pm-cat-note__arrow') ?? note).display === 'none') {
-        setTab1(null)
-        return
-      }
-      const box = arrow.getBoundingClientRect()
-      let tipX = box.left + box.width * ARROW_TIP
-      try {
-        // the point of the arrow: the end of its longest stroke (the shaft), in screen coordinates
-        const shaft = Array.from(arrow.querySelectorAll('path')).sort((a, b) => b.getTotalLength() - a.getTotalLength())[0]
-        const m = shaft?.getScreenCTM()
-        if (shaft && m) {
-          const end = shaft.getPointAtLength(shaft.getTotalLength())
-          tipX = m.a * end.x + m.c * end.y + m.e
-        }
-      } catch {
-        /* keep the calibrated fraction */
-      }
-      const b = band.getBoundingClientRect()
-      const lo = TAB_INSET
-      const hi = b.width - TAB_INSET - tab.offsetWidth
-      if (hi <= lo) return
-      const t = (tipX - b.left - tab.offsetWidth / 2 - lo) / (hi - lo)
-      const next = Math.round(Math.min(0.97, Math.max(0.03, t)) * 1000) / 1000
-      setTab1((prev) => (prev !== null && Math.abs(prev - next) < 0.004 ? prev : next))
-    }
-    const schedule = (): void => {
-      if (!raf) raf = requestAnimationFrame(fit)
-    }
-    fit()
-    const ro = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(schedule)
-    ro?.observe(sheet)
-    document.fonts?.addEventListener?.('loadingdone', schedule)
-    void document.fonts?.ready.then(schedule)
-    return () => {
-      ro?.disconnect()
-      document.fonts?.removeEventListener?.('loadingdone', schedule)
-      if (raf) cancelAnimationFrame(raf)
-    }
   }, [])
 
   // the bands arrive once, like files shuffled into the drawer (the hidden state exists only under html.js)
@@ -175,12 +118,38 @@ export function Catalog() {
   const focusHead = (slug: string | undefined): void => {
     if (slug) heads.current.get(slug)?.focus()
   }
+  // Enter on the index card: the best match opens, and its header takes the focus (the page brings it into view, as for a click)
   const submit = (): void => {
     const slug = result.ranked[0]
     if (!slug) return
-    setOpenSlug(slug)
-    requestAnimationFrame(() => focusHead(slug))
+    const head = heads.current.get(slug)
+    if (head) {
+      hold(head, openRef.current !== slug)
+      setOpenSlug(slug)
+      requestAnimationFrame(() => head.focus({ preventScroll: true }))
+    }
   }
+
+  // a spine of the drawer index: open that folder and bring its band to the top of the screen once the bands above it have folded
+  const jumpTimer = useRef(0)
+  useEffect(() => () => window.clearTimeout(jumpTimer.current), [])
+  const jump = useCallback(
+    (slug: string): void => {
+      const item = heads.current.get(slug)?.closest<HTMLElement>('.pm-cat-item')
+      if (!item) return
+      const wasOpen = openRef.current === slug
+      setOpenSlug(slug)
+      window.clearTimeout(jumpTimer.current)
+      jumpTimer.current = window.setTimeout(
+        () => {
+          const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 72
+          window.scrollTo({ top: window.scrollY + item.getBoundingClientRect().top - navH - 44, behavior: still ? 'instant' : 'smooth' })
+        },
+        wasOpen ? 0 : still ? 160 : 800,
+      )
+    },
+    [still],
+  )
 
   // APG accordion keys on the band headers: Up / Down / Home / End move between them (Enter and Space are the buttons' own)
   const onStackKeyDown = (event: KeyboardEvent<HTMLOListElement>): void => {
@@ -204,28 +173,32 @@ export function Catalog() {
       <Backdrop lit={lit} open={openSlug} />
 
       <div className="pm-cat-top">
-        <div className="pm-cat-top__word">
-          <StrokeWord text={CATALOG.ghost} ghost size="clamp(3.6rem, 7.2vw, 8.6rem)" className="pm-cat-ghost" />
+        <div className="pm-cat-top__title">
           <StrokeWord
             as="h2"
             id="catalog-title"
             text={CATALOG.strokeWord}
             fill="solid"
             shadow="var(--marigold)"
-            size="clamp(4.5rem, 11.6vw, 17rem)"
+            size="clamp(4.5rem, 12.7vw, 18rem)"
             style={{ color: 'var(--cream)' }}
           />
-          <p className="pm-cat-sub t-lead">{CATALOG.sub}</p>
+          {/* the count, drawn as a superscript on the last letter (an exponent: 10 files) */}
+          <span className="pm-cat-sup t-hand" aria-hidden="true">
+            {CATALOG.ghost}
+          </span>
         </div>
+        <p className="pm-cat-sub t-lead">{CATALOG.sub}</p>
 
         <div className="pm-cat-top__card">
           <SearchCard value={query} onChange={changeQuery} onSubmit={submit} onArrowDown={() => focusHead(result.ranked[0] ?? WORKS[0]?.slug)} inputRef={inputRef} />
-          <div ref={noteRef} className="pm-cat-note" aria-hidden="true">
+          <div className="pm-cat-note" aria-hidden="true">
             <span className="pm-cat-note__t t-hand">{CAT_UI.note}</span>
             <span className="pm-cat-note__arrow">
-              <Scribble kind="arrow" dir="down" w="9.5rem" color="var(--marigold)" seed="catalog-arrow" stroke={3.6} draw={still ? false : 900} />
+              <Scribble kind="arrow" dir="down" w="5.2rem" color="var(--marigold)" seed="catalog-arrow" stroke={3.6} draw={still ? false : 900} />
             </span>
           </div>
+          <Spines lit={lit} active={result.active} open={openSlug} onPick={jump} />
         </div>
       </div>
 
@@ -250,7 +223,6 @@ export function Catalog() {
             plays={plays[work.slug] ?? 0}
             inlineThumb={!peek}
             tape={WORKS[(i + 1) % WORKS.length].color}
-            tabX={i === 0 && tab1 !== null ? tab1 : undefined}
             onToggle={toggle}
             headRef={headRef}
           />

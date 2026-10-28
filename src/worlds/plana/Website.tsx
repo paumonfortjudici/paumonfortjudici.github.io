@@ -152,6 +152,9 @@ export default function Website() {
   const pageVisible = usePageVisible()
   const [stop, setStop] = useState(0)
   const [scene, setScene] = useState(0)
+  // the scene that was on show a moment ago stays underneath while the new one wipes in over it: no two captures are ever blended
+  const [seen, setSeen] = useState({ cur: 0, prev: -1 })
+  if (seen.cur !== scene) setSeen({ cur: scene, prev: seen.cur })
   const [playing, setPlaying] = useState(!reduced)
   const tabs = useRef<(HTMLElement | null)[]>([])
   const warmed = useRef<string | null>(null)
@@ -252,7 +255,7 @@ export default function Website() {
                     height={s.h}
                     alt={i === scene ? s.alt : ''}
                     aria-hidden={i === scene ? undefined : true}
-                    data-on={i === scene ? 'true' : 'false'}
+                    data-state={i === scene ? 'on' : i === seen.prev ? 'prev' : 'off'}
                     style={{ top: `-${sceneCrop}%` }}
                     loading="lazy"
                     decoding="async"
@@ -317,7 +320,8 @@ export default function Website() {
 
           <div className="w-plana-site__caption" aria-live={playing ? 'off' : 'polite'}>
             <p>{current.caption}</p>
-            {stop === 2 && (
+            {/* always laid out (hidden unless the process stop is on), so choosing it never changes the plate's height */}
+            <div className="w-plana-site__hours-slot" data-on={stop === 2 ? 'true' : 'false'}>
               <ol className="w-plana-site__hours" aria-label="Hours in the process section">
                 {layout.scenes.map((s, i) => (
                   <li key={s.hours}>
@@ -334,7 +338,7 @@ export default function Website() {
                   </li>
                 ))}
               </ol>
-            )}
+            </div>
           </div>
         </div>
       </div>

@@ -13,6 +13,7 @@ import { useMediaQuery, useMotion, usePointerFine } from '../../../lib/hooks'
 import { loadHandFonts } from '../../../styles/fonts'
 import { FilmPerforations, Reveal, Scribble, TabButton, Tape } from '../../primitives'
 import { PROCESS_UI, SCENE_LABELS, STEP_NOTES, STEP_STYLE, TOOLS, stepBody, type ToolId } from './data'
+import { Bin, CoffeeRing, Ruler, Shavings } from './marginalia'
 import { SCENES } from './scenes'
 import { TOKEN_ART } from './tokens'
 import './art.css'
@@ -76,7 +77,7 @@ export default function Bench() {
       setLive(true)
       return
     }
-    const io = new IntersectionObserver((entries) => setLive(entries[entries.length - 1]?.isIntersecting ?? false), { rootMargin: '60px 0px' })
+    const io = new IntersectionObserver((entries) => setLive(entries[entries.length - 1]?.isIntersecting ?? false), { rootMargin: '600px 0px' })
     io.observe(el)
     return () => io.disconnect()
   }, [])
@@ -192,7 +193,7 @@ export default function Bench() {
           setVisited((v) => (v.includes(i) ? v : [...v, i]))
         }
       },
-      { rootMargin: '0px 0px -20% 0px', threshold: 0.12 },
+      { rootMargin: '0px 0px 30% 0px', threshold: 0.01 },
     )
     slotRefs.current.forEach((li) => {
       if (!li) return
@@ -321,7 +322,7 @@ export default function Bench() {
   return (
     <div ref={rootRef} className="pm-proc-bench" data-live={live ? '' : undefined} data-mode={stack ? 'stack' : 'strip'} data-still={still ? '' : undefined}>
       <div className="pm-proc-film">
-        <div ref={vpRef} className="pm-proc-vp" data-cursor={stack ? undefined : 'Drag'} data-dragging={dragging ? '' : undefined}>
+        <div ref={vpRef} className="pm-proc-vp" data-dragging={dragging ? '' : undefined}>
           <motion.div
             className="pm-proc-track"
             style={{ x: stack ? 0 : x }}
@@ -350,18 +351,24 @@ export default function Bench() {
           >
             {/* the labels on the head and the tail of the roll: a scrap of paper written by hand and held with a strip of tape */}
             <div className="pm-proc-lead pm-proc-lead--head" aria-hidden="true">
+              <span className="pm-proc-target">
+                <b>5</b>
+              </span>
               <span className="pm-proc-roll" style={{ ['--r' as string]: '-5deg' }}>
                 <Tape at="top" color="marigold" rotate={-4} w="3.4rem" h="1.2rem" />
                 {PROCESS_UI.filmStart}
               </span>
+              <span className="pm-proc-code">{PROCESS_UI.codeHead}</span>
             </div>
             <div className="pm-proc-lead pm-proc-lead--tail" aria-hidden="true">
+              <span className="pm-proc-stamp">{PROCESS_UI.stamp}</span>
               <span className="pm-proc-roll" style={{ ['--r' as string]: '4deg' }}>
                 <Tape at="top" color="bubblegum" rotate={3} w="3.4rem" h="1.2rem" />
                 {PROCESS_UI.filmEnd}
               </span>
+              <span className="pm-proc-code">{PROCESS_UI.codeTail}</span>
             </div>
-            <FilmPerforations className="pm-proc-perf pm-proc-perf--top" hole="1.1rem" />
+            <FilmPerforations className="pm-proc-perf pm-proc-perf--top" hole="1.1rem" data-cursor={stack ? undefined : 'Drag'} />
             <ol className="pm-proc-frames" aria-label={PROCESS_UI.region}>
               {STEPS.map((step, i) => {
                 const style = STEP_STYLE[i]
@@ -382,6 +389,7 @@ export default function Bench() {
                     data-active={isActive ? '' : undefined}
                     data-dev={dev ? '1' : '0'}
                     data-lit={litSteps.includes(i) ? '' : undefined}
+                    data-cursor={!stack && !isActive ? 'Flip' : undefined}
                     onClick={() => {
                       if (stack || draggedRef.current || isActive) return
                       go(i)
@@ -437,7 +445,7 @@ export default function Bench() {
                 )
               })}
             </ol>
-            <FilmPerforations className="pm-proc-perf pm-proc-perf--bottom" hole="1.1rem" />
+            <FilmPerforations className="pm-proc-perf pm-proc-perf--bottom" hole="1.1rem" data-cursor={stack ? undefined : 'Drag'} />
           </motion.div>
         </div>
       </div>
@@ -468,7 +476,6 @@ export default function Bench() {
               aria-selected={i === active}
               aria-controls={`${uid}-p${i}`}
               tabIndex={i === active ? 0 : -1}
-              data-cursor="Flip"
               data-i={i}
               data-seen={visited.includes(i) || still ? '' : undefined}
               data-lit={litSteps.includes(i) ? '' : undefined}
@@ -552,6 +559,15 @@ export default function Bench() {
             </p>
           </li>
         </ul>
+        {/* the rest of the desk: a ruler, a coffee ring, pencil shavings and the bin of discarded thumbnails (decoration) */}
+        <div className="pm-proc-foot" aria-hidden="true">
+          <div className="pm-proc-foot__desk">
+            <Shavings />
+            <CoffeeRing />
+            <Ruler />
+          </div>
+          <Bin />
+        </div>
       </div>
     </div>
   )

@@ -4,21 +4,26 @@
 // screen readers (visually hidden copy), and reduced / paused motion shows the finished sheet at once.
 import { useEffect, useId, useRef } from 'react'
 import { PaperClip } from '@/components/primitives'
-import { useInView } from '@/lib/hooks'
+import { useInView, useMediaQuery } from '@/lib/hooks'
 import { useWorld } from '../WorldContext'
 import { LOG } from './data'
+import { useStill } from './useStill'
 
 const MS_PER_CHAR = 11
 const PAUSE_CHARS = 12
+const STAGGER_CHARS = 6 // phones: each row starts a little after the one above
 
 export function MissionLog() {
   const id = useId()
-  const { scrollRef, reduced } = useWorld()
+  const { scrollRef } = useWorld()
+  const reduced = useStill()
+  // on a phone the sheet is as tall as three screens, so the rows type side by side (a fast scroller never meets a blank sheet)
+  const parallel = useMediaQuery('(max-width: 719px)')
   const sheetRef = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLOListElement>(null)
   // "on screen" = any part of the sheet in the upper three quarters of the scroller. (A threshold of 0.35 of the sheet's own area can
   // never be reached by a sheet taller than 2.8 screens, which a 320 px phone makes it.)
-  const inView = useInView(sheetRef, { root: scrollRef, rootMargin: '0px 0px -25% 0px', threshold: 0 })
+  const inView = useInView(sheetRef, { root: scrollRef, rootMargin: parallel ? '0px 0px -6% 0px' : '0px 0px -25% 0px', threshold: 0 })
   // typing starts the first time the sheet is on screen; if it is scrolled away before it is finished, the rest is written at once
   // (nothing runs off-screen) and it never types again
   const phase = useRef<'idle' | 'typing' | 'done'>('idle')
@@ -34,12 +39,14 @@ export function MissionLog() {
       text: row.dataset.text ?? '',
       shown: -1,
     }))
-    const total = parts.reduce((sum, p) => sum + p.text.length + PAUSE_CHARS, 0)
+    const total = parallel
+      ? Math.max(...parts.map((p, i) => p.text.length + i * STAGGER_CHARS))
+      : parts.reduce((sum, p) => sum + p.text.length + PAUSE_CHARS, 0)
     const paint = (count: number) => {
       let left = count
       let active: HTMLElement | null = null
-      for (const p of parts) {
-        const n = Math.max(0, Math.min(p.text.length, left))
+      for (const [i, p] of parts.entries()) {
+        const n = Math.max(0, Math.min(p.text.length, parallel ? count - i * STAGGER_CHARS : left))
         if (n !== p.shown && p.typed && p.ghost) {
           p.typed.textContent = p.text.slice(0, n)
           p.ghost.textContent = p.text.slice(n)
@@ -48,6 +55,7 @@ export function MissionLog() {
         if (n > 0 && n < p.text.length) active = p.row
         left -= p.text.length + PAUSE_CHARS
       }
+      void left
       for (const p of parts) {
         if (p.row === active) p.row.setAttribute('data-active', 'true')
         else p.row.removeAttribute('data-active')
@@ -79,7 +87,7 @@ export function MissionLog() {
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [inView, reduced])
+  }, [inView, reduced, parallel])
 
   return (
     <section className="w-space-monkey-log" aria-labelledby={`${id}-h`}>

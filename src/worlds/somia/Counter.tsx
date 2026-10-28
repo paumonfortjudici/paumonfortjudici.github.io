@@ -59,13 +59,20 @@ function Receipt() {
         <p className="w-somia-receipt__fine">
           Brand identity, logo and web layout: my part. The photography, the models and the words in the pictures are Somia&rsquo;s.
         </p>
-        {/* where a till prints its barcode, the shop's own seal is pressed instead: the ring stamp around the ribbon S (the real files, small: they are only 351 and 189 px) */}
-        <div className="w-somia-receipt__seal" aria-hidden="true">
-          <img src={BRAND.ring} width={351} height={352} alt="" loading="lazy" decoding="async" />
-          <img src={BRAND.ribbon} width={189} height={206} alt="" loading="lazy" decoding="async" />
-        </div>
+        {/* where a till prints its barcode: bars only (nothing is encoded); the shop's seal is pressed large on the counter beside it */}
+        <div className="w-somia-receipt__bars" aria-hidden="true" />
         <p className="w-somia-receipt__thanks">thank you &middot; gracias &middot; gr&agrave;cies</p>
       </article>
+    </div>
+  )
+}
+
+// the shop's own seal pressed large into the counter top, the ring stamp around the ribbon S (the real files: they are only 351 and 189 px, so it stays under that)
+function Impression() {
+  return (
+    <div className="w-somia-impression" aria-hidden="true">
+      <img className="w-somia-impression__ring" src={BRAND.ring} width={351} height={352} alt="" loading="lazy" decoding="async" />
+      <img className="w-somia-impression__s" src={BRAND.ribbon} width={189} height={206} alt="" loading="lazy" decoding="async" />
     </div>
   )
 }
@@ -98,10 +105,13 @@ export function Counter({ work }: { work: WorkMeta }) {
       <div className="w-somia-bench">
         <div className="w-somia-till">
           <Receipt />
-          <div className="w-somia-counter__facts">
-            <WorldFacts work={work} tone="paper">
-              Screens captured from somia.store in October 2026. The photography and the words in them belong to Somia and are shown only to explain the layout.
-            </WorldFacts>
+          <div className="w-somia-counter__stage">
+            <div className="w-somia-counter__facts">
+              <WorldFacts work={work} tone="paper">
+                Screens captured from somia.store in October 2026. The photography and the words in them belong to Somia and are shown only to explain the layout.
+              </WorldFacts>
+            </div>
+            <Impression />
           </div>
         </div>
         {/* the site's own "Pause motion" tab, standing on the front panel: the header with the same switch is inert while a world is open,

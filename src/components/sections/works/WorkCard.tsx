@@ -17,7 +17,7 @@ import { folderLayoutId, openWork, workHref } from '@/lib/router'
 import { CATEGORY_LABEL, type WorkMeta } from '@/lib/works'
 import { loadWorldFonts } from '@/worlds/fonts'
 import { prefetchWorld } from '@/worlds/registry'
-import { ART, FALLBACK, OFFICIAL_ART, POSES, type Cell, type FilterId, type PeekArt } from './data'
+import { ART, FALLBACK, OFFICIAL_ART, PEEK_SRC, POSES, type Cell, type FilterId, type PeekArt } from './data'
 import { WORKS_UI } from './strings'
 
 /** a folder lands when it is 90px short of the fold: the peek and the tab are seen arriving, and a short viewport (a 768px laptop) never shows a blank band under the rail */
@@ -192,7 +192,7 @@ export function WorkCard({ work, cell, filter, still, flat, index }: WorkCardPro
   const fb = peekFailed ? fallback?.peek : undefined
   // the fallback may bring its own size, place and tilt (a slide is not a cut-out); otherwise the folder's measured spec applies
   const peekSpec: PeekArt = { ...(art.peek ?? DEFAULT_PEEK), ...(fb?.w ? { w: fb.w } : null), ...(fb?.h ? { h: fb.h } : null), ...(fb?.x !== undefined ? { x: fb.x } : null), ...(fb?.rot !== undefined ? { rot: fb.rot } : null), ...(fb?.k !== undefined ? { k: fb.k } : null) }
-  const peekSrc = peekFailed ? fb?.src : work.peek
+  const peekSrc = peekFailed ? fb?.src : (PEEK_SRC[work.slug] ?? work.peek)
   const peek = peekSrc ? (
     <img
       className="pm-wk-peek"
@@ -254,6 +254,7 @@ export function WorkCard({ work, cell, filter, still, flat, index }: WorkCardPro
       aria-label={WORKS_UI.cardLabel(work)}
       data-cursor="Open"
       data-slug={work.slug}
+      data-concept={work.concept ? '' : undefined}
       data-face={faceReady ? 'ready' : undefined}
       onClick={onClick}
       onMouseEnter={() => prefetchWorld(work.slug)}
@@ -278,8 +279,6 @@ export function WorkCard({ work, cell, filter, still, flat, index }: WorkCardPro
             style={tape.x === undefined ? undefined : { left: `${tape.x}%` }}
           />
         ))}
-        {/* concept art is AI-assisted (the registry says so in `tools`): the stamp says it too, so the print never travels unlabelled */}
-        {work.concept && <Stamp text={CONCEPT.stamp} sub={work.tools.find((tool) => /AI/.test(tool))} tone="ink" rotate={-7} className="pm-wk-stamp" />}
       </span>
       <span className="pm-wk-text">
         <span className="pm-wk-top">
@@ -305,6 +304,9 @@ export function WorkCard({ work, cell, filter, still, flat, index }: WorkCardPro
           </>
         )}
       </span>
+      {/* concept art is AI-assisted (the registry says so in `tools`): the stamp says it too, so the print never travels unlabelled. It is pressed
+          on the folder's own paper, under the print, in a strip the card keeps free for it, so it never covers the work or the years chip */}
+      {work.concept && <Stamp text={CONCEPT.stamp} sub={work.tools.find((tool) => /AI/.test(tool))} tone="ink" rotate={-5} className="pm-wk-stamp" />}
     </Folder>
   )
 }

@@ -69,13 +69,15 @@
 /* flow-root: the film's top margin stays inside the holder, so swapping the placeholder for the bench moves nothing */
 .pm-proc-holder { position: relative; display: flow-root; }
 
-/* placeholder with the bench's footprint (film + controls + shelf), so the sheet does not jump when the chunk arrives.
-   Measured at 30 widths from 320 to 2300: desktop 1292 to 1521, tablet 1480 to 1580, a wide phone / small tablet (640 to 720: two
-   columns in the frames) 3540 to 3650, phones 4700 to 5100 (the film is a vertical stack there). Within about 100px everywhere. */
-.pm-proc-skel { position: relative; min-height: calc(960px + 27vw); }
-@media (max-width: 1180px) { .pm-proc-skel { min-height: 1520px; } }
-@media (max-width: 720px) { .pm-proc-skel { min-height: 3600px; } }
-@media (max-width: 639px) { .pm-proc-skel { min-height: calc(4560px + 60vw); } }
+/* placeholder with the bench's footprint (film + controls + shelf + desk foot), so the sheet does not jump when the chunk arrives.
+   Measured at 23 widths from 320 to 2300 with the final bench: desktop 1497 to 1824 (it grows with the viewport up to about 2300),
+   tablet 1736 to 1911, a wide phone / small tablet (613 to 720: two columns in the frames) 4000 to 4150, phones 4950 to 5150
+   (the film is a vertical stack there). Within about 100px nearly everywhere. */
+.pm-proc-skel { position: relative; min-height: clamp(1500px, calc(1050px + 34vw), 1840px); }
+@media (max-width: 1180px) { .pm-proc-skel { min-height: 1800px; } }
+@media (max-width: 720px) { .pm-proc-skel { min-height: 4100px; } }
+@media (max-width: 612px) { .pm-proc-skel { min-height: 5000px; } }
+@media (max-width: 340px) { .pm-proc-skel { min-height: 5500px; } }
 
 /* what stands in for the bench while its chunk is on the way: the blank leader of the film, an ink band with its sprocket holes, the size
    the film will be (about half of the bench on a desktop, 0.4 on a tablet, 0.7 on a phone), so that the film arrives where it already is */
@@ -85,7 +87,7 @@
   top: clamp(14px, 2vw, 30px);
   left: calc(var(--sheet-pad, 28px) * -1);
   right: calc(var(--sheet-pad, 28px) * -1);
-  height: 52%;
+  height: 46%;
   background-color: var(--ink);
   background-image:
     repeating-linear-gradient(90deg, var(--ultraviolet) 0 18px, transparent 18px 38px),
@@ -98,7 +100,7 @@
 @media (max-width: 1180px) { .pm-proc-skel::before { height: 40%; } }
 @media (max-width: 720px) {
   .pm-proc-skel::before {
-    height: 66%;
+    height: 46%;
     background-image:
       repeating-linear-gradient(180deg, var(--ultraviolet) 0 14px, transparent 14px 32px),
       repeating-linear-gradient(180deg, var(--ultraviolet) 0 14px, transparent 14px 32px),
@@ -108,6 +110,7 @@
     background-repeat: repeat-y, repeat-y, repeat;
   }
 }
+@media (max-width: 612px) { .pm-proc-skel::before { height: 64%; } }
 
 /* ---- the plain version of the steps (only when the bench chunk could not be fetched) ---------------------------------------- */
 .pm-proc-plain {

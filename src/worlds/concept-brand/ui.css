@@ -395,7 +395,7 @@
 .w-concept-brand[data-sheet='true'] .w-concept-brand-tour {
   left: 12px;
   right: 12px;
-  bottom: 88px;
+  bottom: calc(var(--cb-fold) + 12px);
   width: auto;
   padding: 28px 18px 10px;
 }
@@ -739,6 +739,130 @@
     min-height: 44px;
   }
   .w-concept-brand-chip {
+    min-height: 44px;
+  }
+}
+
+/* ---- the tour docked in the panel column (desktop): the docket on top, the nine stops as a service sheet below ---------------------------- */
+.w-concept-brand-tour[data-docked='true'] {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  grid-template-columns: minmax(0, 1fr);
+  width: auto;
+  margin: 8px 4px 0;
+  padding: 34px 20px 14px;
+  filter: drop-shadow(4px 5px 0 var(--cb-hard));
+  transform: rotate(-0.6deg);
+}
+
+.w-concept-brand-tour[data-docked='true']::before {
+  background: var(--cb-mantega);
+}
+
+.w-concept-brand-tour[data-docked='true'] .w-concept-brand-tour-side {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.w-concept-brand-tour[data-docked='true'] .w-concept-brand-tour-count {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+}
+
+.w-concept-brand-tour[data-docked='true'] .w-concept-brand-tour-count b {
+  color: var(--cb-vermell);
+  font-size: 34px;
+}
+
+.w-concept-brand-tour[data-docked='true'] .w-concept-brand-dots {
+  flex: 1;
+}
+
+.w-concept-brand-tour[data-docked='true'] .w-concept-brand-dots li[data-done='true'] {
+  background: var(--cb-blau);
+}
+
+.w-concept-brand-tour[data-docked='true'] .w-concept-brand-tour-title {
+  margin-top: 6px;
+  font-size: 34px;
+}
+
+.w-concept-brand-tour[data-docked='true'] .w-concept-brand-tour-note {
+  margin-bottom: 10px;
+  font-size: 17.5px;
+  line-height: 1.45;
+}
+
+.w-concept-brand-tour[data-docked='true'] .w-concept-brand-skip {
+  color: var(--cb-tinta);
+}
+
+.w-concept-brand-service ol {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-concept-brand-service button {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  min-height: 36px;
+  padding: 5px 4px;
+  border-bottom: 2px dotted rgba(33, 23, 54, 0.35);
+  color: var(--cb-tinta);
+  font-size: 18px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.w-concept-brand-service-n {
+  flex: none;
+  width: 26px;
+  color: var(--cb-blau);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.w-concept-brand-service-t {
+  font-family: var(--cb-display);
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 72;
+  font-weight: 800;
+}
+
+.w-concept-brand-service button[data-done='true'] .w-concept-brand-service-t {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: rgba(33, 23, 54, 0.45);
+}
+
+.w-concept-brand-service button[aria-current='step'] {
+  background: var(--cb-blau);
+  border-radius: 6px;
+  border-bottom-color: transparent;
+  color: var(--cb-rosat);
+}
+
+.w-concept-brand-service button[aria-current='step'] .w-concept-brand-service-n {
+  color: var(--cb-mantega);
+}
+
+@media (hover: hover) {
+  .w-concept-brand-service button:not([aria-current='step']):hover {
+    background: rgba(35, 64, 192, 0.1);
+  }
+}
+
+@media (pointer: coarse) {
+  .w-concept-brand-service button {
     min-height: 44px;
   }
 }

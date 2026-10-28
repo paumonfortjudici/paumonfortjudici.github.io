@@ -9,6 +9,7 @@ import { COPY } from './copy'
 import { SLIDES } from './data'
 import { ArrowLeftIcon, ArrowRightIcon } from './icons'
 import { Rays } from './Wall'
+import { StretchWord } from './StretchWord'
 import { SlideView } from './SlideView'
 import { Trail } from './Floor'
 import { useModal } from './useModal'
@@ -211,7 +212,20 @@ export function Presenter({ rootRef, index, goTo, onClose, fullscreen, toggleNot
       data-cursor="native"
       onKeyDown={modal.onKeyDown}
     >
-      <Rays className="w-cp-pres-rays" />
+      <div className="w-cp-pres-wall" aria-hidden="true">
+        <div className="w-cp-pres-butter" />
+        <Rays className="w-cp-pres-rays" />
+        <div className="w-cp-pres-half" data-side="l">
+          <p className="w-cp-pres-word">
+            <StretchWord text="ONA" widths={[140, 78, 140]} decorative />
+          </p>
+        </div>
+        <div className="w-cp-pres-half" data-side="r">
+          <p className="w-cp-pres-word">
+            <StretchWord text="RIBAS" widths={[112, 56, 150, 72, 140]} decorative />
+          </p>
+        </div>
+      </div>
       <div className="w-cp-pres-slide" data-field={slide.field}>
         {/* all five stay mounted (decoded) and only the one on show is visible, so turning a slide never flashes an empty frame */}
         {SLIDES.map((s, i) => (

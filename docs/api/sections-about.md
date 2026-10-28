@@ -110,3 +110,12 @@ Hidden initial states exist only under `html.js` (clip-path of the clips, `opaci
 - Between 1100 and about 1250px the clips are narrow: the short ones are labelled with the narrow names and the 4mation label touches the right edge of the plane.
 - The Plana credit line is derived from the registry (section 9 has no CV text for it).
 - Plana's start month is not known (the CV says "2026"), so its clip starts on 1 January 2026 and overlaps 4mation by two months; that is why it sits on the second track.
+
+## Round 1 fixes (critic pass)
+- Honesty (ART_DIRECTION 12.1): `honest()` in `about/text.ts` rewrites the copy.ts strings at render time ("lay out magazines" becomes "edit magazines"; the skill bullet becomes "Editorial direction, and layout of my own books"). copy.ts itself still holds the old words: ask the lead to reword it, after which `honest()` is a no-op.
+- Type: standfirst is capped at 36px (2 lines at 390 via `clamp(1.3rem, 5.4vw, 1.6rem)`); the body grows to 1.7rem on wide screens; the credit lines are 16 to 20px at 90% ink. Long italic phrases may wrap (`data-long`); the year range no longer glues to the next word.
+- Skills: under 900px (tablet) two columns with the code card spanning.
+- Timeline: lane heading scales up to 4.6rem and, on a ruler 1250px or wider, a second hand note ("Feb 2018: the escape room opens in Granollers", `TIMELINE.escapeRoom`) fills the gap beside the first folder. The 4mation name is hidden when the ruler is under 1290px wide (it would touch the NOW line; the reel number III and the credit above name it).
+- Phone gauge: 92px column, 26px ribbons, each ribbon writes its own start and end year beside it (`.pm-ab-job__at`).
+- Slate: a 3, 2, 1 countdown plays once on the slate when the scrub engine becomes ready (not under reduced or paused motion).
+- Education strips: the raised letters are a pseudo-element copy (`data-t`), not a text-shadow. Paper-object shadows and gradients carry `taste-skill-ignore`.

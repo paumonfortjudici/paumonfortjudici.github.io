@@ -6,6 +6,7 @@ import { WorldFacts } from '../components/primitives'
 import { loadHandFonts } from '../styles/fonts'
 import { useWorld } from './WorldContext'
 import Colour from './plana/Colour'
+import { Horizon } from './plana/Horizon'
 import { Contents, IntroTitle } from './plana/Intro'
 import Lockups from './plana/Lockups'
 import Manual from './plana/Manual'
@@ -45,11 +46,8 @@ export default function PlanaWorld() {
         </WorldFacts>
       </div>
 
-      {/* the atlas ends where the symbol began: a sun on the horizon, and the manual's own closing line */}
-      <div className="w-plana-ground">
-        <p className="w-plana-ground__sign">See you in la Plana.</p>
-        <span className="w-plana-ground__sun" aria-hidden="true" />
-      </div>
+      {/* the atlas ends where the symbol began: a sun on the horizon (it rises as you scroll), and the manual's own closing line */}
+      <Horizon />
     </div>
   )
 }

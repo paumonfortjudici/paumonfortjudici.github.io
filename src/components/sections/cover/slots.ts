@@ -23,12 +23,12 @@ export const DECK_SLOTS: readonly DeckSlot[] = [
   { col: 0, row: 0, jx: 0, jy: 0, tab: { wide: 0, duo: 0.06, solo: 0.05 }, tilt: -5 },
   { col: 1, row: 0, jx: 2, jy: 5, tab: { wide: 0.46, duo: 0.52, solo: 0.55 }, tilt: 4 },
   { col: 2, row: 0, jx: -2, jy: 1, tab: { wide: 0.1, duo: 0.22, solo: 0.2 }, tilt: -3 },
-  { col: 3, row: 0, jx: 1, jy: 8, tab: { wide: 0.52, duo: 0.7, solo: 0.76 }, tilt: 5 },
+  { col: 3, row: 0, jx: 1, jy: 8, tab: { wide: 0.52, duo: 0.7, solo: 0.66 }, tilt: 5 },
   { col: 4, row: 0, jx: 0, jy: 3, tab: { wide: 0.96, duo: 0.1, solo: 0.1 }, tilt: -4 },
   // front tier
   { col: 0, row: 1, jx: 0, jy: 0, tab: { wide: 0.3, duo: 0.6, solo: 0.6 }, tilt: 3 },
   { col: 1, row: 1, jx: 2, jy: -4, tab: { wide: 0, duo: 0.28, solo: 0.3 }, tilt: -5 },
-  { col: 2, row: 1, jx: -2, jy: 4, tab: { wide: 0.5, duo: 0.8, solo: 0.85 }, tilt: 4 },
+  { col: 2, row: 1, jx: -2, jy: 4, tab: { wide: 0.5, duo: 0.72, solo: 0.7 }, tilt: 4 },
   { col: 3, row: 1, jx: 1, jy: -2, tab: { wide: 0.16, duo: 0.36, solo: 0.4 }, tilt: -3 },
   { col: 4, row: 1, jx: 0, jy: 6, tab: { wide: 0.56, duo: 0.56, solo: 0.66 }, tilt: 5 },
 ]

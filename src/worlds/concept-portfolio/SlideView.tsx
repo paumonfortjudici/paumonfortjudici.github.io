@@ -146,34 +146,61 @@ function Loupe({ frameRef, src, active }: { frameRef: RefObject<HTMLDivElement>;
 }
 
 // ---- the director's pins -------------------------------------------------------------------------------------------------
-function Note({ id, pin, k, total, side }: { id: string; pin: Pin; k: number; total: number; side: string }) {
+/**
+ * Where a note sits. Wide screens: the slip opens onto the wall beside the slide (never over the art it explains) and a thin
+ * leader line is inked from the pin to it; if the wall is too narrow it stays inside the slide, beside its pin. Phones: the note is
+ * docked as a strip along the top or the bottom edge of the slide, whichever hides fewer of the other pins (and never its own),
+ * and it lets taps through, so every pin stays pressable.
+ */
+function Note({ id, pin, siblings, k, total, side }: { id: string; pin: Pin; siblings: Pin[]; k: number; total: number; side: string }) {
   const ref = useRef<HTMLDivElement>(null)
 
-  // keep the note inside the screen (and inside the lane) without ever sliding it over its own pin
   useLayoutEffect(() => {
     const el = ref.current
     if (!el) return
-    el.style.setProperty('--nx', '0px')
-    el.style.setProperty('--ny', '0px')
-    const rect = el.getBoundingClientRect()
+    const frame = el.closest('.w-cp-frame')?.getBoundingClientRect()
     const vw = document.documentElement.clientWidth
-    const host = el.closest('.w-cp-lane, .w-cp-pres-slide')?.getBoundingClientRect()
     const pad = 10
-    let nx = 0
-    let ny = 0
-    if (side === 't' || side === 'b') {
-      if (rect.left < pad) nx = pad - rect.left
-      else if (rect.right > vw - pad) nx = vw - pad - rect.right
-    } else {
-      const top = (host?.top ?? 0) + 4
-      const bottom = (host?.bottom ?? window.innerHeight) - 4
-      if (rect.top < top) ny = top - rect.top
-      else if (rect.bottom > bottom) ny = bottom - rect.bottom
-      if (side === 'r' && rect.right > vw - pad) nx = vw - pad - rect.right
-      if (side === 'l' && rect.left < pad) nx = pad - rect.left
+    const reset = (mode: string) => {
+      el.setAttribute('data-side', mode)
+      el.style.width = ''
+      el.style.setProperty('--nx', '0px')
+      el.style.setProperty('--ny', '0px')
+      el.style.setProperty('--lead', '0px')
     }
-    el.style.setProperty('--nx', `${nx}px`)
-    el.style.setProperty('--ny', `${ny}px`)
+    // beside the slide, on the wall: only when the wall has room there
+    if (side !== 'dock' && frame) {
+      reset(side)
+      const rect = el.getBoundingClientRect()
+      const out = side === 'r' ? frame.right + 24 - rect.left : frame.left - 24 - rect.right
+      const fits = side === 'r' ? rect.right + out <= vw - pad : rect.left + out >= pad
+      if (fits) {
+        let ny = 0
+        const host = el.closest('.w-cp-lane, .w-cp-pres-slide')?.getBoundingClientRect()
+        const top = (host?.top ?? 0) + 4
+        const bottom = (host?.bottom ?? window.innerHeight) - 4
+        if (rect.top < top) ny = top - rect.top
+        else if (rect.bottom > bottom) ny = bottom - rect.bottom
+        el.style.setProperty('--nx', `${out}px`)
+        el.style.setProperty('--ny', `${ny}px`)
+        el.style.setProperty('--lead', `${Math.abs(out) + 11}px`)
+        return
+      }
+    }
+    // no room beside the slide (phones, small tablets): a strip along its top or bottom edge, over the fewest other pins
+    reset('dock')
+    if (!frame) return
+    el.style.width = `${Math.round(frame.width - 12)}px`
+    const rect = el.getBoundingClientRect()
+    const h = rect.height / (frame.height || 1) // note height as a share of the slide
+    const covered = (from: number, to: number) => siblings.filter((p) => p.id !== pin.id && p.y >= from * 100 - 3 && p.y <= to * 100 + 3).length
+    const ownTop = pin.y <= h * 100 + 3
+    const ownBottom = pin.y >= (1 - h) * 100 - 3
+    const top = covered(0, h)
+    const bottom = covered(1 - h, 1)
+    const atTop = ownTop ? false : ownBottom ? true : top < bottom || (top === bottom && pin.y > 54)
+    el.style.setProperty('--nx', `${frame.left + 6 - rect.left}px`)
+    el.style.setProperty('--ny', `${atTop ? frame.top + 6 - rect.top : frame.bottom - 6 - rect.bottom}px`)
   })
 
   return (
@@ -192,11 +219,12 @@ function Note({ id, pin, k, total, side }: { id: string; pin: Pin; k: number; to
   )
 }
 
-function PinMark({ pin, k, total }: { pin: Pin; k: number; total: number }) {
+function PinMark({ pin, siblings, k, total }: { pin: Pin; siblings: Pin[]; k: number; total: number }) {
   const deck = useDeck()
   const open = deck.openPin === pin.id
   const cardId = useId()
-  const side = deck.narrow ? (pin.y > 54 ? 't' : 'b') : pin.side
+  // wide: the note opens toward the nearer margin of the slide, so it lands on the wall beside it; phones: docked
+  const side = deck.narrow ? 'dock' : pin.x >= 50 ? 'r' : 'l'
   return (
     <div className="w-cp-pinwrap" style={{ left: `${pin.x}%`, top: `${pin.y}%`, '--k': k } as CSSProperties} data-open={open ? 'true' : undefined} data-side={side}>
       <button
@@ -211,7 +239,7 @@ function PinMark({ pin, k, total }: { pin: Pin; k: number; total: number }) {
       >
         <span aria-hidden="true">{k + 1}</span>
       </button>
-      {open && <Note id={cardId} pin={pin} k={k} total={total} side={side} />}
+      {open && <Note id={cardId} pin={pin} siblings={siblings} k={k} total={total} side={side} />}
     </div>
   )
 }
@@ -224,7 +252,7 @@ const Pins = memo(function Pins({ slide, current }: { slide: Slide; current: boo
   return (
     <div ref={ref} className="w-cp-pins" data-on={deck.notes ? 'true' : 'false'} aria-hidden={live ? undefined : true}>
       {slide.pins.map((pin, k) => (
-        <PinMark key={pin.id} pin={pin} k={k} total={slide.pins.length} />
+        <PinMark key={pin.id} pin={pin} siblings={slide.pins} k={k} total={slide.pins.length} />
       ))}
     </div>
   )

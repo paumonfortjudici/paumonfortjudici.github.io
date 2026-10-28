@@ -13,7 +13,9 @@
 }
 
 /* ---- the film ----------------------------------------------------------------------------------------------------- */
+/* arriving by a link or a key, the film stops below the fixed index tabs, never under them */
 .pm-proc-film {
+  scroll-margin-top: calc(var(--nav-h, 72px) + 12px);
   /* the strip runs through the sheet, edge to edge */
   margin: clamp(14px, 2vw, 30px) calc(var(--sheet-pad, 28px) * -1) 0;
 }
@@ -28,7 +30,7 @@
 .pm-proc-vp[data-dragging] { cursor: grabbing; user-select: none; -webkit-user-select: none; }
 
 .pm-proc-track {
-  --pm-frame-w: min(78cqw, 1320px);
+  --pm-frame-w: min(72cqw, 1500px);
   --lead: calc((100cqw - var(--pm-frame-w)) / 2);
   position: relative;
   display: flex;
@@ -52,16 +54,96 @@
   color: var(--ink);
   font-family: var(--font-hand);
   /* it has to fit in the leader, which is (strip - frame) / 2 wide: 136px at the narrowest width where it is shown */
-  font-size: clamp(1.1rem, calc(var(--lead) * 0.16), 1.7rem);
+  font-size: clamp(1.1rem, calc(var(--lead) * 0.15), 1.7rem);
   line-height: 1;
   white-space: nowrap;
   transform: rotate(var(--r, 0deg));
 }
-.pm-proc-lead { position: absolute; top: 50%; z-index: 3; pointer-events: none; }
-.pm-proc-lead--head { left: calc(var(--lead) / 2); transform: translate(-50%, -50%); }
-.pm-proc-lead--tail { right: calc(var(--lead) / 2); transform: translate(50%, -50%); }
-@container (max-width: 1240px) {
+/* the leader and the tail of the roll: what real film carries before the first frame and after the last. Head: a countdown target, the
+   taped label, the edge print. Tail: the hand stamp, the taped label, the edge print. All decoration. */
+.pm-proc-lead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 44px 0 36px;
+  user-select: none; /* not pointer-events:none: the labels are on top of the film, so a click or a drag on them is the film's own (they are inside the track) */
+  -webkit-user-select: none;
+}
+.pm-proc-lead--head { left: 0; width: var(--lead); }
+.pm-proc-lead--tail { right: 0; width: var(--lead); }
+@container (max-width: 1100px) {
   .pm-proc-lead { display: none; }
+}
+/* the countdown target of the head: a ring, cross hairs and the roll's number, in marigold */
+.pm-proc-target {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: calc(var(--lead) * 0.6);
+  max-width: 220px;
+  aspect-ratio: 1;
+  border: 3px solid color-mix(in srgb, var(--marigold) 70%, transparent);
+  border-radius: 50%;
+  color: var(--marigold);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--marigold) 45%, transparent), color-mix(in srgb, var(--marigold) 45%, transparent)),
+    linear-gradient(90deg, color-mix(in srgb, var(--marigold) 45%, transparent), color-mix(in srgb, var(--marigold) 45%, transparent));
+  background-size: 2px 100%, 100% 2px;
+  background-position: center, center;
+  background-repeat: no-repeat;
+}
+.pm-proc-target::before {
+  content: '';
+  position: absolute;
+  inset: 16%;
+  border: 2px solid color-mix(in srgb, var(--marigold) 45%, transparent);
+  border-radius: 50%;
+}
+.pm-proc-target b {
+  position: relative;
+  padding: 0 0.08em;
+  background: var(--ink);
+  font-family: var(--font-display);
+  font-size: calc(var(--lead) * 0.34);
+  font-weight: 900;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+  line-height: 0.9;
+}
+/* edge print, running along the leader like the codes printed on a real roll */
+.pm-proc-code {
+  color: color-mix(in srgb, var(--marigold) 80%, var(--ink));
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  font-synthesis: none;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+/* the hand stamp at the tail */
+.pm-proc-stamp {
+  padding: 0.32em 0.7em 0.22em;
+  border: 4px solid var(--tomato);
+  border-radius: 6px;
+  color: var(--tomato);
+  font-family: var(--font-label);
+  font-size: clamp(1.1rem, calc(var(--lead) * 0.108), 1.7rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+  font-synthesis: none;
+  transform: rotate(-9deg);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--tomato) 45%, transparent);
+  opacity: 0.92;
 }
 
 .pm-proc-frames {
@@ -124,7 +206,7 @@
   flex: 1;
   overflow: hidden;
   border-radius: 14px;
-  background-color: color-mix(in srgb, var(--c) 16%, var(--ink));
+  background-color: color-mix(in srgb, var(--c) 30%, var(--ink));
   color: var(--ink);
 }
 /* the colour floods in from the bottom, like developer rising in a tray */
@@ -138,7 +220,8 @@
   clip-path: inset(0);
   transition: clip-path 0.95s cubic-bezier(0.65, 0, 0.25, 1);
 }
-html.js .pm-proc-slot[data-dev='0'] .pm-proc-frame::before { clip-path: inset(100% 0 0 0); }
+/* not yet developed: only a band of developer pooled at the foot of the frame shows its colour */
+html.js .pm-proc-slot[data-dev='0'] .pm-proc-frame::before { clip-path: inset(84% 0 0 0); }
 
 /* a frame that is not in the light is pushed back */
 .pm-proc-frame::after {
@@ -147,7 +230,7 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-frame::before { clip-path: inset(10
   inset: 0;
   z-index: 4;
   background: var(--ink);
-  opacity: 0.5;
+  opacity: 0.4;
   pointer-events: none;
   transition: opacity 0.5s var(--ease-out);
 }
@@ -199,7 +282,6 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-frame::before { clip-path: inset(10
   line-height: 1.1;
   text-transform: uppercase;
   font-synthesis: none;
-  text-shadow: 0 1px 0 color-mix(in srgb, var(--paper) 26%, transparent);
   clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
   transform: rotate(var(--r, 0deg));
 }
@@ -414,7 +496,7 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
 .pm-proc-btns .pm-tabbtn { white-space: nowrap; }
 
 /* ---- the shelf ----------------------------------------------------------------------------------------------------- */
-.pm-proc-shelf { margin-top: clamp(36px, 4.2vw, 68px); }
+.pm-proc-shelf { margin-top: clamp(36px, 4.2vw, 68px); scroll-margin-top: calc(var(--nav-h, 72px) + 12px); }
 .pm-proc-shelf-head {
   display: flex;
   flex-wrap: wrap;
@@ -445,7 +527,7 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
 .pm-proc-shelf-lead { max-width: 48ch; margin: 0; color: var(--muted-on-sheet); font-size: var(--fs-body); line-height: 1.45; }
 
 .pm-proc-tools {
-  --tk: clamp(150px, 10.4vw, 212px); /* never under 150: the 13px names written on the objects scale with the drawing */
+  --tk: clamp(160px, 12.6vw, 240px); /* never under 160: the 13px names written on the objects scale with the drawing */
   --art: var(--tk);
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -453,7 +535,7 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
   padding: 0;
   list-style: none;
 }
-.pm-proc-tool { position: relative; min-width: 0; }
+.pm-proc-tool { position: relative; display: flex; min-width: 0; }
 /* the shelf board: one plank behind the feet of every row of tokens */
 .pm-proc-tool::before {
   content: '';
@@ -476,6 +558,7 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
   width: 100%;
   padding: 0 clamp(6px, 0.9vw, 14px) 8px;
   text-align: center;
@@ -523,7 +606,7 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
 .pm-proc-tool:nth-child(5) { --tr: -3deg; --ts: 1.04; --cy: 52%; }
 .pm-proc-tool:nth-child(6) { --tr: 1deg; --ts: 1.06; --cy: 55%; }
 .pm-proc-tool:nth-child(7) { --tr: -2deg; --ts: 1.02; --cy: 58%; }
-.pm-proc-tk-txt { display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; }
+.pm-proc-tk-txt { display: flex; flex: 1; flex-direction: column; align-items: center; width: 100%; min-width: 0; }
 .pm-proc-tk-name {
   display: block;
   font-family: var(--font-label);
@@ -541,7 +624,7 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
 .pm-proc-tk[data-lit] .pm-proc-tk-name { text-decoration-color: var(--marigold); }
 .pm-proc-tk-use {
   display: block;
-  max-width: 24ch;
+  max-width: 26ch;
   margin-top: 8px;
   color: var(--muted-on-sheet);
   font-size: var(--fs-caption);
@@ -549,7 +632,7 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
   line-height: 1.35;
   text-wrap: balance;
 }
-.pm-proc-tk-steps { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 10px; }
+.pm-proc-tk-steps { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: auto; padding-top: 12px; } /* auto: every row of chips sits on one line, whatever the length of the words above */
 .pm-proc-tk-n {
   padding: 3px 6px 2px;
   border: 2px solid var(--cream);
@@ -571,16 +654,19 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
 
 /* ---- tablet: four slots a row, so seven tools make two shelves; the eighth slot carries the note --------------------------- */
 @media (max-width: 1180px) {
-  .pm-proc-tools { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 34px; }
+  .pm-proc-tools { --tk: clamp(170px, 20vw, 232px); grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 34px; }
   .pm-proc-tool:nth-child(4)::before { border-radius: 0 5px 5px 0; }
   .pm-proc-tool:nth-child(5)::before { border-radius: 5px 0 0 5px; }
   .pm-proc-tool:nth-child(7)::before { border-radius: 0 5px 5px 0; }
   .pm-proc-note--shelf { display: none; }
   .pm-proc-spare { display: flex; align-items: flex-start; justify-content: center; padding: calc(var(--art) * 0.28) 0 0 8px; }
 }
+@media (max-width: 1180px) {
+  .pm-proc-track { --pm-frame-w: min(84cqw, 980px); }
+}
 @media (max-width: 900px) {
   .pm-proc-bench { --pm-frame-gap: 14px; }
-  .pm-proc-track { --pm-frame-w: min(90cqw, 820px); }
+  .pm-proc-track { --pm-frame-w: min(86cqw, 820px); }
 }
 
 /* a frame narrower than 560px stacks its picture over its words */
@@ -629,12 +715,15 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
 .pm-proc-bench[data-mode='stack'] .pm-proc-ctl { display: none; }
 .pm-proc-bench[data-mode='stack'] .pm-proc-slot::after { top: 24px; bottom: 0; }
 @container (max-width: 520px) {
-  .pm-proc-num { position: static; font-size: clamp(4.5rem, 24cqw, 6rem); margin-bottom: -0.05em; }
+  /* phones: the numeral sits at the right of the title, behind it, instead of taking a row of its own (about 80px less a frame) */
+  .pm-proc-num { position: absolute; right: 4cqw; top: clamp(8px, 2.6cqw, 16px); z-index: 0; font-size: clamp(4.4rem, 22cqw, 6rem); margin: 0; }
+  .pm-proc-name { z-index: 1; margin-top: 0; }
 }
 
 /* phones: the shelf becomes a list, the drawing on the left and its words on the right, with a dashed rule between the tools */
 @media (max-width: 720px) {
   .pm-proc-shelf-head { flex-direction: column; align-items: flex-start; }
+  .pm-proc-shelf { margin-top: 28px; }
   .pm-proc-note--shelf { display: flex; height: auto; margin: 6px 0 0; white-space: normal; }
   .pm-proc-spare { display: none; }
   .pm-proc-tools { grid-template-columns: minmax(0, 1fr); gap: 0; }
@@ -647,6 +736,77 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
   .pm-proc-tk-steps { justify-content: flex-start; }
 }
 
+
+
+/* ---- the rest of the desk: ruler, coffee ring, pencil shavings and the bin (decoration under the plank) ------------------------ */
+.pm-proc-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: clamp(16px, 2vw, 32px);
+  margin-top: clamp(18px, 2.4vw, 38px);
+}
+.pm-proc-foot__desk { position: relative; align-self: stretch; min-height: clamp(150px, 12vw, 210px); }
+.pm-proc-ruler-desk {
+  --cm: clamp(54px, 4.4vw, 84px);
+  position: absolute;
+  left: 0;
+  width: 100%;
+  width: round(down, 100%, var(--cm)); /* a whole number of centimetres, so the last numeral is never cut in half */
+  bottom: 6px;
+  display: flex;
+  height: clamp(46px, 3.6vw, 60px);
+  overflow: hidden;
+  border-radius: 5px;
+  background-color: var(--cream-2);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 4px 0 color-mix(in srgb, var(--cream-2) 50%, var(--ink));
+  transform: rotate(-0.5deg);
+  transform-origin: 0 100%;
+}
+.pm-proc-ruler-desk::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2px; background: var(--ink); }
+.pm-proc-ruler-desk > span {
+  flex: none;
+  box-sizing: border-box;
+  width: var(--cm);
+  padding: 24px 0 0 6px;
+  border-left: 2px solid var(--ink);
+  background-image: repeating-linear-gradient(90deg, var(--ink) 0 1.5px, transparent 1.5px calc(var(--cm) / 10));
+  background-size: 100% 11px;
+  background-repeat: no-repeat;
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1;
+  font-synthesis: none;
+}
+.pm-proc-shavings { position: absolute; left: 4%; bottom: clamp(52px, 4.6vw, 74px); width: clamp(150px, 13vw, 250px); height: auto; transform: rotate(-4deg); overflow: visible; }
+.pm-proc-coffee { position: absolute; left: 38%; bottom: clamp(26px, 2.4vw, 40px); z-index: 1; width: clamp(110px, 9.6vw, 170px); height: auto; color: color-mix(in srgb, var(--ink) 72%, var(--ultraviolet)); transform: rotate(14deg); }
+.pm-proc-bin { position: relative; display: block; width: clamp(180px, 15vw, 260px); }
+.pm-proc-bin__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.pm-proc-bin__note {
+  position: absolute;
+  right: calc(100% + 6px);
+  top: 4%;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  color: var(--proc-pink);
+  font-size: clamp(1.7rem, 2.1vw, 2.4rem);
+  line-height: 1;
+  white-space: nowrap;
+  transform: rotate(-3deg);
+  transform-origin: 100% 50%;
+}
+@media (max-width: 720px) {
+  .pm-proc-foot { grid-template-columns: minmax(0, 1fr); }
+  .pm-proc-foot__desk { min-height: 130px; }
+  .pm-proc-bin { justify-self: end; width: 190px; margin-top: 8px; }
+  .pm-proc-bin__note { right: calc(100% - 4px); top: 8%; white-space: normal; max-width: 9.5rem; }
+  .pm-proc-bin__note .pm-sc { display: none; }
+}
 
 /* ---- ambient bits of the bench (none yet: the scenes carry their own loops) ------------------------------------------ */
 

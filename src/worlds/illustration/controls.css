@@ -192,7 +192,7 @@
 /* a phone: the three tabs share one row, the lever gets the next */
 @media (max-width: 520px) {
   .w-illustration-lever .pm-tape {
-    --w: 11.2rem !important;
+    --w: 11.8rem !important;
   }
 
   .w-illustration-lever-word {
@@ -200,7 +200,7 @@
   }
 
   .w-illustration-lever-dial {
-    width: 4.2rem;
+    width: 4.9rem;
   }
 
   .w-illustration-lever .pm-tape__in {

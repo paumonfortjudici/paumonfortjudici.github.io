@@ -75,7 +75,7 @@ html.js .pm-art[data-dev='1'] .o.dsh { stroke-dasharray: 5 7; }
 
 /* ---- draw-on ---------------------------------------------------------------------------------------------------------
    data-dev="0": latent (nothing drawn). data-dev="1": developing, every object lands and draws its strokes in order.
-   --t0 = when the first object starts, --o = the object's turn (150ms apart), --i = a stroke's turn inside an object. */
+   --t0 = when the first object starts, --o = the object's turn (100ms apart), --i = a stroke's turn inside an object. */
 /* latent: the film has not seen the light yet. What sits in the emulsion is a faint ghost of the picture, line work only, in the
    frame's own colour; development wipes it and draws the real thing. (Frames outside the light show it dimmed.) */
 html.js .pm-art[data-dev='0'] .o:not(.n) {
@@ -92,20 +92,20 @@ html.js .pm-art[data-dev='0'] :is(circle, text):not(.o) { display: none; }
 
 html.js .pm-art[data-dev='1'] .ob {
   animation: pm-art-pop 0.55s var(--ease-out) both;
-  animation-delay: calc(var(--t0, 0.3s) + var(--o, 0) * 150ms);
+  animation-delay: calc(var(--t0, 0.1s) + var(--o, 0) * 100ms);
 }
 html.js .pm-art[data-dev='1'] .o {
   stroke-dasharray: 1 2;
   animation:
-    pm-art-draw 0.8s cubic-bezier(0.5, 0, 0.2, 1) both,
+    pm-art-draw 0.62s cubic-bezier(0.5, 0, 0.2, 1) both,
     pm-art-fill 0.4s ease both;
   animation-delay:
-    calc(var(--t0, 0.3s) + var(--o, 0) * 150ms + var(--i, 0) * 45ms),
-    calc(var(--t0, 0.3s) + var(--o, 0) * 150ms + var(--i, 0) * 45ms + 0.45s);
+    calc(var(--t0, 0.1s) + var(--o, 0) * 100ms + var(--i, 0) * 30ms),
+    calc(var(--t0, 0.1s) + var(--o, 0) * 100ms + var(--i, 0) * 30ms + 0.34s);
 }
 html.js .pm-art[data-dev='1'] .f0 {
   animation: pm-art-fade 0.45s ease both;
-  animation-delay: calc(var(--t0, 0.3s) + var(--o, 0) * 150ms + 0.55s);
+  animation-delay: calc(var(--t0, 0.1s) + var(--o, 0) * 100ms + 0.4s);
 }
 /* back in the light after being developed: the objects settle again (the strokes stay drawn) */
 html.js .pm-art[data-dev='1'][data-bump='a'] .ob { animation: pm-art-settle-a 0.6s var(--ease-out) both; animation-delay: calc(var(--o, 0) * 45ms); }

@@ -77,7 +77,7 @@
 }
 
 .w-sg-sq[data-l='hard'] {
-  --tick: var(--tomato);
+  --tick: #b3201f;
 }
 
 /* the level, as a bar along the foot of the square */
@@ -130,7 +130,9 @@
   margin: 0.9rem 0 0;
   text-transform: none;
   letter-spacing: 0.04em;
-  font-weight: 400;
+  font-weight: 700;
+  font-size: max(13px, 0.8125rem);
+  color: var(--ink);
 }
 
 .w-sg-score__legend span {
@@ -145,7 +147,7 @@
 }
 
 .w-sg-score__legend span[data-l='hard'] {
-  --tick: var(--tomato);
+  --tick: #b3201f;
 }
 
 .w-sg-score__legend span::before {

@@ -6,7 +6,7 @@
 //   - one MotionValue per tag (rotate + y), driven imperatively: the same value carries the drag, the flight and the rest pose
 //   - only the top tag, the next one and the previous one hold a picture; the clip of a video slide mounts on the top tag only
 //   - reduced motion / "Pause motion": poses are set, not animated
-import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react'
+import { useCallback, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore, type KeyboardEvent } from 'react'
 import { animate, motion, motionValue, type AnimationPlaybackControls } from 'framer-motion'
 import { Stamp, TabButton } from '../../components/primitives'
 import { asset } from '../../lib/asset'
@@ -35,11 +35,27 @@ interface RingProps {
   eyelet: 'right' | 'left'
 }
 
+// one carousel at a time speaks: the last one that was flipped owns the announcement, every other live region stays empty
+let speaker = ''
+const speakerSubs = new Set<() => void>()
+const subscribeSpeaker = (fn: () => void) => {
+  speakerSubs.add(fn)
+  return () => void speakerSubs.delete(fn)
+}
+const setSpeaker = (id: string) => {
+  if (speaker === id) return
+  speaker = id
+  speakerSubs.forEach((fn) => fn())
+}
+
 const restRot = (s: number, k: number) => s * (TILT + FAN * Math.min(k, 2))
 const restY = (k: number) => Math.min(k, 2) * 4
 
 export default function Ring({ post, eyelet }: RingProps) {
   const { reduced } = useWorld()
+  const id = useId()
+  const speaking = useSyncExternalStore(subscribeSpeaker, () => speaker === id, () => false)
+  const [flipped, setFlipped] = useState(false)
   const n = post.slides.length
   const s = eyelet === 'right' ? 1 : -1
   const [index, setIndex] = useState(0)
@@ -91,8 +107,10 @@ export default function Ring({ post, eyelet }: RingProps) {
       timers.current.push(window.setTimeout(() => setFlight((f) => (f ? { ...f, phase: 'in' } : f)), DROP_MS))
       timers.current.push(window.setTimeout(() => setFlight(null), FLIGHT_MS + 40))
       setIndex(nxt)
+      setFlipped(true)
+      setSpeaker(id)
     },
-    [n],
+    [n, id],
   )
 
   const jump = useCallback(
@@ -103,8 +121,10 @@ export default function Ring({ post, eyelet }: RingProps) {
       setFlight(null)
       indexRef.current = to
       setIndex(to)
+      setFlipped(true)
+      setSpeaker(id)
     },
-    [],
+    [id],
   )
 
   const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
@@ -201,7 +221,7 @@ export default function Ring({ post, eyelet }: RingProps) {
         </div>
       </div>
       <p className="pm-sr" aria-live="polite">
-        {`Photo ${index + 1} of ${n}: ${current.alt}`}
+        {speaking && flipped ? `Photo ${index + 1} of ${n}: ${current.alt}` : ''}
       </p>
     </div>
   )

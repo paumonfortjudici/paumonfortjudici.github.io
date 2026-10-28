@@ -651,12 +651,12 @@ html[data-motion='paused'] .w-concept-brand-marker-shade {
 /* bottom sheet: the controls ride above it */
 .w-concept-brand[data-sheet='true'] .w-concept-brand-controls {
   right: 12px;
-  bottom: 92px;
+  bottom: calc(var(--cb-fold) + 16px);
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .w-concept-brand[data-sheet='true'][data-sheet-open='true'] .w-concept-brand-controls {
-  transform: translateY(calc(-56vh + 76px));
+  transform: translateY(calc(var(--cb-fold) - 56vh));
 }
 
 @media (max-width: 899px) {
@@ -714,4 +714,267 @@ html[data-motion='paused'] .w-concept-brand-marker-shade {
 
 .w-concept-brand[data-rail='true'] .w-concept-brand-cap {
   order: 2;
+}
+
+/* ---- wall furniture: a card of paint chips (left) and a bar receipt (right), pinned beside the board ------------------------------------ */
+.w-concept-brand-furn {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease-out;
+}
+
+.w-concept-brand-furn[data-on='true'] {
+  opacity: 1;
+}
+
+.w-concept-brand-chipcard,
+.w-concept-brand-faces-sheet,
+.w-concept-brand-receipt {
+  --u: calc(var(--p) * var(--k));
+  position: absolute;
+  width: calc(var(--p) * var(--w) * 1px);
+  color: var(--cb-tinta);
+  font-family: var(--cb-utility);
+  font-size: calc(var(--u) * 13px);
+  font-weight: 700;
+  line-height: 1.15;
+  filter: drop-shadow(calc(var(--u) * 5px) calc(var(--u) * 6px) 0 var(--cb-hard));
+}
+
+.w-concept-brand-faces-sheet p,
+.w-concept-brand-faces-sheet ul,
+.w-concept-brand-chipcard p,
+.w-concept-brand-chipcard ul,
+.w-concept-brand-receipt p,
+.w-concept-brand-receipt ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-concept-brand-furn-pin {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--u) * -9px);
+  width: calc(var(--u) * 20px);
+  height: calc(var(--u) * 20px);
+  margin-left: calc(var(--u) * -10px);
+  border: calc(var(--u) * 2.5px) solid var(--cb-tinta);
+  border-radius: 50%;
+  background: var(--cb-vermell);
+}
+
+.w-concept-brand-furn-tape {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--u) * -12px);
+  width: calc(var(--u) * 70px);
+  height: calc(var(--u) * 24px);
+  margin-left: calc(var(--u) * -35px);
+  background: color-mix(in srgb, var(--cb-mantega) 82%, transparent);
+  transform: rotate(-4deg);
+}
+
+/* the paint chip card: a Rosat card on the wall with the six colours as chips */
+.w-concept-brand-chipcard {
+  left: calc(var(--p) * (var(--w) + 30) * -1px);
+  top: calc(var(--p) * 452px);
+  padding: calc(var(--u) * 20px) calc(var(--u) * 10px) calc(var(--u) * 12px);
+  border: calc(var(--u) * 2.5px) solid var(--cb-tinta);
+  border-radius: calc(var(--u) * 6px);
+  background: var(--cb-rosat);
+  transform: rotate(-2.4deg);
+}
+
+.w-concept-brand-chipcard-head {
+  margin-bottom: calc(var(--u) * 8px) !important;
+  color: var(--cb-blau);
+  font-size: calc(var(--u) * 13px);
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-chipcard ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: calc(var(--u) * 7px);
+}
+
+.w-concept-brand-chipcard li {
+  display: grid;
+  gap: calc(var(--u) * 2px);
+  padding: calc(var(--u) * 3px);
+  border: calc(var(--u) * 1.5px) solid var(--cb-tinta);
+  border-radius: calc(var(--u) * 3px);
+  background: #fff6f4;
+}
+
+.w-concept-brand-chipcard-block {
+  display: block;
+  height: calc(var(--u) * 34px);
+  border-radius: calc(var(--u) * 2px);
+}
+
+.w-concept-brand-chipcard-name {
+  font-size: calc(var(--u) * 12px);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.w-concept-brand-chipcard-hex {
+  font-size: calc(var(--u) * 12px);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+/* the receipt: a till roll with a torn bottom edge, tucked 34 px under the board; the shadow sits on the outer wrapper (the paper is masked) */
+.w-concept-brand-receipt {
+  top: calc(var(--p) * 34px);
+  margin-left: calc(var(--p) * -34px);
+  transform: rotate(2.2deg);
+  transform-origin: 0 0;
+}
+
+.w-concept-brand-receipt-paper {
+  padding: calc(var(--u) * 24px) calc(var(--u) * 14px) calc(var(--u) * 30px) calc(var(--u) * 48px);
+  background: var(--cb-rosat);
+  text-align: center;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% 100% / calc(var(--u) * 16px) calc(var(--u) * 12px) repeat-x, linear-gradient(#000, #000) 0 0 / 100% calc(100% - var(--u) * 11px) no-repeat;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% 100% / calc(var(--u) * 16px) calc(var(--u) * 12px) repeat-x, linear-gradient(#000, #000) 0 0 / 100% calc(100% - var(--u) * 11px) no-repeat;
+}
+
+.w-concept-brand-receipt-brand {
+  color: var(--cb-vermell);
+  font-family: var(--cb-display);
+  font-size: calc(var(--u) * 34px);
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.w-concept-brand-receipt-sub {
+  margin-bottom: calc(var(--u) * 10px) !important;
+  padding-bottom: calc(var(--u) * 8px);
+  border-bottom: calc(var(--u) * 2px) dashed rgba(33, 23, 54, 0.55);
+  font-size: calc(var(--u) * 12px);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-receipt ul {
+  display: grid;
+  gap: calc(var(--u) * 7px);
+}
+
+.w-concept-brand-receipt li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 14px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: calc(var(--u) * 7px);
+  text-align: left;
+}
+
+.w-concept-brand-receipt li i {
+  display: block;
+  height: calc(var(--u) * 14px);
+  border: calc(var(--u) * 1.5px) solid var(--cb-tinta);
+  border-radius: 50%;
+}
+
+.w-concept-brand-receipt li b {
+  font-variant-numeric: tabular-nums;
+}
+
+.w-concept-brand-receipt-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: calc(var(--u) * 12px) !important;
+  padding-top: calc(var(--u) * 8px);
+  border-top: calc(var(--u) * 2px) dashed rgba(33, 23, 54, 0.55);
+  font-size: calc(var(--u) * 13px);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-receipt-total b {
+  color: var(--cb-vermell);
+  font-family: var(--cb-display);
+  font-size: calc(var(--u) * 26px);
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.w-concept-brand-receipt-foot {
+  margin-top: calc(var(--u) * 10px) !important;
+  font-size: calc(var(--u) * 12px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+}
+
+/* the contact sheet of the four faces (E1 to E4), taped to the wall under the receipt */
+.w-concept-brand-faces-sheet {
+  top: calc(var(--p) * 396px);
+  margin-left: calc(var(--p) * -20px);
+  padding: calc(var(--u) * 22px) calc(var(--u) * 10px) calc(var(--u) * 10px) calc(var(--u) * 28px);
+  border: calc(var(--u) * 2.5px) solid var(--cb-tinta);
+  border-radius: calc(var(--u) * 4px);
+  background: var(--cb-blau);
+  color: var(--cb-rosat);
+  transform: rotate(-2deg);
+  transform-origin: 0 0;
+}
+
+.w-concept-brand-faces-head {
+  margin-bottom: calc(var(--u) * 7px) !important;
+  color: var(--cb-mantega);
+  font-size: calc(var(--u) * 13px);
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-faces-sheet ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--u) * 7px);
+}
+
+.w-concept-brand-faces-sheet li {
+  display: grid;
+  gap: calc(var(--u) * 3px);
+  padding: calc(var(--u) * 4px) calc(var(--u) * 4px) calc(var(--u) * 3px);
+  border-radius: calc(var(--u) * 2px);
+  background: var(--cb-rosat);
+  color: var(--cb-tinta);
+  font-size: calc(var(--u) * 12px);
+  font-weight: 800;
+  text-align: center;
+}
+
+.w-concept-brand-faces-sheet li[data-who='gotet'] img { background: var(--cb-mantega); }
+.w-concept-brand-faces-sheet li[data-who='oliva'] img { background: var(--cb-vermell); }
+.w-concept-brand-faces-sheet li[data-who='sifo'] img { background: var(--cb-oliva); }
+.w-concept-brand-faces-sheet li[data-who='xip'] img { background: var(--cb-tinta); }
+
+.w-concept-brand-faces-sheet img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: calc(var(--u) * 2px);
 }

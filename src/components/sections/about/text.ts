@@ -35,6 +35,8 @@ export const TIMELINE = {
   concept: 'Concept',
   /** handwritten on the film, pointing at the clip that starts while the one below it is still running; the years come from the CV dates */
   overlap: (from: number, to: number): string => `two roles at once, ${from} to ${to}`,
+  /** ART_DIRECTION 12.1: the escape room opened in Feb 2018 in Granollers (the posters themselves are Dec 2017) */
+  escapeRoom: 'Feb 2018: the escape room opens in Granollers',
   seeIssue: 'Proyecto Contract',
   seeIssueAria: 'Open the folder: Proyecto Contract, the magazine published by Casual Magazines',
 } as const
@@ -71,3 +73,14 @@ export const TICKETS: Record<string, { kicker: string; label: string }> = {
   GH: { kicker: 'GitHub', label: 'paumonfortjudici' },
   SG: { kicker: 'On Amazon', label: 'Spelled Guilty' },
 }
+
+/**
+ * ART_DIRECTION 12.1: until Pau confirms which pages he laid out, the site never says he laid out a magazine (the Proyecto Contract masthead
+ * credits him as editorial director and author; layout is credited to someone else). These rewrites run on the copy.ts strings so the
+ * paragraph and the skill bullet stay in step with each other; when copy.ts is reworded they are simply no-ops.
+ */
+const HONEST: readonly (readonly [RegExp, string])[] = [
+  [/lay out magazines/g, 'edit magazines'],
+  [/Editorial design for magazines and books/g, 'Editorial direction, and layout of my own books'],
+]
+export const honest = (text: string): string => HONEST.reduce((out, [from, to]) => out.replace(from, to), text)

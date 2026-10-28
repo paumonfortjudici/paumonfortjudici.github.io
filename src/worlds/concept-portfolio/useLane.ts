@@ -81,6 +81,8 @@ export function useLane({ count, still, slabRef, raysRef, captureWheel }: Option
     const pitch = ms[1].offsetLeft - ms[0].offsetLeft || 1
     const center = lane.scrollLeft + lane.clientWidth / 2
     const calm = stillRef.current
+    // wide screens: the neighbours stay bigger and tuck behind the middle slide, so four mounts show
+    const dropNear = lane.clientWidth >= 1500 ? 0.08 : 0.14
     let best = 0
     let bestDistance = Infinity
     for (let i = 0; i < count; i++) {
@@ -94,7 +96,7 @@ export function useLane({ count, still, slabRef, raysRef, captureWheel }: Option
       }
       const near = Math.min(a, 1)
       const far = clamp(a - 1, 0, 1)
-      const s = 1 - 0.14 * near - 0.08 * far
+      const s = 1 - dropNear * near - 0.07 * far
       const rot = calm ? 0 : clamp(d, -1.6, 1.6) * 1.1
       m.style.transform = `rotate(${rot.toFixed(2)}deg) scale(${s.toFixed(3)})`
       const scrim = scrims.current[i]

@@ -373,7 +373,8 @@
   --curl: 13cqw;
   position: relative;
   container-type: inline-size;
-  width: min(100%, calc((100dvh - var(--w-strip, 44px) - 120px) * 0.75), 640px);
+  /* as big as the screen allows (never taller than the window), but never smaller than 480 px: a short window just scrolls */
+  width: min(100%, max(calc((100dvh - var(--w-strip, 44px) - 120px) * 0.75), 480px), 640px);
   aspect-ratio: 3 / 4;
   margin-inline: auto;
 }
@@ -479,6 +480,30 @@
   inset: 0;
   background: var(--wi-flap);
   clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* ---- a short window (a 13 inch laptop with its browser bars: 650 to 820 px of height): the head shrinks, the lid keeps the room,
+   and the control row comes up into the first screen where it can ------------------------------------------------------------ */
+@media (min-width: 900px) and (max-height: 820px) {
+  .w-illustration {
+    --wi-chrome: 318px;
+  }
+
+  .w-illustration-head .w-illustration-title {
+    font-size: min(8.4cqw, 5.4rem);
+  }
+
+  .w-illustration-head {
+    margin-bottom: 36px;
+  }
+
+  .w-illustration-lede {
+    font-size: clamp(1.05rem, 0.95rem + 0.3vw, 1.2rem);
+  }
+
+  .w-illustration-lidwrap {
+    width: min(100%, max(calc((100dvh - var(--w-strip, 44px) - var(--wi-chrome)) * 1.6), 600px));
+  }
 }
 
 /* ---- the foot: the set's one rule on a paper strip, beside the facts slate ---------------------------------------------------- */

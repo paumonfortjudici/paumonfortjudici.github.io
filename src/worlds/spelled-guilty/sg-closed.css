@@ -12,7 +12,7 @@
 }
 
 .w-sg-folder {
-  width: min(100%, clamp(1180px, 64vw, 1520px));
+  width: min(100%, clamp(1180px, 76vw, 1700px));
   margin-inline: auto;
   --fpad: clamp(22px, 3.4vw, 56px);
 }
@@ -30,8 +30,21 @@
 .w-sg-key--ink {
   color: var(--ink);
   -webkit-text-stroke: 0;
-  text-shadow: 0.05em 0.06em 0 var(--sg-red);
+  position: relative;
+  isolation: isolate;
   font-size: clamp(2.6rem, 1rem + 4.6vw, 5.6rem);
+}
+
+/* the red offset is a second copy of the title behind the ink one (a stacked duplicate, hidden from assistive tech) */
+.w-sg-key--ink::after {
+  content: attr(data-text);
+  content: attr(data-text) / '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: var(--sg-red);
+  transform: translate(0.05em, 0.06em);
+  pointer-events: none;
 }
 
 .w-sg-credit {
@@ -95,15 +108,42 @@
 
 .w-sg-closed__side {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(20px, 2.6vw, 36px);
   justify-items: start;
   min-width: 0;
+  max-width: 100%;
 }
 
-/* the last thing on the folder: the stamp, slammed on the empty corner under the facts */
+.w-sg-closed__side > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* the last thing on the folder: the stamp, slammed on the empty corner under the facts (press it: it lands again, at another angle) */
 .w-sg-closed__stamp {
+  position: relative;
   justify-self: center;
   padding: 1rem 0.6rem 0.4rem;
+}
+
+.w-sg-stampbtn {
+  display: block;
+  padding: 0.6rem 0.8rem;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.w-sg-stamphint {
+  position: absolute;
+  right: -0.6rem;
+  bottom: -0.9rem;
+  color: var(--ink);
+  font-size: 1.5rem;
+  transform: rotate(-5deg);
   pointer-events: none;
 }
 

@@ -16,8 +16,8 @@ export function Cast({ onOpen }: Props) {
       <ol className="w-illustration-cast-list">
         {STICKERS.map((s) => (
           <li key={s.n} style={{ '--accent': s.hex, '--tilt': `${[-1.6, 1.2, -0.6, 1.8, -1.2, 0.8, -2, 1.4, -0.8][s.n - 1]}deg` } as CSSProperties}>
-            {/* the full description (the image's alt text) is the button's accessible description: a screen reader hears it in the list too */}
-            <span className="pm-sr" id={`w-illustration-alt-${s.n}`}>
+            {/* the picture's alt text: hidden here (so it is not read twice), used as the accessible description of this button and of the sticker itself */}
+            <span hidden id={`w-illustration-alt-${s.n}`}>
               {s.alt}
             </span>
             <button

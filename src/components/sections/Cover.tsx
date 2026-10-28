@@ -1,7 +1,7 @@
 // 01 Cover: the sheet that opens the cabinet. Giant outline lettering (tomato ink + a misregistered ultraviolet plate, like a
 // two-colour riso print), the title with its one accent word, the name tab, three quick tabs, a rotating stamp, a hand-written
 // note, and the DECK: ten folders, one per project. Docs: docs/api/sections-cover.md
-import { useRef } from 'react'
+import { useEffect, useRef, type CSSProperties } from 'react'
 import { COVER, SHEET_META } from '../../lib/copy'
 import { useMotion } from '../../lib/motion'
 import { categoryCounts, WORKS, type Category } from '../../lib/works'
@@ -20,6 +20,7 @@ const WORD_STACKED = 'PORT\nFOLIO'
 const ARROW = {
   wide: { dir: 'down-right', w: 'clamp(3.6rem, 6cqw, 5.4rem)', ratio: 1.9 },
   narrow: { dir: 'down', w: '3.6rem', ratio: 1.2 },
+  solo: { dir: 'down-right', w: '3.8rem', ratio: 1.7 },
 } as const
 
 const QUICK_TONE: Record<Category, ToneName> = {
@@ -29,6 +30,10 @@ const QUICK_TONE: Record<Category, ToneName> = {
   web: 'butter',
   print: 'lilac',
 }
+
+/** the print-shop marks beside the year: a two-ink step wedge and a registration target, drawn a hair off register on purpose */
+const REG_NOTE = 'misregistered on purpose'
+const REG_STEPS = ['tomato', 'tomato', 'tomato', 'violet', 'violet', 'violet'] as const
 
 /** the name tab, in the two pieces it is read in: "Pau Monfort" and "Graphic designer" (the dot between them is a separator) */
 const [tagName, tagRole = ''] = COVER.nameTag.split(' · ')
@@ -50,7 +55,14 @@ export function Cover() {
   const { first, amp } = titleLines()
   const stacked = layout === 'solo'
   const noteOn = ready && handReady
-  const arrow = layout === 'wide' ? ARROW.wide : ARROW.narrow
+  const arrow = layout === 'wide' ? ARROW.wide : layout === 'solo' ? ARROW.solo : ARROW.narrow
+
+  // The sheet's meta bar repeats the three kinds of work as buttons; the cover has its own quick tabs, so the bar's copies leave
+  // the keyboard path (the mouse still reaches them): six filter stops before the first folder were five too many.
+  useEffect(() => {
+    const sheet = rootRef.current?.closest('#cover')
+    sheet?.querySelectorAll<HTMLElement>('.pm-meta__cat').forEach((el) => el.setAttribute('tabindex', '-1'))
+  }, [])
 
   // A quick tab previews its folders: while it is hovered (mouse) or focused (keyboard), the folders filed under that kind of
   // work step forward (cover.css, [data-hint]). Written straight onto the root: no state, so the lettering never re-renders.
@@ -91,7 +103,26 @@ export function Cover() {
         <div className="cv__top">
           {/* the year, as a thin third plate behind the lettering (decorative: the year is also on the stamp and the meta bar) */}
           <span className="cv__ghost" aria-hidden="true">
-            <StrokeWord as="span" text={COVER.ghost} label="" size="100cqw" draw={false} hoverWave={false} strokeScale={0.55} />
+            <StrokeWord as="span" text={COVER.ghost} label="" size="100cqw" draw={false} hoverWave={false} strokeScale={0.95} />
+          </span>
+          {/* the print-shop kit: where the second ink was laid, a registration target and the two-ink wedge (decorative) */}
+          <span className="cv__reg" aria-hidden="true">
+            <span className="cv__reg-note t-hand">{REG_NOTE}</span>
+            <span className="cv__wedge">
+              {REG_STEPS.map((ink, i) => (
+                <i key={i} className={`cv__step cv__step--${ink}`} style={{ '--k': 1 - (i % 3) * 0.32 } as CSSProperties} />
+              ))}
+            </span>
+            <svg className="cv__target" viewBox="0 0 48 48" focusable="false">
+              <g className="cv__target-v" transform="translate(2.2 1.8)" fill="none" strokeWidth="2.4">
+                <circle cx="24" cy="24" r="12" />
+                <path d="M24 3v42M3 24h42" />
+              </g>
+              <g className="cv__target-t" fill="none" strokeWidth="2.4">
+                <circle cx="24" cy="24" r="12" />
+                <path d="M24 3v42M3 24h42" />
+              </g>
+            </svg>
           </span>
           <h1 id="cover-title" className="cv__word">
             <span className="pm-sr">{WORD_LABEL}</span>
@@ -128,7 +159,7 @@ export function Cover() {
           </div>
 
           <div className="cv__side">
-            <TabButton href="#about" tone="ultraviolet" size="lg" icon="arrow-down" cursor="Open" className="cv__chip">
+            <TabButton href="#about" tone="ultraviolet" size="lg" icon="arrow-down" cursor="none" className="cv__chip">
               <span className="cv__chip-name">{tagName}</span>
               <span className="cv__chip-sep"> · </span>
               <span className="cv__chip-role">{tagRole}</span>
@@ -146,7 +177,7 @@ export function Cover() {
                     size="sm"
                     tone={QUICK_TONE[category]}
                     count={counts[category]}
-                    cursor="Open"
+                    cursor="none"
                     aria-label={`${label}, ${counts[category]} ${counts[category] === 1 ? 'folder' : 'folders'}`}
                     onClick={() => requestFilter(category)}
                   >
@@ -156,11 +187,10 @@ export function Cover() {
               ))}
             </ul>
             <p className="cv__blurb t-lead">{COVER.blurb}</p>
-          </div>
-
-          <div className="cv__stamp">
-            {/* black ink, not the violet of the plate underneath: the ring text must stay legible where it crosses the O */}
-            <Stamp text="Open" ring={COVER.stamp} spin tone="ink" rotate={-9} size="var(--stamp)" />
+            {/* black ink on a round paper label (cover.css): the ring text stays legible where it overlaps the O */}
+            <div className="cv__stamp">
+              <Stamp text="Open" ring={COVER.stamp} spin tone="ink" rotate={-9} size="var(--stamp)" />
+            </div>
           </div>
         </div>
 

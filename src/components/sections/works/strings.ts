@@ -5,6 +5,8 @@
 import type { WorkMeta } from '@/lib/works'
 
 export const WORKS_UI = {
+  /** the sub on touch screens (WORKS_SECTION.sub tells visitors to press [ and ], which a phone does not have) */
+  subTouch: 'Ten folders, ten different worlds. Filter the cabinet and open a file.',
   /** the index card that explains the keys inside a folder */
   keys: {
     label: 'Keyboard shortcuts inside a folder',
@@ -19,6 +21,11 @@ export const WORKS_UI = {
   holder: {
     all: 'All folders',
     files: 'Files',
+  },
+  /** the counter plate and drawer pull at the right end of the rail (wide screens only, decoration) */
+  pull: {
+    label: 'In this drawer',
+    count: (shown: number, total: number): string => `${String(shown).padStart(2, '0')} / ${total} folders`,
   },
   /** the sticky note on the short drawers (Editorial, Web, Print): how many folders this drawer holds, and a tab that brings the rest back */
   note: {

@@ -127,15 +127,22 @@ function Frame({ item, onOpen, index }: { item: Framed; index: number; onOpen: (
       <button type="button" className="w-somia-fr__btn" onClick={(event) => onOpen(index, event.currentTarget)} aria-label={`Open larger: ${item.title}`} data-cursor="Open">
         <span className="w-somia-fr__frame">
           <span className="w-somia-fr__mat">
-            <img
-              src={cap(item.file)}
-              alt=""
-              width={item.w}
-              height={item.h}
-              loading="lazy"
-              decoding="async"
-              style={item.crop ? { aspectRatio: item.crop.ratio, objectFit: 'cover', objectPosition: `${item.crop.x} ${item.crop.y}` } : undefined}
-            />
+            <span className="w-somia-fr__pic" style={{ aspectRatio: item.crop.ratio }}>
+              <img
+                src={cap(item.file)}
+                alt=""
+                width={item.w}
+                height={item.h}
+                loading="lazy"
+                decoding="async"
+                style={{
+                  width: `${100 / item.crop.w}%`,
+                  height: `${100 / item.crop.h}%`,
+                  left: `${(-item.crop.x / item.crop.w) * 100}%`,
+                  top: `${(-item.crop.y / item.crop.h) * 100}%`,
+                }}
+              />
+            </span>
           </span>
         </span>
       </button>
@@ -176,7 +183,7 @@ export function Gallery({ onOpenChange }: { onOpenChange: (open: boolean) => voi
             <span className="pm-sr">On the wall: </span>
             eight screens, framed
           </h3>
-          <p className="w-somia-gallery__lede">Home, menu, collection, product, materials, editorial and the basket. Open one to see the whole screen.</p>
+          <p className="w-somia-gallery__lede">Home, menu, collection, product, materials, editorial and the basket, each cropped to the part that matters. Open one to see the whole screen.</p>
         </header>
         <ul className="w-somia-gallery__list" role="list">
           {FRAMED.map((item, i) => (

@@ -41,7 +41,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle, currentColor 1.1px, transparent 1.4px);
+  background-image: radial-gradient(circle, currentColor 1.1px, transparent 1.4px); /* taste-skill-ignore: a dot grid (hard-edged dots), not a blend */
   background-size: 22px 22px;
   opacity: 0.2;
   pointer-events: none;

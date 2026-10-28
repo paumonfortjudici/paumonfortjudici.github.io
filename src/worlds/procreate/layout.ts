@@ -43,18 +43,22 @@ export interface Plan {
   wallH: number
   loose: PoseMap
   tidy: PoseMap
+  /** wide walls: where the squared-up row sits, so the pencil measuring marks can be drawn round it (wall pixels) */
+  row?: { top: number; bottom: number; left: number; right: number; centres: { id: PrintId; cx: number; w: number }[] }
 }
 
 const PAD = 0.045
 /** scaling happens around this point of the print (see transform-origin in the CSS) */
 export const ORIGIN = { x: 0.5, y: 0.42 }
+/** the print the wall's own note points at: the first one in the reading order */
+const LEAD: PrintId = 'logo'
 
-export function dimsFor(id: PrintId, w: number): Dims {
+export function dimsFor(id: PrintId, w: number, strip?: number): Dims {
   const def = PRINT_BY_ID[id]
   const pad = w * PAD
   const iw = w - pad * 2
   const ih = iw / aspectOf(def)
-  const ch = w * def.strip
+  const ch = w * (strip ?? def.strip)
   return { w, h: pad + ih + ch, pad, iw, ih, ch }
 }
 
@@ -78,13 +82,13 @@ export function kindFor(wallW: number, viewH: number): Kind {
 }
 
 /**
- * Where the wall's own "pick one up" note stands. Its arrow is aimed at a real point: the torn top edge of the first print (the
- * two-kids sketch page), found from the print's actual pose (turned about its origin), so the tip lands there however the wall is
+ * Where the wall's own "pick one up" note stands. Its arrow is aimed at a real point: the top edge of the first print (the
+ * graph-paper logo sheet), found from the print's actual pose (turned about its origin), so the tip lands there however the wall is
  * sized. The lettering hangs above the arrow's tail at the same scale as the prints. All numbers are wall pixels.
  */
 export function pickupSpot(plan: Plan): { left: number; bottom: number; font: number; from: [number, number]; to: [number, number] } {
-  const d = plan.dims.kids
-  const p = plan.loose.kids
+  const d = plan.dims[LEAD]
+  const p = plan.loose[LEAD]
   const sc = p.scale ?? 1
   const th = (p.rot * Math.PI) / 180
   const cos = Math.cos(th)
@@ -118,17 +122,17 @@ export function range(d: Dims, scale: number, W: number, H: number): { minX: num
 // ---- wide: the designed wall -----------------------------------------------------------------------------------------------
 const REF = { w: 1380, h: 520 }
 /** outer width of every print at reference scale */
-const WIDE_W: Record<PrintId, number> = { kids: 330, crest: 290, logo: 305, cap: 255, quiff: 225 }
+const WIDE_W: Record<PrintId, number> = { logo: 372, crest: 322, kids: 272, cap: 262, quiff: 230 }
 /** hand-hung poses at reference scale: top-left in a 1380 x 520 wall, rotation in degrees */
 const WIDE_LOOSE: Record<PrintId, Pose> = {
-  kids: { x: 24, y: 104, rot: -3.2 },
-  logo: { x: 352, y: 176, rot: 2.3 },
-  crest: { x: 640, y: 36, rot: -2.1 },
-  cap: { x: 906, y: 86, rot: 2.6 },
-  quiff: { x: 1140, y: 32, rot: -2.4 },
+  logo: { x: 20, y: 128, rot: -2.4 },
+  crest: { x: 360, y: 28, rot: 2.1 },
+  kids: { x: 668, y: 252, rot: -3.1 },
+  cap: { x: 902, y: 66, rot: 2.6 },
+  quiff: { x: 1140, y: 24, rot: -2.4 },
 }
 /** left-to-right order of the neat row */
-const ROW: PrintId[] = ['kids', 'logo', 'crest', 'cap', 'quiff']
+const ROW: PrintId[] = ['logo', 'crest', 'kids', 'cap', 'quiff']
 
 function wideDims(s: number): DimsMap {
   const out = {} as DimsMap
@@ -164,18 +168,25 @@ function planWide(W: number, H: number): Plan {
   const gap = (W - total * st) / (ROW.length + 1)
   const tidy = {} as PoseMap
   let left = gap
+  let top = Infinity
+  let bottom = 0
+  const centres: { id: PrintId; cx: number; w: number }[] = []
   for (const id of ROW) {
     const d = dims[id]
-    tidy[id] = atCorner(d, st, left, (H - d.h * st) / 2)
+    const y0 = (H - d.h * st) / 2
+    tidy[id] = atCorner(d, st, left, y0)
+    top = Math.min(top, y0)
+    bottom = Math.max(bottom, y0 + d.h * st)
+    centres.push({ id, cx: left + (d.w * st) / 2, w: d.w * st })
     left += d.w * st + gap
   }
-  return { kind: 'wide', s, dims, wallH: H, loose, tidy }
+  return { kind: 'wide', s, dims, wallH: H, loose, tidy, row: { top, bottom, left: gap, right: W - gap, centres } }
 }
 
 // ---- mid and narrow: stacked prints ---------------------------------------------------------------------------------------
-const MID_FR: Record<PrintId, number> = { kids: 0.98, crest: 0.86, logo: 0.92, cap: 0.8, quiff: 0.7 }
-const NARROW_FR: Record<PrintId, number> = { kids: 0.86, crest: 0.74, logo: 0.82, cap: 0.68, quiff: 0.6 }
-const NARROW_ORDER: PrintId[] = ['kids', 'quiff', 'crest', 'cap', 'logo']
+const MID_FR: Record<PrintId, number> = { logo: 0.98, crest: 0.88, kids: 0.7, cap: 0.8, quiff: 0.7 }
+const NARROW_FR: Record<PrintId, number> = { logo: 0.88, crest: 0.74, kids: 0.62, cap: 0.68, quiff: 0.6 }
+const NARROW_ORDER: PrintId[] = ['logo', 'crest', 'kids', 'cap', 'quiff']
 const STACK_GAP = 26
 const STACK_PAD = 26
 
@@ -258,29 +269,56 @@ function overlap(a: { x: number; y: number; w: number; h: number }, b: { x: numb
   return ox > 0 && oy > 0 ? ox * oy : 0
 }
 
+type Box = { x: number; y: number; w: number; h: number }
+
+/** a print is a little wider than its box once it is turned and its tape is on: neighbours keep this much clear */
+const fat = (b: Box): Box => ({ x: b.x - 9, y: b.y - 9, w: b.w + 18, h: b.h + 18 })
+
+/** the largest share of the smaller print that any neighbour hides (0 = no two prints touch) */
+function worstCover(boxes: Box[]): number {
+  let worst = 0
+  for (let i = 0; i < boxes.length; i++) {
+    for (let j = i + 1; j < boxes.length; j++) {
+      worst = Math.max(worst, overlap(fat(boxes[i]), fat(boxes[j])) / Math.min(boxes[i].w * boxes[i].h, boxes[j].w * boxes[j].h))
+    }
+  }
+  return worst
+}
+
+/**
+ * Shuffle: the prints are thrown at random, but a pile is not allowed to happen (a hand-lettered note under a picture must stay
+ * readable). 140 complete throws are made, each print going to the free-est of 90 random spots; of those, one of the three that
+ * hide the least is kept. Seeded, so a shuffle is repeatable in tests.
+ */
 export function scatter(plan: Plan, W: number, seed: number): PoseMap {
   const rand = rng(seed * 7919 + 17)
-  const placed: { x: number; y: number; w: number; h: number }[] = []
-  const out = {} as PoseMap
   // the big ones first: they are the hardest to place
   const order = [...PRINTS].sort((a, b) => plan.dims[b.id].w * plan.dims[b.id].h - plan.dims[a.id].w * plan.dims[a.id].h)
-  for (const p of order) {
-    const d = plan.dims[p.id]
-    let bestScore = Infinity
-    let best = { x: 0, y: 0 }
-    for (let tries = 0; tries < 48; tries++) {
-      const x = 6 + rand() * Math.max(0, W - d.w - 12)
-      const y = 6 + rand() * Math.max(0, plan.wallH - d.h - 12)
-      const box = { x, y, w: d.w, h: d.h }
-      const score = placed.reduce((acc, other) => acc + overlap(box, other), 0) + rand() * 500
-      if (score < bestScore) {
-        bestScore = score
-        best = { x, y }
+  const throws: { boxes: Box[]; worst: number }[] = []
+  for (let attempt = 0; attempt < 140; attempt++) {
+    const boxes: Box[] = []
+    for (const p of order) {
+      const d = plan.dims[p.id]
+      let best: Box = { x: 6, y: 6, w: d.w, h: d.h }
+      let bestTotal = Infinity
+      for (let tries = 0; tries < 90; tries++) {
+        const box = { x: 6 + rand() * Math.max(0, W - d.w - 12), y: 6 + rand() * Math.max(0, plan.wallH - d.h - 12), w: d.w, h: d.h }
+        const total = boxes.reduce((acc, other) => acc + overlap(fat(box), fat(other)), 0)
+        if (total < bestTotal) {
+          bestTotal = total
+          best = box
+        }
       }
+      boxes.push(best)
     }
-    placed.push({ ...best, w: d.w, h: d.h })
-    out[p.id] = { x: best.x, y: best.y, rot: (rand() - 0.5) * 12, scale: 1 }
+    throws.push({ boxes, worst: worstCover(boxes) })
   }
+  throws.sort((a, b) => a.worst - b.worst)
+  const chosen = throws[Math.floor(rand() * 3)].boxes
+  const out = {} as PoseMap
+  order.forEach((p, i) => {
+    out[p.id] = { x: chosen[i].x, y: chosen[i].y, rot: (rand() - 0.5) * 12, scale: 1 }
+  })
   return out
 }
 

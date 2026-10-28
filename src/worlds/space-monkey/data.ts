@@ -96,10 +96,10 @@ export interface LogLine {
 
 /** The one line of story is paraphrased from the room's own pages (booking listing + archived site). */
 export const LOG: readonly LogLine[] = [
-  { k: 'What', v: 'Two character posters for an escape room. TYLER has an astronaut over the Earth, SMITH a sergeant in a shuttle hangar.' },
+  { k: 'What', v: 'The artwork for the room: TYLER, an astronaut over the Earth, and SMITH, a sergeant in a shuttle hangar.' },
   { k: 'Story', v: 'A crew flies the shuttle Icarus to the station Helios, where contact has been lost.' },
-  { k: 'Where', v: 'Granollers, near Barcelona. The room is called Space Monkey and takes two to six players.' },
-  { k: 'When', v: 'December 2017, in Photoshop. The room opened in February 2018.' },
+  { k: 'Where', v: 'Near Barcelona, in a room built for two to six players.' },
+  { k: 'When', v: 'Finished in December 2017. The room opened 61 days after the last save.' },
   { k: 'Who', v: 'Me, at 13. It was my first project.' },
   { k: 'Now', v: 'The room’s own website no longer exists, so there is nothing to link to. The posters stay.' },
 ]

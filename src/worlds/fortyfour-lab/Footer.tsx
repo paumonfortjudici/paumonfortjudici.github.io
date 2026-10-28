@@ -5,7 +5,9 @@ import { asset } from '../../lib/asset'
 import { useWorld } from '../WorldContext'
 
 export default function Footer() {
-  const { work } = useWorld()
+  const { work: registered } = useWorld()
+  // the registry lists the tool as hand-drawn, which reads as the tool for the rugs; the notes only support the tufting gun (the 74 s clip)
+  const work = { ...registered, tools: ['Tufting gun'] }
   return (
     <div className="w-fortyfour-lab-foot">
       <div className="w-fortyfour-lab-fringe" aria-hidden="true" />

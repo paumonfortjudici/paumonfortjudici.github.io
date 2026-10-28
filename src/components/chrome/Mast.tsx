@@ -6,6 +6,7 @@
 
 import { Fragment, type CSSProperties } from 'react'
 import { MAST } from '../../lib/copy'
+import { useClock } from '../../lib/hooks'
 import { Stamp, StrokeWord } from '../primitives'
 import { nameDelay } from './introState'
 import { Asterisk } from './marks'
@@ -42,6 +43,36 @@ function Note({ text, className }: { text: string; className?: string }) {
   )
 }
 
+/**
+ * A clapperboard slate at the right end of the notes: the time in Sydney right now and how far Barcelona is behind it. It is aimed at the
+ * people on the other side of the world (the studio this site is a pitch to), and it is the one live thing in the mast. The stick is
+ * striped in ink and the accent of the sheet you are on, and claps shut every time the minute changes. Desktop only (the notes column
+ * has to be wide enough: chrome.css).
+ */
+function Slate() {
+  const syd = useClock('Australia/Sydney')
+  const bcn = useClock('Europe/Madrid')
+  // whole hours between the two wall clocks (8, 9 or 10 depending on the season); Sydney is always the one ahead
+  const diff = (((syd.hour * 60 + syd.minute - (bcn.hour * 60 + bcn.minute)) % 1440) + 1440) % 1440
+  const hours = Math.round((diff > 720 ? 1440 - diff : diff) / 60)
+  return (
+    <div className="pm-sydney" data-day={syd.isDay ? 'true' : 'false'}>
+      <span className="pm-sydney__stick" key={syd.time} aria-hidden="true" />
+      <div className="pm-sydney__body">
+        <p className="pm-sydney__head">
+          <span>Sydney now</span>
+          <span className="pm-sydney__lamp" aria-hidden="true" />
+          <span className="pm-sr">{syd.isDay ? ', daytime' : ', night'}</span>
+        </p>
+        <p className="pm-sydney__time" aria-live="off">
+          {syd.time}
+        </p>
+        <p className="pm-sydney__sub">{`Barcelona is ${hours} h behind`}</p>
+      </div>
+    </div>
+  )
+}
+
 export function Mast() {
   return (
     <header className="pm-mast" style={{ '--pm-name-delay': `${nameDelay}ms` } as CSSProperties}>
@@ -69,6 +100,7 @@ export function Mast() {
             <Note text={MAST.notes[0]} />
             <Note text={MAST.notes[1]} className="pm-mast__note--second" />
           </div>
+          <Slate />
           {CHROME.stamp.show && (
             <span className="pm-mast__stamp">
               <Stamp text={CHROME.stamp.text} sub={CHROME.stamp.sub} color="var(--sec-lit)" blend="normal" rotate={-5} size="0.95rem" rough={1} thump={false} />

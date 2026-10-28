@@ -122,7 +122,7 @@ export default function Mockups() {
             }}
           >
             {MOCKUPS.map((m, i) => (
-              <figure key={m.id} className="w-plana-shot" data-tilt={i % 2 === 0 ? 'a' : 'b'} aria-label={`${i + 1} of ${MOCKUPS.length}: ${m.title}`}>
+              <figure key={m.id} className="w-plana-shot" data-tilt={i % 2 === 0 ? 'a' : 'b'} data-here={i === index ? 'true' : 'false'} aria-label={`${i + 1} of ${MOCKUPS.length}: ${m.title}`}>
                 <div className="w-plana-shot__print">
                   <img src={plana(m.file)} width={m.w} height={m.h} alt={m.alt} loading="lazy" decoding="async" draggable={false} />
                   <span className="w-plana-shot__tag">Sample mockup</span>

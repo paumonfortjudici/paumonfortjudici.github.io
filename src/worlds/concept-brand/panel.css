@@ -949,7 +949,7 @@
   padding: 10px 0 0;
   background: transparent;
   box-shadow: none;
-  transform: translateY(calc(100% - 76px));
+  transform: translateY(calc(100% - var(--cb-fold)));
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -1051,4 +1051,55 @@
   .w-concept-brand-heads button {
     min-height: 44px;
   }
+}
+
+/* ---- the honesty strip: the CONCEPT label that is always on screen in the panel, never behind a scroll or a fold ---------------------------- */
+.w-concept-brand {
+  --cb-fold: 118px;
+}
+
+.w-concept-brand-conceptbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 11px 11px;
+  padding: 7px 12px 7px 8px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 6px;
+  background: var(--cb-mantega);
+  color: var(--cb-tinta);
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.15;
+  transform: rotate(-0.5deg);
+}
+
+.w-concept-brand-conceptbar-tag {
+  flex: none;
+  padding: 4px 8px 3px;
+  border-radius: 3px;
+  background: var(--cb-tinta);
+  color: var(--cb-mantega);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-panel[data-mode='dock'] .w-concept-brand-scroll {
+  margin-bottom: 6px;
+}
+
+.w-concept-brand-panel[data-mode='sheet'] .w-concept-brand-conceptbar {
+  margin: 0 16px 10px;
+}
+
+.w-concept-brand-foot {
+  margin-top: 18px;
+}
+
+.w-concept-brand-panel[data-mode='sheet'] .w-concept-brand-card-top {
+  display: block;
 }

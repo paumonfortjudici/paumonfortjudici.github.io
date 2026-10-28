@@ -13,6 +13,7 @@ import { MissionLog } from './space-monkey/MissionLog'
 import { MissionPatch } from './space-monkey/MissionPatch'
 import { MissionTape } from './space-monkey/MissionTape'
 import { Starfield } from './space-monkey/Starfield'
+import { useStill } from './space-monkey/useStill'
 import { LEAD, POSTERS } from './space-monkey/data'
 import './space-monkey/space-monkey.css'
 
@@ -89,7 +90,8 @@ function Return({ onBack }: { onBack: () => void }) {
 }
 
 export default function SpaceMonkeyWorld() {
-  const { work, reduced, scrollRef } = useWorld()
+  const { work, scrollRef } = useWorld()
+  const reduced = useStill()
   const titleId = useId()
   const rootRef = useRef<HTMLDivElement>(null)
 
@@ -131,7 +133,13 @@ export default function SpaceMonkeyWorld() {
       <div className="w-space-monkey-flow">
         <section className="w-space-monkey-hero" aria-labelledby={titleId}>
           <h2 id={titleId} className="w-space-monkey-title">
-            <span>Space</span> <span>Monkey</span>
+            {/* the blue misregistered copy is its own aria-hidden layer: its words come from CSS (attr), so the heading's text is read once */}
+            <span className="w-space-monkey-title-ink" aria-hidden="true">
+              <span data-t="Space" /> <span data-t="Monkey" />
+            </span>
+            <span className="w-space-monkey-title-face">
+              <span>Space</span> <span>Monkey</span>
+            </span>
           </h2>
           <div className="w-space-monkey-deck">
             <div className="w-space-monkey-posters">
@@ -147,15 +155,18 @@ export default function SpaceMonkeyWorld() {
           </div>
         </section>
 
-        <MissionTape />
+        {/* one wrapper so a tablet can set the vertical tape beside the log (see the 720 to 999 tier in the CSS) */}
+        <div className="w-space-monkey-mid">
+          <MissionTape />
 
-        <div className="w-space-monkey-close">
-          <MissionLog />
-          <div className="w-space-monkey-end">
-            <WorldFacts work={work} tone="ink" className="w-space-monkey-facts">
-              Two Photoshop files from December 2017, shown as portfolio samples.
-            </WorldFacts>
-            <Return onBack={backToPosters} />
+          <div className="w-space-monkey-close">
+            <MissionLog />
+            <div className="w-space-monkey-end">
+              <WorldFacts work={work} tone="ink" className="w-space-monkey-facts">
+                Early work, kept here as a portfolio sample.
+              </WorldFacts>
+              <Return onBack={backToPosters} />
+            </div>
           </div>
         </div>
       </div>

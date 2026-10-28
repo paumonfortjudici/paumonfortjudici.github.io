@@ -63,7 +63,7 @@ const Title = ({ children, sub }: { children: ReactNode; sub?: string }) => (
 )
 
 // ---- overview ---------------------------------------------------------------------------------------------------------------------
-export function Overview({ onTour, onKit, hideActions }: { onTour: () => void; onKit: () => void; hideActions?: boolean }) {
+export function Overview({ onTour, hideActions }: { onTour: () => void; onKit: () => void; hideActions?: boolean }) {
   return (
     <div className="w-concept-brand-body">
       <p className="w-concept-brand-kicker">{OVERVIEW.kicker}</p>
@@ -77,9 +77,6 @@ export function Overview({ onTour, onKit, hideActions }: { onTour: () => void; o
         <div className="w-concept-brand-actions">
           <TabButton color="var(--cb-mantega)" ink="var(--cb-tinta)" icon="arrow-right" onClick={onTour} cursor="Play">
             {UI_TEXT.tourStart}
-          </TabButton>
-          <TabButton color="var(--cb-blau)" ink="var(--cb-rosat)" onClick={onKit}>
-            {UI_TEXT.kit}
           </TabButton>
         </div>
       )}

@@ -97,11 +97,10 @@ function MonthBanner({ item }: { item: MonthItem }) {
     <section className="w-fortyfour-lab-month" data-pack="" data-mode={mode} data-col={col} data-month={group.key.slice(5)} aria-labelledby={`ffl-m-${group.key}`}>
       {/* the note hangs under the end of the name that is away from the spine, where the thread and the devil cross the letters */}
       <div className="w-fortyfour-lab-month-head">
-        <h3 id={`ffl-m-${group.key}`} className="w-fortyfour-lab-month-name">
+        <h3 id={`ffl-m-${group.key}`} className="w-fortyfour-lab-month-name" aria-label={`${group.month} ${group.year}`}>
           <span aria-hidden="true" data-text={group.month}>
             {group.month}
           </span>
-          <span className="pm-sr">{`${group.month} ${group.year}`}</span>
           {group.first === 0 && (
             <span className="w-fortyfour-lab-month-year" aria-hidden="true">
               {group.year}
@@ -119,11 +118,11 @@ function MonthBanner({ item }: { item: MonthItem }) {
 function Fact({ col, monthKey }: { col: Col; monthKey: string }) {
   const fact = MONTH_FACTS[monthKey]
   return (
-    <aside className="w-fortyfour-lab-fact" data-pack="" data-col={col}>
+    <div className="w-fortyfour-lab-fact" data-pack="" data-col={col} role="note">
       <p className="w-fortyfour-lab-fact-big">{fact.big}</p>
       <p className="w-fortyfour-lab-fact-text">{fact.text}</p>
       <Scribble kind="arrow" dir="up" w="3.6rem" color="var(--ffl-outline)" seed={7} className="w-fortyfour-lab-fact-arrow" />
-    </aside>
+    </div>
   )
 }
 

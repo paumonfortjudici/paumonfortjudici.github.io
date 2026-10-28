@@ -23,17 +23,27 @@ export function PillNav() {
   const navRef = useRef<HTMLElement | null>(null)
   const rowRef = useRef<HTMLUListElement | null>(null)
   const stitchRef = useRef<HTMLElement | null>(null)
+  const pinRef = useRef<HTMLElement | null>(null)
+  const hiRef = useRef<HTMLElement | null>(null)
   const [counterNum, counterRest] = NAV_COUNTER(active).split(' ') // "03 /06": the number rolls, the total stays
 
-  // a seam of stitches along the rail is sewn as you read: tomato thread over the pencilled line (clip-path only, no re-render)
-  useEffect(
-    () =>
-      subscribeScroll((info) => {
-        const stitch = stitchRef.current
-        if (stitch) stitch.style.clipPath = `inset(0 ${((1 - info.progress) * 100).toFixed(2)}% 0 0)`
-      }),
-    [],
-  )
+  // the rail is a ruler of six inches (one per sheet, like the desk ruler in the margin): a tomato pin slides along it, the inch of the
+  // sheet you are on is highlighted and the stitches under it are sewn over as you read. DOM writes only, no re-render per frame.
+  useEffect(() => {
+    let last = -1
+    return subscribeScroll((info) => {
+      const frac = Math.min(1, Math.max(0, info.p / 6))
+      const stitch = stitchRef.current
+      if (stitch) stitch.style.clipPath = `inset(0 ${((1 - frac) * 100).toFixed(2)}% 0 0)`
+      const pin = pinRef.current
+      if (pin) pin.style.left = `${(frac * 100).toFixed(2)}%`
+      const hi = hiRef.current
+      if (hi && info.index !== last) {
+        last = info.index
+        hi.style.transform = `translate3d(${info.index * 100}%, 0, 0)`
+      }
+    })
+  }, [])
 
   // pinned to the top edge? (IntersectionObserver on the sticky element itself; nothing re-renders)
   useEffect(() => {
@@ -143,7 +153,12 @@ export function PillNav() {
             <span>{` ${counterRest}`}</span>
           </span>
           <span className="pm-nav__seam">
-            <i className="pm-nav__stitch" ref={stitchRef} />
+            <i className="pm-nav__hi" ref={hiRef} />
+            <i className="pm-nav__ticks" />
+            <i className="pm-nav__thread">
+              <i className="pm-nav__stitch" ref={stitchRef} />
+            </i>
+            <i className="pm-nav__pin" ref={pinRef} />
           </span>
         </div>
         <MotionToggle variant="rail" />

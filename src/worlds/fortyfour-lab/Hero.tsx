@@ -65,7 +65,7 @@ export default function Hero() {
 
       <div className="w-fortyfour-lab-intro">
         <p className="w-fortyfour-lab-lead">
-          44 Lab: custom handtufted rugs, made to order, and the mischievous devil I drew by hand as its logo.
+          44 Lab: custom handtufted rugs, made to order, and the mischievous devil that is its logo.
         </p>
         <p className="w-fortyfour-lab-lead-2">
           Below is its whole Instagram wall, {count} posts from {dayMonth(FIRST_DATE)} to {longDate(LAST_DATE)}, hung on one thread.

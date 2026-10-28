@@ -69,7 +69,7 @@ export function SheetMeta({ page, n, total = NAV_TOTAL, years = SHEET_META.years
     <div className={cx('pm-meta', className)} style={vars} {...rest}>
       <span className="pm-meta__years">{years}</span>
       {SHEET_META.categories.map(({ label, category }) => (
-        <button key={category} type="button" className="pm-meta__cat" data-cursor="Open" title={`See ${label.toLowerCase()} work`} onClick={() => requestFilter(category)}>
+        <button key={category} type="button" className="pm-meta__cat" data-cursor="none" title={`See ${label.toLowerCase()} work`} onClick={() => requestFilter(category)}>
           {label}
         </button>
       ))}

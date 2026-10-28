@@ -1,16 +1,23 @@
 // Exhibit F: the credit, in plain words, on a manila folder; the CASE CLOSED stamp; the Amazon ticket and the facts slate.
 import { Folder, StickyNote, Stamp, Tape, WorldFacts } from '@/components/primitives'
+import { useMemo, useState } from 'react'
 import { useWorld } from '../WorldContext'
 import { SG } from './copy'
 import './sg-closed.css'
 
+const ANGLES = [-7, -3, -10, -5, -1, -9]
+
 export default function Closed() {
   const { work } = useWorld()
+  // the registry year is not a publication date and the book states none (ART_DIRECTION 12.1): the slate shows Role and Tools only
+  // the stamp is a real one: every press lifts it and slams it down again at a slightly different angle (the Stamp remounts, so its own thump plays)
+  const [presses, setPresses] = useState(0)
+  const facts = useMemo(() => ({ ...work, years: '' }), [work])
   return (
     <section className="w-sg-closed w-sg-station" aria-labelledby="sg-credit-title">
       <Folder color="var(--cream-2)" ink="var(--ink)" tab={SG.credit.exhibit} tabX={0.05} className="w-sg-folder" bodyClassName="w-sg-folder__body">
         <div className="w-sg-credit">
-          <h3 id="sg-credit-title" className="w-sg-h3 w-sg-key w-sg-key--ink">
+          <h3 id="sg-credit-title" className="w-sg-h3 w-sg-key w-sg-key--ink" data-text={SG.credit.title}>
             {SG.credit.title}
           </h3>
           <p className="w-sg-credit__line">
@@ -33,11 +40,16 @@ export default function Closed() {
         </div>
 
         <div className="w-sg-closed__side">
-          <WorldFacts work={work} tone="ink">
+          <WorldFacts work={facts} tone="ink">
             {SG.credit.samplePages}
           </WorldFacts>
           <div className="w-sg-closed__stamp">
-            <Stamp text={SG.credit.stamp} sub="Volume 1" tone="tomato" rotate={-7} size="clamp(2rem, 1.1rem + 1.7vw, 2.8rem)" />
+            <button type="button" className="w-sg-stampbtn" aria-label={SG.credit.stampButton} data-cursor="Stamp" onClick={() => setPresses((n) => n + 1)}>
+              <Stamp key={presses} decorative text={SG.credit.stamp} sub="Volume 1" tone="tomato" rotate={ANGLES[presses % ANGLES.length]} size="clamp(1.5rem, 0.6rem + 2.2vw, 2.8rem)" />
+            </button>
+            <span className="w-sg-stamphint w-sg-hand" aria-hidden="true">
+              {SG.credit.stampHint}
+            </span>
           </div>
         </div>
       </Folder>

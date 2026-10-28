@@ -142,6 +142,9 @@ export function SearchCard({ value, onChange, onSubmit, onArrowDown, inputRef }:
           {value.slice(0, at)}
         </span>
         <span ref={caretRef} className="pm-cat-card__caret pm-ambient" data-on={focused || value === '' ? '' : undefined} aria-hidden="true" />
+        <span className="pm-cat-card__flag" data-show={value === '' && !focused ? '' : undefined} aria-hidden="true">
+          {CAT_UI.typeHere}
+        </span>
         <span ref={hintRef} id={hintId} className="pm-cat-card__hint" data-show={value === '' ? '' : undefined}>
           {CATALOG.searchPlaceholder}
         </span>

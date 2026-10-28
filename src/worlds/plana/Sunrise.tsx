@@ -126,8 +126,6 @@ export default function Sunrise() {
           </div>
 
           <Sticker72 shown={done} />
-
-          <Days className="w-plana-days w-plana-days--sky" day={day} onPick={goDay} />
         </div>
 
         <div className="w-plana-deck">
@@ -188,6 +186,9 @@ export default function Sunrise() {
             </p>
           </div>
         </div>
+
+        {/* last in the DOM so the tab order is the slider first, then the day windows; on a wide plate it is drawn in the sky (grid area of the sky) */}
+        <Days className="w-plana-days w-plana-days--sky" day={day} onPick={goDay} />
       </div>
     </Plate>
   )

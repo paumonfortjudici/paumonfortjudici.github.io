@@ -2,7 +2,7 @@
 // Pure TypeScript, no React: React renders the stickers once and hands their wrapper elements to the board, which writes
 // transforms directly (nothing re-renders while a sticker moves). One requestAnimationFrame loop runs only while something
 // moves (a held sticker, a glide, a tween, a settling spring, the tilting lid, falling stickers) and stops when all is quiet.
-import { ARRANGE, CANVAS_H, CANVAS_RATIO, CANVAS_W, INITIAL_LID, SLOTS, SLOT_UNIT, stickerInfo, type LidPose } from './data'
+import { ARRANGE, CANVAS_RATIO, CANVAS_W, INITIAL_LID, SLOTS, SLOT_UNIT, stickerInfo, type LidPose } from './data'
 import { CORNERS, DEG, clamp, extentsOf, foldFor, rotateAbout, wrap180 } from './math'
 import { GravityWorld, loadMatter, type MatterLib, type PhysInput } from './physics'
 import { SHAPES } from './shapes.generated'
@@ -218,6 +218,10 @@ export class Board {
   private zTop = 30
   private drag: Drag | null = null
   private kbOrigin: Origin | null = null
+  /** when a sticker last got a pointer down: a click that arrives without one comes from assistive technology or a script */
+  private lastPointerAt = 0
+  /** how the visitor is using the board right now: a pointer press moves focus to the sticker but must not draw the keyboard ring */
+  private input: 'pointer' | 'keyboard' = 'keyboard'
   private lastClick: { n: number; t: number; x: number; y: number } | null = null
   private tilt = 0
   private tiltV = 0
@@ -353,6 +357,8 @@ export class Board {
     this.ghosts = SLOTS.map((s) => stage.querySelector<HTMLElement>(`[data-ghost="${s.n}"]`))
     this.mounted = true
     stage.addEventListener('wheel', this.onWheel, { passive: false })
+    // the modality is global: Tab onto a sticker after a mouse session must show the keyboard ring and caption
+    window.addEventListener('keydown', this.onAnyKey, true)
     this.measure()
     // a re-mount (React StrictMode runs every effect twice in development) must pick up whatever was moving: the loop stops by
     // itself after one step when nothing is
@@ -365,6 +371,7 @@ export class Board {
     this.raf = 0
     this.detachWindow()
     this.stage?.removeEventListener('wheel', this.onWheel)
+    window.removeEventListener('keydown', this.onAnyKey, true)
     this.world?.destroy()
     this.world = null
     this.stage = null
@@ -541,7 +548,7 @@ export class Board {
     const sc = L.s * (1 + 0.065 * L.lift)
     const rot = L.r + (L.mode === 'held' ? L.tilt : 0) + L.twist * L.lift
     const tf = `translate3d(${(L.x - W / 2).toFixed(2)}px,${(L.y - H / 2).toFixed(2)}px,0) rotate(${rot.toFixed(3)}deg) scale(${sc.toFixed(4)})`
-    const key = `${tf}|${L.lift.toFixed(3)}|${L.curl.toFixed(1)}|${L.z}|${lifted ? 1 : 0}|${L.hide ? 1 : 0}|${this.ui.selected === L.n ? this.ui.tagMode : 0}`
+    const key = `${tf}|${L.lift.toFixed(3)}|${L.curl.toFixed(1)}|${L.z}|${lifted ? 1 : 0}|${L.hide ? 1 : 0}|${L.mode}|${L.place}|${this.ui.selected === L.n ? this.ui.tagMode : 0}`
     if (key === L.wrote) return
     L.wrote = key
     el.style.opacity = L.hide ? '0' : ''
@@ -745,6 +752,8 @@ export class Board {
   pointerDown(n: number, e: PointerEvent): void {
     if (e.pointerType === 'mouse' && e.button !== 0) return
     if (this.drag) return
+    this.lastPointerAt = now()
+    this.setInput('pointer')
     this.measure() // the layout may have moved (a font swap, a banner): pick up from where things really are
     const L = this.lives[n - 1]
     if (L.mode !== 'rest' && L.mode !== 'phys') this.finishNow(L)
@@ -828,8 +837,9 @@ export class Board {
     L.z = ++this.zTop
     L.liftT = 1
     L.twist = (Math.random() < 0.5 ? -1 : 1) * (1.6 + Math.random() * 1.6)
-    // peeled off the sheet, a sticker grows to the size it will have on the lid (it comes towards you)
-    L.sT = L.place === 'sheet' && !this.still ? this.lidScale() : L.s
+    // peeled off the sheet, a sticker grows to the size it will have on the lid (it comes towards you; instantly when motion is still)
+    L.sT = L.place === 'sheet' ? this.lidScale() : L.s
+    if (this.still) L.s = L.sT
     L.sV = 0
     d.s0 = L.s
     const p = this.toStage(d.cx, d.cy)
@@ -931,8 +941,9 @@ export class Board {
     const jitter = this.still ? 0 : (Math.random() - 0.5) * 3
     L.place = 'lid'
     L.rot = wrap180(rot - this.tilt) + jitter
-    // a sticker peeled off the sheet is as big as the lid's stickers once it is stuck (the lid is the bigger world)
-    L.sc = cameFrom === 'sheet' ? this.lidScale() * (0.97 + Math.random() * 0.06) : L.s
+    // a sticker peeled off the sheet is as big as the lid's stickers once it is stuck (the lid is the bigger world); a held one keeps
+    // whatever size the visitor gave it with + and - or Alt and the wheel
+    L.sc = clamp(L.sT * (cameFrom === 'sheet' && !this.still ? 0.97 + Math.random() * 0.06 : 1), MIN_SC, MAX_SC)
     L.u = (L.x - this.geo.lid.x) / this.geo.lid.w
     L.v = (L.y - this.geo.lid.y) / this.geo.lid.h
     this.clampToLid(L)
@@ -1108,6 +1119,22 @@ export class Board {
   }
 
   // ------------------------------------------------------------------------------------------------- keyboard
+  /** true while the last thing the visitor did on a sticker was a pointer press (no keyboard ring, no keyboard caption) */
+  usingPointer(): boolean {
+    return this.input === 'pointer'
+  }
+
+  private setInput(input: 'pointer' | 'keyboard'): void {
+    if (this.input === input && this.stage?.dataset.input === input) return
+    this.input = input
+    if (this.stage) this.stage.dataset.input = input
+  }
+
+  private onAnyKey = (e: KeyboardEvent): void => {
+    if (e.key === 'Shift' || e.key === 'Alt' || e.key === 'Control' || e.key === 'Meta') return
+    this.setInput('keyboard')
+  }
+
   keyDown(n: number, e: KeyboardEvent): void {
     const L = this.lives[n - 1]
     const held = this.ui.held === n
@@ -1178,7 +1205,8 @@ export class Board {
     L.z = ++this.zTop
     L.liftT = 1
     L.twist = (Math.random() < 0.5 ? -1 : 1) * (1.6 + Math.random() * 1.6)
-    L.sT = L.place === 'sheet' && !this.still ? this.lidScale() : L.s
+    L.sT = L.place === 'sheet' ? this.lidScale() : L.s
+    if (this.still) L.s = L.sT
     L.sV = 0
     L.corner = 2
     L.curlT = this.still ? 0 : 1
@@ -1248,6 +1276,16 @@ export class Board {
       return true
     }
     return false
+  }
+
+  /**
+   * A click on a sticker that did not come from our own pointer handling (a screen reader's "activate", a switch, a script) opens
+   * its full tag: the tag's controls are ordinary buttons (turn, resize, details, back to the sheet, stick on the lid), so
+   * everything the drag does has an action that needs no dragging.
+   */
+  activate(n: number): void {
+    if (now() - this.lastPointerAt < 700) return
+    this.select(n, 'full')
   }
 
   /** a sticker lost keyboard focus while picked up with the keyboard: stick it down where it is */
@@ -1441,10 +1479,6 @@ export class Board {
   }
 
   // ------------------------------------------------------------------------------------------------- gravity
-  getGravity(): boolean {
-    return this.gravity
-  }
-
   async setGravity(on: boolean): Promise<void> {
     if (on === this.gravity || this.ui.busy) return
     if (on) {
@@ -1544,14 +1578,5 @@ export class Board {
       world: this.world ? this.world.debug() : null,
       stickers: this.lives.map((l) => ({ n: l.n, mode: l.mode, place: l.place, u: +l.u.toFixed(4), v: +l.v.toFixed(4), rot: +l.rot.toFixed(2), sc: +l.sc.toFixed(4), lift: +l.lift.toFixed(3), liftV: +l.liftV.toFixed(3), curl: +l.curl.toFixed(2), z: l.z })),
     }
-  }
-
-  /** for the tag: which place a sticker is in */
-  placeOf(n: number): Place {
-    return this.lives[n - 1].place
-  }
-
-  canvasSize(): { w: number; h: number } {
-    return { w: CANVAS_W, h: CANVAS_H }
   }
 }

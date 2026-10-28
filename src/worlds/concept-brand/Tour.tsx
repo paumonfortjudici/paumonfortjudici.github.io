@@ -10,9 +10,12 @@ interface TourProps {
   onPrev: () => void
   onNext: () => void
   onSkip: () => void
+  /** shown inside the docked panel (the details step aside while the tour runs): a service sheet lists the nine stops */
+  docked?: boolean
+  onGo?: (i: number) => void
 }
 
-const Tour = forwardRef<HTMLElement, TourProps>(function Tour({ step, onPrev, onNext, onSkip }, ref) {
+const Tour = forwardRef<HTMLElement, TourProps>(function Tour({ step, onPrev, onNext, onSkip, docked, onGo }, ref) {
   const total = TOUR.length
   const stop = TOUR[step]
   const last = step === total - 1
@@ -24,8 +27,8 @@ const Tour = forwardRef<HTMLElement, TourProps>(function Tour({ step, onPrev, on
     started.current = true
     nextRef.current?.focus({ preventScroll: true })
   }, [])
-  return (
-    <section ref={ref} className="w-concept-brand-tour" aria-label={UI_TEXT.tourLabel} data-step={step}>
+  const slip = (
+    <section ref={ref} className="w-concept-brand-tour" aria-label={UI_TEXT.tourLabel} data-step={step} data-docked={docked ? 'true' : undefined}>
       <span className="w-concept-brand-pin" aria-hidden="true" />
       <div className="w-concept-brand-tour-side">
         <p className="w-concept-brand-tour-count">
@@ -47,10 +50,25 @@ const Tour = forwardRef<HTMLElement, TourProps>(function Tour({ step, onPrev, on
           <p className="w-concept-brand-tour-note">{stop.note}</p>
         </div>
         <div className="w-concept-brand-tour-actions">
-          <TabButton size="sm" color="var(--cb-rosat)" ink="var(--cb-tinta)" icon="arrow-left" iconPosition="before" onClick={onPrev} disabled={step === 0}>
+          <TabButton
+            size="sm"
+            color="var(--cb-rosat)"
+            ink="var(--cb-tinta)"
+            icon="arrow-left"
+            iconPosition="before"
+            onClick={onPrev}
+            disabled={step === 0}
+          >
             {UI_TEXT.tourPrev}
           </TabButton>
-          <TabButton ref={nextRef} size="sm" color="var(--cb-mantega)" ink="var(--cb-tinta)" icon={last ? 'cross' : 'arrow-right'} onClick={last ? onSkip : onNext}>
+          <TabButton
+            ref={nextRef}
+            size="sm"
+            color={docked ? 'var(--cb-blau)' : 'var(--cb-mantega)'}
+            ink={docked ? 'var(--cb-rosat)' : 'var(--cb-tinta)'}
+            icon={last ? 'cross' : 'arrow-right'}
+            onClick={last ? onSkip : onNext}
+          >
             {last ? UI_TEXT.close : UI_TEXT.tourNext}
           </TabButton>
           {!last && (
@@ -61,6 +79,32 @@ const Tour = forwardRef<HTMLElement, TourProps>(function Tour({ step, onPrev, on
         </div>
       </div>
     </section>
+  )
+  if (!docked) return slip
+  return (
+    <>
+      {slip}
+      <nav className="w-concept-brand-service" aria-label="The nine stops">
+        <p className="w-concept-brand-bar">
+          <span>Today&apos;s service</span>
+        </p>
+        <ol>
+          {TOUR.map((t, i) => (
+            <li key={t.title}>
+              <button
+                type="button"
+                onClick={() => onGo?.(i)}
+                aria-current={i === step ? 'step' : undefined}
+                data-done={i < step ? 'true' : undefined}
+              >
+                <span className="w-concept-brand-service-n">{i + 1}</span>
+                <span className="w-concept-brand-service-t">{t.title}</span>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </>
   )
 })
 

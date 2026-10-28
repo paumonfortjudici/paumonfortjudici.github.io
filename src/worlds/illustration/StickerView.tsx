@@ -34,7 +34,7 @@ function StickerViewImpl({ n, board, selected, tagMode, held, onLid, locked, onD
         className="w-illustration-stk-btn"
         aria-label={label}
         aria-pressed={held}
-        aria-describedby="w-illustration-help"
+        aria-describedby={`w-illustration-alt-${n}`}
         onPointerDown={(e) => {
           if (e.pointerType === 'mouse' && e.button !== 0) return
           e.preventDefault()
@@ -42,8 +42,9 @@ function StickerViewImpl({ n, board, selected, tagMode, held, onLid, locked, onD
           board.pointerDown(n, e.nativeEvent)
         }}
         onKeyDown={(e) => board.keyDown(n, e.nativeEvent)}
+        onClick={() => board.activate(n)}
         onFocus={(e) => {
-          if (e.currentTarget.matches(':focus-visible')) board.select(n, 'caption')
+          if (!board.usingPointer() && e.currentTarget.matches(':focus-visible')) board.select(n, 'caption')
         }}
         onBlur={() => board.blurred(n)}
         onContextMenu={(e) => e.preventDefault()}

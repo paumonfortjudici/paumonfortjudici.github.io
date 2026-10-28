@@ -27,7 +27,7 @@
   display: flex;
   align-items: stretch;
   /* the 3px paper thickness follows the holes because the filter sees the masked result */
-  filter: drop-shadow(0 3px 0 var(--ab-edge)) drop-shadow(0 12px 10px color-mix(in srgb, var(--ink) 55%, transparent));
+  filter: drop-shadow(0 3px 0 var(--ab-edge)) drop-shadow(0 12px 10px color-mix(in srgb, var(--ink) 55%, transparent)); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-mount__film {
   flex: none;
@@ -35,8 +35,8 @@
   border-radius: 9px 0 0 9px;
   background-color: var(--paper);
   background-image: var(--pm-grain);
-  -webkit-mask-image: linear-gradient(black, black), var(--ab-hole);
-  mask-image: linear-gradient(black, black), var(--ab-hole);
+  -webkit-mask-image: linear-gradient(black, black), var(--ab-hole); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
+  mask-image: linear-gradient(black, black), var(--ab-hole); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   -webkit-mask-size: 100% 100%, 100% 30px;
   mask-size: 100% 100%, 100% 30px;
   -webkit-mask-repeat: no-repeat, no-repeat round;
@@ -51,7 +51,7 @@
   border-radius: 0 9px 9px 0;
   background-color: var(--paper);
   background-image: var(--pm-grain);
-  box-shadow: inset 0 1px 0 var(--pm-hl);
+  box-shadow: inset 0 1px 0 var(--pm-hl); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   color: var(--ink);
 }
 .pm-ab-mount__print {
@@ -92,7 +92,7 @@
   overflow: hidden;
   isolation: isolate;
   background: var(--ink-2);
-  box-shadow: 0 0 0 2px var(--ink);
+  box-shadow: 0 0 0 2px var(--ink); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   color: var(--cream);
   text-align: left;
   touch-action: pan-y;
@@ -126,7 +126,7 @@ button.pm-ab-frame { cursor: pointer; }
   width: max-content;
   transform: rotate(-4deg);
   transform-origin: 0 100%;
-  filter: drop-shadow(0 3px 4px color-mix(in srgb, var(--ink) 55%, transparent));
+  filter: drop-shadow(0 3px 4px color-mix(in srgb, var(--ink) 55%, transparent)); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   pointer-events: none;
 }
 .pm-ab-slate__stick {
@@ -134,7 +134,7 @@ button.pm-ab-frame { cursor: pointer; }
   height: 0.6rem;
   border: 1.5px solid var(--cream);
   border-radius: 3px 3px 0 0;
-  background: repeating-linear-gradient(-58deg, var(--cream) 0 0.38rem, var(--ink) 0.38rem 0.76rem);
+  background: repeating-linear-gradient(-58deg, var(--cream) 0 0.38rem, var(--ink) 0.38rem 0.76rem); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-slate__row {
   display: block;
@@ -192,7 +192,7 @@ button.pm-ab-frame { cursor: pointer; }
   width: 2px;
   border-radius: 1px;
   background: var(--cream);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 60%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 60%, transparent); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-playhead::after {
   content: '';
@@ -202,7 +202,7 @@ button.pm-ab-frame { cursor: pointer; }
   border: 7px solid transparent;
   border-top: 9px solid var(--cream);
   border-bottom: 0;
-  filter: drop-shadow(0 1px 0 color-mix(in srgb, var(--ink) 70%, transparent));
+  filter: drop-shadow(0 1px 0 color-mix(in srgb, var(--ink) 70%, transparent)); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-frame[data-layer='scrub']:hover .pm-ab-playhead,
 .pm-ab-frame[data-layer='loop'] .pm-ab-playhead { opacity: 0.9; }
@@ -232,7 +232,7 @@ button.pm-ab-frame { cursor: pointer; }
   --ow: 40px;
   position: relative;
   margin-top: 2px;
-  filter: drop-shadow(0 3px 0 color-mix(in srgb, var(--paper) 58%, var(--ink)));
+  filter: drop-shadow(0 3px 0 color-mix(in srgb, var(--paper) 58%, var(--ink))); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-strip .pm-perf { --perf: var(--paper); }
 .pm-ab-strip__frames {
@@ -249,7 +249,7 @@ button.pm-ab-frame { cursor: pointer; }
   height: calc(100% - 10px);
   left: calc(var(--ow) / 2 + var(--i) * (100% - var(--ow)) / 11 - var(--tw) / 2);
   object-fit: cover;
-  box-shadow: 0 0 0 1.5px var(--ink);
+  box-shadow: 0 0 0 1.5px var(--ink); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   user-select: none;
 }
 .pm-ab-strip__mark {

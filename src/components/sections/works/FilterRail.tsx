@@ -5,7 +5,7 @@
 import { forwardRef, useEffect, useRef, type CSSProperties, type KeyboardEvent } from 'react'
 import { TabButton, isStill } from '@/components/primitives'
 import { WORKS_SECTION } from '@/lib/copy'
-import { FILTER_TONE, fileNumbers, type FilterId } from './data'
+import { FILTER_TONE, IDLE_ALL_TONE, fileNumbers, type FilterId } from './data'
 import { WORKS_UI } from './strings'
 
 interface FilterRailProps {
@@ -70,7 +70,8 @@ export const FilterRail = forwardRef<HTMLDivElement, FilterRailProps>(function F
       <div ref={list} className="pm-wk-tabs" role="tablist" aria-label={WORKS_SECTION.filterLabel} onKeyDown={onKeyDown}>
         {filters.map((item, i) => {
           const active = item.id === filter
-          const itemTone = FILTER_TONE[item.id]
+          // the black tab is the selected state of All only: idle, All is a pale card like a blank divider, so the active tab is always the strongest object
+          const itemTone = item.id === 'all' && !active ? IDLE_ALL_TONE : FILTER_TONE[item.id]
           return (
             <TabButton
               key={item.id}
@@ -94,6 +95,20 @@ export const FilterRail = forwardRef<HTMLDivElement, FilterRailProps>(function F
             </TabButton>
           )
         })}
+      </div>
+
+      {/* wide screens: a counter plate fills the end of the bar (decoration, hidden from assistive tech) */}
+      <div className="pm-wk-pull" aria-hidden="true">
+        <div className="pm-wk-holder pm-wk-holder--count">
+          <span className="pm-wk-holder__screw" data-at="l" />
+          <span className="pm-wk-holder__screw" data-at="r" />
+          <div className="pm-wk-holder__slot">
+            <div key={filter} className="pm-wk-holder__card">
+              <span className="pm-wk-holder__name">{WORKS_UI.pull.label}</span>
+              <span className="pm-wk-holder__files">{WORKS_UI.pull.count(numbers.length, filters[0].count)}</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="pm-wk-bar" aria-hidden="true">

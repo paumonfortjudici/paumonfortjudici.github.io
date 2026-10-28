@@ -47,6 +47,8 @@ export function Works() {
   const [filter, setFilter] = useState<FilterId>('all')
   const { still } = useMotion()
   const flat = useMediaQuery('(max-width: 767px)')
+  // no keyboard: the sub does not tell visitors to press [ and ] (and the index card of keys is not drawn)
+  const touch = useMediaQuery('(hover: none), (pointer: coarse)')
   const railRef = useRef<HTMLDivElement>(null)
   const panelId = useId()
 
@@ -115,12 +117,12 @@ export function Works() {
       </svg>
 
       <header className="pm-wk__head">
-        <StrokeWord as="h2" id="works-title" text={WORKS_SECTION.strokeWord} fill="tint" shadow="var(--accent)" className="pm-wk__word" style={{ color: 'var(--on-sheet)' }} />
-        <p className="pm-wk__sub t-lead">
-          <SubText text={WORKS_SECTION.sub} />
-        </p>
-        {/* keyed by the count: the number slides in again each time the filter changes it */}
-        <StrokeWord key={shown.length} ghost text={`(${pad2(shown.length)})`} size="clamp(4.5rem, 11vw, 15rem)" className="pm-wk__ghost" style={{ color: 'var(--accent)' }} />
+        {/* the count sits against the word like a superscript and follows the filter (keyed: it slides in again each time the number changes) */}
+        <div className="pm-wk__title">
+          <StrokeWord as="h2" id="works-title" text={WORKS_SECTION.strokeWord} size="clamp(4rem, 8.4vw, 10.5rem)" fill="tint" shadow="var(--accent)" className="pm-wk__word" style={{ color: 'var(--on-sheet)' }} />
+          <StrokeWord key={shown.length} ghost text={`(${pad2(shown.length)})`} size="clamp(2.6rem, 4.6vw, 5.4rem)" className="pm-wk__ghost" style={{ color: 'var(--accent)' }} />
+        </div>
+        <p className="pm-wk__sub t-lead">{touch ? WORKS_UI.subTouch : <SubText text={WORKS_SECTION.sub} />}</p>
         <KeysCard />
       </header>
 

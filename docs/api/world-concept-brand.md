@@ -19,6 +19,7 @@ Gotet is an **invented** vermuteria in Cardedeu (a concept project: the shell sh
 | `concept-brand/Chips.tsx` | the nine hotspot chips with count chips |
 | `concept-brand/Panel.tsx`, `panels.tsx`, `atoms.tsx` | the info panel (docked or bottom sheet) and its bodies: overview, group, piece, wordmark, cast, pattern; bars, leaders, paint chips (`useHexCopy` + `toast`), type samples |
 | `concept-brand/Tour.tsx` | "Sunday service": nine stops, order docket pinned along the bottom of the wall |
+| `concept-brand/Furniture.tsx` | wall furniture pinned beside the board in the rail layout (a bar receipt with the usage tally, a card of paint chips, a contact sheet of the four faces E1 to E4): board space, sized in screen px at the fit (`--p`), shown only at the fit with nothing selected, aria-hidden |
 | `concept-brand/Kit.tsx` | brand kit drawer: palette + ratio bar, contrast table (computed from the hexes), type specimens, logo family |
 | `concept-brand/IndexView.tsx` | the Index view: every piece as a tile + inline details + facts |
 | `concept-brand/wall.css`, `ui.css`, `panel.css`, `index.css` | all styling (palette variables at the top of `wall.css`) |
@@ -65,7 +66,7 @@ interface Selection { group: GroupId | null; item: string | null }   // item = h
 
 ## 7. Accessibility, motion, copy
 
-Landmarks: the panel is an `aside`, the canvas a labelled group (`aria-roledescription="canvas"`, described by the key hints), every control a real button, radio or link. Headings: panel title `h2`, bars `h3`. Focus ring: the global two-tone ring; on the board it is divided by the zoom so it stays 2 + 4 px on screen. Reduced motion and `html[data-motion="paused"]`: instant flights, no bob, no hop animation (pose B and the bubble still show), the marker is drawn, slide and pop animations collapse. Text pairs follow guide 2.5 (Tinta on Rosat, Mantega, Oliva; Blau on Rosat and Mantega; Rosat on Blau; Vermell only at 24 px and up). Tap targets are 44 px or more on touch. Italics are Fraunces italic (no faux Barlow italic). English only; two em dashes: none.
+Landmarks: the panel is an `aside`, the canvas a labelled group (`aria-roledescription="canvas"`, described by the key hints), every control a real button, radio or link. Headings: panel title `h2`, bars `h3`. Focus ring: the global two-tone ring; on the board it is divided by the zoom so it stays 2 + 4 px on screen. Reduced motion and `html[data-motion="paused"]`: instant flights, no bob, no hop animation (pose B and the bubble still show), the marker is drawn, slide and pop animations collapse. Text pairs follow guide 2.5 (Tinta on Rosat, Mantega, Oliva; Blau on Rosat and Mantega; Rosat on Blau; Vermell only at 24 px and up). Tap targets are 44 px or more on touch. Italics are Fraunces italic (no faux Barlow italic). English only; no em dashes. Voice: first person for the rules and the choices ("I chose", "I banned", "I wrote the rule", "I wanted"), never "I drew" or "hand-drawn": the artwork was made with AI-assisted tools under Pau's direction.
 
 ## 8. How it was verified
 
@@ -83,3 +84,14 @@ Read only: `art/board.webp`, `board-small.webp`, `board-hotspots.json`, `brand/*
 * Dev only, remove before shipping: `src/worlds/concept-brand/_harness.html`, `_harness.tsx`, `_top.html`, `_top.tsx`, `_vite.dev.mjs`, `_vite.build.mjs`. The harness mounts the real `WorldHost` without the cabinet (`npx vite --config src/worlds/concept-brand/_vite.dev.mjs --port 5217 --strictPort --host 127.0.0.1`, open `/src/worlds/concept-brand/_harness.html#/work/concept-brand`).
 * The 24 hotspot rects are copied into `data.ts`; if `board-hotspots.json` changes, update `HOTS`.
 * Chrome note (not mine): `html.pm-cursor-on * { cursor: none !important }` means every toggle of that class (the first pointer move of a session) restyles the whole document; on the full page (about 4200 elements) a single style recalculation of 80 to 230 ms shows up in the trace of the first click inside a world. Setting the class before first paint, or inheriting `cursor: none` from `html` without the universal selector, would remove that one-off hitch in every world.
+
+
+## 11. Fix round 1 (critic findings)
+
+* **Honesty copy**: no "I draw" anywhere; the Takeaway and Wearables lines say "I ask for" / "I art-direct", the wordmark and pattern lines say "set as". Voice rule: "I chose / I wrote the rule / I art-direct", never "I drew".
+* **CONCEPT strip** (`ConceptBar` in `Panel.tsx`): a Mantega strip "CONCEPT, An invented bar. AI-assisted art." is on screen in every layout: docked, it sits under the details (outside the scroll); in the bottom sheet it sits under the handle, so the folded sheet is `--cb-fold` (118 px) high. `--cb-fold` is read by the camera (`foldPx`) and by the controls and the tour docket, so CSS and camera agree. The rail stamp stays as well.
+* **Wall furniture** (`Furniture.tsx`, rail layout only, free wall of at least 130 px right / 170 px left, left card also needs a 780 px tall canvas).
+* **Tour on desktop**: the docket moves into the panel column (`Tour docked`, `Panel tourSlot`) with a "Today's service" list of the nine stops (click to jump); the board keeps the full canvas (`reserve.bottom` 16). In the sheet layouts it is still the docket over the wall.
+* **Dial**: reads FIT at the fit and then 2.4x, 3.0x ... relative to the fit (`store.fit`, `store.tenths`); the raw percent is in the aria-label.
+* **Panel**: the overview has one action (Take the tour); the brand kit tab lives at the bottom left only.
+* **Touch**: on a coarse pointer the first tap on a tile of another group flies to that group, the next tap picks the piece (tiles are 20 px high on the whole-board view).

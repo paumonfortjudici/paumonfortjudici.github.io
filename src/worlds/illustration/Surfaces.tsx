@@ -17,7 +17,7 @@ export const Lid = forwardRef<HTMLDivElement, { tabs?: ReactNode; footer?: React
         <div className="w-illustration-lidframe" data-frame="lid" aria-hidden="true" ref={ref}>
           <div className="w-illustration-lid">
             <span className="w-illustration-sheen" />
-            <span className="w-illustration-engrave">Designed in Cardedeu. Stickered in the browser.</span>
+            <span className="w-illustration-engrave">Art-directed by Pau. Stickered in the browser.</span>
           </div>
           <div className="w-illustration-hinge" />
         </div>

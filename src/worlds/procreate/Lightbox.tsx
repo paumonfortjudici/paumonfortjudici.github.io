@@ -75,11 +75,14 @@ export function Lightbox({ index, container, notes, still, onIndex, onClose }: L
   // a taped corner that overhangs the paper. Where even the smallest paper does not fit (a very short phone) the column scrolls.
   const narrow = box.w < 640
   const side = narrow ? 14 : 56
-  const vertical = chrome.cap + chrome.bar + 66 + 20
+  // 66 = the column's padding and gaps; +12 more at the foot so the tab row never touches the window's edge; 20 for a taped corner
+  const vertical = chrome.cap + chrome.bar + 78 + 20
   const a = aspectOf(def)
-  const perWidth = 0.045 + 0.91 / a + def.strip
-  const paperW = Math.max(120, Math.min(box.w - side * 2, (box.h - vertical) / perWidth, 1180))
-  const dims = dimsFor(def.id, paperW)
+  // with the notes rubbed out the writing strip under the picture is bare paper: it is trimmed to a margin
+  const strip = notes ? def.strip : 0.05
+  const perWidth = 0.045 + 0.91 / a + strip
+  const paperW = Math.max(120, Math.min(box.w - side * 2, (box.h - vertical) / perWidth, def.closeUp === 'small' ? 560 : 1180))
+  const dims = dimsFor(def.id, paperW, strip)
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'ArrowLeft') {

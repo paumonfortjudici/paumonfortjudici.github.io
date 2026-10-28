@@ -65,6 +65,7 @@ export default function SpelledGuiltyWorld() {
   const [flicker, setFlicker] = useState(false)
   const [hint, setHint] = useState(true)
   const [aimFocus, setAimFocus] = useState(false)
+  const [calm, setCalm] = useState(false)
   const off = lights === 'off'
 
   useEffect(() => {
@@ -82,6 +83,26 @@ export default function SpelledGuiltyWorld() {
     const observer = new ResizeObserver(apply)
     observer.observe(scroller)
     return () => observer.disconnect()
+  }, [scrollRef])
+
+  // the lights rail sits back once the poster has scrolled away (one state change per crossing, not per scroll event)
+  useEffect(() => {
+    const scroller = scrollRef.current
+    if (!scroller) return
+    let raf = 0
+    const check = () => {
+      raf = 0
+      setCalm(scroller.scrollTop > scroller.clientHeight * 0.6)
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(check)
+    }
+    check()
+    scroller.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      scroller.removeEventListener('scroll', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
   }, [scrollRef])
 
   // while the page viewer is open the room behind it (and the lights rail) cannot be reached; when it closes, focus goes back
@@ -111,9 +132,15 @@ export default function SpelledGuiltyWorld() {
     hintRef,
     active: off,
     instant: reduced,
+    // the beam parks between the title and the book, so the first screen has two lit things and the rest of the wall is only dim
     home: () => {
       const r = stageRef.current?.getBoundingClientRect()
-      return r ? { x: r.left + r.width / 2, y: r.top + r.height * 0.46 } : null
+      if (!r) return null
+      const book = { x: r.left + r.width / 2, y: r.top + r.height * 0.46 }
+      const t = rootRef.current?.querySelector('.w-sg-title')?.getBoundingClientRect()
+      if (!t || t.width === 0) return book
+      const title = { x: t.left + t.width * 0.5, y: t.top + t.height * 0.5 }
+      return { x: title.x * 0.5 + book.x * 0.5, y: title.y * 0.5 + book.y * 0.5 }
     },
     onTaken: () => setHint(false),
     yieldKeys: () => bookOnScreen.current,
@@ -135,7 +162,7 @@ export default function SpelledGuiltyWorld() {
   const style = { '--sg-vh': 'calc(100dvh - 56px)' } as CSSProperties
 
   return (
-    <div ref={rootRef} className="w-sg" data-lights={lights} data-flicker={flicker ? '' : undefined} data-hint={hint ? '' : undefined} data-zoom={zoom.open ? '' : undefined} style={style}>
+    <div ref={rootRef} className="w-sg" data-lights={lights} data-flicker={flicker ? '' : undefined} data-hint={hint ? '' : undefined} data-calm={calm ? '' : undefined} data-zoom={zoom.open ? '' : undefined} style={style}>
       <div className="w-sg-fixed" data-sg-ui="">
         <div ref={veilRef} className="w-sg-veil" aria-hidden="true">
           <p ref={hintRef} className="w-sg-hint">
@@ -160,6 +187,7 @@ export default function SpelledGuiltyWorld() {
                 size="sm"
                 tone="cream"
                 aria-label={SG.room.aimLabel}
+                className="w-sg-aimtab"
                 data-sg-ui=""
                 onFocus={() => setAimFocus(true)}
                 onBlur={() => setAimFocus(false)}

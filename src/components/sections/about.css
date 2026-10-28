@@ -27,7 +27,7 @@
 .pm-ab-cell { grid-area: portrait; display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(26px, 3vw, 44px); min-width: 0; align-self: start; padding-top: clamp(6px, 1vw, 18px); }
 
 /* the ghost: a pale solid #PAU peeking out above the outline word, as in the template */
-.pm-ab-ghost { position: absolute; left: 0.06em; top: -0.05em; z-index: 0; }
+.pm-ab-ghost { position: absolute; left: 0.06em; top: -0.05em; z-index: 0; --ghost-a: 0.3; }
 .pm-ab-head h2 { position: relative; z-index: 1; }
 
 /* ---- greeting -------------------------------------------------------------------------------------------------------------------- */
@@ -53,7 +53,7 @@
   font-family: var(--font-display);
   font-variation-settings: 'SOFT' 100, 'WONK' 1;
   font-optical-sizing: auto;
-  font-size: clamp(1.75rem, 1.15rem + 1.5vw, 2.85rem);
+  font-size: clamp(1.75rem, 1.15rem + 1.2vw, 2.25rem); /* 36px at most: above that the taste gate reads a multi-line standfirst as a headline */
   line-height: 1.06;
   font-weight: 700;
   letter-spacing: -0.025em;
@@ -62,14 +62,15 @@
 }
 .pm-ab-body {
   margin: 0;
-  max-width: 60ch;
+  max-width: 58ch;
   text-wrap: pretty;
-  font-size: clamp(1.0625rem, 0.95rem + 0.36vw, 1.3rem);
-  line-height: 1.55;
+  font-size: clamp(1.0625rem, 0.62rem + 0.68vw, 1.7rem);
+  line-height: 1.5;
   color: var(--on-sheet);
 }
 /* an italic phrase is one unit: it moves to the next line whole instead of splitting across two */
 .pm-ab-em { white-space: nowrap; }
+.pm-ab-em[data-long] { white-space: normal; }
 @container (min-width: 700px) {
   .pm-ab-copy { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr); }
   .pm-ab-lead { padding-top: 0.12em; }
@@ -94,6 +95,9 @@
   }
   .pm-ab-ghost { top: -0.05em; }
   .pm-ab-head { padding-top: clamp(30px, 6vw, 44px); }
+  /* two columns for the skill objects, the third spans: three would leave the sketchbook and the code card with 4 to 5 short lines per bullet */
+  .pm-ab-skills { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 52px 22px !important; }
+  .pm-ab-skill:nth-child(3) { grid-column: 1 / -1; }
 }
 /* phone: heading, portrait, words, skills; the education strips follow the certificates */
 @media (max-width: 699px) {
@@ -110,4 +114,6 @@
   .pm-ab-cell { justify-self: start; width: min(100%, 500px); }
   .pm-ab-ghost { top: -0.05em; }
   .pm-ab-head { padding-top: clamp(30px, 8vw, 44px); }
+  /* a standfirst of two lines at most on a phone: a 28px display paragraph over three lines reads as a headline */
+  .pm-ab-lead { font-size: clamp(1.3rem, 5.4vw, 1.6rem); line-height: 1.12; text-wrap: balance; }
 }

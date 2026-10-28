@@ -9,7 +9,7 @@ One big sheet of Plana's own Paper, printed with a faint graticule, lies inside 
 seven numbered plates of different sizes (not identical cards). Each plate has a drafted frame in the brand's own finish (a thick Night outline and a solid,
 hard Night shadow: the manual says "never gradients, never blurred shadows") and its own small interaction. The sheet is a CSS grid of 12 columns at
 >= 1180 px (hero 8 + title block 4, then 4 + 8, 7 + 5, 5 + 7) and one column below that (title, hero, contents, plates 2 to 7). The world ends on pine again:
-the facts slate (`WorldFacts`), a ticket stub to planadigital.cat, and a holm-oak horizon with a poppy sun half risen on it and the manual's own closing line, "See you in la Plana."
+the facts slate (`WorldFacts`, fixer round 1: seven of twelve columns, Role in two columns, the year as a big Poppy display number; the ticket stub to planadigital.cat is large, beside it; the sample-mockups note runs under both at 18 to 24 px), and a holm-oak horizon (`Horizon`) with a big poppy sun that rises as you scroll and the manual's own closing line, "See you in la Plana."
 
 Plana's palette lives as local variables on `.w-plana` (and `.w-plana-viewer`, which is portalled out of the world root, so it carries a copy):
 `--paper #F7F2E8  --holm #1E4634  --poppy #E5502F  --wheat #F2CF6B  --night #18181B` plus `--field #2E6A4F --sunrise #EC8F4D --dot-off #D8D0BF --paper-2 --paper-3 --night-2`.
@@ -32,6 +32,7 @@ Faces: Sora 800 (400 for "digital"), Figtree, DM Mono (the shell loads them with
 | `plana/Mockups.tsx`, `mockups.css` | plate 5 |
 | `plana/Manual.tsx`, `ManualViewer.tsx`, `manual.css` | plate 6 and its lightbox |
 | `plana/Website.tsx`, `website.css` | plate 7 |
+| `plana/Horizon.tsx` | the closing ground: a holm-oak field with a poppy half sun that RISES with the scroll (one css variable `--rise`, 0 to 1, written to the element from the world scroller; no React state) and stays risen; reduced / paused motion and no script: risen. The manual's closing line is written across the sun (Night on Poppy) once it has cleared the horizon |
 | `plana/notify.ts` | `notify(message, { swatch, label })`: thin wrapper over the site toast (`src/components/chrome/toast.ts`, drawn by `ToastLayer` above every world) |
 | `plana/roving.ts` | arrow / Home / End handler for a tablist or radiogroup (roving tabindex) |
 
@@ -46,7 +47,7 @@ framer-motion is used only for the rail's drag; no other library.
    A range input (0 to 72 h, step 1; arrows, Home, End, PageUp / PageDown natively) drives the sun (`sunOffset(h)`: 16.7 -> 7.6 -> 0 units below the horizon at 0 / 24 / 48 h, as in the manual's
    three windows) and the lit dots (`dotsOf`: one per day, Wheat / Sunrise orange / Poppy). The three captions (Day 1 0 h "You tell us about your business", Day 2 24 h "We design and
    code", Day 3 48 to 72 h "Your website, online") share one grid cell, so the plate never changes height while you drag; a visually hidden live region (polite once the intro is over)
-   announces the change of day. The manual's three windows (page 3) are buttons that jump to a day: they stand in the sky on a wide plate and in the deck on a phone (two copies, one displayed).
+   announces the change of day. The manual's three windows (page 3) are buttons that jump to a day, drawn as little printed cards with a Night tab along the foot (hard shadow; the chosen one sits in the page with a Poppy tab, about 110 px at 1440). The sky copy is LAST in the DOM (the plate is a grid and places it over the sky), so the tab order is the slider first, then the day windows. On a plate of 640 to 859 px the paragraph steps aside (the deck caption tells the same story) so nothing runs under the windows. They stand in the sky on a wide plate and in the deck on a phone (two copies, one displayed).
    The story ("A sunrise inside the browser.") is over the sky on a wide plate and under the slider on a phone, so the symbol and the slider share the first screen of a phone.
    `useWorld().reduced` (OS reduced motion or the visitor's "Pause motion"): no rise, no count, the symbol stands at day 3 (72 h) with the sticker on.
 2. **Lockups**. A tablist (roving tabindex; arrows / Home / End) switches between Horizontal, Vertical, Symbol, Seal and Reversed. Each is the real SVG on the ground the manual approves
@@ -63,12 +64,12 @@ framer-motion is used only for the rail's drag; no other library.
 5. **Mockups**. A draggable rail (framer-motion drag with momentum, `dragConstraints`, spring-to-slot on release; no momentum under still motion) of six prints: apparel, signage, social, stationery, van,
    website. Prev / Next tabs, focus the rail and use the left / right arrows, Home and End (quick presses add up); a polite live region announces "Mockup 3 of 6: Social". Every print wears a
    "Sample mockup" tag; the captions say what is made up (opening hours, follower numbers, the bakery, phone and e-mail).
-6. **Manual**. 17 pages (1600 x 1000 WebP) piled behind a holm-oak horizon like a deck; hover (mouse), keyboard focus or the "Fan it out" tab fans them like a sunrise (72 degree arc); the page under the
+6. **Manual**. 17 pages (1600 x 1000 WebP) stand at rest in a low fan (the cover on top, the other leaves peeking out on both sides, scaled up to fill the plate; `--cr` per leaf) behind a holm-oak horizon; hover (mouse), keyboard focus or the "Fan it out" tab fans them like a sunrise (72 degree arc); the page under the
    pointer (or focused, or chosen with the arrows or the two arrow tabs) lifts out of the fan. Arrow keys move through the leaves (roving tabindex); Enter / click on a leaf while open (or "Read page N")
    opens the viewer: a lightbox portalled into the shell's folder body (below the tab strip) with real Close / Previous / Next tabs, a thumbnail row, arrow keys, Home / End, a focus trap, `inert`
    on the world behind, Escape through `useWorldEscape` (closes the viewer, not the world) and focus restored to the leaf. The shell's `[` and `]` keys are not intercepted. Pages 11 to 17 are flagged
    "sample mockup" in their captions. Only 4 pages load before the fan has ever opened. On touch the first tap fans the pile out, the second tap opens a page.
-7. **Website**. A browser window in the brand's own finish that tours captures of the live planadigital.cat (desktop captures >= 760 px wide, the 390 px mobile captures below): hero, services, the 0 h to
+7. **Website**. (A scene change in the process section is a clip-path WIPE over the previous capture, never a cross-fade, so no two captures are ever half visible at once; the hour-chip row is always laid out so the plate never changes height.) A browser window in the brand's own finish that tours captures of the live planadigital.cat (desktop captures >= 760 px wide, the 390 px mobile captures below): hero, services, the 0 h to
    72 h scroll story (six scenes of a sample bakery site) and the closing footer. It glides by itself only while the plate is on screen, the tab is visible and motion is allowed; "Pause tour" / "Play tour",
    four stop tabs (roving tabindex) and six hour chips are the manual controls. Reduced or paused motion: it starts on the hero and nothing moves unless you choose a stop. Pricing, team and contact
    sections are cropped out on purpose. The ticket stub to planadigital.cat is `WorldFacts` (from the `works.ts` links).

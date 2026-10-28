@@ -103,7 +103,6 @@
   line-height: 0.84;
   pointer-events: none;
   /* the title is a plain heading to assistive tech; the two words are one visual lockup */
-  text-shadow: 0.035em 0.05em 0 rgb(8 2 5 / 0.7);
 }
 
 .w-sg-title__a {
@@ -121,7 +120,18 @@
   color: rgb(255 242 218 / 0.9);
   font-size: var(--fs-lead);
   line-height: 1.45;
-  text-shadow: 0 2px 14px rgb(0 0 0 / 0.7);
+  position: relative;
+  isolation: isolate;
+}
+
+/* a dark pool behind the paragraph (a scrim, not a text glow) keeps it readable over the lamp light */
+.w-sg-blurb::before {
+  content: '';
+  position: absolute;
+  inset: -0.9em -1.4em;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgb(10 3 7 / 0.62), rgb(10 3 7 / 0));
+  pointer-events: none;
 }
 
 /* ---- the book on the desk -------------------------------------------------------------------------------------------- */
@@ -376,5 +386,12 @@
   /* no desk line behind the paragraph; the book's own shadow is the desk */
   .w-sg-deskline {
     display: none;
+  }
+}
+
+/* a big screen: the title lockup grows too, so it fills the wall up to the book */
+@media (min-width: 1700px) {
+  .w-sg-title {
+    font-size: clamp(15.5rem, 1rem + 12.6vw, 22rem);
   }
 }

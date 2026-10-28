@@ -87,12 +87,12 @@ const nameAt = (i: number, fallback: string): string => names[i] ?? fallback
 
 export const TOOLS: readonly Tool[] = [
   { id: 'adobe', name: nameAt(0, 'The whole Adobe suite'), use: 'Illustrator, InDesign, Photoshop and the rest: vectors, layouts and retouching.', steps: [2, 3] },
-  { id: 'pencil', name: nameAt(1, 'Pencil & paper'), use: 'Pencil first: thumbnails on paper.', steps: [1] },
-  { id: 'procreate', name: nameAt(2, 'Procreate'), use: 'Where thumbnails become characters and lettering.', steps: [1] },
-  { id: 'nomad', name: nameAt(3, 'Nomad Sculpt'), use: 'A quick 3D sculpt when a reference helps.', steps: [2] },
+  { id: 'pencil', name: nameAt(1, 'Pencil & paper'), use: 'Every idea starts as a rough thumbnail on paper, dozens of them, before anything goes on a screen.', steps: [1] },
+  { id: 'procreate', name: nameAt(2, 'Procreate'), use: 'Where the chosen thumbnail grows into a finished character, and where the lettering gets drawn.', steps: [1] },
+  { id: 'nomad', name: nameAt(3, 'Nomad Sculpt'), use: 'A quick 3D sculpt when a flat reference is not enough to understand a shape.', steps: [2] },
   { id: 'ai', name: nameAt(4, 'AI tools'), use: 'Explore variations faster, always art-directed and finished by hand.', steps: [2] },
-  { id: 'pinterest', name: nameAt(5, 'Pinterest'), use: 'Ideas and references.', steps: [0] },
-  { id: 'vscode', name: nameAt(6, 'VS Code'), use: 'Where the design becomes a React website.', steps: [3] },
+  { id: 'pinterest', name: nameAt(5, 'Pinterest'), use: 'Boards of ideas and references, pinned up before the first sketch is drawn.', steps: [0] },
+  { id: 'vscode', name: nameAt(6, 'VS Code'), use: 'Where the finished design becomes a working React website, built to match the drawing.', steps: [3] },
 ]
 
 export const toolsForStep = (step: number): ToolId[] => TOOLS.filter((t) => t.steps.includes(step)).map((t) => t.id)
@@ -124,6 +124,11 @@ export const PROCESS_UI = {
   noteShelfPhone: 'tap a tool and watch it move',
   filmStart: 'Process',
   filmEnd: 'Delivered',
+  /** edge print and stamp on the leader and the tail of the roll (decoration, aria-hidden) */
+  codeHead: 'PM 05 · 35 MM · HEAD',
+  codeTail: 'PM 05 · 35 MM · TAIL',
+  stamp: 'Approved',
+  binNote: 'the bin: dozens, then one',
 } as const
 
 const BODY_FIX: Record<number, (s: string) => string> = {

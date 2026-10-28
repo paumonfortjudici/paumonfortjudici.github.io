@@ -6,18 +6,19 @@
 // with Barcelona / Sydney clocks and the hours when both of us are at work (./contact/TimeZones).
 // Behaviour and API: docs/api/sections-contact.md
 
-import { Component, lazy, Suspense, useRef, type CSSProperties, type ErrorInfo, type ReactNode, type RefObject } from 'react'
+import { Component, lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type ErrorInfo, type ReactNode, type RefObject } from 'react'
 import { Folder, Reveal, Scribble, Sheet, StrokeWord, TabButton, Ticket, type ToneName } from '../primitives'
 import { toast } from '../chrome/toast'
 import { CONTACT } from '../../lib/copy'
-import { useCopy, useInView } from '../../lib/hooks'
+import { useCopy, useInView, useMediaQuery } from '../../lib/hooks'
 import { layoutLetters, UNITS_PER_EM } from '../../lib/lettering/layout'
 import { Glyph, type GlyphName } from './contact/glyphs'
 import TimeZones from './contact/TimeZones'
 import './contact.css'
 
 // The business card is its own chunk (it brings Plana's three faces with it): it loads when the section is about to be seen.
-const SignatureCard = lazy(() => import('./contact/SignatureCard'))
+const loadCard = () => import('./contact/SignatureCard')
+const SignatureCard = lazy(loadCard)
 
 // Words that are not in COPY.md (added for this section).
 const TEXT = {
@@ -43,6 +44,15 @@ const PHRASE_SIZE = `calc(var(--ct-word) / ${K_PHRASE.toFixed(3)})`
 // the paragraph is COPY.md's own words; only a no-break space goes in front of its dash, so a line never starts with "—"
 const NBSP = String.fromCharCode(160)
 const PARAGRAPH = CONTACT.paragraph.replace(' — ', `${NBSP}— `)
+
+/** "https://www.amazon.com/dp/B0H…" becomes "amazon.com" */
+const hostOf = (href: string): string => {
+  try {
+    return new URL(href).hostname.replace(/^www\./, '')
+  } catch {
+    return ''
+  }
+}
 
 /** a phone number is one word: "+34 697 512 / 258" must never wrap (no-break spaces); anything else is left alone */
 const keepTogether = (value: string): string => (/^[+\d\s]+$/.test(value) ? value.replace(/\s/g, NBSP) : value)
@@ -90,24 +100,36 @@ interface CopyTabProps {
 /** COPY: a tab. The label swaps to "Copied" (both words are laid out, so the tab never changes width), the site toast speaks. */
 function CopyTab({ text, size, tone, target }: CopyTabProps) {
   const { copied, copy } = useCopy(text)
+  const [takes, setTakes] = useState(0)
   const onClick = async () => {
     const ok = await copy()
-    if (ok) toast(CONTACT.toast)
-    else {
+    if (ok) {
+      toast(CONTACT.toast)
+      setTakes((n) => n + 1)
+    } else {
       // both clipboard routes refused: select the address so the keyboard can finish the job, and say so
       selectText(target.current)
       toast(TEXT.copyFailed, { duration: 4600 })
     }
   }
   return (
-    <TabButton tone={tone} size={size} cursor="Copy" aria-label={`Copy ${text}`} onClick={onClick}>
-      <span className="pm-ct-swap">
-        <span data-on={copied ? undefined : ''}>{CONTACT.emailActions.copy}</span>
-        <span data-on={copied ? '' : undefined} aria-hidden="true">
-          {CONTACT.emailActions.copied}
+    <span className="pm-ct-copy">
+      <TabButton tone={tone} size={size} cursor="Copy" aria-label={`Copy ${text}`} onClick={onClick}>
+        <span className="pm-ct-swap">
+          <span data-on={copied ? undefined : ''}>{CONTACT.emailActions.copy}</span>
+          <span data-on={copied ? '' : undefined} aria-hidden="true">
+            {CONTACT.emailActions.copied}
+          </span>
         </span>
-      </span>
-    </TabButton>
+      </TabButton>
+      {/* a slate card slides out of the folder for a moment: every copy is a new take (the toast speaks for screen readers) */}
+      {copied && takes > 0 && (
+        <span className="pm-ct-take" key={takes} aria-hidden="true">
+          <span className="pm-ct-take__bar" />
+          Take {takes} · {CONTACT.emailActions.copied}
+        </span>
+      )}
+    </span>
   )
 }
 
@@ -138,7 +160,28 @@ function MailRow({ address, main }: { address: string; main?: boolean }) {
 
 export function Contact() {
   const sectionRef = useRef<HTMLElement | null>(null)
-  const near = useInView(sectionRef, { once: true, rootMargin: '1400px 0px' })
+  const near = useInView(sectionRef, { once: true, rootMargin: '2000px 0px' })
+
+  // the card's code (not its fonts: those start only when the card is mounted) is fetched while the browser is idle, so that on arrival
+  // (a deep link, a fast scroll, a slow line) the card does not have a hole to wait in
+  useEffect(() => {
+    const idle = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback
+    const id = idle ? idle(() => void loadCard().catch(() => undefined), { timeout: 4000 }) : window.setTimeout(() => void loadCard().catch(() => undefined), 2500)
+    return () => {
+      if (!idle) window.clearTimeout(id)
+    }
+  }, [])
+
+  // keyboard order follows what the eye sees: from 1180px the card lies top right (so it comes right after the heading, before the
+  // folders); below that it lies under the tickets and is the last stop of the sheet
+  const wide = useMediaQuery('(min-width: 1180px)')
+  const cardSlot = (
+    <div className="pm-ct-cardslot">
+      <QuietBoundary>
+        <Suspense fallback={null}>{near && <SignatureCard />}</Suspense>
+      </QuietBoundary>
+    </div>
+  )
 
   return (
     <Sheet ref={sectionRef} id="contact" tone="tomato" page="Contact" n={6} className="pm-ct" aria-labelledby="contact-title">
@@ -151,7 +194,8 @@ export function Contact() {
         </header>
 
         <div className="pm-ct-stack">
-          <Reveal kind="drop" className="pm-ct-slot">
+          {wide && cardSlot}
+          <Reveal kind="drop" className="pm-ct-slot pm-ct-slot--pad">
             <Folder tone="ink" tab={TEXT.tabTalk} tabX={0.035} className="pm-ct-folder" bodyClassName="pm-ct-talk">
               <StrokeWord
                 className="pm-ct-phrase"
@@ -178,7 +222,7 @@ export function Contact() {
             </Folder>
           </Reveal>
 
-          <Reveal kind="drop" delay={110} className="pm-ct-slot">
+          <Reveal kind="drop" delay={110} className="pm-ct-slot pm-ct-slot--pad">
             <Folder tone="marigold" tab={TEXT.tabMail} tabX={0.3} className="pm-ct-folder" bodyClassName="pm-ct-mail">
               <h3 className="pm-sr">{TEXT.mailHeading}</h3>
               <MailRow address={CONTACT.email} main />
@@ -204,6 +248,8 @@ export function Contact() {
                             <span className="pm-ct-kick">
                               <Glyph name={t.glyph} className="pm-ct-kick__glyph" />
                               {link.label}
+                              {/* where the stub really goes, in mono: the link target is never a surprise */}
+                              {!link.value.includes(hostOf(link.href)) && <span className="pm-ct-kick__host">{hostOf(link.href)}</span>}
                             </span>
                           }
                           tone={t.tone}
@@ -219,11 +265,7 @@ export function Contact() {
             </Folder>
           </Reveal>
 
-          <div className="pm-ct-cardslot">
-            <QuietBoundary>
-              <Suspense fallback={null}>{near && <SignatureCard />}</Suspense>
-            </QuietBoundary>
-          </div>
+          {!wide && cardSlot}
         </div>
 
         <QuietBoundary>

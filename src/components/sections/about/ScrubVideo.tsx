@@ -50,8 +50,17 @@ export const ScrubVideo = forwardRef<ScrubHandle, ScrubVideoProps>(function Scru
   const [playing, setPlaying] = useState(false)
   const [loopShown, setLoopShown] = useState(false)
   const [clip, setClip] = useState<ClipChoice | null>(null)
+  /** the countdown leader on the slate (3, 2, 1) when the scrub engine arms; null = show the frame rate */
+  const [leader, setLeader] = useState<number | null>(null)
 
   const tap = !fine && !still
+  useEffect(() => {
+    if (!ready || still) return
+    const timers = [2, 1].map((n, i) => window.setTimeout(() => setLeader(n), (i + 1) * 380))
+    timers.push(window.setTimeout(() => setLeader(null), 3 * 380))
+    setLeader(3)
+    return () => timers.forEach((t) => window.clearTimeout(t))
+  }, [ready, still])
   const pointerScrub = fine && !still
   const wantScrub = near && !failed && (pointerScrub || armed)
   const wantLoop = near && tap
@@ -331,7 +340,7 @@ export const ScrubVideo = forwardRef<ScrubHandle, ScrubVideoProps>(function Scru
       <span className="pm-ab-slate" aria-hidden="true">
         <span className="pm-ab-slate__stick" />
         <span className="pm-ab-slate__row">{PORTRAIT.slate[0]}</span>
-        <span className="pm-ab-slate__row">{PORTRAIT.slate[1]}</span>
+        <span className="pm-ab-slate__row">{leader === null ? PORTRAIT.slate[1] : `[ ${leader} ]`}</span>
       </span>
       <span className="pm-ab-frame__tc" ref={tcRef} aria-hidden="true">
         {timecode(0)}

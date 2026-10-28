@@ -150,6 +150,8 @@ export const SG = {
   credit: {
     exhibit: 'Exhibit F',
     stamp: 'Case closed',
+    stampButton: 'Stamp the folder again',
+    stampHint: 'press it',
     title: 'Who made it',
     // the sentence is cut in three so the name can be set in bold; read together it is exactly the credit line Pau approved
     leadIn: 'Written, art-directed and published by ',

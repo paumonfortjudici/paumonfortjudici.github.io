@@ -28,6 +28,9 @@ import { useLane } from './concept-portfolio/useLane'
 import { Wall } from './concept-portfolio/Wall'
 import { useWorld, useWorldEscape } from './WorldContext'
 
+// the first slide starts downloading as soon as this chunk is evaluated, before the world has rendered
+if (typeof Image !== 'undefined') new Image().src = SLIDES[0].src
+
 const SOUND_KEY = 'pm-cp-sound'
 
 function readSound(): boolean {
@@ -263,7 +266,7 @@ export default function ConceptPortfolioWorld() {
         <p className="pm-sr">{COPY.intro}</p>
 
         <section ref={stageRef} className="w-cp-stage" aria-label={COPY.bar.stage}>
-          <Wall slabRef={slabRef} raysRef={raysRef} showCall={index === 0} />
+          <Wall slabRef={slabRef} raysRef={raysRef} index={index} last={SLIDE_COUNT - 1} />
           <Bar
             notes={notes}
             sound={sound}
@@ -300,27 +303,24 @@ export default function ConceptPortfolioWorld() {
             ))}
           </div>
           <div className="w-cp-credits-in">
-            <h3 id="w-cp-credits-h" className="w-cp-credits-h">
-              <span className="pm-sr">{CREDITS_LINES.map((l) => l.text).join(' ')}</span>
+            <h3 id="w-cp-credits-h" className="w-cp-credits-h" aria-label={COPY.credits.title}>
               <span aria-hidden="true" className="w-cp-credits-lines">
                 {CREDITS_LINES.map((line) => (
                   <FitLine key={line.text} text={line.text} widths={line.widths} />
                 ))}
               </span>
             </h3>
-            <div className="w-cp-credits-left">
-              <div className="w-cp-credits-copy">
-                <p>{COPY.credits.p1}</p>
-                <p>{COPY.credits.p2}</p>
-              </div>
-              <figure className="w-cp-strip">
-                <FilmStrip tone="ink">
-                  <img src={SHEET.src} alt={SHEET.alt} width={SHEET.w} height={SHEET.h} loading="lazy" decoding="async" />
-                </FilmStrip>
-                <figcaption className="w-cp-strip-cap">{COPY.credits.stripCaption}</figcaption>
-              </figure>
+            <div className="w-cp-credits-copy">
+              <p>{COPY.credits.p1}</p>
+              <p>{COPY.credits.p2}</p>
             </div>
             <WorldFacts work={work} />
+            <figure className="w-cp-strip">
+              <FilmStrip tone="ink">
+                <img src={SHEET.src} alt={SHEET.alt} width={SHEET.w} height={SHEET.h} loading="lazy" decoding="async" />
+              </FilmStrip>
+              <figcaption className="w-cp-strip-cap">{COPY.credits.stripCaption}</figcaption>
+            </figure>
           </div>
         </section>
 

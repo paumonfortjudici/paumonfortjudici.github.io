@@ -73,3 +73,6 @@ export function groupByMonth(posts: Post[] = POSTS): MonthGroup[] {
 /** the first and the last post of the wall, for the intro and the end note */
 export const FIRST_DATE = POSTS[0].date
 export const LAST_DATE = POSTS[POSTS.length - 1].date
+
+/** the feed hangs its tags in two columns on both sides of the thread from this width up (the hero has its own, wider breakpoint in the CSS) */
+export const WIDE_QUERY = '(min-width: 740px)'

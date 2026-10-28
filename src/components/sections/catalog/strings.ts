@@ -18,6 +18,11 @@ export const CAT_UI = {
   try: 'Try',
   examples: ['poster', 'magazine', 'logo'] as const,
   exampleLabel: (word: string): string => `Search for ${word}`,
+  /** the drawer index of ten colour spines above the stack */
+  spinesLabel: 'Jump to a folder',
+  spineLabel: (n: number, title: string): string => `Folder ${String(n).padStart(2, '0')}, ${title}`,
+  /** the flag on the index card's writing box */
+  typeHere: 'type here',
   /** hand-written note on the arrow that points at the first folder */
   note: 'ten folders, ten typefaces',
   /** slate cell labels in the open band */

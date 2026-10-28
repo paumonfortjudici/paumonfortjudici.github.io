@@ -40,7 +40,8 @@ function Mark({ mark, dims, ink, delay }: { mark: NoteMark; dims: Dims; ink: 'in
 function useFullSrc(def: PrintDef, large: boolean): string {
   const [url, setUrl] = useState(() => src.thumb(def))
   useEffect(() => {
-    if (!large) return
+    // a print that stays small (see closeUp in data.ts) never loads the full-size file
+    if (!large || def.closeUp === 'small') return
     let alive = true
     const img = new Image()
     img.decoding = 'async'

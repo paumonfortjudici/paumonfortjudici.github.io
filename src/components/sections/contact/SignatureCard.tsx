@@ -9,6 +9,7 @@ import '@fontsource-variable/figtree/wght.css'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Scribble, Tape, useRevealOnce } from '../../primitives'
 import { CONTACT } from '../../../lib/copy'
+import { useMotion } from '../../../lib/motion'
 import { loadHandFonts, whenFontsLoaded } from '../../../styles/fonts'
 import { LOCKUP, LOCKUP_VIEWBOX } from './planaMark'
 
@@ -22,6 +23,7 @@ const LABELS = {
   group: 'Business card of Pau Monfort',
   flip: 'Flip the business card',
   tape: 'flip me',
+  received: 'Received',
 } as const
 
 /** Plana Digital's horizontal lockup: the brand's own paths, coloured by class from contact.css. The sun is its own shape so it can rise. */
@@ -53,6 +55,8 @@ export default function SignatureCard() {
   const [ready, setReady] = useState(false)
   const [flipped, setFlipped] = useState(false)
   const [seenBack, setSeenBack] = useState(false)
+  // reduced or paused motion: nothing is staged, so nothing waits (no font gate, no reveal): the card is simply there
+  const { still } = useMotion()
 
   // the sun rises the first time the card is well inside the viewport (data-in, no state, no re-render)
   useRevealOnce(rootRef, { threshold: 0.45 })
@@ -61,13 +65,14 @@ export default function SignatureCard() {
     let alive = true
     void loadHandFonts()
     // keep the card invisible until its three faces are in, so the text never flashes a fallback and moves
-    void whenFontsLoaded(['800 1em "Sora Variable"', '500 1em "DM Mono"', '400 1em "Figtree Variable"'], 1200).then(() => {
+    // (still motion: no wait at all, the faces swap in when they arrive)
+    void whenFontsLoaded(['800 1em "Sora Variable"', '500 1em "DM Mono"', '400 1em "Figtree Variable"'], still ? 0 : 1200).then(() => {
       if (alive) setReady(true)
     })
     return () => {
       alive = false
     }
-  }, [])
+  }, [still])
 
   const toggle = () => {
     setFlipped((f) => !f)
@@ -77,7 +82,7 @@ export default function SignatureCard() {
   const card = CONTACT.businessCard
 
   return (
-    <div ref={rootRef} className="pm-ct-card" role="group" aria-label={LABELS.group} translate="no" data-ready={ready ? '' : undefined} data-flipped={flipped ? '' : undefined}>
+    <div ref={rootRef} className="pm-ct-card" role="group" aria-label={LABELS.group} translate="no" data-ready={ready || still ? '' : undefined} data-flipped={flipped ? '' : undefined}>
       <div className="pm-ct-card__tilt">
         {/* the tape is a pivot: it stays put while the card turns under it */}
         <Tape at="top" color="butter" pattern="stripes" rotate={-4} w="9rem" h="2.3rem">
@@ -126,6 +131,12 @@ export default function SignatureCard() {
             <div className="pm-ct-sunrise" aria-hidden="true">
               <span className="pm-ct-bsun" />
             </div>
+            {/* the card is stamped when it is turned over for the first time (then it stays: the ink is dry) */}
+            {seenBack && (
+              <span className="pm-ct-received" aria-hidden="true">
+                {LABELS.received}
+              </span>
+            )}
           </div>
         </div>
 

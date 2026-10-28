@@ -64,28 +64,29 @@
   background-color: var(--c);
   background-image: var(--pm-grain);
   color: var(--on);
-  box-shadow: inset 0 1px 0 var(--pm-hl), 0 2px 0 color-mix(in srgb, var(--c) 58%, var(--ink));
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 2px 0 color-mix(in srgb, var(--c) 58%, var(--ink)); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-job__role {
   margin: 0;
-  font-size: clamp(1.3rem, 1.12rem + 0.55vw, 1.75rem);
+  font-size: clamp(1.3rem, 1rem + 0.7vw, 2rem);
   line-height: 1.06;
   font-weight: 800;
   letter-spacing: -0.02em;
   text-wrap: balance;
 }
-.pm-ab-job__place { margin: 5px 0 0; font-family: var(--font-body); font-size: 1.0625rem; line-height: 1.3; font-weight: 600; }
-.pm-ab-job__cv { margin: 9px 0 0; max-width: 48ch; font-family: var(--font-body); font-size: 0.9375rem; line-height: 1.48; color: var(--ink-3); text-wrap: pretty; }
+.pm-ab-job__place { margin: 5px 0 0; font-family: var(--font-body); font-size: clamp(1.0625rem, 0.85rem + 0.4vw, 1.3rem); line-height: 1.3; font-weight: 600; }
+.pm-ab-job__cv { margin: 10px 0 0; max-width: 52ch; font-family: var(--font-body); font-size: clamp(1rem, 0.7rem + 0.45vw, 1.25rem); line-height: 1.48; color: color-mix(in srgb, var(--ink) 90%, var(--paper)); text-wrap: pretty; }
 .pm-ab-job__link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  width: fit-content;
   margin-top: 12px;
   padding: 6px 11px 5px;
   border-radius: 4px;
   background-color: var(--c);
   background-image: var(--pm-grain);
-  box-shadow: inset 0 1px 0 var(--pm-hl), 0 2px 0 color-mix(in srgb, var(--c) 58%, var(--ink));
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 2px 0 color-mix(in srgb, var(--c) 58%, var(--ink)); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   color: var(--on);
   font-family: var(--font-label);
   font-size: var(--fs-label);
@@ -131,7 +132,7 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: linear-gradient(90deg, color-mix(in srgb, var(--ink) 6%, transparent) 50%, transparent 50%);
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--ink) 6%, transparent) 50%, transparent 50%); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   background-size: calc(200% / var(--years)) 100%;
 }
 .pm-ab-plane__top { position: relative; z-index: 1; }
@@ -177,7 +178,7 @@
   background-color: var(--c);
   background-image: var(--pm-grain);
   color: var(--on);
-  filter: drop-shadow(0 3px 0 color-mix(in srgb, var(--c) 52%, var(--ink)));
+  filter: drop-shadow(0 3px 0 color-mix(in srgb, var(--c) 52%, var(--ink))); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-clip .pm-perf { --perf: var(--ink); flex: none; width: 100%; border-radius: 3px 3px 0 0; }
 .pm-ab-clip .pm-perf:last-child { border-radius: 0 0 3px 3px; }
@@ -209,7 +210,7 @@
   padding: 3px 5px 2px;
   border-radius: 3px;
   background: var(--paper);
-  box-shadow: 0 0 0 3px var(--paper);
+  box-shadow: 0 0 0 3px var(--paper); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   color: var(--ink);
   font-family: var(--font-label);
   font-size: var(--fs-label);
@@ -224,6 +225,11 @@
 .pm-ab-bar[data-label='right'] .pm-ab-bar__out { left: calc(var(--e) * 1% + 7px); }
 .pm-ab-bar[data-label='left'] .pm-ab-bar__out { right: calc((100 - var(--s)) * 1% + 7px); }
 .pm-ab-bar__narrow { display: none; }
+/* on a narrow ruler the 4mation name would run into the NOW line: the reel number on the clip and its colour name it (credit III above carries the same chip), and
+   the label comes back as soon as there is room beyond the clip */
+@container ab-tl (max-width: 1290px) {
+  .pm-ab-bar[data-job='fourmation'] .pm-ab-bar__out { display: none; }
+}
 /* a note in my hand on the free track before the upper clip, with an arrow that points at where the two overlap */
 .pm-ab-bar__note {
   position: absolute;
@@ -292,13 +298,13 @@ html.js .pm-ab-tl:not([data-in]) .pm-ab-bar__out { opacity: 0; }
 .pm-ab-axis__ticks {
   top: calc(var(--ab-axis-y) - 14px);
   height: 28px;
-  background: repeating-linear-gradient(90deg, var(--ink) 0 3px, transparent 3px calc(100% / var(--years)));
-  box-shadow: inset -3px 0 0 var(--ink);
+  background: repeating-linear-gradient(90deg, var(--ink) 0 3px, transparent 3px calc(100% / var(--years))); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
+  box-shadow: inset -3px 0 0 var(--ink); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-axis__months {
   top: calc(var(--ab-axis-y) - 8px);
   height: 16px;
-  background: repeating-linear-gradient(90deg, var(--ab-line) 0 1.5px, transparent 1.5px calc(100% / (var(--years) * 12)));
+  background: repeating-linear-gradient(90deg, var(--ab-line) 0 1.5px, transparent 1.5px calc(100% / (var(--years) * 12))); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-axis__y {
   position: absolute;
@@ -349,8 +355,8 @@ html.js .pm-ab-tl:not([data-in]) .pm-ab-bar__out { opacity: 0; }
 }
 .pm-ab-lane__title {
   margin: 0;
-  max-width: 11ch;
-  font-size: clamp(1.7rem, 1.15rem + 1.5vw, 2.9rem);
+  max-width: 12ch;
+  font-size: clamp(1.7rem, 0.9rem + 2.3vw, 4.6rem);
   line-height: 1;
   font-weight: 900;
   letter-spacing: -0.03em;
@@ -359,11 +365,28 @@ html.js .pm-ab-tl:not([data-in]) .pm-ab-bar__out { opacity: 0; }
   min-height: 2.1em; /* two lines reserved: the hand face arrives late */
   margin: 14px 0 0;
   font-family: var(--font-hand);
-  font-size: clamp(1.5rem, 1.25rem + 0.7vw, 2.05rem);
+  font-size: clamp(1.5rem, 1.1rem + 0.95vw, 2.5rem);
   line-height: 1.05;
   color: var(--oxblood);
   transform: rotate(-2deg);
   transform-origin: 0 50%;
+}
+/* a second hand note, only where the lane has the room (wide ruler): the escape room that the first folder's posters were made for, drawn with an arrow back to it */
+.pm-ab-lane__aside { display: none; }
+@container ab-tl (min-width: 1250px) {
+  .pm-ab-lane__aside {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 22px 0 0;
+    max-width: 17em;
+    font-family: var(--font-hand);
+    font-size: clamp(1.5rem, 1.1rem + 0.7vw, 2.1rem);
+    line-height: 1.05;
+    color: var(--ink);
+    transform: rotate(-1deg);
+  }
+  .pm-ab-lane__aside svg { flex: none; color: var(--oxblood); }
 }
 .pm-ab-pins { position: relative; margin: 0; padding: 0; list-style: none; }
 .pm-ab-pin {
@@ -393,7 +416,7 @@ html.js .pm-ab-tl:not([data-in]) .pm-ab-bar__out { opacity: 0; }
   height: 16px;
   border-radius: 50%;
   background: var(--tomato);
-  box-shadow: 0 0 0 3px var(--paper), 0 4px 0 3px color-mix(in srgb, var(--ink) 35%, transparent);
+  box-shadow: 0 0 0 3px var(--paper), 0 4px 0 3px color-mix(in srgb, var(--ink) 35%, transparent); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-pin__hang {
   position: absolute;
@@ -463,7 +486,7 @@ html.js .pm-ab-lane:not([data-in]) .pm-ab-pin__stem { transform: rotate(calc(var
   padding: 7px 14px 7px 11px;
   background-color: var(--c);
   background-image: var(--pm-grain);
-  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 color-mix(in srgb, var(--c) 58%, var(--ink));
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 color-mix(in srgb, var(--c) 58%, var(--ink)); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   color: var(--on);
   text-decoration: none;
   transition: transform 0.22s var(--ease-spring);
@@ -529,10 +552,10 @@ html[data-motion='paused'] .pm-ab-job[data-hot] .pm-ab-job__no { transform: none
   .pm-ab-pin__stem,
   .pm-ab-pin__head { display: none; }
 
-  .pm-ab-job { display: grid; grid-template-columns: 62px minmax(0, 1fr); column-gap: 16px; padding: 20px 0 22px; }
+  .pm-ab-job { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: 14px; padding: 20px 0 22px; }
   .pm-ab-job + .pm-ab-job { border-top: 1.5px dashed color-mix(in srgb, var(--ink) 20%, transparent); }
   .pm-ab-job__txt { grid-column: 2; grid-row: 1; }
-  .pm-ab-job__track { position: relative; display: block; grid-column: 1; grid-row: 1; height: auto; min-height: 188px; margin: 0; }
+  .pm-ab-job__track { position: relative; display: block; grid-column: 1; grid-row: 1; height: auto; min-height: 240px; margin: 0; }
   /* the gauge: a hairline, the first and last year, and the ribbon between */
   .pm-ab-job__track::before {
     content: '';
@@ -559,6 +582,21 @@ html[data-motion='paused'] .pm-ab-job[data-hot] .pm-ab-job__no { transform: none
   }
   .pm-ab-job__y--a { top: 0; }
   .pm-ab-job__y--b { bottom: 0; }
+  /* where this ribbon starts and stops: its own months, written beside it (start on the left, end on the right) */
+  .pm-ab-job__at {
+    position: absolute;
+    display: block;
+    font-family: var(--font-label);
+    font-size: var(--fs-label);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    font-synthesis: none;
+  }
+  .pm-ab-job__at--s { right: calc(50% + 19px); top: calc(22px + var(--s) * (100% - 44px) / 100 - 2px); text-align: right; }
+  .pm-ab-job__at--e { left: calc(50% + 19px); top: calc(22px + var(--e) * (100% - 44px) / 100 - 11px); }
   .pm-ab-job { --clip-show: inset(0 -6px -6px -6px); --clip-hide: inset(0 -6px 100% -6px); }
   .pm-ab-job[data-ongoing] {
     --clip-show: polygon(0 0, 100% 0, 100% calc(100% - 6px), 80% 100%, 60% calc(100% - 4px), 40% 100%, 20% calc(100% - 4px), 0 100%);
@@ -569,15 +607,17 @@ html[data-motion='paused'] .pm-ab-job[data-hot] .pm-ab-job__no { transform: none
     top: calc(22px + var(--s) * (100% - 44px) / 100);
     bottom: auto;
     left: 50%;
-    width: 22px;
+    width: 26px;
     height: calc((var(--e) - var(--s)) * (100% - 44px) / 100);
     min-width: 0;
-    min-height: 14px;
-    margin-left: -11px;
+    min-height: 18px;
+    margin-left: -13px;
     flex-direction: row;
     justify-content: space-between;
   }
   .pm-ab-job__track .pm-perf { display: none; }
+  .pm-ab-job__track .pm-ab-clip::before,
+  .pm-ab-job__track .pm-ab-clip::after { width: 7px; }
   /* the sprocket holes as dots running down both edges of the ribbon */
   .pm-ab-job__track .pm-ab-clip::before,
   .pm-ab-job__track .pm-ab-clip::after {
@@ -585,7 +625,7 @@ html[data-motion='paused'] .pm-ab-job[data-hot] .pm-ab-job__no { transform: none
     flex: none;
     width: 6px;
     background:
-      radial-gradient(circle at 50% 50%, var(--paper) 0 1.6px, transparent 2px) 0 0 / 6px 9px repeat-y,
+      radial-gradient(circle at 50% 50%, var(--paper) 0 1.6px, transparent 2px) 0 0 / 6px 9px repeat-y, /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
       var(--ink);
   }
   .pm-ab-job__track .pm-ab-clip__mid { display: none; }
@@ -595,7 +635,7 @@ html[data-motion='paused'] .pm-ab-job[data-hot] .pm-ab-job__no { transform: none
     .pm-ab-jobs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(24px, 4vw, 44px); }
     .pm-ab-job + .pm-ab-job { border-top: 0; }
     .pm-ab-job:nth-child(n + 3) { border-top: 1.5px dashed color-mix(in srgb, var(--ink) 20%, transparent); }
-    .pm-ab-job { grid-template-columns: 54px minmax(0, 1fr); column-gap: 14px; }
+    .pm-ab-job { grid-template-columns: 92px minmax(0, 1fr); column-gap: 14px; }
   }
 
   .pm-ab-lane { display: block; min-height: 0; margin-top: 12px; padding-top: 26px; border-top: 2.5px dashed var(--ab-line); }

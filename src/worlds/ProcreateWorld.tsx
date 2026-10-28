@@ -33,10 +33,29 @@ if (typeof window !== 'undefined') {
   }
 }
 
-const STACK: PrintId[] = ['crest', 'kids', 'logo', 'quiff', 'cap']
+const STACK: PrintId[] = ['logo', 'crest', 'kids', 'quiff', 'cap']
 
 /** the little prints of the index are glued on a touch crooked, each its own way */
 const THUMB_TILT = [-2.2, 1.6, -1.1, 2.1, -1.7]
+
+/** the pencil marks that appear round the squared-up row (Tidy up): numbers over the prints in reading order, a measuring line under them */
+function Measure({ row, s, h }: { row: NonNullable<Plan['row']>; s: number; h: number }) {
+  const above = row.top
+  const below = Math.max(0, h - row.bottom)
+  const font = Math.max(20, Math.min(34, s * 25))
+  return (
+    <span className="w-procreate-measure" aria-hidden="true">
+      {row.centres.map((c, i) => (
+        <span key={c.id} className="w-procreate-measure-n" style={{ left: c.cx - c.w / 2 + font * 0.8, top: Math.max(4, row.top - Math.min(above - 4, font + 14)), fontSize: font }}>
+          {i + 1}
+        </span>
+      ))}
+      <span className="w-procreate-measure-line" style={{ left: row.left, width: row.right - row.left, top: row.bottom + Math.min(below / 2, 40) }}>
+        <span className="w-procreate-measure-word" style={{ fontSize: font * 0.8 }}>hung level</span>
+      </span>
+    </span>
+  )
+}
 
 /** a print counts as away from where it was hung when it has moved by more than a hand's width of paper edge */
 function awayFrom(poses: PoseMap, plan: Plan): Partial<Record<PrintId, boolean>> {
@@ -64,6 +83,11 @@ export default function ProcreateWorld() {
   // the first time anything is picked up, turned, squared up or shuffled, the wall's own "pick one up" note has done its job
   const [touched, setTouched] = useState(false)
   const [open, setOpen] = useState<number | null>(null)
+  // the print that was looked at closely gets a FILED stamp when the close-up is put away (a moment, then it fades)
+  const [filed, setFiled] = useState<{ id: PrintId; n: number } | null>(null)
+  const filedTimer = useRef<number | undefined>(undefined)
+  const openNow = useRef<number | null>(null)
+  openNow.current = open
   const [status, setStatus] = useState('')
   const [host, setHost] = useState<HTMLElement | null>(null)
   // which prints are away from the place they were hung in (their pin hole and tape ghosts show on the wall)
@@ -79,6 +103,8 @@ export default function ProcreateWorld() {
   const lastKind = useRef<string>('')
   const opener = useRef<HTMLElement | null>(null)
   const openRef = useRef(false)
+  const stillNow = useRef(false)
+  stillNow.current = reduced
   modeRef.current = mode
 
   // ---- measuring the wall ------------------------------------------------------------------------------------------------
@@ -148,6 +174,7 @@ export default function ProcreateWorld() {
     announceTimer.current = window.setTimeout(() => setStatus(text), 40)
   }, [])
   useEffect(() => () => window.clearTimeout(announceTimer.current), [])
+  useEffect(() => () => window.clearTimeout(filedTimer.current), [])
 
   const arrange = useCallback(
     (next: 'loose' | 'tidy' | 'shuffle') => {
@@ -212,6 +239,12 @@ export default function ProcreateWorld() {
   const openPrint = useCallback((id: PrintId) => openAt(PRINTS.findIndex((p) => p.id === id)), [openAt])
   const closeUp = useCallback(() => {
     openRef.current = false
+    const at = openNow.current
+    if (at !== null && !stillNow.current) {
+      window.clearTimeout(filedTimer.current)
+      setFiled({ id: PRINTS[at].id, n: Date.now() })
+      filedTimer.current = window.setTimeout(() => setFiled(null), 1900)
+    }
     setOpen(null)
     const back = opener.current
     window.setTimeout(() => {
@@ -229,10 +262,11 @@ export default function ProcreateWorld() {
   }, [open])
 
   const tidy = mode === 'tidy'
-  const hint = pointerFine ? COPY.hintMouse : COPY.hintTouch
 
   const stacked = plan !== null && plan.kind !== 'wide'
   const pick = plan && plan.kind === 'wide' ? pickupSpot(plan) : null
+  // the wall's own "pick one up" note says the dragging part, so the lede keeps only the other half
+  const hint = !pointerFine ? COPY.hintTouch : pick ? COPY.hintMouseShort : COPY.hintMouse
   const pickArrow = pick ? aimBetween(pick.from[0], pick.from[1], pick.to[0], pick.to[1]) : null
   const ledge = (
     <div className="w-procreate-ledge">
@@ -261,16 +295,21 @@ export default function ProcreateWorld() {
       </div>
       {pointerFine && (
         <p className="w-procreate-dymo t-label" aria-hidden="true">
-          {/* each phrase stays in one piece: when the strip has to wrap it breaks between phrases, never inside one */}
-          {COPY.keysShort.split(', ').map((part, i, all) => (
-            <Fragment key={part}>
-              {i > 0 && ' '}
-              <span className="w-procreate-dymo-part">
-                {part}
-                {i < all.length - 1 ? ',' : ''}
-              </span>
-            </Fragment>
-          ))}
+          {/* what the wall is, until a print has the keyboard: then the same strip says which keys do what (the keys are also read
+              out by every print's description, so nothing is lost for a screen reader) */}
+          <span className="w-procreate-dymo-what">{COPY.label}</span>
+          <span className="w-procreate-dymo-keys">
+            {/* each phrase stays in one piece: when the strip has to wrap it breaks between phrases, never inside one */}
+            {COPY.keysShort.split(', ').map((part, i, all) => (
+              <Fragment key={part}>
+                {i > 0 && ' '}
+                <span className="w-procreate-dymo-part">
+                  {part}
+                  {i < all.length - 1 ? ',' : ''}
+                </span>
+              </Fragment>
+            ))}
+          </span>
         </p>
       )}
       <button type="button" className="w-procreate-prop w-procreate-eraser" data-on={notes ? undefined : ''} tabIndex={-1} aria-hidden="true" onClick={toggleNotes}>
@@ -317,7 +356,19 @@ export default function ProcreateWorld() {
               style={plan && plan.kind !== 'wide' ? { height: wallH } : undefined}
             >
               {plan && PRINTS.map((def) => <Scar key={def.id} def={def} dims={plan.dims[def.id]} home={plan.loose[def.id]} away={!!away[def.id]} />)}
-              {plan?.kind === 'wide' && <span className="w-procreate-guide" aria-hidden="true" />}
+              {plan?.kind === 'wide' && plan.row && <Measure row={plan.row} s={plan.s} h={plan.wallH} />}
+              {plan?.kind === 'wide' && (
+                // a paint-chip card taped between the prints: the four colours of the two portraits, nothing to press
+                <span className="w-procreate-chipcard" aria-hidden="true" style={{ '--s': plan.s } as CSSProperties}>
+                  <Tape at="top" color="bubblegum" pattern="plain" rotate={-4} w="3.2rem" h="1.1rem" />
+                  <span className="w-procreate-chipcard-chips">
+                    {PORTRAIT_PALETTE.map((hex) => (
+                      <span key={hex} style={{ backgroundColor: hex }} />
+                    ))}
+                  </span>
+                  <span className="w-procreate-chipcard-word">the palette</span>
+                </span>
+              )}
               {pick && (
                 <>
                   <span className="w-procreate-ink w-procreate-pickup" aria-hidden="true" style={{ left: pick.left, bottom: pick.bottom, fontSize: pick.font }}>
@@ -327,6 +378,19 @@ export default function ProcreateWorld() {
                     <Scribble kind="arrow" seed={3} color="ink" w="100%" stroke={3.4} draw={1500} rotate={pickArrow!.rotate} />
                   </span>
                 </>
+              )}
+              {plan && filed && plan.kind === 'wide' && (
+                <span
+                  key={filed.n}
+                  className="w-procreate-filed"
+                  aria-hidden="true"
+                  style={{
+                    left: (handles.current[filed.id]?.pose().x ?? 0) + plan.dims[filed.id].w * 0.68,
+                    top: (handles.current[filed.id]?.pose().y ?? 0) + plan.dims[filed.id].h * 0.78,
+                  }}
+                >
+                  <Stamp text="Filed" tone="oxblood" rotate={-9} size={`${Math.max(1.4, plan.s * 1.9)}rem`} decorative thump />
+                </span>
               )}
               {plan &&
                 PRINTS.map((def, i) => (
@@ -347,7 +411,7 @@ export default function ProcreateWorld() {
                     home={intro.current ? plan.loose[def.id] : undefined}
                     introDelay={0.2 + i * 0.12}
                     describedBy={hintId}
-                    eager={plan.kind === 'wide' || i < 2}
+                    eager
                     drawDelay={plan.kind === 'wide' ? 1100 + i * 170 : i === 0 ? 1100 : 160}
                     onRaise={raise}
                     onOpen={openPrint}
@@ -425,6 +489,20 @@ export default function ProcreateWorld() {
             <div className="w-procreate-stamp" aria-hidden="true">
               <Stamp text="Filed" sub="Folder 06" tone="oxblood" rotate={-7} size="1.5rem" decorative />
             </div>
+          </div>
+
+          <div className="w-procreate-card w-procreate-card--when">
+            <Tape at="top" color="marigold" pattern="plain" rotate={2} w="4.6rem" h="1.4rem" />
+            <h3 className="w-procreate-card-title">{COPY.whenTitle}</h3>
+            <div className="w-procreate-when" aria-hidden="true">
+              {PRINTS.map((def) => (
+                <span key={def.id} className="w-procreate-when-dot">
+                  ?
+                </span>
+              ))}
+              <Scribble kind="underline" at="under" color="ink" stroke={3.4} seed={52} ratio={26} />
+            </div>
+            <p className="w-procreate-card-intro">{COPY.whenBody}</p>
           </div>
 
           <div className="w-procreate-facts">

@@ -52,7 +52,7 @@ export const POSTS: Post[] = [
     id: "CpiQD8Vow8m",
     type: "carousel",
     date: "2023-03-08",
-    title: "Cut-out portrait rug",
+    title: "Cut-out rug",
     note: "70 × 60 cm, cut to the outline of the figure, white edge and all.",
     ratio: 1.001,
     still: false,
@@ -69,7 +69,7 @@ export const POSTS: Post[] = [
     type: "carousel",
     date: "2023-03-10",
     title: "Faceted portrait rug",
-    note: "90 × 140 cm, built from loud flat facets. Not for sale; DM me if you want one like it.",
+    note: "90 × 140 cm, built from loud flat facets. It was a showpiece and was not for sale.",
     ratio: 0.8,
     still: false,
     slides: [
@@ -87,7 +87,7 @@ export const POSTS: Post[] = [
     type: "carousel",
     date: "2023-03-14",
     title: "Trippy eye rug",
-    note: "60 × 120 cm runner in black and white ripples. Custom designs by DM.",
+    note: "60 × 120 cm runner in black and white ripples. Custom versions could be ordered by DM.",
     ratio: 0.8,
     still: false,
     slides: [

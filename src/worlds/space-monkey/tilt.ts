@@ -24,6 +24,8 @@ export interface HoloTiltOptions {
   still: boolean
   /** the horizontal tilt chosen with keys, so a slider can follow (-1..1; 0 when automatic again) */
   onManual?: (x: number) => void
+  /** the horizontal tilt the poster is really at while the pointer or the idle sweep drives it (-1..1, rounded to 5 %), so the gauge tells the truth */
+  onFollow?: (x: number) => void
 }
 
 type Vec = { x: number; y: number }
@@ -36,6 +38,8 @@ export class HoloTilt {
   private readonly lit: HTMLElement[]
   private readonly phase: number
   private readonly onManual?: (x: number) => void
+  private readonly onFollow?: (x: number) => void
+  private followed = NaN
   private readonly io: IntersectionObserver
 
   private pos: Vec = { ...REST }
@@ -59,6 +63,7 @@ export class HoloTilt {
     this.phase = options.phase ?? 0
     this.still = options.still
     this.onManual = options.onManual
+    this.onFollow = options.onFollow
 
     this.stage.addEventListener('pointerenter', this.onPointer)
     this.stage.addEventListener('pointermove', this.onPointer)
@@ -179,6 +184,8 @@ export class HoloTilt {
   private readonly onLeave = (): void => {
     if (!this.pointer) return
     this.pointer = null
+    // the keys or the gauge still own the pose: the gauge goes back to that value
+    if (this.manual) this.onManual?.(this.manual.x)
     this.wake()
   }
 
@@ -258,6 +265,14 @@ export class HoloTilt {
     const lx = clamp(0.5 + x * 0.5, 0, 1).toFixed(4)
     const ly = clamp(0.5 + y * 0.5, 0, 1).toFixed(4)
     const mag = Math.min(1, Math.hypot(x, y) * 1.1).toFixed(3)
+    // the gauge follows whatever drives the pose except its own value (keys and the gauge write it through onManual)
+    if (this.onFollow && (!this.manual || this.pointer)) {
+      const step = Math.round(clamp(x) * 20) / 20
+      if (step !== this.followed) {
+        this.followed = step
+        this.onFollow(step)
+      }
+    }
     for (const el of this.lit) {
       el.style.setProperty('--lx', lx)
       el.style.setProperty('--ly', ly)

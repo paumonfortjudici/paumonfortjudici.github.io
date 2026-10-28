@@ -11,6 +11,7 @@ import { ArrowIcon } from '../../components/primitives'
 import { useInView } from '../../lib/hooks/useInView'
 import { TOUR, type TourPage } from './data'
 import { Laptop, Phone } from './Devices'
+import { Sections } from './Sections'
 import { Subtitle } from './Subtitle'
 import { Tape } from './Tape'
 import { createTour } from './tour'
@@ -192,6 +193,17 @@ export function Showcase({ ready, paused }: { ready: boolean; paused: boolean })
           </div>
 
           <div ref={stageRef} className="w-somia-stage">
+            {/* a solo phone leaves the glass wide: the section on show is lettered large on its left, the sections on its right */}
+            {shown === 'phone' && (
+              <>
+                <div className="w-somia-aside w-somia-aside--l">
+                  <Subtitle tour={tour} chapters={variant.chapters} captions={page.captions} marks={marks} where="stage" />
+                </div>
+                <nav className="w-somia-aside w-somia-aside--r" aria-label="Sections of the page">
+                  <Sections tour={tour} chapters={variant.chapters} marks={marks} still={still} />
+                </nav>
+              </>
+            )}
             <Laptop key={`laptop-${pageId}`} tour={tour} variant={page.desktop} shown={shown !== 'phone'} label={labelFor('laptop')} />
             <Phone key={`phone-${pageId}`} tour={tour} variant={page.mobile} shown={shown !== 'laptop'} label={labelFor('phone')} />
             <div className="w-somia-plinth" aria-hidden="true" />

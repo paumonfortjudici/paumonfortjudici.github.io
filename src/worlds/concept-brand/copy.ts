@@ -301,7 +301,7 @@ export interface GroupCopy {
 export const GROUPS: Record<GroupId, GroupCopy> = {
   wordmark: {
     title: 'The wordmark',
-    sub: 'gotet, drawn as tube lettering',
+    sub: 'gotet, set as tube lettering',
     lines: ITEMS.wordmark.lines,
   },
   cast: {
@@ -317,7 +317,7 @@ export const GROUPS: Record<GroupId, GroupCopy> = {
     title: 'The pattern',
     sub: 'The menu as wallpaper',
     lines: [
-      'Twelve things from the vermut table, drawn as simple line icons on a half-drop lattice. Two colours only, and never a face.',
+      'Twelve things from the vermut table, set as simple line icons on a half-drop lattice. Two colours only, and never a face.',
       'It is big and bold on napkins and cups and very faint behind the wordmark. I never let a tile go below 0.3 scale, or the lines turn to mush.',
       'Try the colourways: the top of the board re-tints, and the wordmark swaps to the version that is allowed on that ground.',
     ],
@@ -334,7 +334,7 @@ export const GROUPS: Record<GroupId, GroupCopy> = {
     title: 'Takeaway',
     sub: 'Things that travel from the bar to the table',
     lines: [
-      'Cups, coasters and the glass. I draw objects as flat colour with one soft shadow and no outline: the line work belongs to the art printed on them.',
+      'Cups, coasters and the glass. I ask for objects as flat colour with one soft shadow and no outline: the line work belongs to the art printed on them.',
       'That print stays inside each object with at least 12 px of margin. A mascot once hung off the edge of a tote in a test render, which is why the rule exists.',
     ],
   },
@@ -358,7 +358,7 @@ export const GROUPS: Record<GroupId, GroupCopy> = {
     title: 'Wearables',
     sub: 'The cast leaves the bar',
     lines: [
-      'A tote, an apron and a sticker set. I draw soft goods compressed so the sizes look plausible next to each other: 0.62 px per mm for the tote and 0.40 for the apron, against 2.8 for a menu.',
+      'A tote, an apron and a sticker set. I art-direct soft goods compressed so the sizes look plausible next to each other: 0.62 px per mm for the tote and 0.40 for the apron, against 2.8 for a menu.',
     ],
   },
   posters: {
@@ -546,7 +546,7 @@ export const TOUR: { title: string; note: string }[] = [
   },
   {
     title: 'The wallpaper',
-    note: 'The menu as wallpaper: twelve little drawings on a half-drop lattice, two colours only and never a face. Try the colourways and the whole top of the board changes.',
+    note: 'The menu as wallpaper: twelve little line icons on a half-drop lattice, two colours only and never a face. Try the colourways and the whole top of the board changes.',
   },
   {
     title: 'The street and the phone',

@@ -32,6 +32,12 @@ html:root {
 @media (max-width: 720px) {
   html:root { --pm-nav-h: 58px; }
 }
+/* Wide screens: the sheets stop growing before the window does, so the side margins keep a hand's width (130 px at 1700 and up)
+   for the two desk instruments (scroll ruler, measuring tape). Below 1500 px nothing changes (the rail ruler in the nav carries the
+   progress there). tokens.css owns --wrap; this is the only place that narrows it. */
+@media (min-width: 1500px) {
+  html:root { --wrap: min(100vw - 2 * clamp(10px, 1.6vw, 28px), 1880px, max(1400px, 100vw - 260px)); }
+}
 /* a sheet that took focus from a nav link (focusSection in sectionState.ts) is not a control: no ring around the whole sheet */
 section[id][tabindex='-1']:focus,
 section[id][tabindex='-1']:focus-visible { outline: none; }
@@ -143,7 +149,7 @@ html[data-world-open] #app-root .pm-ambient { animation-play-state: paused !impo
 
 /* ---- the ruler (right margin, wide screens): six inches, one per sheet, and a paper clip that is where you are --------- */
 .pm-ruler {
-  --rw: clamp(12px, calc(var(--pm-m) - 6px), 54px);
+  --rw: clamp(12px, calc(var(--pm-m) - 8px), 66px);
   --tick: color-mix(in srgb, var(--ink) 82%, transparent);
   --t1: 3px; --t2: 4.5px; --t3: 6.5px; --t4: 9px;
   position: absolute;
@@ -211,7 +217,7 @@ html[data-world-open] #app-root .pm-ambient { animation-play-state: paused !impo
 
 /* ---- the measuring tape (left margin): the page's length in centimetres, running past as you scroll ------------------ */
 .pm-mtape {
-  --tw: clamp(14px, calc(var(--pm-m) - 8px), 40px);
+  --tw: clamp(14px, calc(var(--pm-m) - 10px), 46px);
   --cm: 37.795px;
   --tape: color-mix(in srgb, var(--butter) 94%, var(--marigold));
   position: absolute;
@@ -352,6 +358,11 @@ html.js .pm-mast__mark {
    tenths of it, whatever the window. That is as generous as the room allows, and it can never overflow. */
 .pm-mast__brace,
 .pm-mast__text { --nfs: clamp(1.2rem, 4.95cqw, 3.2rem); }
+/* where the slate stands at the right end, the notes give it its room (250 px) and are sized to what is left */
+@container (min-width: 700px) {
+  .pm-mast__brace,
+  .pm-mast__text { --nfs: clamp(1.2rem, calc((100cqw - 262px) * 0.066), 3.4rem); }
+}
 .pm-mast__brace {
   flex: none;
   width: auto;
@@ -392,6 +403,97 @@ html.js .pm-mast__text {
 @container (min-width: 600px) {
   .pm-mast__chunk { display: inline-block; white-space: nowrap; }
 }
+/* ---- the slate (Sydney now) ---- */
+.pm-sydney {
+  --stick: 20px;
+  display: none;
+  flex: none;
+  position: relative;
+  width: 212px;
+  margin: calc(var(--stick) * 1.25) clamp(8px, 1.2vw, 26px) 0 auto;
+  align-self: center;
+  color: var(--ink);
+  transform: rotate(1.6deg);
+  transform-origin: 50% 100%;
+}
+html.js .pm-sydney {
+  animation: pm-fade-in 0.6s ease both;
+  animation-delay: calc(var(--pm-name-delay, 0ms) + 1.3s);
+}
+@container (min-width: 700px) {
+  .pm-sydney { display: block; }
+}
+@container (min-width: 1000px) {
+  .pm-sydney { width: 236px; }
+}
+.pm-sydney__body {
+  position: relative;
+  padding: 9px 14px 11px;
+  border-radius: 0 0 5px 5px;
+  background-color: var(--cream);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 4px 0 color-mix(in srgb, var(--cream) 56%, var(--ink)), 0 14px 18px -10px color-mix(in srgb, var(--desk) 90%, transparent);
+}
+.pm-sydney__stick {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% - 1px);
+  height: var(--stick);
+  border-radius: 4px 4px 0 0;
+  background: repeating-linear-gradient(-58deg, var(--ink) 0 11px, var(--sec) 11px 22px);
+  box-shadow: inset 0 0 0 2px var(--ink);
+  transform-origin: 0 100%;
+  transform: rotate(-4deg);
+  animation: pm-sydney-clap 0.5s cubic-bezier(0.55, 0, 0.9, 0.6) 0.05s both;
+}
+@keyframes pm-sydney-clap { from { transform: rotate(-17deg); } 60% { transform: rotate(-17deg); } to { transform: rotate(-4deg); } }
+.pm-sydney p { margin: 0; }
+.pm-sydney__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  font-synthesis: none;
+}
+.pm-sydney__lamp {
+  flex: none;
+  width: 11px;
+  height: 11px;
+  margin-left: auto;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+}
+.pm-sydney[data-day='true'] .pm-sydney__lamp {
+  border-color: var(--ink);
+  background: var(--marigold);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--marigold) 40%, transparent);
+}
+.pm-sydney__time {
+  margin-top: 2px;
+  font-family: var(--font-label);
+  font-size: 2.35rem;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+}
+.pm-sydney__sub {
+  margin-top: 5px;
+  padding-top: 6px;
+  border-top: 2px dashed color-mix(in srgb, var(--ink) 38%, transparent);
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
 .pm-mast__stamp {
   display: none;
   flex: none;
@@ -420,7 +522,9 @@ html.js .pm-mast__stamp {
     max-width: calc(100% - 14px);
     padding-right: clamp(54px, 15vw, 72px);
   }
-  .pm-mast__mark { width: 26px; right: 18px; top: 14px; }
+  /* the asterisk follows the last letter of MONFORT instead of standing at the far end of the tab */
+  .pm-mast__tab { align-items: flex-end; padding-right: clamp(14px, 4.4vw, 22px); }
+  .pm-mast__mark { position: static; flex: none; width: 26px; margin: 0 0 clamp(36px, 11vw, 52px) 6px; }
   .pm-mast__notes { padding: 14px 18px 0 calc(var(--mast-edge) + 14px); }
   .pm-mast__brace,
   .pm-mast__note--second { display: none; }
@@ -490,13 +594,41 @@ html.js .pm-mast__stamp {
   from { transform: translateY(100%); }
   to { transform: none; }
 }
-/* reading progress as a seam: pencilled stitches along the rail, sewn over in tomato as you scroll. On wide screens the desk
-   ruler in the margin says the same thing by section; the seam says it by page, and keeps the long rail from being bare. */
+/* reading progress as a RULER along the rail (the same six inches as the desk ruler in the margin, which only wide screens have):
+   ticks and a highlighted inch for the sheet you are on, a tomato pin that slides with the page, pencilled stitches under it that are
+   sewn over in tomato as you read. It carries progress at every width, phones included. Written by PillNav through subscribeScroll. */
 .pm-nav__seam {
+  --tk: color-mix(in srgb, var(--ink) 62%, transparent);
+  --k1: 4px; --k2: 6px; --k3: 8px; --k4: 11px;
   position: absolute;
-  left: 14px;
+  left: 5.4rem;
   right: 14px;
   bottom: 2px;
+  height: 15px;
+}
+.pm-nav__ticks {
+  position: absolute;
+  inset: 0 0 4px;
+  background:
+    repeating-linear-gradient(90deg, var(--tk) 0 1px, transparent 1px calc(100% / 48)) 0 100% / 100% var(--k1) no-repeat,
+    repeating-linear-gradient(90deg, var(--tk) 0 1px, transparent 1px calc(100% / 24)) 0 100% / 100% var(--k2) no-repeat,
+    repeating-linear-gradient(90deg, var(--tk) 0 1.2px, transparent 1.2px calc(100% / 12)) 0 100% / 100% var(--k3) no-repeat,
+    repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px calc(100% / 6)) 0 100% / 100% var(--k4) no-repeat;
+}
+.pm-nav__hi {
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  width: calc(100% / 6);
+  height: 11px;
+  background: color-mix(in srgb, var(--sec) 46%, transparent);
+  will-change: transform;
+}
+.pm-nav__thread {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   height: 2px;
   background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--ink) 30%, transparent) 0 6px, transparent 6px 11px);
 }
@@ -505,6 +637,28 @@ html.js .pm-mast__stamp {
   inset: 0;
   background: repeating-linear-gradient(90deg, var(--tomato) 0 6px, transparent 6px 11px);
   clip-path: inset(0 100% 0 0);
+}
+.pm-nav__pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--tomato);
+  will-change: left;
+}
+.pm-nav__pin::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: var(--tomato);
+  box-shadow: 0 0 0 1.5px var(--cream), 0 0 0 2.5px color-mix(in srgb, var(--ink) 40%, transparent);
 }
 
 .pm-nav__tabs {
@@ -588,8 +742,8 @@ html.js .pm-mast__stamp {
   align-items: center;
   gap: 7px;
   box-sizing: border-box;
-  height: 32px;
-  padding: 0 13px 0 14px;
+  height: 40px;
+  padding: 0 14px 0 15px;
   border-radius: 10px 10px 0 0;
   background-color: var(--c);
   background-image: var(--pm-grain);
@@ -642,6 +796,10 @@ html.js .pm-mast__stamp {
   .pm-nav { --rail-h: 14px; --tab-vis: 32px; --tab-hide: 12px; --pad-b: 4px; --raise: 6px; }
   .pm-nav__count { display: none; }
   .pm-nav__rail { padding: 0; border-radius: 7px; }
+  .pm-nav__seam { left: 10px; right: 10px; bottom: 1px; height: 11px; --k1: 2px; --k2: 3px; --k3: 4px; --k4: 6px; }
+  .pm-nav__ticks { bottom: 3px; }
+  .pm-nav__hi { bottom: 3px; height: 6px; }
+  .pm-nav__pin::before { top: -2px; width: 7px; height: 7px; margin-left: -3.5px; }
   .pm-nav__tabs {
     left: 0;
     right: 52px;
@@ -667,9 +825,9 @@ html.js .pm-mast__stamp {
   align-items: center;
   gap: 9px;
   box-sizing: border-box;
-  height: 32px;
-  padding: 0 14px 0 10px;
-  border-radius: 10px 10px 0 0;
+  height: 40px;
+  padding: 0 16px 0 12px;
+  border-radius: 11px 11px 0 0;
   background-color: var(--c);
   background-image: var(--pm-grain);
   box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--cream-2) 50%, transparent), inset 0 1px 0 var(--pm-hl);
@@ -700,10 +858,10 @@ html.js .pm-mast__stamp {
 /* disabled by the OS: the tab says why, in plain words. In the rail it stays 32px tall (two lines of 13px); the footer has room for
    the sentence on one line (it wraps on a phone) */
 .pm-mt[data-off='true'] .pm-mt__label { white-space: normal; text-wrap: balance; text-align: left; }
-.pm-mt[data-variant='rail'][data-off='true'] { height: 38px; padding: 0 13px 0 10px; }
+.pm-mt[data-variant='rail'][data-off='true'] { height: 40px; padding: 0 13px 0 10px; }
 .pm-mt[data-variant='rail'][data-off='true'] .pm-mt__label { max-width: 14.8em; line-height: 1.12; }
-.pm-mt[data-variant='foot'] { border-radius: 11px 11px 0 0; height: 40px; padding: 0 16px 0 12px; }
-.pm-mt[data-variant='foot'][data-off='true'] { height: auto; min-height: 40px; padding-block: 8px; }
+.pm-mt[data-variant='foot'] { height: 44px; padding: 0 18px 0 13px; }
+.pm-mt[data-variant='foot'][data-off='true'] { height: auto; min-height: 44px; padding-block: 8px; }
 .pm-mt[data-variant='foot'][data-off='true'] .pm-mt__label { line-height: 1.15; max-width: 26em; }
 @media (min-width: 721px) {
   .pm-mt[data-variant='foot'][data-off='true'] .pm-mt__label { white-space: nowrap; max-width: none; }
@@ -717,7 +875,7 @@ html.js .pm-mast__stamp {
 }
 /* in the rail the tab keeps its words only where the six tabs leave room for them (the nav's width, not the window's) */
 @container (max-width: 1250px) {
-  .pm-mt[data-variant='rail'][data-off='true'] { height: 32px; padding: 0 10px; }
+  .pm-mt[data-variant='rail'][data-off='true'] { height: 40px; padding: 0 10px; }
   .pm-mt[data-variant='rail'][data-off='true'] .pm-mt__label {
     position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
   }
@@ -866,19 +1024,18 @@ html.js .pm-foot__credits[data-in] :is(dt, dd) {
   letter-spacing: 0.02em;
   text-wrap: balance;
 }
+.pm-foot__left { display: grid; justify-items: start; gap: 0.5rem; }
 .pm-foot__ctrl { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: flex-end; gap: 12px 18px; }
 /* a margin note in the marker face, the way the sheets have them ("pick a folder"): the last thing written on the last frame */
 .pm-foot__wrap {
-  flex: 0 0 100%;
-  margin: 0 0 0.35rem;
-  padding-right: 0.6rem;
-  text-align: right;
+  margin: 0;
+  padding-left: 0.3rem;
   color: var(--marigold);
   font-family: var(--font-hand);
-  font-size: clamp(1.6rem, 1.25rem + 1.1vw, 2.35rem);
+  font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2.6rem);
   line-height: 1;
   transform: rotate(-3deg);
-  transform-origin: 100% 100%;
+  transform-origin: 0 100%;
 }
 .pm-foot__wrap-text { position: relative; display: inline-block; padding-bottom: 0.18em; }
 
@@ -918,7 +1075,6 @@ html.js .pm-foot__credits[data-in] :is(dt, dd) {
 }
 @media (max-width: 720px) {
   .pm-foot__ctrl { flex-direction: column; align-items: flex-start; justify-content: flex-start; }
-  .pm-foot__wrap { flex: none; padding: 0 0 0 0.3rem; text-align: left; transform-origin: 0 100%; }
   .pm-mt[data-variant='foot'] { margin-left: 11px; }
   .pm-foot__credits { row-gap: 16px; }
   .pm-foot__clocks { gap: 8px 22px; }
@@ -1088,6 +1244,7 @@ html.js .pm-foot__credits[data-in] :is(dt, dd) {
   text-transform: uppercase;
   font-synthesis: none;
 }
+.pm-toast__to { padding-bottom: 3px; border-bottom: 1.5px dashed color-mix(in srgb, var(--on) 45%, transparent); }
 .pm-toast__msg { font-family: var(--font-hand); font-size: clamp(1.3rem, 1.15rem + 0.5vw, 1.65rem); line-height: 1.08; overflow-wrap: anywhere; }
 
 /* ==========================================================================

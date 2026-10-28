@@ -77,6 +77,10 @@
 
 .w-procreate-title-ink {
   display: inline-block;
+  /* Gloria's ascenders are tall: without air the top of the d and the t is cut by the write-on clip at tablet widths */
+  /* 0.1em is as much as the stage's own top padding (8 px on a phone) can give without the box poking above the folder's strip */
+  padding-top: 0.1em;
+  margin-top: -0.1em;
 }
 
 .w-procreate-started {
@@ -113,7 +117,7 @@
 
 .w-procreate-hint {
   margin: 0;
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body);
   font-weight: 700;
   line-height: 1.35;
   letter-spacing: 0.005em;
@@ -182,6 +186,22 @@
   flex: 0 0 auto;
 }
 
+/* a wooden rule is stuck along the foot of a wide wall (the same ruler that squares the prints up, full width): it uses the strip of
+   kraft the prints never reach and ties the wall to the Tidy up marks */
+.w-procreate[data-kind='wide'] .w-procreate-wall::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: clamp(16px, 1.5vw, 24px);
+  z-index: 0;
+  background:
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--ink) 70%, transparent) 0 1.5px, transparent 1.5px 60px) 0 100% / 100% 62% no-repeat,
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--ink) 55%, transparent) 0 1px, transparent 1px 12px) 0 100% / 100% 34% no-repeat,
+    linear-gradient(var(--wood), var(--wood-edge));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 45%, transparent), 0 -2px 4px -2px color-mix(in srgb, var(--ink) 40%, transparent);
+  pointer-events: none;
+}
+
 /* what a print leaves on the kraft when it is picked up: a pin hole, the ghosts of its tape */
 .w-procreate-scar {
   position: absolute;
@@ -216,40 +236,116 @@
   filter: none;
 }
 
-/* the pencil line the neat row is hung on: it shows while the prints are squared up */
-.w-procreate-guide {
+/* the pencil marks that come with Tidy up: a number over each print (reading order) and a measuring line under the row, drawn
+   left to right (clip-path only; base.css shortens the transition under reduced / paused motion) */
+.w-procreate-measure {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+}
+
+.w-procreate[data-mode='tidy'] .w-procreate-measure {
+  opacity: 1;
+}
+
+.w-procreate-measure-n {
+  position: absolute;
+  font-family: var(--hand);
+  line-height: 1;
+  color: var(--ink);
+  transform: translateX(-50%) rotate(-4deg);
+  opacity: 0.8;
+}
+
+.w-procreate-measure-line {
+  position: absolute;
+  height: 14px;
+  margin-top: -7px;
+  /* a measuring line as on a technical drawing: a rule with a tick at each end and small ones every 24 px */
+  background:
+    linear-gradient(color-mix(in srgb, var(--ink) 62%, transparent), color-mix(in srgb, var(--ink) 62%, transparent)) 0 50% / 100% 2px no-repeat,
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 62%, transparent) 2px, transparent 2px) 0 0 / 100% 100% no-repeat,
+    linear-gradient(270deg, color-mix(in srgb, var(--ink) 62%, transparent) 2px, transparent 2px) 0 0 / 100% 100% no-repeat,
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--ink) 46%, transparent) 0 1.5px, transparent 1.5px 24px) 0 50% / 100% 8px no-repeat;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.8s var(--ease-out) 0.15s;
+}
+
+.w-procreate[data-mode='tidy'] .w-procreate-measure-line {
+  clip-path: inset(0 0 0 0);
+}
+
+/* the word sits in the line, on a patch of kraft so the ticks do not run through the letters */
+.w-procreate-measure-word {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 0 0.5em;
+  font-family: var(--hand);
+  line-height: 1.2;
+  color: var(--ink);
+  background: var(--kraft);
+  transform: translate(-50%, -52%) rotate(-1deg);
+  white-space: nowrap;
+}
+
+/* the FILED stamp that lands on a print when its close-up is put away: it is pressed, held a moment and fades (opacity only) */
+.w-procreate-filed {
+  position: absolute;
+  z-index: 30;
+  display: block;
+  translate: -50% -50%;
+  pointer-events: none;
+  animation: w-procreate-filed 1.9s var(--ease-out) both;
+}
+
+@keyframes w-procreate-filed {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  72% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* a paint-chip card taped to the kraft between two prints (wide walls): the four colours of the portraits */
+.w-procreate-chipcard {
   position: absolute;
   z-index: 0;
-  left: 16px;
-  right: 16px;
-  top: 50%;
-  height: 0;
-  border-top: 2px dashed color-mix(in srgb, var(--ink) 30%, transparent);
-  opacity: 0;
-  transition: opacity 0.5s var(--ease-out);
+  left: 51%;
+  top: 7.5%;
+  display: grid;
+  gap: calc(var(--s, 1) * 8px);
+  width: calc(var(--s, 1) * 142px);
+  padding: calc(var(--s, 1) * 14px) calc(var(--s, 1) * 12px) calc(var(--s, 1) * 8px);
+  border-radius: 2px;
+  background-color: var(--stock-index);
+  background-image: var(--pm-grain);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--ink) 30%, transparent),
+    0 10px 12px -6px color-mix(in srgb, var(--ink) 40%, transparent);
+  transform: rotate(4deg);
   pointer-events: none;
 }
 
-.w-procreate-guide::before,
-.w-procreate-guide::after {
-  content: '';
-  position: absolute;
-  top: -10px;
-  width: 2px;
-  height: 18px;
-  background: color-mix(in srgb, var(--ink) 30%, transparent);
+.w-procreate-chipcard-chips {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(var(--s, 1) * 5px);
 }
 
-.w-procreate-guide::before {
-  left: 0;
+.w-procreate-chipcard-chips > span {
+  aspect-ratio: 1 / 1.5;
+  box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--ink) 14%, transparent);
 }
 
-.w-procreate-guide::after {
-  right: 0;
-}
-
-.w-procreate[data-mode='tidy'] .w-procreate-guide {
-  opacity: 1;
+.w-procreate-chipcard-word {
+  font-family: var(--hand);
+  font-size: max(14.5px, calc(var(--s, 1) * 19px));
+  line-height: 1.1;
+  color: var(--ink);
+  transform: rotate(-1.5deg);
 }
 
 /* the wall's own note: it tells you what to do and points at the first print */
@@ -562,6 +658,7 @@
 }
 
 .w-procreate-dymo {
+  display: grid;
   flex: 0 0 auto;
   min-width: 0;
   /* a label-maker strip is one line: the ruler gives way before the label wraps */
@@ -585,6 +682,30 @@
 .w-procreate-dymo-part {
   display: inline-block;
   white-space: nowrap;
+}
+
+/* two lines of label-maker tape share one cell (the strip is as wide as the longer one, so nothing jumps): the wall's name by
+   default, the keys once a print has the keyboard. A pointer user never sees the keys, a keyboard user never misses them. */
+.w-procreate-dymo > span {
+  grid-area: 1 / 1;
+}
+
+.w-procreate-dymo-keys {
+  visibility: hidden;
+}
+
+.w-procreate:has(.w-procreate-print:focus-visible) .w-procreate-dymo-what {
+  visibility: hidden;
+}
+
+.w-procreate:has(.w-procreate-print:focus-visible) .w-procreate-dymo-keys {
+  visibility: visible;
+}
+
+/* every control of the world is a tab of at least 44 px (the shared tab button only grows to that on touch screens) */
+.w-procreate .pm-tabbtn,
+.w-procreate-lb .pm-tabbtn {
+  min-height: 44px;
 }
 
 .w-procreate-eraser {
@@ -692,6 +813,39 @@
   transform: rotate(0.9deg);
 }
 
+/* a pencil timeline that stays blank: the files hold no dates */
+.w-procreate-card--when {
+  transform: rotate(-0.8deg);
+  background-color: var(--stock-pad);
+}
+
+.w-procreate-when {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 22px 6px 24px;
+  padding-bottom: 12px;
+}
+
+.w-procreate-when-dot {
+  display: grid;
+  place-items: center;
+  width: clamp(40px, 3.4vw, 54px);
+  aspect-ratio: 1;
+  border: 2.5px solid color-mix(in srgb, var(--ink) 72%, transparent);
+  border-radius: 52% 46% 54% 48% / 48% 54% 46% 52%;
+  background: var(--stock-index);
+  font-family: var(--hand);
+  font-size: clamp(1.4rem, 1.2rem + 0.5vw, 1.9rem);
+  line-height: 1;
+  color: var(--oxblood);
+}
+
+.w-procreate-when-dot:nth-child(2n) {
+  transform: translateY(-3px) rotate(4deg);
+}
+
 .w-procreate-card-title {
   margin: 0;
   padding-bottom: 0.3em;
@@ -797,10 +951,9 @@
   color: var(--oxblood);
   text-align: center;
   transform: rotate(-9deg);
-  /* a paper-coloured halo keeps the digit readable where it crosses the picture's edge */
-  text-shadow:
-    0 0 3px var(--stock-index),
-    0 0 6px var(--stock-index);
+  /* a paper-coloured outline behind the glyphs keeps the digit readable where it crosses the picture's edge */
+  paint-order: stroke fill;
+  -webkit-text-stroke: 5px var(--stock-index);
 }
 
 .w-procreate-loupe {
@@ -836,7 +989,7 @@
 .w-procreate-list-line {
   margin: 9px 0 0;
   max-width: 62ch;
-  font-size: var(--fs-caption);
+  font-size: var(--fs-body);
   line-height: 1.45;
 }
 
@@ -942,7 +1095,7 @@
   width: 100%;
   height: 100%;
   gap: 12px;
-  padding: 14px;
+  padding: 14px 14px 26px;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -1026,10 +1179,10 @@
 
 @keyframes w-procreate-write {
   from {
-    clip-path: inset(-12% 100% -22% -2%);
+    clip-path: inset(-30% 100% -40% -4%);
   }
   to {
-    clip-path: inset(-12% -2% -22% -2%);
+    clip-path: inset(-30% -6% -40% -4%);
   }
 }
 
@@ -1075,7 +1228,7 @@
 }
 
 .w-procreate[data-kind='mid'] .w-procreate-dymo {
-  display: block;
+  display: grid;
   order: 4;
   flex: 1 1 190px;
   max-width: 300px;

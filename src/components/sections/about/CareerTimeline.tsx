@@ -30,6 +30,9 @@ const opener =
     openWork(slug, origin)
   }
 
+/** "2019-10" -> "’19" (the gauge on a phone writes the year where each ribbon starts and stops; the months are in the credit beside it) */
+const short = (iso: string): string => '’' + iso.slice(2, 4)
+
 const jobVars = (job: Job, index: number): CSSProperties => {
   const tone = resolveTone(job.tone)
   return { '--s': pct(job.from).toFixed(3), '--e': pct(job.to).toFixed(3), '--c': tone.color, '--on': tone.ink, '--k': index } as CSSProperties
@@ -93,6 +96,8 @@ function JobRow({ job, index }: { job: Job; index: number }) {
       <div className="pm-ab-job__track" aria-hidden="true">
         <span className="pm-ab-job__y pm-ab-job__y--a">{AXIS_START}</span>
         <span className="pm-ab-job__y pm-ab-job__y--b">{AXIS_END - 1}</span>
+        <span className="pm-ab-job__at pm-ab-job__at--s">{short(job.fromIso)}</span>
+        <span className="pm-ab-job__at pm-ab-job__at--e">{job.toIso ? short(job.toIso) : TIMELINE.now.toLowerCase()}</span>
         <Clip job={{ ...job, label: 'left' }} />
       </div>
     </li>
@@ -388,6 +393,10 @@ export default function CareerTimeline() {
               <div className="pm-ab-lane__lab">
                 <h3 className="pm-ab-lane__title">{TIMELINE.freelance}</h3>
                 <p className="pm-ab-lane__note">{TIMELINE.freelanceNote}</p>
+                <p className="pm-ab-lane__aside">
+                  <Scribble kind="arrow" dir="left" w="2.6rem" color="oxblood" stroke={3} seed="pm-aside" draw={700} />
+                  {TIMELINE.escapeRoom}
+                </p>
               </div>
               <ul className="pm-ab-pins" ref={pinsRef} aria-label={TIMELINE.freelanceList}>
                 {PINS.map((pin, i) => (

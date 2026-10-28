@@ -42,7 +42,11 @@ export default function Toast() {
           <div className="pm-toast__paper">
             {shown.swatch && <span className="pm-toast__swatch" style={{ background: shown.swatch }} aria-hidden="true" />}
             <span className="pm-toast__text">
-              {shown.label && <span className="pm-toast__label">{shown.label}</span>}
+              {shown.label ? (
+                <span className="pm-toast__label">{shown.label}</span>
+              ) : (
+                shown.to && <span className="pm-toast__label pm-toast__to">{`To: ${shown.to}`}</span>
+              )}
               <span className="pm-toast__msg">{shown.message}</span>
             </span>
           </div>

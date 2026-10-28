@@ -22,30 +22,53 @@
   pointer-events: none;
 }
 
-/* ---- head: outline word + ghost count, the sub, the index card ------------------------------------------------------- */
+/* ---- head: one row (the outline word with its count, the sub, the index card) ------------------------------------------------ */
+.pm-wk {
+  /* wide screens: the cabinet (head, rail, folders) is one object of at most this width, so a featured folder stays about as tall as a 1440 laptop's
+     screen allows instead of growing with the sheet */
+  --wk-max: none;
+  --wk-word: clamp(4rem, 8.4vw, 10.5rem);
+}
+@media (min-width: 1700px) {
+  .pm-wk {
+    --wk-max: 1580px;
+  }
+}
+.pm-wk__head,
+.pm-wk-rail,
+.pm-wk-stage {
+  max-width: var(--wk-max);
+  margin-inline: auto;
+}
 .pm-wk__head {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 34ch) minmax(0, 1fr) auto;
-  grid-template-areas: 'word word keys' 'sub ghost keys';
-  column-gap: clamp(20px, 3vw, 56px);
-  row-gap: clamp(8px, 1.2vw, 18px);
-  align-items: start;
-  margin-bottom: clamp(28px, 3vw, 48px);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'title sub keys';
+  column-gap: clamp(20px, 2.6vw, 48px);
+  row-gap: clamp(8px, 1vw, 14px);
+  align-items: end;
+  margin-bottom: clamp(16px, 2vw, 28px);
 }
-.pm-wk__word {
-  grid-area: word;
+.pm-wk__title {
+  grid-area: title;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
   min-width: 0;
 }
-.pm-wk__sub {
-  grid-area: sub;
-  margin: 0;
+.pm-wk__word {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  --sw-size: var(--wk-word);
 }
+/* the count is the word's superscript: it peeks out behind the last letter, in the accent colour, and follows the filter */
 .pm-wk__ghost {
-  grid-area: ghost;
-  align-self: end;
-  justify-self: center;
+  flex: none;
+  margin: 0.1rem 0 0 clamp(-0.9rem, -0.6vw, -0.4rem);
   pointer-events: none;
+  --ghost-a: 0.55;
 }
 html.js .pm-wk__ghost {
   animation: pm-wk-count 0.45s var(--ease-out) both;
@@ -59,6 +82,14 @@ html.js .pm-wk__ghost {
     opacity: 1;
     transform: none;
   }
+}
+.pm-wk__sub {
+  grid-area: sub;
+  align-self: end;
+  max-width: 40ch;
+  margin: 0;
+  padding-bottom: 0.15em;
+  text-wrap: pretty;
 }
 /* the two keys named in the sub, drawn as small keycaps and never split across two lines */
 .pm-wk__hop {
@@ -83,15 +114,15 @@ html.js .pm-wk__ghost {
   transform: translateY(-1px);
 }
 
-/* the index card: ruled, clipped to the sheet, tilted. Keys are drawn as keycaps. Only where there is a keyboard. */
+/* the index card: ruled, clipped to the sheet, tilted. Three keycaps side by side, each with its word under it. Only where there is a keyboard. */
 .pm-wk-keys {
   grid-area: keys;
   position: relative;
   justify-self: end;
-  align-self: start;
-  width: clamp(15rem, 21vw, 19.5rem);
-  margin-top: 0.4rem;
-  padding: 1.9rem 1.2rem 1.15rem 2.9rem;
+  align-self: end;
+  width: clamp(19rem, 23vw, 24rem);
+  margin-top: 0.9rem;
+  padding: 1.55rem 1.3rem 1rem;
   border-top: 4px solid var(--tomato);
   border-radius: 4px 4px 6px 6px;
   background-color: var(--paper);
@@ -101,25 +132,16 @@ html.js .pm-wk__ghost {
     0 var(--edge-h) 0 color-mix(in srgb, var(--paper) 64%, var(--ink)),
     0 22px 22px -16px color-mix(in srgb, var(--ink) 55%, transparent);
   color: var(--ink);
-  transform: rotate(2.2deg);
-}
-.pm-wk-keys::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 2.05rem;
-  width: 1.5px;
-  background: color-mix(in srgb, var(--tomato) 55%, transparent);
+  transform: rotate(1.8deg);
 }
 .pm-wk-keys__clip {
   position: absolute;
   top: -1.55rem;
-  left: 1.2rem;
+  right: 1.3rem;
   z-index: 2;
 }
 .pm-wk-keys__title {
-  margin: 0 0 0.45rem;
+  margin: 0 0 0.7rem;
   font-family: var(--font-label);
   font-size: var(--fs-label);
   font-weight: 700;
@@ -130,21 +152,18 @@ html.js .pm-wk__ghost {
 }
 .pm-wk-keys__list {
   display: grid;
-  gap: 0.35rem;
+  grid-template-columns: repeat(3, auto);
+  justify-content: space-between;
+  gap: 0.6rem 0.9rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .pm-wk-keys__item {
   display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  padding-bottom: 0.3rem;
-  border-bottom: 1.5px solid color-mix(in srgb, var(--lagoon) 42%, transparent);
-}
-.pm-wk-keys__item:first-child {
-  padding-top: 0.1rem;
-  border-top: 1.5px solid color-mix(in srgb, var(--lagoon) 42%, transparent);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
 }
 .pm-wk-key {
   display: inline-grid;
@@ -173,22 +192,45 @@ html.js .pm-wk__ghost {
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
 }
+/* below 1340px the sub moves under the word and the card sits beside both */
+@media (max-width: 1339px) {
+  .pm-wk__head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'title keys' 'sub keys';
+  }
+  .pm-wk-keys {
+    align-self: center;
+    margin-top: 1.4rem;
+  }
+  .pm-wk__sub {
+    max-width: 46ch;
+  }
+}
 @media (hover: none), (pointer: coarse), (max-width: 899px) {
   .pm-wk-keys {
     display: none;
   }
   .pm-wk__head {
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas: 'word word' 'sub ghost';
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'title' 'sub';
+  }
+  .pm-wk {
+    --wk-word: clamp(4.5rem, 16vw, 10rem);
   }
 }
 @media (max-width: 639px) {
-  .pm-wk__head {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'word' 'sub';
+  .pm-wk {
+    --wk-word: clamp(4.5rem, 19vw, 7rem);
   }
-  .pm-wk__head .pm-wk__ghost {
-    display: none;
+  /* on a phone the word fills the line, so the count peeks out above its last letter instead of sitting beside it */
+  .pm-wk__title {
+    padding-top: 1.1rem;
+  }
+  .pm-wk__ghost {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
   }
 }
 
@@ -201,7 +243,7 @@ html.js .pm-wk__ghost {
   align-items: flex-start;
   gap: 16px;
   padding-bottom: 16px;
-  margin-bottom: clamp(18px, 2.2vw, 30px);
+  margin-bottom: clamp(16px, 1.8vw, 26px);
 }
 @media (min-width: 1340px) {
   .pm-wk-rail {
@@ -336,6 +378,58 @@ html.js .pm-wk__ghost {
     transform: none;
   }
 }
+/* the card is typed after it has slipped in: each line is revealed left to right in steps, with a short pause between the two lines */
+.pm-wk-holder__name,
+.pm-wk-holder__files {
+  animation: pm-wk-type 0.5s steps(16, end) 0.3s both;
+}
+.pm-wk-holder__files {
+  animation-delay: 0.62s;
+}
+@keyframes pm-wk-type {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 -2px 0 0);
+  }
+}
+
+/* the right end of the bar (wide screens only): a counter plate and a drawer pull, so the rail reads as a drawer front and not as a stripe */
+.pm-wk-pull {
+  display: none;
+}
+.pm-wk-holder--count {
+  width: 14.5rem;
+}
+/* the plate shows wherever the holder has empty paper beside it: stacked above the tabs (640 to 1339px) and on the wide row (1700px and up) */
+@media (min-width: 640px) and (max-width: 1339px) {
+  .pm-wk-rail {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: 'holder pull' 'tabs tabs';
+    align-items: end;
+  }
+  .pm-wk-rail > .pm-wk-holder {
+    grid-area: holder;
+  }
+  .pm-wk-rail > .pm-wk-tabs {
+    grid-area: tabs;
+  }
+  .pm-wk-pull {
+    grid-area: pull;
+    display: flex;
+    align-items: flex-end;
+    justify-self: end;
+  }
+}
+@media (min-width: 1700px) {
+  .pm-wk-pull {
+    display: flex;
+    align-items: flex-end;
+    margin: 0 0 0 auto;
+  }
+}
 
 /* the divider tabs: the active one is taller and fused with the bar (no edge, no gap) */
 .pm-wk-tabs {
@@ -396,6 +490,70 @@ html.js .pm-wk__ghost {
     max-width: 100%;
   }
 }
+/* phone and tablet (up to 999px, where the six tabs need about 900px): the six tabs would not fit the line, so they wrap into rows and each row stands on its own strip of the bar,
+   like a two-tier index divider; nothing scrolls sideways and no tab is ever cut by the edge. Every tab box is 54px tall (the selected one
+   is that tall, the others carry a margin) so the strips repeat on an exact pitch behind the rows. */
+@media (max-width: 999px) {
+  .pm-wk-rail {
+    padding-bottom: 0;
+    gap: 14px;
+  }
+  .pm-wk-bar {
+    display: none;
+  }
+  .pm-wk-tabs {
+    --row: 54px;
+    --strip: 12px;
+    --rgap: 8px;
+    /* tablet: a block of 3 x 2 equal tabs; phone (below): rows that fill the line by the width of their labels */
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: end;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 0 var(--strip);
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+    row-gap: calc(var(--strip) + var(--rgap));
+    column-gap: 0;
+    scroll-snap-type: none;
+    background-image:
+      radial-gradient(ellipse 7px 2.2px at 50% calc(var(--row) + var(--strip) / 2), var(--slot, color-mix(in srgb, var(--ink) 38%, transparent)) 0 98%, transparent 100%),
+      linear-gradient(to bottom, transparent var(--row), var(--bar) var(--row), var(--bar) calc(var(--row) + var(--strip)), transparent calc(var(--row) + var(--strip)));
+    background-size:
+      30px calc(var(--row) + var(--strip) + var(--rgap)),
+      100% calc(var(--row) + var(--strip) + var(--rgap));
+    background-position:
+      12px 0,
+      0 0;
+    background-repeat: repeat, repeat-y;
+  }
+  .pm-wk-rail[data-filter='all'] .pm-wk-tabs {
+    --slot: color-mix(in srgb, var(--cream) 24%, transparent);
+  }
+  .pm-wk .pm-wk-tabs .pm-wk-tab {
+    --fr: 7px;
+    flex: 1 1 auto;
+    margin-top: calc(var(--row) - var(--th) - var(--edge-h));
+    padding-inline: 8px;
+    gap: 0.45em;
+  }
+  .pm-wk .pm-wk-tabs .pm-wk-tab {
+    --th: 40px;
+  }
+  .pm-wk .pm-wk-tabs .pm-wk-tab[aria-selected='true'] {
+    --th: 54px;
+    margin-top: 0;
+  }
+}
+@media (max-width: 639px) {
+  .pm-wk-tabs {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
 
 /* ---- the grid: a bento on 12 columns ---------------------------------------------------------------------------------- */
 .pm-wk-stage {
@@ -454,6 +612,25 @@ html.js .pm-wk__ghost {
 .pm-wk-card:hover .pm-folder__art,
 .pm-wk-card:focus-visible .pm-folder__art {
   filter: var(--pm-float);
+}
+/* keyboard focus, whatever the motion setting: a registration frame round the whole folder (a 4px ink outline on an 8px paper mat), drawn with a real
+   outline so it does not depend on the lift or on the silhouette ring (which is turned off here: the two would stack up). */
+.pm-wk-card.pm-folder:focus-visible {
+  outline: 4px solid var(--focus-in);
+  outline-offset: 8px;
+  border-radius: 18px;
+  box-shadow: 0 0 0 8px var(--sheet, var(--cream));
+}
+.pm-wk-card.pm-folder:focus-visible .pm-folder__ringset {
+  opacity: 0;
+}
+/* the small controls of the section (the divider tabs and the note's tab) sit on dark or saturated paper where the two-tone drop-shadow ring is thin:
+   a plain 3px outline instead of it (the drop-shadow ring would paint over the outline), so the focus is clear whatever the colour under it */
+.pm-wk .pm-wk-tabs .pm-wk-tab:focus-visible,
+.pm-wk-note .pm-wk-note__btn:focus-visible {
+  outline: 3px solid var(--focus-in);
+  outline-offset: 4px;
+  filter: none;
 }
 /* keyboard focus raises the folder in CSS (the pointer's lift is a framer-motion spring): translate composes with the tilt framer writes */
 @media (prefers-reduced-motion: no-preference) {
@@ -564,12 +741,14 @@ html.js .pm-wk__ghost {
 /* desktop: a featured folder has a fixed height (two rows), so its print takes whatever the words leave (about 4:5, a hair shorter when
    a longer blurb needs the room, object-fit: cover trims it) instead of overflowing; tablet and phone keep the 4:5 */
 @media (min-width: 1100px) {
-  .pm-wk-cell[data-kind='f'] .pm-wk-print {
+  .pm-wk-cell[data-kind='f'] .pm-wk-print,
+  .pm-wk-card[data-concept] .pm-wk-print {
     flex: 1 1 0;
     min-height: 0;
     aspect-ratio: auto;
   }
-  .pm-wk-cell[data-kind='f'] .pm-wk-text {
+  .pm-wk-cell[data-kind='f'] .pm-wk-text,
+  .pm-wk-card[data-concept] .pm-wk-text {
     flex: none;
   }
 }
@@ -577,12 +756,17 @@ html.js .pm-wk__ghost {
   --w: 30cqw;
   --h: 6.6cqw;
 }
+/* the CONCEPT / AI-assisted stamp is pressed on the folder's own paper, in a strip under the words that concept folders keep free (extra
+   bottom padding), so it labels the work without covering the print, the years chip or the kind line */
+.pm-wk-card[data-concept] .pm-folder__body {
+  padding-bottom: calc(var(--fpad, 12px) + 40px);
+}
 .pm-wk-stamp {
   position: absolute;
-  right: 5%;
-  bottom: 7%;
+  right: 12px;
+  bottom: 6px;
   z-index: 3;
-  --size: clamp(0.95rem, 4.6cqw, 2rem);
+  --size: 0.95rem;
 }
 .pm-wk-collage {
   position: absolute;

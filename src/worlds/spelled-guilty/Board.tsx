@@ -125,8 +125,18 @@ export default function Board({ still, onRead }: { still: boolean; onRead: (case
         const b = pin.get(l.b)?.()
         if (!a || !b) return
         const dist = Math.hypot(b.x - a.x, b.y - a.y)
-        const sag = dist * (l.kind === 'row' ? 0.1 : 0.07)
-        const d = `M${a.x.toFixed(1)} ${a.y.toFixed(1)} Q${((a.x + b.x) / 2).toFixed(1)} ${((a.y + b.y) / 2 + sag).toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`
+        let d: string
+        if (l.kind === 'row') {
+          const sag = dist * 0.1
+          d = `M${a.x.toFixed(1)} ${a.y.toFixed(1)} Q${((a.x + b.x) / 2).toFixed(1)} ${((a.y + b.y) / 2 + sag).toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`
+        } else {
+          // a pulled line-up hangs on a long loose belly (a real string under its own weight) and runs behind the stickers,
+          // so it shows between them instead of striking across their faces
+          const belly = Math.max(26, dist * 0.24)
+          const c1 = { x: a.x + (b.x - a.x) * 0.28, y: a.y + (b.y - a.y) * 0.1 + belly }
+          const c2 = { x: a.x + (b.x - a.x) * 0.72, y: b.y - (b.y - a.y) * 0.1 + belly }
+          d = `M${a.x.toFixed(1)} ${a.y.toFixed(1)} C${c1.x.toFixed(1)} ${c1.y.toFixed(1)} ${c2.x.toFixed(1)} ${c2.y.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`
+        }
         pathRefs.current[i]?.setAttribute('d', d)
         shadowRefs.current[i]?.setAttribute('d', d)
       })
@@ -336,14 +346,18 @@ export default function Board({ still, onRead }: { still: boolean; onRead: (case
             )
           })}
 
-          <svg className="w-sg-threads" viewBox={`0 0 ${size.w || 100} ${size.h || BOARD_H}`} aria-hidden="true" focusable="false">
-            {links.map((l, i) => (
-              <g key={`${l.a}-${l.b}`} data-kind={l.kind} data-on={l.kind === 'row' || l.cases?.includes(selected) ? '' : undefined}>
-                <path ref={(n) => (shadowRefs.current[i] = n)} className="w-sg-thread__shadow" pathLength={1} />
-                <path ref={(n) => (pathRefs.current[i] = n)} className="w-sg-thread" pathLength={1} />
-              </g>
-            ))}
-          </svg>
+          {(['case', 'row'] as const).map((kind) => (
+            <svg key={kind} className="w-sg-threads" data-kind={kind} viewBox={`0 0 ${size.w || 100} ${size.h || BOARD_H}`} aria-hidden="true" focusable="false">
+              {links.map((l, i) =>
+                l.kind !== kind ? null : (
+                  <g key={`${l.a}-${l.b}`} data-kind={l.kind} data-on={l.kind === 'row' || l.cases?.includes(selected) ? '' : undefined}>
+                    <path ref={(n) => (shadowRefs.current[i] = n)} className="w-sg-thread__shadow" pathLength={1} />
+                    <path ref={(n) => (pathRefs.current[i] = n)} className="w-sg-thread" pathLength={1} />
+                  </g>
+                ),
+              )}
+            </svg>
+          ))}
         </div>
       </div>
 

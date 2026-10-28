@@ -15,6 +15,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { NAV } from '../../lib/copy'
 import { useMotion } from '../../lib/motion'
 import { PaperClip, Tape } from '../primitives'
+import { useFocusReturn } from './focusReturn'
 import { subscribeScroll } from './sectionState'
 import './chrome.css'
 
@@ -135,6 +136,7 @@ export function Desk() {
   const matRef = useRef<HTMLDivElement | null>(null)
   const [margin, setMargin] = useState(0)
   const { still } = useMotion()
+  useFocusReturn() // closing a world hands focus to the folder last viewed (the desk is always mounted)
 
   // a hidden tab keeps no loop running: html[data-hidden] pauses every pm-ambient animation on the site (chrome.css)
   useEffect(() => {

@@ -193,16 +193,9 @@
     grid-column: 1 / -1;
   }
 
-  /* the lone fifth chip lies down: swatch on the left, its numbers on the right */
-  .w-plana-chips li:last-child .w-plana-chip {
-    grid-template-columns: 34% minmax(0, 1fr);
-    grid-template-rows: auto;
-  }
+  /* the lone fifth chip spans the row but is the same tag as the others: swatch on top with its punched hole, then the numbers */
   .w-plana-chips li:last-child .w-plana-chip__tile {
-    height: auto;
-    min-height: 100%;
-    border-right: var(--outline) solid var(--night);
-    border-bottom: 0;
+    height: 3.4rem;
   }
 
   .w-plana-chips li:nth-child(n) {

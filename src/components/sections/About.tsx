@@ -8,6 +8,7 @@ import CareerTimeline from './about/CareerTimeline'
 import Credentials, { Education } from './about/Credentials'
 import Portrait from './about/Portrait'
 import Skills from './about/Skills'
+import { honest } from './about/text'
 import { useNarrow } from './about/useNarrow'
 import './about.css'
 
@@ -23,9 +24,8 @@ const NBSP = String.fromCharCode(160)
 const WORD_JOINER = String.fromCharCode(0x2060)
 const SHORT_WORD = /\b(a|A|I|In|in|as|to|of|on|at|by|or|so)\s+(?=\S)/g
 const YEAR_RANGE = /(\d{4})–(\d{2})\s+/g
-const LAY_OUT = /\blay\s+out\b/g
 const bind = (text: string): string =>
-  text.replace(SHORT_WORD, `$1${NBSP}`).replace(YEAR_RANGE, `$1–${WORD_JOINER}$2${NBSP}`).replace(LAY_OUT, `lay${NBSP}out`)
+  text.replace(SHORT_WORD, `$1${NBSP}`).replace(YEAR_RANGE, `$1–${WORD_JOINER}$2 `)
 
 function emphasise(text: string): ReactNode[] {
   let nodes: ReactNode[] = [text]
@@ -41,7 +41,7 @@ function emphasise(text: string): ReactNode[] {
         next.push(chunk)
         if (j < chunks.length - 1)
           next.push(
-            <em className="pm-ab-em" key={`${phrase}-${i}-${j}`}>
+            <em className="pm-ab-em" data-long={phrase.includes(' ') ? '' : undefined} key={`${phrase}-${i}-${j}`}>
               {phrase}
             </em>,
           )
@@ -57,7 +57,7 @@ function emphasise(text: string): ReactNode[] {
  * and the voice rule is short sentences, so this section sets it as two sentences. If copy.ts changes, this is a no-op.
  */
 function sentences(text: string): string {
-  return text.replace(new RegExp(' ' + String.fromCharCode(0x2014) + ' ([a-z])'), (_all, letter: string) => '. ' + letter.toUpperCase())
+  return honest(text).replace(new RegExp(' ' + String.fromCharCode(0x2014) + ' ([a-z])'), (_all, letter: string) => '. ' + letter.toUpperCase())
 }
 
 /** the first sentence is the standfirst, the rest is the body */
@@ -104,7 +104,7 @@ export function About() {
           </div>
 
           <Reveal className="pm-ab-copy">
-            <p className="pm-ab-lead">{bind(lead)}</p>
+            <p className="pm-ab-lead">{bind(honest(lead))}</p>
             {rest && <p className="pm-ab-body t-body">{emphasise(sentences(rest))}</p>}
           </Reveal>
         </div>

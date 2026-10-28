@@ -76,14 +76,17 @@ export function Footer() {
           </dl>
 
           <div className="pm-foot__bottom">
-            <KeyHints className="pm-foot__keys" />
-            <div className="pm-foot__ctrl">
+            {/* the last thing written on the last frame sits right above the key hints, on the same side: one block, no empty corner */}
+            <div className="pm-foot__left">
               <p className="pm-foot__wrap">
                 <span className="pm-foot__wrap-text">
                   {CHROME.wrap}
                   <Scribble kind="underline" at="under" color="var(--marigold)" seed={11} />
                 </span>
               </p>
+              <KeyHints className="pm-foot__keys" />
+            </div>
+            <div className="pm-foot__ctrl">
               <MotionToggle variant="foot" />
               <TabButton href="#cover" onClick={backToCover} tone="marigold" size="md" icon={<ArrowIcon dir="up" />}>
                 {FOOTER.back}

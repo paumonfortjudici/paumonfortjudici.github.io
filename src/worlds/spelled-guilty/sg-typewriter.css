@@ -33,7 +33,7 @@
   bottom: calc(100% - 0.6rem);
   width: min(100%, 36rem);
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   transform: translateX(-50%);
   visibility: hidden;
   pointer-events: none;
@@ -85,15 +85,12 @@
   line-height: var(--lh);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  /* ink bleeding into the fibres */
-  text-shadow: 0 0 0.6px rgb(28 21 22 / 0.7);
 }
 
 .w-sg-typed--head {
   color: var(--sg-marker);
   font-weight: 700;
   letter-spacing: 0.04em;
-  text-shadow: 0 0 0.6px rgb(168 33 31 / 0.7);
 }
 
 /* SUBJECT / FORMAT: a label column and a value column; a long value wraps under the value, like a typed form */
@@ -344,6 +341,30 @@
   }
   .w-sg-sheet {
     font-size: 1.22rem;
+  }
+}
+
+/* a big screen: the whole machine grows, so the sheet and its type fill the right-hand side instead of floating in it */
+@media (min-width: 1800px) {
+  .w-sg-clipnote {
+    right: -9.6rem;
+  }
+  .w-sg-typeskip,
+  .w-sg-sheet,
+  .w-sg-bail {
+    width: min(100%, 52rem);
+  }
+  .w-sg-machine {
+    width: min(100%, 68rem);
+  }
+  .w-sg-platen {
+    width: min(100%, 56rem);
+  }
+  .w-sg-tray {
+    width: min(100%, 50rem);
+  }
+  .w-sg-sheet {
+    font-size: 1.42rem;
   }
 }
 

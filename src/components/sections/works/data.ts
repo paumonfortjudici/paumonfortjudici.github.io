@@ -141,7 +141,7 @@ export const ART: Record<string, Art> = {
   },
   'spelled-guilty': {
     alt: 'The Spelled Guilty paperback on a kraft table beside an open case file and word search.',
-    peek: { w: 428, h: 640, x: 21, rot: -3 },
+    peek: { w: 388, h: 640, x: 21, rot: -3 },
   },
   'space-monkey': {
     alt: 'The TYLER and SMITH escape-room posters pinned side by side, with the monkey-astronaut patch.',
@@ -167,6 +167,15 @@ export const ART: Record<string, Art> = {
     alt: 'Four die-cut doodle stickers piled on cream paper: a rug maker with a tufting gun and a peeling corner, a skater with a boombox, a gardener carrying a huge plant and a director with a megaphone.',
     peek: { w: 430, h: 632, x: 76, rot: 4, k: 0.95 },
   },
+}
+
+/**
+ * Cards whose peek is not the registry's peek.webp. Spelled Guilty's registry peek is the paperback cover, which is also the print inside the
+ * card (the Cover deck uses it): the card's own peek is a die-cut suspect from the book (public/works/spelled-guilty/peek-suspect.webp,
+ * derived from stickers/suspect-10A.webp with a paper die-cut border), a second object instead of a second copy of the first.
+ */
+export const PEEK_SRC: Record<string, string> = {
+  'spelled-guilty': '/works/spelled-guilty/peek-suspect.webp',
 }
 
 export interface FallbackArt {
@@ -250,3 +259,6 @@ export const FILTER_TONE: Record<FilterId, { color: string; ink: string }> = {
   illustration: { color: 'var(--bubblegum)', ink: 'var(--ink)' },
   print: { color: 'var(--lilac)', ink: 'var(--ink)' },
 }
+
+/** All while another drawer is open: a pale blank divider (ink label) so the one black tab in the rail is always the selected one */
+export const IDLE_ALL_TONE = { color: 'color-mix(in srgb, var(--ink) 13%, var(--cream))', ink: 'var(--ink)' }

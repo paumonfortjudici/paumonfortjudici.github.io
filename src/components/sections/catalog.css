@@ -74,38 +74,42 @@
 .pm-cat-top {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.26fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.62fr) minmax(0, 1fr);
+  grid-template-rows: 1fr auto;
+  grid-template-areas:
+    'title card'
+    'sub card';
   align-items: end;
   gap: clamp(1.5rem, 4vw, 4.5rem);
-  padding: clamp(10px, 1.4vw, 22px) 0 clamp(26px, 3vw, 46px);
+  padding: clamp(4px, 0.6vw, 10px) 0 clamp(16px, 1.8vw, 28px);
 }
-.pm-cat-top__word {
-  position: relative;
-  min-width: 0;
-  padding-top: clamp(2.4rem, 5.2vw, 5.4rem);
-}
-/* the ghost count peeks out above the first letter, like the template's (05) */
-.pm-cat-ghost {
+.pm-cat-top__title { grid-area: title; position: relative; justify-self: start; align-self: end; max-width: 100%; min-width: 0; margin: clamp(1.8rem, 2.6vw, 2.8rem) 0 clamp(-2.6rem, -2.2vw, -1.2rem); /* the lettering carries its own air below the baseline */ }
+/* the count of files, drawn as a crisp outlined exponent above the last letter (it used to be a faint ghost behind the word) */
+.pm-cat-sup {
   position: absolute;
-  left: 0.2%;
-  top: 0;
-  max-width: none;
-  color: var(--marigold);
-  --ghost-a: 0.26;
+  left: 0.3rem;
+  top: -1.75rem;
+  z-index: 2;
+  display: block;
+  color: var(--cream);
+  font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.6rem);
+  transform: rotate(-4deg);
+  transform-origin: left bottom;
+  pointer-events: none;
 }
 .pm-cat-sub {
+  grid-area: sub;
   max-width: 36ch;
   text-wrap: balance;
-  margin: clamp(0.9rem, 1.5vw, 1.6rem) 0 0;
+  margin: 0;
   color: var(--muted-on-sheet);
 }
 
 .pm-cat-top__card {
-  --cat-cardpad: clamp(3rem, 4vw, 4rem);
+  grid-area: card;
   position: relative;
   justify-self: end;
   width: min(100%, clamp(30rem, 29vw, 44rem));
-  padding-bottom: var(--cat-cardpad);
 }
 
 /* ---- the index card ----------------------------------------------------------------------------------------------- */
@@ -115,7 +119,7 @@
   position: relative;
   box-sizing: border-box;
   margin: 0;
-  padding: 0.55rem var(--cp) clamp(12px, 1.1vw, 18px);
+  padding: 0.55rem var(--cp) clamp(26px, 2.2vw, 32px);
   border-radius: 5px;
   background-color: var(--paper);
   background-image: var(--pm-grain);
@@ -140,15 +144,48 @@
   font-weight: 400;
   cursor: text;
 }
+/* the writing surface is drawn as a pen box (so the field reads as a field at rest), and a small flag says what it is for */
+.pm-cat-card__field::before {
+  content: '';
+  position: absolute;
+  inset: -3px calc(var(--cp) - 9px) 0;
+  border: 2.5px solid color-mix(in srgb, var(--ink) 72%, transparent);
+  border-radius: 7px 4px 8px 3px / 4px 8px 3px 7px;
+  background: color-mix(in srgb, white 38%, transparent);
+  pointer-events: none;
+}
+.pm-cat-card__field:focus-within::before { border-color: var(--tomato); }
+.pm-cat-card__flag {
+  position: absolute;
+  right: calc(var(--cp) + 4px);
+  bottom: -1.5rem;
+  z-index: 3;
+  padding: 0.22rem 0.55rem 0.18rem;
+  border-radius: 3px;
+  background: var(--tomato);
+  color: var(--cream);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  transform: rotate(-2.5deg);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+.pm-cat-card__flag[data-show] { opacity: 1; }
 .pm-cat-card__input {
+  --ih: max(0px, calc(44px - 1.85rem)); /* the hit area reaches 44px; padding and a negative margin keep the text on its ruled line */
   position: relative;
   z-index: 1;
   display: block;
   box-sizing: border-box;
   width: 100%;
-  height: 1.85rem;
-  margin: 0;
-  padding: 0;
+  height: calc(1.85rem + var(--ih));
+  margin: calc(var(--ih) / -2) 0;
+  padding: calc(var(--ih) / 2) 0;
   border: 0;
   border-radius: 3px;
   background: transparent;
@@ -223,13 +260,16 @@
   letter-spacing: 0.04em;
   color: var(--ink-3);
 }
-.pm-cat-card__try-k { margin-right: 0.55rem; text-transform: uppercase; letter-spacing: var(--ls-label); }
+.pm-cat-card__try-k { margin-left: 1.6rem; margin-right: 0.55rem; text-transform: uppercase; letter-spacing: var(--ls-label); }
 .pm-cat-card__try-w { display: inline-flex; align-items: center; }
 .pm-cat-card__try-w > [aria-hidden] { margin: 0 0.45rem 0 -0.15rem; }
 .pm-cat-card__ex {
   position: relative;
-  min-height: 24px;
-  padding: 0 2px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px; /* a 44px target; the negative margin gives the line its own height back */
+  margin-block: -8.5px;
+  padding: 0 6px;
   border-radius: 3px;
   color: var(--ink);
   font: inherit;
@@ -245,7 +285,8 @@
   position: absolute;
   left: -2px;
   right: -2px;
-  bottom: -0.12rem;
+  bottom: auto;
+  top: calc(50% + 0.45rem);
   height: 0.5rem;
   background: var(--tomato);
   -webkit-mask: var(--cat-pen-b) center / 100% 100% no-repeat;
@@ -259,16 +300,15 @@
 }
 .pm-cat-card__ex:focus-visible { text-decoration-color: transparent; }
 .pm-cat-card__ex:focus-visible::after { clip-path: inset(0 0 0 0); }
-@media (pointer: coarse) {
-  .pm-cat-card__ex { min-height: 44px; padding: 0 6px; display: inline-flex; align-items: center; }
-}
 
 /* the hand-written note and the arrow that points from the card down to the first folder's tab */
 .pm-cat-note {
-  position: absolute;
-  left: 0.4rem;
-  top: calc(100% - var(--cat-cardpad) + 0.95rem);
-  display: block;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.2rem;
+  margin: 0.5rem 0 -0.9rem 0.4rem;
   color: var(--marigold);
   pointer-events: none;
 }
@@ -280,8 +320,8 @@
   transform: rotate(-2.5deg);
   transform-origin: left center;
 }
-.pm-cat-note__arrow { position: relative; display: block; width: 5rem; height: 9.5rem; margin: 0.1rem 0 0 0.8rem; }
-.pm-cat-note__arrow .pm-sc { position: absolute; left: 50%; top: 50%; max-width: none; margin: -2.5rem 0 0 -4.75rem; }
+.pm-cat-note__arrow { position: relative; display: block; flex: none; width: 3.4rem; height: 3.2rem; margin: 0.9rem 0 0 0.2rem; }
+.pm-cat-note__arrow .pm-sc { position: absolute; left: 50%; top: 50%; max-width: none; margin: -1.4rem 0 0 -2.6rem; }
 /* the arrow crosses the leader gauge: an ink keyline keeps the marigold line readable over any folder colour */
 .pm-cat-note__arrow svg { filter: drop-shadow(0 0 1.5px var(--ink)) drop-shadow(0 0 4px var(--ink)); }
 
@@ -308,12 +348,90 @@
   white-space: nowrap;
 }
 .pm-cat-count[data-empty] { color: var(--tomato); }
+.pm-cat-shelf__tab,
+.pm-cat-clear { min-height: 44px; }
 .pm-cat-clear { transition: opacity 0.2s ease, visibility 0s, transform 0.16s var(--ease-out), --pm-lift 0.16s var(--ease-out); }
 .pm-cat-clear[data-idle] {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: opacity 0.2s ease, visibility 0s 0.2s;
+}
+
+/* ---- the drawer index: ten colour spines standing on the rule (Spines.tsx) ----------------------------------------------- */
+.pm-cat-spines { position: relative; width: 100%; padding-top: 10px; /* room for the lifted (open) spine */ }
+.pm-cat-spines__row { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); align-items: end; gap: 3px; margin: 0; padding: 0; list-style: none; }
+.pm-cat-spines__row > li { margin: 0; padding: 0; }
+.pm-cat-spine {
+  position: relative;
+  display: grid;
+  place-items: end center;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 44px;
+  height: 50px;
+  margin: 0 0 var(--edge-h, 3px);
+  padding: 0 0 9px;
+  border: 0;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--c);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 color-mix(in srgb, var(--c) 62%, var(--ink));
+  color: var(--on);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.22s var(--ease-out);
+}
+/* the grip of a divider tab */
+.pm-cat-spine::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 16px;
+  height: 4px;
+  margin-left: -8px;
+  border-radius: 2px;
+  background: currentColor;
+  opacity: 0.32;
+}
+.pm-cat-spine[data-open] { transform: translateY(-9px); height: 59px; }
+.pm-cat-spine[data-open]::before { opacity: 0.9; }
+.pm-cat-spine[data-thin] { background-color: color-mix(in srgb, var(--ink) 76%, var(--c)); color: var(--cream); box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 color-mix(in srgb, var(--ink) 70%, var(--c)); }
+.pm-cat-spine:focus-visible { outline: none; filter: var(--pm-ring); }
+/* the folder's name on a flag above the spine, for a pointer or a focused key */
+.pm-cat-spine::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  z-index: 6;
+  padding: 0.3rem 0.6rem 0.25rem;
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: var(--fs-label);
+  line-height: 1.1;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translate(-50%, 4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.2s var(--ease-out);
+}
+.pm-cat-spine:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+@media (hover: hover) and (pointer: fine) {
+  .pm-cat-spine:hover { transform: translateY(-5px); }
+  .pm-cat-spine[data-open]:hover { transform: translateY(-9px); }
+  .pm-cat-spine:hover::after { opacity: 1; transform: translate(-50%, 0); }
 }
 
 /* the empty state: a typed slip that folds open above the stack (the stack stays where it is, intact and dimmed) */
@@ -406,7 +524,9 @@
 .pm-cat-band[data-state='thin'] .pm-cat-no { color: var(--ink); }
 
 /* the tab says FOLDER 03 and points; the arrow turns down when the band is open */
-.pm-cat-tab { display: inline-flex; align-items: center; }
+.pm-cat-tab { position: relative; display: inline-flex; align-items: center; }
+/* the tab is a pointer shortcut: its hit area reaches 44px (up into the dead zone of the band above, down into the band's own header) */
+.pm-cat-tab::before { content: ''; position: absolute; inset: -16px -6px -4px; }
 .pm-cat-tab__arrow { display: inline-flex; flex: none; width: 1.3em; height: 1.3em; margin: 0 -0.25em 0 0.2em; transition: transform 0.35s var(--ease-out); }
 .pm-cat-tab__arrow > svg { width: 100%; height: 100%; }
 .pm-cat-band[data-state='open'] .pm-cat-tab__arrow { transform: rotate(90deg); }
@@ -818,8 +938,8 @@ html.js .pm-cat-fold[data-open] .pm-cat-cut { animation: pm-cat-stick 0.7s cubic
   top: 0;
   z-index: 30;
   box-sizing: border-box;
-  width: 12.25rem;
-  padding: 8px 8px 0;
+  width: 10rem; /* keep in step with CARD_W in Preview.tsx */
+  padding: 7px 7px 0;
   border-radius: 3px;
   background-color: var(--paper);
   background-image: var(--pm-grain);
@@ -923,11 +1043,13 @@ html.js .pm-cat-stack[data-in] .pm-cat-item { transition-delay: calc(var(--i, 0)
    small screens: the rails slim down, the title takes the full width, the meta drops under it
    ========================================================================== */
 @media (max-width: 1000px) {
-  .pm-cat-top { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
-  .pm-cat-top__card { justify-self: start; width: min(100%, 34rem); padding-bottom: 0.6rem; }
+  .pm-cat-top { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: 'title' 'sub' 'card'; gap: 1.6rem; }
+  .pm-cat-top__title { margin-bottom: -1rem; }
+  .pm-cat-sub { margin-top: 0; }
+  .pm-cat-top__card { justify-self: start; width: min(100%, 34rem); }
   .pm-cat-leader { right: -16vw; top: calc(var(--meta-h, 48px) + 34vw); width: min(70vw, 40rem); }
   /* stacked: the arrow would point at the filter tabs, not at the first folder, so only the note stays */
-  .pm-cat-note { position: static; margin-top: 0.4rem; }
+  .pm-cat-note { margin: 0.7rem 0 0.35rem 0.4rem; }
   .pm-cat-note__arrow { display: none; }
   /* the meta column is narrower than the title: years and group stack instead of running on */
   .pm-cat-big__in { --cat-meta-w: max(8rem, min(15rem, 34%)); }
@@ -940,6 +1062,8 @@ html.js .pm-cat-stack[data-in] .pm-cat-item { transition-delay: calc(var(--i, 0)
 /* a wide screen (1600 and up): the print grows and the blurb takes more of the row, so the open band has no hole beside its text */
 @media (min-width: 1600px) {
   .pm-cat { --cat-print: clamp(28rem, 25vw, 38rem); }
+  /* the sub grows with the word, so the head has no hole between the sub and the drawer index */
+  .pm-cat .pm-cat-sub { max-width: 46ch; font-size: clamp(1.7rem, 0.9rem + 0.9vw, 2.3rem); line-height: 1.28; }
   .pm-cat-blurb { max-width: 46ch; }
   .pm-cat-kit { gap: 1.8rem clamp(2rem, 3.4vw, 4.4rem); }
   .pm-cat-slate { flex-basis: clamp(26rem, 25vw, 40rem); }
@@ -989,13 +1113,20 @@ html.js .pm-cat-stack[data-in] .pm-cat-item { transition-delay: calc(var(--i, 0)
   .pm-cat-shelf__tabs { gap: 0; }
   .pm-cat-shelf .pm-tabbtn.pm-cat-shelf__tab { padding: 0 12px; letter-spacing: 0.05em; }
   .pm-cat-shelf__end { width: 100%; justify-content: space-between; }
+  /* two rows of five: each spine keeps a 44px target */
+  .pm-cat-spines__row { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px 6px; }
+  .pm-cat-spine { height: 50px; }
+  .pm-cat-spine[data-open] { height: 58px; }
+  .pm-cat-spine::after { display: none; }
   /* the leader and the arrow belong to the wide layout: on a phone the arrow would point at a tab, not at the first folder */
   .pm-cat-leader { display: none; }
   .pm-cat-note__arrow { display: none; }
-  .pm-cat-note { position: static; margin-top: 0.4rem; }
   .pm-cat-top__card { padding-bottom: 0.6rem; }
-  /* the tape on the index card hangs over the sheet, not over the edge of the screen */
-  .pm-cat-card > .pm-tape { margin: 0.5rem 0 0 1.1rem; }
+  /* the tape on the index card hangs over the sheet, not over the edge of the screen; the TRY label stands clear of it */
+  .pm-cat-card > .pm-tape { margin: 0.5rem 0 0 0.9rem; }
+  .pm-cat-card__try-k { margin-left: 3.4rem; }
+  /* the count of files stands above the word's last letter instead of beside it (there is no room beside it) */
+  .pm-cat-sup { left: auto; right: 0; top: -1.45rem; transform: rotate(6deg); }
 }
 
 /* a narrow phone (360 and below is most Android devices): every pixel goes to the giant titles, which must still wrap within two lines */

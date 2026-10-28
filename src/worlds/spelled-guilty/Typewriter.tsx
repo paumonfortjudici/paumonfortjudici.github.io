@@ -11,7 +11,8 @@ import Keys, { type KeysHandle } from './Keys'
 import Scorecard from './Scorecard'
 import './sg-typewriter.css'
 
-const SPEED = 92 // characters per second, before the pauses (about twelve seconds for the whole sheet; phones type faster)
+const SPEED = 140 // characters per second, before the pauses (about eight seconds for the whole sheet; phones type faster)
+const PREFILL = 4 // the heading and the two form lines are already typed when the sheet arrives: it is never a blank rectangle
 
 export default function Typewriter({ scrollRef, still, onRead }: { scrollRef: RefObject<HTMLElement>; still: boolean; onRead: (caseNo: number) => boolean }) {
   const sheetRef = useRef<HTMLDivElement>(null)
@@ -19,7 +20,7 @@ export default function Typewriter({ scrollRef, still, onRead }: { scrollRef: Re
   const lines = SG.type.lines
   const wide = useMediaQuery('(min-width: 900px)')
   // typing starts when the top of the sheet is well inside the screen, and only runs while the sheet is on screen and the tab is visible
-  const onScreen = useInView(sheetRef, { root: scrollRef, threshold: 0, rootMargin: '0px 0px -20% 0px' })
+  const onScreen = useInView(sheetRef, { root: scrollRef, threshold: 0, rootMargin: '0px 0px -10% 0px' })
   const [started, setStarted] = useState(false)
   const [tabHidden, setTabHidden] = useState(false)
   useEffect(() => {
@@ -42,7 +43,7 @@ export default function Typewriter({ scrollRef, still, onRead }: { scrollRef: Re
   }, [lines])
   const total = flat.length + 1
 
-  const [k, setK] = useState(still ? total : 0)
+  const [k, setK] = useState(still ? total : starts[Math.min(PREFILL, starts.length - 1)])
   const done = k >= total
   const typing = started && onScreen && !tabHidden && !done && !still
 

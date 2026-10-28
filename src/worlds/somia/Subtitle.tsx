@@ -13,7 +13,7 @@ interface SubtitleProps {
   captions: Record<string, Caption>
   /** each chapter's position on the tape, 0..1 */
   marks: number[]
-  where: 'glass' | 'sill'
+  where: 'glass' | 'sill' | 'stage'
 }
 
 export function Subtitle({ tour, chapters, captions, marks, where }: SubtitleProps) {

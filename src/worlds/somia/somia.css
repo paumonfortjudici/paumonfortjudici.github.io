@@ -433,8 +433,8 @@ html.js .w-somia-chalk[data-ready='false'] .w-somia-chalk__s {
   stroke-dashoffset: 1;
 }
 html.js .w-somia-chalk[data-ready='true'] .w-somia-chalk__s {
-  animation: w-somia-chalk 0.26s cubic-bezier(0.5, 0, 0.3, 1) both;
-  animation-delay: calc(450ms + var(--i, 0) * 62ms);
+  animation: w-somia-chalk 0.2s cubic-bezier(0.5, 0, 0.3, 1) both;
+  animation-delay: calc(250ms + var(--i, 0) * 34ms);
 }
 @keyframes w-somia-chalk {
   from {
@@ -449,8 +449,8 @@ html.js .w-somia-chalk[data-ready='true'] .w-somia-chalk__s {
   display: flex;
   flex-direction: column;
   gap: 1px;
-  width: min(100%, 17.5rem);
-  margin: -10px 0 0 auto;
+  width: calc(100% - 8px);
+  margin: -10px 0 0 4px;
   padding: 10px 14px 11px;
   background: var(--sm-paper);
   border-radius: 1px;
@@ -493,7 +493,7 @@ html.js .w-somia-chalk[data-ready='true'] .w-somia-chalk__s {
 }
 .w-somia-notice__lead {
   font-family: var(--head);
-  font-size: clamp(1.25rem, 1.45cqw, 1.7rem);
+  font-size: clamp(1.5rem, 2cqw, 2.2rem);
   font-weight: 500;
   line-height: 1.12;
   letter-spacing: 0;
@@ -501,7 +501,7 @@ html.js .w-somia-chalk[data-ready='true'] .w-somia-chalk__s {
 }
 .w-somia-notice__body {
   margin-top: 0.55em;
-  font-size: 14.5px;
+  font-size: 15.5px;
   line-height: 1.5;
 }
 .w-somia-notice__short {
@@ -716,7 +716,7 @@ html.js .w-somia-chalk[data-ready='true'] .w-somia-chalk__s {
 /* the real address of the page on show, small, under the switcher */
 .w-somia-url {
   max-width: 40cqw;
-  margin-top: 2px;
+  margin-top: 9px;
   color: #c9c5bb;
   font-size: 13px;
   font-weight: 300;
@@ -1257,6 +1257,7 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
   transform: translateX(-50%);
 }
 .w-somia-tape__chapter button {
+  position: relative;
   display: block;
   min-height: 28px;
   padding: 4px 3px 3px;
@@ -1269,6 +1270,11 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
   text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
+}
+.w-somia-tape__chapter button::before {
+  content: '';
+  position: absolute;
+  inset: -9px -5px -9px;
 }
 .w-somia-tape__chapter button[aria-current='true'] {
   border-bottom-color: var(--sm-peri);
@@ -1682,16 +1688,25 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
   width: 68px;
   height: 68px;
 }
+/* a browser tab on its strip: the shop's own page title, a close mark, the real favicon */
+.w-somia-fav__bar {
+  display: block;
+  width: 270px;
+  max-width: 100%;
+  padding: 9px 12px 0;
+  border-radius: 8px 8px 0 0;
+  background: #dcdad4;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
 .w-somia-fav__tab {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 250px;
-  padding: 8px 12px 7px;
-  border-radius: 8px 8px 0 0;
+  padding: 8px 10px 8px 12px;
+  border-radius: 9px 9px 0 0;
   background: var(--sm-white);
-  box-shadow: 0 -1px 0 var(--sm-hair);
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.2;
   white-space: nowrap;
 }
@@ -1700,11 +1715,17 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
   width: 18px;
   height: 18px;
 }
-.w-somia-fav__tab span {
+.w-somia-fav__title {
+  flex: 1 1 auto;
   min-width: 0;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, #000 74%, transparent);
-  mask-image: linear-gradient(90deg, #000 74%, transparent);
+  text-overflow: ellipsis;
+}
+.w-somia-fav__x {
+  flex: none;
+  font-size: 18px;
+  line-height: 1;
+  color: #5c5a55;
 }
 
 /* type card */
@@ -1943,6 +1964,8 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
 
 /* ==========================================================================
    GALLERY: eight framed screens and the lightbox
+   A hang of twelve columns beside a sticky headline: every row is filled edge to edge, every frame shows the part of the screen
+   that matters (zoomed, not a thumbnail of the whole page) in a slim mat; the full screen is one click away.
    ========================================================================== */
 .w-somia-gallery {
   padding-top: clamp(36px, 5vw, 80px);
@@ -1951,33 +1974,41 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
 .w-somia-gallery__wall {
   zoom: var(--zoom);
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: clamp(30px, 3.4vw, 56px) clamp(14px, 2.2vw, 36px);
+  grid-template-columns: minmax(230px, 21%) minmax(0, 1fr);
+  gap: clamp(24px, 3.2vw, 56px);
   align-items: start;
 }
-.w-somia-gallery__list {
-  display: contents;
-}
-/* the wall text: a small headline beside the first frames */
+/* the wall text stays in view while the frames go by */
 .w-somia-gallery__head {
+  position: sticky;
+  top: 76px;
   display: flex;
   flex-direction: column;
-  grid-column: 1 / span 4;
-  grid-row: 1;
   align-items: flex-start;
-  align-self: start;
-  gap: 8px;
-  padding-top: clamp(0px, 1.5vw, 24px);
+  gap: 12px;
+  padding-top: clamp(0px, 1vw, 16px);
 }
 .w-somia-gallery__title {
   /* two lines at every width: "eight screens," / "framed" */
   max-width: 14ch;
-  font-size: clamp(2.6rem, 4.4vw, 4.6rem);
+  font-size: clamp(2.6rem, 4.2vw, 4.6rem);
+}
+.w-somia-gallery__list {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(14px, 1.8vw, 30px);
+  align-items: stretch;
 }
 .w-somia-fr {
   --fc: #151515;
   --mc: var(--sm-white);
+  --capsp: 58px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
+  /* the museum label hangs in this reserved strip, so every frame in a row ends on the same line */
+  padding-bottom: var(--capsp);
 }
 .w-somia-fr[data-frame='white'] {
   --fc: #fdfdfb;
@@ -1987,51 +2018,28 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
   --fc: var(--sm-sage);
   --mc: var(--sm-paper);
 }
-/* a salon hang: different sizes, bottoms or centres lined up, never three alike in a row */
+/* the hang: 8 + 4, 4 + 4 + 4, 3 + 6 + 3 (a row's frames stretch to the tallest, their pictures are cropped to fit) */
 .w-somia-fr[data-id='hero'] {
-  grid-column: 5 / span 8;
-  grid-row: 1 / span 2;
-  align-self: center;
+  grid-column: span 8;
 }
 .w-somia-fr[data-id='product'] {
-  grid-column: 1 / span 3;
-  grid-row: 2;
-  align-self: end;
+  grid-column: span 4;
 }
-.w-somia-fr[data-id='menu'] {
-  grid-column: 1 / span 3;
-  grid-row: 3;
-  align-self: end;
-}
-.w-somia-fr[data-id='collection'] {
-  grid-column: 4 / span 5;
-  grid-row: 3;
-  align-self: end;
-}
+.w-somia-fr[data-id='menu'],
+.w-somia-fr[data-id='collection'],
 .w-somia-fr[data-id='materials'] {
-  grid-column: 9 / span 4;
-  grid-row: 3;
-  align-self: end;
+  grid-column: span 4;
 }
-.w-somia-fr[data-id='story'] {
-  grid-column: 1 / span 3;
-  grid-row: 4;
-  align-self: center;
+.w-somia-fr[data-id='story'],
+.w-somia-fr[data-id='cart'] {
+  grid-column: span 3;
 }
 .w-somia-fr[data-id='editorial'] {
-  grid-column: 4 / span 6;
-  grid-row: 4;
-  align-self: center;
-}
-.w-somia-fr[data-id='cart'] {
-  grid-column: 10 / span 3;
-  grid-row: 4;
-  align-self: end;
-  /* the caption of the editorial frame hangs lower than this one: bring the baselines together */
-  margin-bottom: 24px;
+  grid-column: span 6;
 }
 .w-somia-fr__btn {
-  display: block;
+  display: flex;
+  flex: 1 1 auto;
   width: 100%;
   text-align: left;
   transition: transform 0.35s var(--ease-spring);
@@ -2044,13 +2052,18 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
 .w-somia-fr__frame,
 .w-somia-lb__frame {
   display: block;
-  padding: clamp(6px, 0.8vw, 11px);
+  padding: clamp(5px, 0.6vw, 9px);
   border-radius: 1px;
   background: var(--fc);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.14),
     0 3px 0 rgba(0, 0, 0, 0.28),
     0 22px 24px -14px var(--sm-edge);
+}
+.w-somia-fr__frame {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
 }
 .w-somia-fr[data-frame='white'] .w-somia-fr__frame {
   box-shadow:
@@ -2061,28 +2074,44 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
 .w-somia-fr__mat,
 .w-somia-lb__mat {
   display: block;
-  padding: clamp(10px, 1.5vw, 22px);
+  padding: clamp(6px, 0.8vw, 12px);
   background: var(--mc);
   box-shadow:
     inset 0 0 0 1px rgba(0, 0, 0, 0.1),
     inset 2px 3px 7px rgba(0, 0, 0, 0.14);
 }
-.w-somia-fr__mat img {
-  display: block;
+.w-somia-fr__mat {
+  display: flex;
+  flex: 1 1 auto;
   width: 100%;
-  height: auto;
+}
+/* the picture: a window onto the capture, placed by fractions of the source (see FRAMED[].crop in data.ts) */
+.w-somia-fr__pic {
+  position: relative;
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--sm-grey);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+.w-somia-fr__pic img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  object-fit: cover;
 }
 /* a museum label: a small paper placard hung under the frame */
 .w-somia-fr__cap {
-  position: relative;
+  position: absolute;
+  bottom: 6px;
+  left: clamp(8px, 1vw, 16px);
   z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 1px;
   width: max-content;
   max-width: calc(100% - 20px);
-  margin: -12px 0 0 clamp(8px, 1vw, 16px);
   padding: 7px 13px 8px;
   border: 1px solid var(--sm-hair);
   border-radius: 1px;
@@ -2278,13 +2307,26 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
 }
 .w-somia-bench {
   position: relative;
-  padding: clamp(40px, 4.6vw, 76px) clamp(16px, 3.4vw, 64px) calc(clamp(38px, 4vw, 64px) + 24px);
+  overflow: hidden;
+  padding: clamp(36px, 3.6vw, 64px) clamp(16px, 3.4vw, 64px) calc(clamp(34px, 3.2vw, 56px) + 22px);
   background-color: #222120;
   background-image: var(--pm-grain);
   box-shadow:
     inset 0 5px 0 #3d3b38,
     inset 0 7px 0 #0f0f0e;
   color: var(--sm-paper);
+}
+/* the shop lamp over the counter: one flat cone of warm light on the counter top, like the one over the window */
+.w-somia-bench::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 238, 205, 0.045);
+  clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+.w-somia-bench > * {
+  position: relative;
 }
 .w-somia-bench__tab {
   position: absolute;
@@ -2295,22 +2337,23 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
 .w-somia-till {
   zoom: var(--zoom);
   display: grid;
-  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
-  gap: clamp(26px, 5vw, 90px);
-  align-items: center;
+  grid-template-columns: minmax(280px, 31%) minmax(0, 1fr);
+  gap: clamp(26px, 4.4vw, 80px);
+  align-items: stretch;
   max-width: 1480px;
   margin-inline: auto;
 }
 .w-somia-receipt-wrap {
+  align-self: center;
   filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.5)) drop-shadow(0 20px 16px rgba(0, 0, 0, 0.55));
   transform: rotate(-1.1deg);
 }
 .w-somia-receipt {
-  padding: 30px 24px 38px;
+  padding: 40px 32px 46px;
   background: var(--sm-white);
   color: #1c1c1c;
   font-family: 'Courier Prime', 'Courier Prime Fallback', 'Courier New', monospace;
-  font-size: 14.5px;
+  font-size: 17px;
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: 0;
@@ -2328,7 +2371,7 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
   border-top: 2px dashed #1c1c1c;
 }
 .w-somia-receipt__shop {
-  font-size: 30px;
+  font-size: 38px;
   font-weight: 700;
   letter-spacing: 0.3em;
   line-height: 1;
@@ -2356,7 +2399,7 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
   text-align: right;
 }
 .w-somia-receipt__fine {
-  font-size: 13.5px;
+  font-size: 15.5px;
   line-height: 1.5;
 }
 .w-somia-receipt__thanks {
@@ -2364,28 +2407,45 @@ html.js .w-somia-window[data-ready='true'] .w-somia-tag {
   letter-spacing: 0.06em;
   text-align: center;
 }
-/* the ring stamp, pressed over the corner of the receipt: multiply, so the paper shows through the ink */
 .w-somia-receipt {
   position: relative;
 }
-.w-somia-receipt__seal {
+/* a till barcode: bars of three widths, nothing encoded */
+.w-somia-receipt__bars {
+  height: 54px;
+  margin: 16px 6px 0;
+  background:
+    repeating-linear-gradient(90deg, #1c1c1c 0 3px, transparent 3px 5px, #1c1c1c 5px 6px, transparent 6px 10px, #1c1c1c 10px 14px, transparent 14px 15px, #1c1c1c 15px 16px, transparent 16px 19px);
+}
+/* the shop's seal pressed large into the counter top: paper-coloured ink, a little off the straight, never quite centred */
+.w-somia-counter__stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding-block: clamp(6px, 1vw, 18px);
+}
+.w-somia-impression {
+  position: absolute;
+  right: clamp(0px, 3cqw, 50px);
+  bottom: 0;
   display: grid;
   place-items: center;
-  width: 132px;
-  height: 132px;
-  margin: 16px auto 0;
-  mix-blend-mode: multiply;
-  transform: rotate(-9deg);
+  width: clamp(200px, 30cqw, 330px);
+  aspect-ratio: 1;
+  transform: rotate(-13deg);
+  opacity: 0.9;
 }
-.w-somia-receipt__seal img {
+.w-somia-impression img {
   grid-area: 1 / 1;
   height: auto;
+  filter: invert(1) brightness(1.15);
 }
-.w-somia-receipt__seal img:first-child {
-  width: 128px;
+.w-somia-impression__ring {
+  width: 100%;
 }
-.w-somia-receipt__seal img:last-child {
-  width: 44px;
+.w-somia-impression__s {
+  width: 34%;
 }
 /* the receipt prints: a stepped reveal from the top, like a till (hidden state only under html.js) */
 html.js .w-somia-receipt-wrap[data-printed='false'] .w-somia-receipt {
@@ -2402,6 +2462,12 @@ html.js .w-somia-receipt-wrap[data-printed='true'] .w-somia-receipt {
     clip-path: inset(0 0 -3px 0);
   }
 }
+.w-somia-till {
+  container: somia-till / inline-size;
+}
+.w-somia-counter__stage > .w-somia-counter__facts {
+  flex: 1 1 auto;
+}
 .w-somia-counter__facts {
   --font-display: 'Fraunces Variable', 'Fraunces Fallback', Georgia, 'Times New Roman', serif;
   --font-label: 'Courier Prime', 'Courier Prime Fallback', 'Courier New', Courier, monospace;
@@ -2412,8 +2478,24 @@ html.js .w-somia-receipt-wrap[data-printed='true'] .w-somia-receipt {
 /* the slate is the counter's second voice: on a desktop it grows a little so it stands up to the receipt */
 @media (min-width: 1101px) {
   .w-somia-counter__facts {
-    zoom: 1.2;
+    zoom: 1.55;
   }
+}
+/* the slate and the ticket side by side: the ticket keeps its own width (its words never wrap), the slate takes the rest */
+.w-somia-counter__facts .pm-wf {
+  grid-template-columns: minmax(0, 1fr) max-content;
+  align-content: space-between;
+  height: 100%;
+  padding-top: 0;
+}
+/* the caption stands at the foot of the counter top, beside the seal */
+.w-somia-counter__facts .pm-wf__note {
+  align-self: end;
+  max-width: 54%;
+}
+.w-somia-counter__facts .pm-slate {
+  width: 100%;
+  max-width: none;
 }
 /* the facts slate on the dark desk: its own shadow is a dark one, so lift it with a paper-coloured rim light */
 .w-somia-counter__facts .pm-slate {
@@ -2565,104 +2647,49 @@ html.js .w-somia-receipt-wrap[data-printed='true'] .w-somia-receipt {
   .w-somia-till .w-somia-counter__facts {
     width: 100%;
   }
-  /* the wall on a tablet: six columns, every row is filled (hero / three small / two mid / one wide + one small) */
+  /* the wall on a tablet: the headline goes above the frames, which keep the same twelve-column hang */
   .w-somia-gallery__wall {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
   }
   .w-somia-gallery__head {
-    grid-column: 1 / -1;
-    grid-row: 1;
+    position: static;
   }
   .w-somia-gallery__title {
     max-width: none;
   }
-  .w-somia-fr[data-id] {
-    align-self: end;
-  }
-  .w-somia-fr[data-id='hero'] {
-    grid-column: 1 / span 6;
-    grid-row: 2;
-    align-self: center;
-  }
-  .w-somia-fr[data-id='product'] {
-    grid-column: 1 / span 2;
-    grid-row: 3;
-  }
-  .w-somia-fr[data-id='menu'] {
-    grid-column: 3 / span 2;
-    grid-row: 3;
-  }
-  .w-somia-fr[data-id='cart'] {
-    grid-column: 5 / span 2;
-    grid-row: 3;
-    margin-bottom: 0;
-  }
-  .w-somia-fr[data-id='collection'] {
-    grid-column: 1 / span 3;
-    grid-row: 4;
-  }
-  .w-somia-fr[data-id='materials'] {
-    grid-column: 4 / span 3;
-    grid-row: 4;
-  }
-  .w-somia-fr[data-id='editorial'] {
-    grid-column: 1 / span 4;
-    grid-row: 5;
-    align-self: center;
-  }
-  .w-somia-fr[data-id='story'] {
-    grid-column: 5 / span 2;
-    grid-row: 5;
-    align-self: center;
-  }
 }
 @media (max-width: 720px) {
-  /* a phone: two columns, full-width frames for the wide screens, the portrait crops and the small ones in pairs */
-  .w-somia-gallery__wall {
+  /* a phone: two columns, the wide screens full width, the portrait crops and the small ones in pairs */
+  .w-somia-gallery__list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 26px 14px;
+    gap: 14px;
   }
-  .w-somia-fr[data-id] {
-    grid-column: span 1;
+  .w-somia-fr {
+    --capsp: 54px;
   }
   .w-somia-fr[data-id='hero'],
-  .w-somia-fr[data-id='collection'],
-  .w-somia-fr[data-id='materials'],
-  .w-somia-fr[data-id='editorial'] {
+  .w-somia-fr[data-id='menu'],
+  .w-somia-fr[data-id='editorial'],
+  .w-somia-fr[data-id='story'] {
     grid-column: 1 / -1;
   }
-  .w-somia-fr[data-id='hero'] {
-    grid-row: 2;
-  }
-  .w-somia-fr[data-id='product'] {
-    grid-row: 3;
-    grid-column: 1;
-  }
-  .w-somia-fr[data-id='story'] {
-    grid-row: 3;
-    grid-column: 2;
-    align-self: end;
-  }
-  .w-somia-fr[data-id='collection'] {
-    grid-row: 4;
-  }
-  .w-somia-fr[data-id='menu'] {
-    grid-row: 5;
-    grid-column: 1;
-  }
-  .w-somia-fr[data-id='cart'] {
-    grid-row: 5;
-    grid-column: 2;
-  }
+  .w-somia-fr[data-id='product'],
+  .w-somia-fr[data-id='cart'],
+  .w-somia-fr[data-id='collection'],
   .w-somia-fr[data-id='materials'] {
-    grid-row: 6;
+    grid-column: span 1;
   }
-  .w-somia-fr[data-id='editorial'] {
-    grid-row: 7;
-    align-self: center;
-  }
+  /* the pairs sit side by side, so the order is set by hand (no holes in the grid) */
+  .w-somia-fr[data-id='hero'] { order: 1; }
+  .w-somia-fr[data-id='product'] { order: 2; }
+  .w-somia-fr[data-id='cart'] { order: 3; }
+  .w-somia-fr[data-id='menu'] { order: 4; }
+  .w-somia-fr[data-id='collection'] { order: 5; }
+  .w-somia-fr[data-id='materials'] { order: 6; }
+  .w-somia-fr[data-id='editorial'] { order: 7; }
+  .w-somia-fr[data-id='story'] { order: 8; }
   .w-somia-fr__mat {
-    padding: 8px;
+    padding: 6px;
   }
   .w-somia-fr__cap i {
     font-size: 1.02rem;
@@ -2866,4 +2893,168 @@ html[data-motion='paused'] .w-somia-tag:hover,
 html[data-motion='paused'] .w-somia-fr__btn:hover,
 html[data-motion='paused'] .w-somia-chip:hover {
   transform: none;
+}
+
+/* museum labels never wrap: a long line is cut with an ellipsis (the lightbox carries the whole text) */
+.w-somia-fr__cap b,
+.w-somia-fr__cap i {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   SOLO PHONE: the glass is wide and the phone is narrow, so the section on show is lettered large on the left and the
+   page's sections are listed on the right (both follow the tour; the list is a second way to jump)
+   ========================================================================== */
+.w-somia-aside {
+  position: absolute;
+  top: 0;
+  bottom: var(--plinth);
+  z-index: 3;
+  display: none;
+  align-items: center;
+  min-width: 0;
+}
+.w-somia-window[data-device='phone'] .w-somia-aside {
+  display: flex;
+}
+.w-somia-aside--l {
+  left: 4.5cqw;
+  width: 30cqw;
+}
+.w-somia-aside--r {
+  right: 4.5cqw;
+  width: 24cqw;
+  justify-content: flex-end;
+}
+@container somia-window (max-width: 639px) {
+  .w-somia-window[data-device='phone'] .w-somia-aside {
+    display: none;
+  }
+}
+@container somia-window (min-width: 640px) {
+  /* the card moves from the head and the sill onto the stage */
+  .w-somia-window[data-device='phone'] .w-somia-head .w-somia-sub,
+  .w-somia-window[data-device='phone'] .w-somia-sill .w-somia-sub {
+    display: none;
+  }
+}
+.w-somia-sub[data-where='stage'] {
+  width: 100%;
+  text-align: left;
+}
+.w-somia-sub[data-where='stage'] .w-somia-sub__line {
+  align-items: flex-start;
+  gap: 6px;
+}
+.w-somia-sub[data-where='stage'] .w-somia-sub__label {
+  display: block;
+  color: var(--sm-peri);
+  margin-bottom: 4px;
+}
+.w-somia-sub[data-where='stage'] .w-somia-sub__en {
+  font-size: clamp(1.7rem, 3.6cqw, 3.4rem);
+  font-weight: 300;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.w-somia-sub[data-where='stage'] .w-somia-sub__es {
+  font-size: clamp(1.15rem, 2.2cqw, 2.1rem);
+  line-height: 1.1;
+}
+.w-somia-rooms {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 21cqw;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid rgba(245, 244, 241, 0.28);
+}
+.w-somia-room {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 3px 4px 3px 16px;
+  color: rgba(245, 244, 241, 0.66);
+  font-family: var(--head);
+  font-size: clamp(1.4rem, 2.5cqw, 2.3rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.w-somia-room__n {
+  flex: none;
+  font-family: var(--text);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+}
+.w-somia-room::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: -2px;
+  width: 3px;
+  background: var(--sm-peri);
+  transform: scaleY(0);
+  transition: transform 0.3s var(--ease-out);
+}
+.w-somia-room[aria-current='true'] {
+  color: var(--sm-white);
+}
+.w-somia-room[aria-current='true']::before {
+  transform: scaleY(1);
+}
+@media (hover: hover) {
+  .w-somia-room:hover {
+    color: var(--sm-white);
+  }
+}
+
+/* the counter on a tablet or a phone: one column, the receipt at a comfortable width, the seal pressed beside the caption */
+@media (max-width: 1100px) {
+  .w-somia-receipt-wrap {
+    width: min(100%, 440px);
+  }
+  .w-somia-counter__facts .pm-wf {
+    height: auto;
+  }
+  .w-somia-counter__facts .pm-wf__note {
+    max-width: 100%;
+  }
+  .w-somia-impression {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    align-self: flex-end;
+    width: clamp(170px, 34vw, 260px);
+    margin: 8px clamp(0px, 4vw, 40px) 0 0;
+  }
+  .w-somia-counter__stage {
+    padding-bottom: 36px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .w-somia-room::before,
+  .w-somia-sub[data-where='stage'] .w-somia-sub__line {
+    transition: none;
+    animation: none;
+  }
+}
+html[data-motion='paused'] .w-somia-room::before,
+html[data-motion='paused'] .w-somia-sub[data-where='stage'] .w-somia-sub__line {
+  transition: none;
+  animation: none;
 }

@@ -14,11 +14,12 @@ The world is a **shop front**: an awning, a sign plate, a chalk panel and a shop
 | `somia/Chalk.tsx` | "visto como pienso" lettered in chalk: a ten-letter hand alphabet (centre-line strokes, seeded jitter), stroke-by-stroke draw-on, SVG chalk filter whose grain is kept at about one screen pixel by a ResizeObserver |
 | `somia/Showcase.tsx` | the window: hang-tag device switcher, page switcher, plinth, sill with the controls, the tape and (narrow windows) the translation card; owns playing / speed / mode / page state |
 | `somia/Devices.tsx` | `Laptop` and `Phone` drawn in CSS and the shared `Screen` (clipping frame + tall reel of captures, drag, keys, slice mounting) |
+| `somia/Sections.tsx` | the page's sections as a large list on the glass beside a solo phone (a second way to jump; active one written to the DOM by the tour) |
 | `somia/Tape.tsx` | the tailor's tape: a real `<input type="range">` over a drawn ribbon, a sewing-pin playhead, one button per section |
 | `somia/Subtitle.tsx` | the translation card: the section on show in English, the Spanish original in italics where the page prints a short phrase. Lettered on the glass when the window is 780 px wide or more, under the tape otherwise |
 | `somia/tour.ts` | the engine (no React): one master progress `p` 0..1 drives every screen, the tape pin, the subtitle and the section buttons |
 | `somia/Shelves.tsx` | the brand strip: logo family + type, palette chips (click to copy), four swing tags |
-| `somia/Gallery.tsx` | eight framed screens + lightbox (portalled into the folder body) |
+| `somia/Gallery.tsx` | eight framed screens (twelve-column hang beside a sticky headline; every picture is a zoomed crop given by `FRAMED[].crop`) + lightbox (portalled into the folder body) |
 | `somia/Counter.tsx` | till receipt (prints itself, shop seal pressed on it) + `WorldFacts` + the site's own "Pause motion" tab + the motto as a marquee on the front panel |
 | `somia/somia.css` | all styling (one file; sections: front / subtitle / tape / brand strip / gallery / counter / responsive / still) |
 
@@ -64,11 +65,19 @@ tour.nudge(id, layoutPx) / tour.onInteract      // keyboard on a screen; the UI 
 
 PP Hatton is a commercial face and is **never self-hosted**. Headlines use **`@fontsource-variable/cormorant`** (weight 300, 500 for the Spanish italics) as the look-alike, text uses **`@fontsource/fira-sans`** 300 / 400. `src/worlds/fonts.ts` (foundation) loads Cormorant roman + italic and Fira Sans 400 / 500 / 600 with the chunk; the world adds `latin-300.css` itself (Fira Sans Light is the shop's body weight). The world root sets `--font-display` / `--font-label` to its own faces (core body face Karla stays the fallback); `.w-somia-counter__facts` resets them to Fraunces / Courier Prime so the facts slate keeps the cabinet's voice, and the receipt is typed in Courier Prime. The UI says plainly that Cormorant is a stand-in.
 
+## 5b. Round-1 changes (critic fixes)
+
+* **No prices**: the shop prints prices on its collection and product pages (also in the home "look" card and the related-products rows). Twelve captures were re-saved with every price covered by a light grey bar (`public/works/somia/web/masked/`, found by OCR; the originals stay in `web/`). `data.ts` routes those file names through `cap()` to `masked/`: the window, the wall and the lightbox never show a price.
+* **Solo phone**: when the Phone tag is on and the window is 640 px wide or more, the glass carries the section on show lettered large on the left (the translation card, `where="stage"`) and the page's sections as a large clickable list on the right (`Sections.tsx`). The card leaves the head and the sill in that mode. Laptop solo already fills about 70 % of the glass.
+* **Wall**: left column (headline, sticky) + twelve-column hang (8+4, 4+4+4, 3+6+3), slim mats, each picture cropped by fractions of its source (`crop: {x,y,w,h,ratio}`); the museum label hangs in a reserved strip so every row ends on one line; labels never wrap (ellipsis). Phone: two columns with the order set by hand.
+* **Counter**: the receipt (bigger, till barcode instead of the small seal), the facts slate (bigger), the ticket and the caption sit on one counter top lit by a flat lamp cone; the shop's ring stamp and ribbon S are pressed large (decorative) beside the caption. Single column below 1100 px.
+* **Tour**: the hero now rests 2.6 s on the first start (the whole header and wordmark are visible), the chalk motto draws in about 1.8 s, section chips have a 44 px hit area at every width, the favicon is shown in a real browser tab on its strip.
+
 ## 6. Honesty (docs/ART_DIRECTION.md 12.1)
 
 * Role is written exactly as Pau's statement: **brand identity, logo and web layout** (notice, receipt, `WorldFacts` roles from the registry). Never "sole designer"; nothing about photography, copy or the hand lettering.
 * The chalk motto is **redrawn for this page** (the real wall lettering is not Pau's to claim and was not copied); the label under the panel says so.
-* The window shows **screenshots** ("The window shows screenshots of the live site", receipt line "Screens Oct 2026", facts caption). Photography, models and the words in the pictures are Somia's. No prices, no product claims, no customer or team portraits beyond what is already in `web/`.
+* The window shows **screenshots** ("The window shows screenshots of the live site", receipt line "Screens Oct 2026", facts caption). Photography, models and the words in the pictures are Somia's. No prices (covered in the captures, see 5b), no product claims, no customer or team portraits beyond what is already in `web/`.
 * The shop's microcopy shown in captions is the shop's own and is translated, not extended. Spanish originals are in italics (`lang="es"`).
 * The registry has no year and no tools for Somia, so the facts slate shows the Role cell only (see the open question in the report).
 

@@ -5,7 +5,24 @@
 
 import { asset } from '../../lib/asset'
 
-export const cap = (file: string): string => asset(`/works/somia/web/${file}`)
+// The shop prints prices on its collection and product pages; this page shows none (ART_DIRECTION 12.1: no prices). The captures
+// below were re-saved with every price covered by a light grey bar (public/works/somia/web/masked/, the originals stay in web/).
+const MASKED = new Set([
+  'home-desktop-fullpage.webp',
+  'collection-vincles-desktop-01.webp',
+  'collection-vincles-desktop-02.webp',
+  'collection-vincles-mobile-01.webp',
+  'collection-vincles-mobile-02.webp',
+  'collection-vincles-mobile-03.webp',
+  'collection-vincles-mobile-04.webp',
+  'product-desktop-01.webp',
+  'product-desktop-02.webp',
+  'product-desktop-hero@2x.webp',
+  'product-mobile-01.webp',
+  'product-mobile-03.webp',
+])
+
+export const cap = (file: string): string => asset(`/works/somia/web/${MASKED.has(file) ? 'masked/' : ''}${file}`)
 
 // ---- the scrolling showcase ------------------------------------------------------------------------------------------
 
@@ -160,7 +177,7 @@ export const TOUR: TourPage[] = [
     desktop: {
       view: DESKTOP_VIEW,
       slices: [
-        { file: 'product-desktop-01.webp', w: 1440, h: 1970, alt: 'A Somia product page: breadcrumb, a two-column photo gallery, title, price, description, size and colour pickers, a black add-to-basket button and an accordion.' },
+        { file: 'product-desktop-01.webp', w: 1440, h: 1970, alt: 'A Somia product page: breadcrumb, a two-column photo gallery, title, a grey bar where the price is printed, description, size and colour pickers, a black add-to-basket button and an accordion.' },
         { file: 'product-desktop-02.webp', w: 1440, h: 1782, alt: 'The product page continued: the last gallery photo, a carousel of related products and the reviews block.' },
         { file: 'product-desktop-03.webp', w: 1440, h: 1084, alt: 'The product page continued: the newsletter block with the ring stamp and the footer.' },
       ],
@@ -175,7 +192,7 @@ export const TOUR: TourPage[] = [
       view: PHONE_VIEW,
       slices: [
         { file: 'product-mobile-01.webp', w: 780, h: 1904, alt: 'A product page on a phone: breadcrumb, a swipe gallery with dots and a sticky add-to-basket bar.' },
-        { file: 'product-mobile-02.webp', w: 780, h: 1752, alt: 'The product page on a phone: title, price, description, size and colour pickers, quantity and accordions.' },
+        { file: 'product-mobile-02.webp', w: 780, h: 1752, alt: 'The product page on a phone: title, description, size and colour pickers, quantity and accordions.' },
         { file: 'product-mobile-03.webp', w: 780, h: 1404, alt: 'The product page on a phone: the last accordion rows and a horizontal carousel of related products.' },
         { file: 'product-mobile-04.webp', w: 780, h: 1858, alt: 'The product page on a phone: the reviews block, the newsletter block and the start of the footer.' },
         { file: 'product-mobile-05.webp', w: 780, h: 1984, alt: 'The product page on a phone: the footer links and the payment logos.' },
@@ -282,8 +299,8 @@ export interface Framed {
   note: string
   alt: string
   frame: 'black' | 'white' | 'sage'
-  /** show a portrait crop in the wall; the lightbox always shows the whole picture */
-  crop?: { ratio: string; x: string; y: string }
+  /** the part of the capture the wall shows, as fractions of the source (the lightbox always shows the whole picture); ratio = the picture box, width / height */
+  crop: { x: number; y: number; w: number; h: number; ratio: number }
 }
 
 export const FRAMED: Framed[] = [
@@ -298,6 +315,7 @@ export const FRAMED: Framed[] = [
     note: 'A campaign film behind a centred headline and an outlined button, with the motto painted on the wall.',
     alt: 'The Somia home page, first screen: two women leaning on a concrete and a sage wall, the headline "tienda de ropa de mujer sostenible", an outlined button and the motto "visto como pienso" lettered in chalk.',
     frame: 'black',
+    crop: { x: 0, y: 0, w: 1, h: 1, ratio: 1.6 },
   },
   {
     id: 'product',
@@ -305,10 +323,10 @@ export const FRAMED: Framed[] = [
     w: 2880,
     h: 1800,
     title: 'Product page',
-    note: 'A two-column photo gallery on the left; title, price, size and colour pickers and a black button on the right.',
-    alt: 'A Somia product page: a two-column gallery of photographs on the left, and on the right the title, price, size and colour pickers and a black add-to-basket button.',
+    note: 'A two-column photo gallery on the left; title, size and colour pickers and a black button on the right.',
+    alt: 'A Somia product page: a two-column gallery of photographs on the left, and on the right the title, a grey bar over the price, size and colour pickers and a black add-to-basket button.',
     frame: 'white',
-    crop: { ratio: '4 / 5', x: '12%', y: '40%' },
+    crop: { x: 0.55, y: 0.14, w: 0.43, h: 0.86, ratio: 0.8 },
   },
   {
     id: 'menu',
@@ -321,6 +339,7 @@ export const FRAMED: Framed[] = [
     note: 'Hover the navigation and a white panel opens with the sub-categories and two campaign photographs.',
     alt: 'The Mujer mega menu open over the home hero: a white panel with a list of sub-categories and two campaign photographs.',
     frame: 'sage',
+    crop: { x: 0.15, y: 0.12, w: 0.55, h: 0.6, ratio: 1.5 },
   },
   {
     id: 'collection',
@@ -332,18 +351,20 @@ export const FRAMED: Framed[] = [
     note: 'Breadcrumb, a serif title, a filter bar and a four-column grid with NEW badges and colour dots.',
     alt: 'The Vincles collection page: breadcrumb, a serif title, a filter bar and the start of a four-column product grid with NEW badges.',
     frame: 'black',
+    crop: { x: 0.02, y: 0.42, w: 0.56, h: 0.58, ratio: 1.5 },
   },
   {
     id: 'materials',
     file: 'materials-desktop-02.webp',
     w: 1440,
     h: 900,
-    title: 'Materials, one swatch at a time',
+    title: 'Materials',
     es: 'Algodón 100%',
     tr: '100% cotton',
     note: 'A scroll story: a round fabric swatch and a single line about each of ten materials.',
     alt: 'The Materiales page: a round photograph of a twisted brown fabric on white, next to the title "Algodón 100%" and a short description.',
     frame: 'white',
+    crop: { x: 0.11, y: 0.2, w: 0.72, h: 0.68, ratio: 1.5 },
   },
   {
     id: 'editorial',
@@ -355,19 +376,20 @@ export const FRAMED: Framed[] = [
     note: 'A full-bleed photograph on the Catalan coast with a small white title card.',
     alt: 'The Cap de Creus 2026 editorial: a woman in a cream suit sitting by the sea under a blue sky, with a small white title card.',
     frame: 'black',
+    crop: { x: 0, y: 0.04, w: 1, h: 0.92, ratio: 1.6 },
   },
   {
     id: 'story',
     file: 'home-desktop-05.webp',
     w: 1440,
     h: 900,
-    title: 'Story scene, with the ring stamp',
+    title: 'Story scene',
     es: 'ropa sostenible y ecológica para vivir con estilo y consciencia',
     tr: 'sustainable, ecological clothes to live with style and awareness',
     note: 'A sticky scroll story: workshop photographs collaged next to the text, with the ring stamp on top.',
     alt: 'A scene of the home page story: the headline "ropa sostenible y ecológica para vivir con estilo y consciencia", a black button and a collage of workshop photographs with the ring stamp.',
     frame: 'sage',
-    crop: { ratio: '4 / 5', x: '92%', y: '50%' },
+    crop: { x: 0.5, y: 0.15, w: 0.4, h: 0.72, ratio: 0.8 },
   },
   {
     id: 'cart',
@@ -380,6 +402,7 @@ export const FRAMED: Framed[] = [
     note: 'The basket drawer slides over the page: an empty basket, a few short reassurances and the motto at the bottom.',
     alt: 'The empty basket drawer sliding over a dimmed page, with a line of trust messages and a green line about supporting the job placement of women in Barcelona.',
     frame: 'white',
+    crop: { x: 0.72, y: 0, w: 0.28, h: 0.5, ratio: 0.8 },
   },
 ]
 

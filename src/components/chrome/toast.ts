@@ -19,6 +19,8 @@ export interface ToastOptions {
   swatch?: string
   /** a small typed line above the message (label font), e.g. 'Copied' */
   label?: string
+  /** the destination written on the luggage tag, typed above the message ("To: Sydney"). Default 'Sydney'; `false` leaves it out. A `label` takes its place. */
+  to?: string | false
 }
 
 export interface ToastItem {
@@ -27,6 +29,7 @@ export interface ToastItem {
   tone: ToneName
   swatch?: string
   label?: string
+  to?: string
   duration: number
 }
 
@@ -49,7 +52,7 @@ export function toast(message: string, options: ToastOptions = {}): void {
   if (typeof window === 'undefined' || !message) return
   void loadHandFonts() // the tag is written in the marker face (idempotent: App already asked for it when the browser was idle)
   const duration = options.duration ?? 2600
-  current = { id: nextId++, message, tone: options.tone ?? 'butter', swatch: options.swatch, label: options.label, duration }
+  current = { id: nextId++, message, tone: options.tone ?? 'butter', swatch: options.swatch, label: options.label, to: options.to === false ? undefined : (options.to ?? 'Sydney'), duration }
   window.clearTimeout(timer)
   timer = window.setTimeout(dismissToast, duration)
   emit()

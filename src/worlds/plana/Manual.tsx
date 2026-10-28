@@ -99,6 +99,10 @@ export default function Manual() {
             <span className="w-plana-manual__title">pages</span>
           </p>
           <p className="w-plana-manual__sub">The whole system on paper: the name, the symbol, the logo forms, colour, type, voice and every application.</p>
+          <p className="w-plana-fan__note" data-gone={everOpen ? 'true' : 'false'} aria-hidden="true">
+            <span>{fine ? 'hover to fan them out' : 'tap to fan them out'}</span>
+            <Scribble kind="arrow" dir="down-left" w="3rem" color="var(--holm)" seed="plana-fan" draw={1200} />
+          </p>
         </div>
 
         <div
@@ -119,17 +123,14 @@ export default function Manual() {
             if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setFocusIn(false)
           }}
         >
-          <p className="w-plana-fan__note" data-gone={everOpen ? 'true' : 'false'} aria-hidden="true">
-            <span>{fine ? 'hover to fan them out' : 'tap to fan them out'}</span>
-            <Scribble kind="arrow" dir="down-left" w="3rem" color="var(--holm)" seed="plana-fan" draw={1200} />
-          </p>
+
           <ul className="w-plana-fan__stack" aria-label="Pages of the brand manual" onKeyDown={onKeyDown}>
             {MANUAL.map((p, i) => (
               <li
                 key={p.n}
                 className="w-plana-leaf"
                 data-active={open && i === active ? 'true' : 'false'}
-                style={{ '--i': i, '--jr': SCATTER[i], '--bg': p.bg, '--z': open ? 40 - Math.abs(i - active) : 40 - i } as CSSProperties}
+                style={{ '--i': i, '--jr': SCATTER[i], '--cr': (i % 2 ? 1 : -1) * Math.ceil(i / 2) * 1.15, '--bg': p.bg, '--z': open ? 40 - Math.abs(i - active) : 40 - i } as CSSProperties}
               >
                 <button
                   ref={(el) => {

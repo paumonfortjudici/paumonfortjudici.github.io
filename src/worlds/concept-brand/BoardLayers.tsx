@@ -128,8 +128,11 @@ export function Hotspots({ sel, speech, onSelect, onEnsureVisible, wasDrag }: Ho
   const pick = (e: ReactMouseEvent, id: string) => {
     if (wasDrag()) return
     const g = groupOfItem(id)
-    onSelect({ group: g, item: id })
-    void e
+    // a finger cannot hit a 20 px tile on the whole-board view: the first tap on a part of the board flies to its group (where the tiles are
+    // big), the next tap picks the piece
+    const touch = typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches
+    if (touch && e.detail > 0 && sel.group !== g) onSelect({ group: g, item: null })
+    else onSelect({ group: g, item: id })
   }
   return (
     <>

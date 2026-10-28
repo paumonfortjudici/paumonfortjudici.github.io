@@ -88,7 +88,7 @@ export const COVER = {
     { label: 'Illustration', category: 'illustration' },
   ] as readonly MetaCategory[],
   blurb:
-    'Graphic designer from Cardedeu, Barcelona. I design brands, magazines, books and characters. Drawn by hand, laid out in Adobe, built for the web. Open a folder and step inside.',
+    'Graphic designer from Cardedeu, Barcelona. I design brands, books and characters, and I have edited magazines. Drawn by hand, laid out in Adobe, built for the web. Open a folder and step inside.',
   /** text on the rotating stamp (the trailing dot is the separator before it loops) */
   stamp: 'OPEN FOR PROJECTS · 2026 ·',
   /** handwritten margin note */
@@ -137,7 +137,7 @@ export const ABOUT = {
   greeting: 'Hi, I’m Pau!',
   greetingSmall: 'Pau Monfort Judici',
   paragraph:
-    'I’m a graphic designer from Cardedeu, near Barcelona. I started out drawing posters as a kid and never really stopped. Now I design brands, lay out magazines, art-direct illustrated books and build the websites that go with them. In 2025–26 I worked in Sydney as a front-end developer, which taught me to treat design as something people actually click, scroll and live in.',
+    'I’m a graphic designer from Cardedeu, near Barcelona. I started out drawing posters as a kid and never really stopped. Now I design brands, edit magazines, art-direct illustrated books and build the websites that go with them. In 2025–26 I worked in Sydney as a front-end developer, which taught me to treat design as something people actually click, scroll and live in.',
   /** handwritten hint next to the animated portrait */
   videoHint: 'move your pointer to bring him to life',
   /** ART_DIRECTION 12.1: the portrait video is an AI-generated stylised likeness, never footage */
@@ -147,7 +147,7 @@ export const ABOUT = {
       title: 'Graphic designer',
       points: [
         'Brand identities, from logo to manual',
-        'Editorial design for magazines and books',
+        'Editorial direction, and layout of my own books',
         'Art direction, photo editing, print-ready files',
       ],
     },

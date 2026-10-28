@@ -6,7 +6,11 @@ import { UI_TEXT } from './copy'
 /** the camera's zoom as an external store: the wall writes it, the dial reads it (the wall itself does not re-render per frame) */
 export interface CamStore {
   scale: number
+  /** the scale at which the whole board fits (set by the wall) */
+  fit: number
   listeners: Set<() => void>
+  /** zoom relative to the fit, in tenths (10 = the fit) */
+  tenths: () => number
   percent: () => number
   subscribe: (cb: () => void) => () => void
 }
@@ -14,8 +18,10 @@ export interface CamStore {
 export function makeStore(): CamStore {
   const store: CamStore = {
     scale: 0.2,
+    fit: 0.2,
     listeners: new Set(),
     percent: () => Math.round(store.scale * 100),
+    tenths: () => Math.round((store.scale / Math.max(store.fit, 0.001)) * 10),
     subscribe: (cb) => {
       store.listeners.add(cb)
       return () => store.listeners.delete(cb)
@@ -53,9 +59,13 @@ function capPath(r: number): string {
 
 export default function Controls({ store, atFit, onFit, onIn, onOut }: ControlsProps) {
   const percent = useSyncExternalStore(store.subscribe, store.percent, store.percent)
+  const tenths = useSyncExternalStore(store.subscribe, store.tenths, store.tenths)
+  // the readout is relative to the fit: FIT at the whole-board view, then 2.4x, 3.0x ... (the raw scale lives in the aria text)
+  const atFitNow = tenths <= 10.4 * 1
+  const label = atFitNow ? 'FIT' : `${(tenths / 10).toFixed(1)}x`
   const rim = useMemo(() => capPath(35), [])
   // the cap turns with the zoom: a quarter turn each time the board doubles in size
-  const turn = Math.log2(Math.max(percent, 1) / 17) * 90
+  const turn = Math.log2(Math.max(tenths, 10) / 10) * 90
   return (
     <div className="w-concept-brand-controls" role="group" aria-label="Zoom">
       <button type="button" className="w-concept-brand-coaster" data-kind="out" onClick={onOut} aria-label={UI_TEXT.zoomOut} data-cursor="Open">
@@ -69,7 +79,7 @@ export default function Controls({ store, atFit, onFit, onIn, onOut }: ControlsP
         type="button"
         className="w-concept-brand-cap"
         onClick={onFit}
-        aria-label={`${UI_TEXT.fit}. Zoom is ${percent} percent.`}
+        aria-label={`${UI_TEXT.fit}. ${atFitNow ? 'The whole board is in view' : `Zoom is ${(tenths / 10).toFixed(1)} times the fit`} (${percent} percent of full size).`}
         data-at-fit={atFit ? 'true' : undefined}
         data-cursor="Open"
       >
@@ -80,7 +90,7 @@ export default function Controls({ store, atFit, onFit, onIn, onOut }: ControlsP
           <circle className="w-concept-brand-cap-face" r="24" />
           <path className="w-concept-brand-cap-shine" d="M-15 -11C-11 -17 -4 -19 2 -19" />
           <text className="w-concept-brand-cap-text" y="5" textAnchor="middle">
-            {percent}%
+            {label}
           </text>
         </svg>
       </button>

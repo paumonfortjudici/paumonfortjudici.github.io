@@ -7,8 +7,9 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, typ
 import { TransformComponent, TransformWrapper, type ReactZoomPanPinchRef } from 'react-zoom-pan-pinch'
 import Board from './Board'
 import Controls, { makeStore } from './Controls'
+import Furniture from './Furniture'
 import { MASCOT_COPY } from './copy'
-import { BOARD_H, BOARD_W, IMG, isMascotId, selectionView, type ColourwayId, type MascotId, type Rect, type Selection } from './data'
+import { BOARD_H, BOARD_W, IMG, NONE, isMascotId, selectionView, type ColourwayId, type MascotId, type Rect, type Selection } from './data'
 import {
   MAX_SCALE,
   STAGE_H,
@@ -40,6 +41,8 @@ export interface WallProps {
   onSkip: () => void
   /** tell the parent the zoom changed enough to matter (for the Fit control state) */
   onFitChange?: (atFit: boolean) => void
+  /** hang the wall furniture (a receipt, a card of paint chips) in the free wall beside the board */
+  furniture?: boolean
 }
 
 /** the wall paper: tile size in px (it does not scale with the zoom) and how far it slides per board unit of camera travel */
@@ -69,7 +72,7 @@ function useStageSize(ref: RefObject<HTMLElement>): { w: number; h: number } | n
   return size
 }
 
-export default function Wall({ sel, colourway, still, tourActive, reserve, onSelect, onSkip, onFitChange }: WallProps) {
+export default function Wall({ sel, colourway, still, tourActive, reserve, onSelect, onSkip, onFitChange, furniture }: WallProps) {
   const stageRef = useRef<HTMLDivElement>(null)
   const paperRef = useRef<HTMLDivElement>(null)
   const boardRef = useRef<HTMLDivElement>(null)
@@ -109,6 +112,13 @@ export default function Wall({ sel, colourway, still, tourActive, reserve, onSel
     },
     [],
   )
+
+  // the free wall beside the board at the fit view (the furniture hangs there)
+  const furn = useMemo(() => {
+    if (!furniture || !size) return null
+    const c = cameraFor(NONE)
+    return { fit: c.scale, left: c.x, right: size.w - (c.x + BOARD_W * c.scale), tall: size.h >= 780 }
+  }, [furniture, size, safe, cameraFor])
 
   // ---- the flight ---------------------------------------------------------------------------------------------------------------
   const raf = useRef(0)
@@ -429,6 +439,7 @@ export default function Wall({ sel, colourway, still, tourActive, reserve, onSel
         board.style.setProperty('--bz', ((Math.min(1, 0.7 + Math.max(0, scale - 0.16) * 0.9)) / scale).toFixed(4))
       }
       store.scale = scale
+      store.fit = live.current.size ? scaleFor({ x: 0, y: 0, w: BOARD_W, h: BOARD_H }, live.current.size.w, live.current.size.h, live.current.safe, ROOM) : store.fit
       store.listeners.forEach((l) => l())
       const dpr = Math.min(window.devicePixelRatio || 1, 2)
       const ppu = scale * dpr
@@ -554,6 +565,7 @@ export default function Wall({ sel, colourway, still, tourActive, reserve, onSel
               'aria-roledescription': 'canvas',
             }}
           >
+            {furn && <Furniture on={atFit && !sel.group && !sel.item} fit={furn.fit} left={furn.left} right={furn.right} tall={furn.tall} />}
             <Board
               ref={boardRef}
               sel={sel}

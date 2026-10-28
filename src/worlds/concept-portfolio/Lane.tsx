@@ -1,6 +1,6 @@
 // The lane: five paper mounts in a horizontal scroll-snap strip. Each mount is a thin paper mat with the slide in it, a strip of
 // washi tape and a caption slate ("SLIDE 02 / 05  ABOUT") on its lower margin. Not a phone, no notch.
-import { useId, type CSSProperties, type KeyboardEvent } from 'react'
+import { useEffect, useId, useState, type CSSProperties, type KeyboardEvent } from 'react'
 import { Stamp, Tape, TabButton } from '@/components/primitives'
 import { COPY } from './copy'
 import { SLIDES, type Slide } from './data'
@@ -20,8 +20,23 @@ interface MountProps {
   onLoupe: () => void
 }
 
+/** the loupe tab pulses once and a small tag points at it, for a few seconds after the room opens (tiny print is the lane's one weakness) */
+function useLoupeHint(zoom: boolean): boolean {
+  const [on, setOn] = useState(false)
+  useEffect(() => {
+    const show = window.setTimeout(() => setOn(true), 1800)
+    const hide = window.setTimeout(() => setOn(false), 9000)
+    return () => {
+      window.clearTimeout(show)
+      window.clearTimeout(hide)
+    }
+  }, [])
+  return on && !zoom
+}
+
 function Mount({ slide, i, current, api, onLoupe }: MountProps) {
   const deck = useDeck()
+  const hint = useLoupeHint(deck.zoom || deck.notes)
   return (
     <div
       ref={api.mount(i)}
@@ -47,10 +62,16 @@ function Mount({ slide, i, current, api, onLoupe }: MountProps) {
             <span className="w-cp-slate-n">{COPY.lane.caption(slide.n)}</span>
             <span className="w-cp-slate-t">{slide.name}</span>
           </p>
+          {current && hint && (
+            <span className="w-cp-loupehint" aria-hidden="true">
+              {COPY.loupe.hint}
+            </span>
+          )}
           {current && (
             <TabButton
               size="sm"
               className="w-cp-loupebtn"
+              data-hint={hint ? 'true' : undefined}
               color="var(--cp-deep)"
               ink="var(--cp-butter)"
               icon={<LoupeIcon />}

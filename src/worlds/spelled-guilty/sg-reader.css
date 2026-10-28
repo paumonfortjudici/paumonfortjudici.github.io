@@ -19,7 +19,8 @@
   scroll-margin-top: 64px;
   isolation: isolate;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 800px) minmax(0, 1fr);
+  /* the book grows with the screen: about 800 px at a laptop, 1030 px at 1920 */
+  grid-template-columns: minmax(0, 1fr) minmax(0, clamp(800px, 54vw, 1320px)) minmax(0, 1fr);
   gap: clamp(16px, 2.2vw, 36px);
   align-items: start;
 }
@@ -50,7 +51,7 @@
 .w-sg-flip {
   grid-column: 2;
   min-width: 0;
-  --flip-max-h: min(600px, calc(var(--sg-vh, 844px) - 200px));
+  --flip-max-h: min(max(600px, 40vw), calc(var(--sg-vh, 844px) - 200px));
 }
 
 /* the book's scrubber was drawn for a light desk: on this dark leather the unfilled part of its track must still be seen (3:1) */
@@ -163,13 +164,13 @@
   white-space: nowrap;
 }
 
-/* the big screens have room for the pages at their best size (the images are 900 px wide: 450 px a page at most) */
+/* the big screens have room for bigger pages (the images are 900 px wide: up to about 520 px a page stays crisp on a normal screen) */
 @media (min-width: 1700px) {
   .w-sg-table {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 900px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, clamp(900px, 55vw, 1100px)) minmax(0, 1fr);
   }
   .w-sg-flip {
-    --flip-max-h: min(675px, calc(var(--sg-vh, 844px) - 200px));
+    --flip-max-h: min(max(675px, 40vw), calc(var(--sg-vh, 844px) - 200px));
   }
 }
 

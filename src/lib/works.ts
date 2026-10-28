@@ -155,7 +155,7 @@ export const WORKS: WorkMeta[] = [
     categories: ['illustration'],
     roles: ['Illustration'],
     tools: ['Procreate'],
-    blurb: 'Portraits, crests and logos drawn very young: where it all started and never stopped.',
+    blurb: 'Portraits, crests and logo ideas from my first years in Procreate: where it all started and never stopped.',
     color: '#FF8FC1',
     ink: '#17101B',
     thumb: '/works/procreate/thumb.webp',

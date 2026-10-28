@@ -84,9 +84,6 @@
   font-size: clamp(0.9rem, 0.8rem + 0.5vw, 1.2rem);
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  text-shadow:
-    0 1px 0 rgb(255 255 255 / 0.28),
-    0 -1px 0 rgb(0 0 0 / 0.9);
   box-shadow:
     inset 0 0 0 1px rgb(255 255 255 / 0.09),
     0 2px 0 rgb(0 0 0 / 0.55),
@@ -104,7 +101,8 @@
 }
 
 .w-sg-veil {
-  --sg-beam: clamp(190px, 33vmin, 410px);
+  /* a wide cone: about 22 % of the screen width on a laptop, bigger still at 1920 */
+  --sg-beam: clamp(200px, max(33vmin, 22vw), 540px);
   --bx: 50%;
   --by: 50%;
   position: absolute;
@@ -126,10 +124,10 @@
     radial-gradient(
       circle var(--sg-beam) at var(--bx) var(--by),
       rgb(6 2 4 / 0) 0%,
-      rgb(6 2 4 / 0) 26%,
-      rgb(6 2 4 / 0.34) 50%,
-      rgb(6 2 4 / 0.74) 76%,
-      rgb(6 2 4 / 0.95) 100%
+      rgb(6 2 4 / 0) 28%,
+      rgb(6 2 4 / 0.2) 52%,
+      rgb(6 2 4 / 0.46) 78%,
+      rgb(6 2 4 / 0.68) 100%
     );
   transition: opacity 0.45s var(--ease-out);
 }
@@ -163,7 +161,9 @@
   font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem);
   line-height: 1;
   white-space: nowrap;
-  text-shadow: 0 2px 0 rgb(0 0 0 / 0.65), 0 0 18px rgb(0 0 0 / 0.9);
+  /* a dark outline painted under the letters keeps the note readable on the lit wood, no glow needed */
+  -webkit-text-stroke: 0.2em rgb(8 2 5 / 0.85);
+  paint-order: stroke fill;
   transform: translate3d(50%, 40%, 0);
   opacity: 0;
   pointer-events: none;
@@ -198,18 +198,36 @@
 
 .w-sg-rail {
   position: absolute;
-  top: 12px;
+  top: 0;
   right: clamp(12px, 2vw, 28px);
   z-index: 2;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: flex-end;
-  gap: 10px;
-  pointer-events: none;
+  gap: 8px 10px;
+  max-width: min(calc(100% - 24px), 34rem);
+  padding: 10px 12px 12px;
+  /* a small plum rail hanging from the shell's tab row: the tabs always have a ground, never float over the paper */
+  border-radius: 0 0 12px 12px;
+  background:
+    var(--sg-noise),
+    linear-gradient(180deg, rgb(26 8 16 / 0.97), rgb(21 9 16 / 0.93));
+  box-shadow:
+    inset 0 -1px 0 rgb(255 242 218 / 0.18),
+    inset 1px 0 0 rgb(255 242 218 / 0.08),
+    inset -1px 0 0 rgb(255 242 218 / 0.08),
+    0 12px 20px -12px rgb(0 0 0 / 0.85);
+  pointer-events: auto;
 }
 
+/* away from the poster the rail sits back (the plate stays solid, so nothing shows through it; the tabs dim) until the pointer or the focus comes to it */
 .w-sg-rail > * {
-  pointer-events: auto;
+  transition: opacity 0.35s var(--ease-out);
+}
+
+.w-sg[data-calm] .w-sg-rail:not(:hover):not(:focus-within) > * {
+  opacity: 0.72;
 }
 
 .w-sg-lights {
@@ -218,13 +236,33 @@
   gap: 8px;
 }
 
+/* a touch screen steers the beam with the finger: the arrow-key tab is only drawn while it has the keyboard focus (it stays in the tab order) */
+@media (pointer: coarse) {
+  .w-sg-aimtab:not(:focus):not(:focus-visible) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+
+@media (max-width: 600px) {
+  .w-sg-rail {
+    gap: 6px 8px;
+    padding: 6px 8px 10px;
+  }
+}
+
 .w-sg-aim-note {
-  max-width: 17rem;
   margin: 0;
   padding: 7px 10px 6px;
   border-radius: 4px;
   background: rgb(12 6 10 / 0.88);
   color: var(--cream);
+  flex: 1 0 100%;
+  max-width: none;
   text-align: right;
   box-shadow: inset 0 0 0 1px rgb(255 242 218 / 0.22);
 }

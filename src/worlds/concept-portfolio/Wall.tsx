@@ -7,7 +7,8 @@ import { Tape } from '@/components/primitives'
 import { rng } from '@/components/primitives/util'
 import { COPY } from './copy'
 import { WALL_TITLE } from './data'
-import { StretchWord } from './StretchWord'
+import { BootPrint } from './icons'
+import { StretchWord, autoWidths } from './StretchWord'
 
 /** a hand-cut sunburst: broad-based rays of uneven length, no ray exactly vertical */
 function makeRays(seed: number, count: number, long: number, short: number, wide: number): string {
@@ -43,36 +44,56 @@ export function Rays({ className, raysRef }: { className?: string; raysRef?: Ref
   )
 }
 
+/** the widths of a title line on a given slide: the authored pattern on the cover, then a new one per slide (same rules: round letters stay wide, L and I stay readable) */
+function lineWidths(text: string, authored: readonly number[], line: number, slide: number): readonly number[] {
+  return slide === 0 ? authored : autoWidths(text, 1 + slide * 4 + line * 2)
+}
+
 /** the two lines of the stage title, once per field: it changes colour exactly where the butter paper is cut */
-function Title({ field }: { field: 'butter' | 'teal' }) {
+function Title({ field, slide }: { field: 'butter' | 'teal'; slide: number }) {
   return (
     <div className="w-cp-title" data-over={field}>
       {WALL_TITLE.map((line, i) => (
         <p key={line.text} className={`w-cp-line w-cp-line-${i + 1}`}>
-          <StretchWord text={line.text} widths={line.widths} decorative />
+          <StretchWord text={line.text} widths={lineWidths(line.text, line.widths, i, slide)} decorative />
         </p>
       ))}
     </div>
   )
 }
 
-/** a call sheet pinned to the wall: what today is and what to try (the same facts as the sr-only intro) */
-function CallSheet({ show }: { show: boolean }) {
+interface SheetProps {
+  kind: 'call' | 'wrap'
+  show: boolean
+  head: string
+  day: string
+  rows: readonly (readonly [string, string])[]
+}
+
+/** a paper slip pinned to the wall (decorative, same facts as the sr-only intro). The call sheet greets you on the first slide, the wrap slip on the last. */
+function Sheet({ kind, show, head, day, rows }: SheetProps) {
   return (
-    <aside className="w-cp-call" data-show={show ? 'true' : 'false'} aria-hidden="true">
-      <Tape at="top" color="var(--cp-salmon)" rotate={-3} w="4.6rem" h="1.5rem" />
+    <aside className="w-cp-call" data-kind={kind} data-show={show ? 'true' : 'false'} aria-hidden="true">
+      <Tape at="top" color={kind === 'call' ? 'var(--cp-salmon)' : 'var(--cp-sun)'} rotate={kind === 'call' ? -3 : 3} w="4.6rem" h="1.5rem" />
       <p className="w-cp-call-head">
-        <span>{COPY.callsheet.head}</span>
-        <span>{COPY.callsheet.day}</span>
+        <span>{head}</span>
+        <span>{day}</span>
       </p>
       <dl className="w-cp-call-rows">
-        {COPY.callsheet.rows.map(([k, v]) => (
+        {rows.map(([k, v]) => (
           <div key={k}>
             <dt>{k}</dt>
             <dd>{v}</dd>
           </div>
         ))}
       </dl>
+      {kind === 'wrap' && (
+        <div className="w-cp-wrap-prints">
+          {[0, 1, 2, 3, 4].map((n) => (
+            <BootPrint key={n} foot={n % 2 ? 'l' : 'r'} className="w-cp-boot" />
+          ))}
+        </div>
+      )}
     </aside>
   )
 }
@@ -80,11 +101,12 @@ function CallSheet({ show }: { show: boolean }) {
 interface WallProps {
   slabRef: RefObject<HTMLDivElement>
   raysRef: RefObject<HTMLDivElement>
-  /** the call sheet is pinned where the lane leaves room (the first slide); it slips away when you move on */
-  showCall: boolean
+  /** index of the slide in the middle: the call sheet is pinned on the first, the wrap slip on the last, and the painted title re-stretches on every slide */
+  index: number
+  last: number
 }
 
-export function Wall({ slabRef, raysRef, showCall }: WallProps) {
+export function Wall({ slabRef, raysRef, index, last }: WallProps) {
   return (
     <div className="w-cp-wall" aria-hidden="true">
       <div className="w-cp-speck" />
@@ -94,10 +116,11 @@ export function Wall({ slabRef, raysRef, showCall }: WallProps) {
         <div className="w-cp-ht w-cp-ht-a" />
         <div className="w-cp-ht w-cp-ht-b" />
         <Rays className="w-cp-rays" raysRef={raysRef} />
-        <Title field="teal" />
-        <Title field="butter" />
-        <CallSheet show={showCall} />
+        <Title field="teal" slide={index} />
+        <Title field="butter" slide={index} />
+        <Sheet kind="call" show={index === 0} head={COPY.callsheet.head} day={COPY.callsheet.day} rows={COPY.callsheet.rows} />
       </div>
+      <Sheet kind="wrap" show={index === last} head={COPY.wrap.head} day={COPY.wrap.day} rows={COPY.wrap.rows} />
     </div>
   )
 }

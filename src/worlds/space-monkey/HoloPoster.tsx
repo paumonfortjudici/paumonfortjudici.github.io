@@ -17,6 +17,7 @@ import { useWorld } from '../WorldContext'
 import { SLEEVE_PATCH, type PosterData } from './data'
 import { PosterBack } from './PosterBack'
 import { HoloTilt } from './tilt'
+import { useStill } from './useStill'
 
 const STEP = 1 / 3
 
@@ -36,7 +37,8 @@ function FlipIcon() {
 }
 
 export function HoloPoster({ data, index }: { data: PosterData; index: number }) {
-  const { reduced, next, prev } = useWorld()
+  const { next, prev } = useWorld()
+  const reduced = useStill()
   const narrow = useMediaQuery('(max-width: 719px)')
   const uid = useId()
   const [flipped, setFlipped] = useState(false)
@@ -52,6 +54,16 @@ export function HoloPoster({ data, index }: { data: PosterData; index: number })
   const stillRef = useRef(reduced)
   stillRef.current = reduced
 
+  /** writes straight to the range input's DOM (no React state): the diamond shows where the poster really is */
+  const showOnGauge = useCallback((x: number) => {
+    const slider = sliderRef.current
+    if (!slider) return
+    const value = Math.round(x * 100)
+    if (slider.value === String(value)) return
+    slider.value = String(value)
+    slider.setAttribute('aria-valuetext', tiltText(value))
+  }, [])
+
   useEffect(() => {
     const stage = stageRef.current
     const tilt = tiltRef.current
@@ -64,12 +76,10 @@ export function HoloPoster({ data, index }: { data: PosterData; index: number })
       lit: [foil, sheen],
       phase: index * 2.3,
       still: stillRef.current,
-      onManual: (x) => {
-        const slider = sliderRef.current
-        if (!slider) return
-        const value = Math.round(x * 100)
-        slider.value = String(value)
-        slider.setAttribute('aria-valuetext', tiltText(value))
+      onManual: (x) => showOnGauge(x),
+      onFollow: (x) => {
+        // not while the visitor holds the gauge itself
+        if (document.activeElement !== sliderRef.current) showOnGauge(x)
       },
     })
     engineRef.current = engine
@@ -77,7 +87,7 @@ export function HoloPoster({ data, index }: { data: PosterData; index: number })
       engine.destroy()
       engineRef.current = null
     }
-  }, [index])
+  }, [index, showOnGauge])
 
   useEffect(() => {
     engineRef.current?.setStill(reduced)
@@ -220,7 +230,9 @@ export function HoloPoster({ data, index }: { data: PosterData; index: number })
                       aria-hidden="true"
                       style={{ '--x': `${SLEEVE_PATCH.x * 100}%`, '--y': `${SLEEVE_PATCH.y * 100}%`, '--r': `${SLEEVE_PATCH.r * 200}%` } as CSSProperties}
                     >
-                      <Scribble kind="circle" at="around" color="var(--sm-yellow)" stroke={3.2} draw={900} seed="sleeve" />
+                      {/* a dark ring under the yellow one: the grease pencil stays readable on the yellow epaulette next to it */}
+                      <Scribble className="w-space-monkey-sleeve-under" kind="circle" at="around" color="var(--sm-space)" stroke={7.2} draw={false} seed="sleeve" />
+                      <Scribble kind="circle" at="around" color="var(--sm-yellow)" stroke={3.8} draw={900} seed="sleeve" />
                     </span>
                   )}
                 </div>

@@ -46,6 +46,14 @@ export function MissionTape() {
         </ol>
 
         <div
+          className="w-space-monkey-tape-span"
+          style={{ '--from': at(TAPE_MARKS[0].day), '--to': at(TAPE_MARKS[1].day) } as CSSProperties}
+        >
+          <span aria-hidden="true">{TAPE_MARKS[1].day - TAPE_MARKS[0].day} DAYS</span>
+          <span className="pm-sr">Five days between the TYLER file and the SMITH file</span>
+        </div>
+
+        <div
           className="w-space-monkey-tape-gap"
           style={{ '--from': at(last.day), '--to': at(open.day) } as CSSProperties}
         >

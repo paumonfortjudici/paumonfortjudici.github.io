@@ -60,6 +60,8 @@ function DeckFolder({ work, index, layout, deckWidth, peek, rest, ready }: DeckF
     '--r2': index % 5,
     '--t': tab,
     '--ar': size ? Math.round((size[0] / size[1]) * 1000) / 1000 : 0.75,
+    // every cut-out gets about the same AREA (a tall magazine and a wide sticker read as equals): height scales with 1/sqrt(aspect)
+    '--pk': size ? Math.round(Math.min(1.12, Math.max(0.8, Math.sqrt(0.78 / (size[0] / size[1])))) * 1000) / 1000 : 1,
     '--tilt': `${slot.tilt}deg`,
   } as CSSProperties
 

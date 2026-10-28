@@ -161,9 +161,12 @@ export function Shelves() {
               <span className="w-somia-fav__tile">
                 <img src={BRAND.favicon} width={128} height={128} alt="Somia favicon: the ribbon S in black" loading="lazy" decoding="async" />
               </span>
-              <span className="w-somia-fav__tab" aria-hidden="true">
-                <img src={BRAND.favicon} width={128} height={128} alt="" loading="lazy" decoding="async" />
-                <span>Somia | Moda y Ropa sostenible online</span>
+              <span className="w-somia-fav__bar" aria-hidden="true">
+                <span className="w-somia-fav__tab">
+                  <img src={BRAND.favicon} width={128} height={128} alt="" loading="lazy" decoding="async" />
+                  <span className="w-somia-fav__title">Somia | Moda y Ropa</span>
+                  <span className="w-somia-fav__x">&times;</span>
+                </span>
               </span>
             </div>
           </Slot>

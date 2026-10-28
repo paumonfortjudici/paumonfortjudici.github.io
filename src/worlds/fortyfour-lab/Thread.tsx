@@ -12,7 +12,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type RefObject } from 'react'
 import { asset } from '../../lib/asset'
 import { useWorld } from '../WorldContext'
-import { daysBetween } from './format'
+import { WIDE_QUERY, daysBetween } from './format'
 import { POSTS } from './posts'
 import { buildThread, clamp, lerp, sampleAtY, smooth, type Pt, type Thread } from './threadPath'
 
@@ -76,7 +76,7 @@ function measure(wall: HTMLElement): Model | null {
   const start: Pt = { x: (slotBox.left - box.left) / k + FEET_X * heroW, y: (slotBox.bottom - box.top) / k - (1 - FEET_Y) * heroH }
   const walkW = probe.getBoundingClientRect().width / k
 
-  const wide = window.matchMedia('(min-width: 1000px)').matches
+  const wide = window.matchMedia(WIDE_QUERY).matches
   const spineX = w - Math.max(46, Math.min(62, w * 0.14))
 
   const anchors = Array.from(wall.querySelectorAll<HTMLElement>('[data-ffl-anchor]'))

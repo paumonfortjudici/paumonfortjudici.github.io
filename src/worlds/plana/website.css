@@ -83,7 +83,7 @@
   right: 0;
   left: 0;
   overflow: hidden;
-  border-bottom: 1px solid rgb(24 24 27 / 0.9);
+  border-bottom: 2px solid var(--night);
   pointer-events: none;
 }
 
@@ -115,15 +115,26 @@
   background: var(--wheat);
 }
 
+/* a scene change is a wipe, never a blend: the new capture is drawn over the old one from the left edge (clip-path only), so the two are never
+   both half visible and no text is ever printed over other text. The old capture stays underneath (data-state prev) until the wipe is done. */
 .w-plana-seg--scenes img {
   position: absolute;
   left: 0;
-  opacity: 0;
-  transition: opacity 0.45s ease;
+  visibility: hidden;
+  clip-path: inset(0 100% 0 0);
 }
 
-.w-plana-seg--scenes img[data-on='true'] {
-  opacity: 1;
+.w-plana-seg--scenes img[data-state='prev'] {
+  z-index: 1;
+  visibility: visible;
+  clip-path: inset(0);
+}
+
+.w-plana-seg--scenes img[data-state='on'] {
+  z-index: 2;
+  visibility: visible;
+  clip-path: inset(0);
+  transition: clip-path 0.5s cubic-bezier(0.62, 0, 0.2, 1);
 }
 
 .w-plana-seg--closing {
@@ -166,11 +177,24 @@
 }
 
 .w-plana-site__caption p {
-  max-width: 62ch;
+  flex: 1 1 66ch; /* a fixed basis: whether the hour chips sit beside the caption or under it depends on the plate, never on how long this stop's caption is */
+  min-height: 2.9em; /* two lines, always: the stops have captions of one, two lines, and the plate must not change height when you move between them */
+  max-width: 66ch;
   margin: 0;
   color: var(--paper);
-  font-size: 0.9375rem;
+  font-size: clamp(1rem, 0.92rem + 0.26vw, 1.15rem);
   line-height: 1.45;
+}
+
+/* on a phone the longest caption runs to three lines */
+@media (max-width: 759px) {
+  .w-plana-site__caption p {
+    min-height: 4.4em;
+  }
+}
+
+.w-plana-site__hours-slot[data-on='false'] {
+  visibility: hidden;
 }
 
 .w-plana-site__hours {
@@ -216,7 +240,7 @@
 @media (prefers-reduced-motion: reduce) {
   .w-plana-browser__page,
   .w-plana-seg--scenes img {
-    transition: none;
+    transition: none !important;
   }
 }
 html[data-motion='paused'] .w-plana-browser__page,

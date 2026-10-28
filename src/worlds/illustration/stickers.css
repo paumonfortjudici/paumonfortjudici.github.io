@@ -176,12 +176,8 @@
   }
 }
 
-/* keyboard focus: the two-tone ring follows the die-cut silhouette */
-.w-illustration-stk-btn:focus-visible + .w-illustration-stk-lift .w-illustration-stk-face {
-  filter: var(--pm-ring);
-}
-
-.w-illustration-stk-btn[aria-pressed='true'] + .w-illustration-stk-lift .w-illustration-stk-face {
+/* keyboard focus: the two-tone ring follows the die-cut silhouette (a pointer press moves focus too, but never draws the ring) */
+.w-illustration-stage:not([data-input='pointer']) .w-illustration-stk-btn:focus-visible + .w-illustration-stk-lift .w-illustration-stk-face {
   filter: var(--pm-ring);
 }
 

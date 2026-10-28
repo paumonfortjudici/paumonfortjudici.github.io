@@ -150,7 +150,7 @@ export default function IllustrationWorld() {
           <div className="w-illustration-sheetcol">
             <Sheet />
           </div>
-          <div className="w-illustration-layer" role="group" aria-label="The nine stickers">
+          <div className="w-illustration-layer" role="group" aria-label="The nine stickers" aria-describedby="w-illustration-help">
             {STICKERS.map((s) => (
               <StickerView
                 key={s.n}

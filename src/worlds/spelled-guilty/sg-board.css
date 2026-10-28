@@ -46,7 +46,8 @@
   width: calc(var(--w) * 1cqw);
   color: var(--cream);
   font-size: max(1.5rem, 2.3cqw);
-  text-shadow: 0 2px 0 rgb(0 0 0 / 0.6);
+  -webkit-text-stroke: 0.16em rgb(0 0 0 / 0.55);
+  paint-order: stroke fill;
   transform: rotate(-1.4deg);
   pointer-events: none;
 }
@@ -342,6 +343,11 @@
   height: 100%;
   overflow: visible;
   pointer-events: none;
+}
+
+/* the strings of the pulled line-ups run behind the suspects and the prints (only their pins are on top) */
+.w-sg-threads[data-kind='case'] {
+  z-index: 1;
 }
 
 .w-sg-thread {

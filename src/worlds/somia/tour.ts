@@ -92,7 +92,7 @@ export function createTour(): Tour {
   // where the loop picks up after a start, a scrub or a jump: at the very top the hero rests for a moment first
   const settlePhase = (): void => {
     phase = p >= 1 ? 'hold' : p <= 0 ? 'lead' : 'play'
-    phaseUntil = now() + (phase === 'lead' ? 1400 : 1100)
+    phaseUntil = now() + (phase === 'lead' ? 2600 : 1100)
   }
 
   const tick = (t: number): void => {
@@ -138,7 +138,7 @@ export function createTour(): Tour {
         if (u >= 1) {
           p = 0
           phase = 'lead'
-          phaseUntil = t + 1500
+          phaseUntil = t + 2400
         }
       }
     }

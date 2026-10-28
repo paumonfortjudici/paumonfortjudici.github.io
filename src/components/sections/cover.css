@@ -28,8 +28,8 @@
   width: 88cqw;
   height: 88cqw;
   max-width: none;
-  color: color-mix(in srgb, var(--ink) 11%, transparent);
-  --iris-blade: color-mix(in srgb, var(--ink) 4.5%, transparent);
+  color: color-mix(in srgb, var(--ink) 17%, transparent);
+  --iris-blade: color-mix(in srgb, var(--ink) 7%, transparent);
   --iris-open: color-mix(in srgb, var(--tomato) 7%, transparent);
   transition:
     transform 2.1s var(--ease-out),
@@ -54,10 +54,46 @@
   left: max(0px, calc(31px - var(--sheet-pad))); /* clear of the sheet's '+' crop mark (it spans 12 to 26px from the sheet's edge) */
   bottom: calc(100% + 0.1cqw);
   width: calc(var(--gw) * 1%);
-  color: color-mix(in srgb, var(--ultraviolet) 56%, transparent);
+  color: color-mix(in srgb, var(--ultraviolet) 92%, transparent);
   pointer-events: none;
 }
 .cv__ghost .pm-sw { display: block; }
+/* the print-shop kit on the right of the band above the word: a handwritten note, a two-ink step wedge, a registration target
+   whose second ink sits a hair off (the same misregistration the lettering shows) */
+.cv__reg {
+  position: absolute;
+  right: 0.4cqw;
+  bottom: calc(100% + 0.9cqw);
+  display: flex;
+  align-items: center;
+  gap: 1.1cqw;
+  pointer-events: none;
+  color: var(--ink);
+}
+.cv__reg-note {
+  font-size: clamp(1.2rem, 1.9cqw, 2.1rem);
+  line-height: 1;
+  color: var(--ultraviolet);
+  white-space: nowrap;
+  transform: rotate(-3deg);
+}
+.cv__wedge { display: flex; align-items: stretch; mix-blend-mode: multiply; }
+.cv__step {
+  display: block;
+  width: 1.55cqw;
+  height: 1.55cqw;
+  background: color-mix(in srgb, var(--c) calc(var(--k, 1) * 100%), transparent);
+}
+.cv__step--tomato { --c: var(--tomato); }
+.cv__step--violet { --c: var(--ultraviolet); }
+.cv__step:nth-child(4) { margin-left: 3px; }
+.cv__target { display: block; width: 3.3cqw; height: 3.3cqw; overflow: visible; }
+.cv__target-t { stroke: var(--ink); }
+.cv__target-v { stroke: var(--ultraviolet); mix-blend-mode: multiply; }
+.cv[data-layout='duo'] .cv__reg-note { display: none; }
+.cv[data-layout='duo'] .cv__step { width: 2.2cqw; height: 2.2cqw; }
+.cv[data-layout='duo'] .cv__target { width: 4.6cqw; height: 4.6cqw; }
+.cv[data-layout='solo'] .cv__reg { display: none; }
 .cv__word {
   position: relative;
   display: block;
@@ -112,18 +148,18 @@
 .cv[data-layout='wide'] .cv__row {
   grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
   column-gap: 3.6cqw;
-  margin-top: 1.6cqw;
+  margin-top: 1.15cqw;
   align-items: stretch; /* the left column is as tall as the right one: the note ends it, right above the deck it points at */
 }
 
 .cv__lead { min-width: 0; }
-.cv[data-layout='wide'] .cv__lead { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 2.3cqw; }
+.cv[data-layout='wide'] .cv__lead { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 1.2cqw; }
 .cv:not([data-layout='wide']) .cv__lead { display: contents; }
 
 .cv__title {
   margin: 0;
   color: var(--ink);
-  font-size: clamp(2.7rem, 7cqw, 9.6rem);
+  font-size: clamp(2.7rem, 6.5cqw, 9.2rem);
   line-height: 0.97;
   letter-spacing: -0.034em;
   font-weight: 900;
@@ -141,7 +177,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: clamp(0.8rem, 1.25cqw, 1.5rem);
+  gap: clamp(0.8rem, 1.1cqw, 1.4rem);
   min-width: 0;
 }
 .cv__chip { align-self: flex-start; }
@@ -195,8 +231,19 @@
   position: absolute;
   z-index: 3;
   right: 0.4cqw;
-  top: -9.4cqw;
+  top: calc(var(--stamp) * -0.62); /* its upper part overlaps the last letter, its lower part clears the quick tabs at every wide width */
   pointer-events: none;
+}
+/* the seal is pressed on a round paper label: the O underneath is cut by a clean circle, so the ring text never sits ink-on-ink */
+.cv__stamp::before {
+  content: '';
+  position: absolute;
+  inset: 5%;
+  z-index: -1;
+  border-radius: 50%;
+  background-color: var(--sheet, var(--cream));
+  background-image: var(--pm-grain);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 14%, transparent), 0 3px 8px color-mix(in srgb, var(--ink) 20%, transparent);
 }
 
 /* the hand-written pointer: its arrow ends on the first folder */
@@ -222,13 +269,32 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
 .cv[data-layout='wide'] .cv__note { margin-left: 0.5cqw; }
 .cv[data-layout='wide'] .cv__note-text { font-size: clamp(1.7rem, 2.6cqw, 3rem); }
 
-.cv:not([data-layout='wide']) .cv__row { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+.cv:not([data-layout='wide']) .cv__row { grid-template-columns: minmax(0, 1fr); align-items: center; }
+/* phone: the three tabs share one row (their counts live in the accessible name and in the Works filter), the stamp is smaller and
+   the rows are tighter, so the first folder's tab climbs into the first screen */
+.cv[data-layout='solo'] .cv__row { row-gap: 0.9rem; margin-top: 1.1rem; }
+.cv[data-layout='solo'] .cv__quick .pm-chip { display: none; }
+.cv[data-layout='solo'] .cv__blurb { line-height: 1.42; }
+/* the stamp sits beside the quick tabs (they wrap to two rows next to it), not in a row of its own */
+.cv[data-layout='solo'] .cv__side {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'chip chip' 'quick stamp' 'blurb blurb';
+  align-items: center;
+  gap: 0.8rem 0.4rem;
+}
+.cv[data-layout='solo'] .cv__chip { grid-area: chip; justify-self: start; }
+.cv[data-layout='solo'] .cv__quick { grid-area: quick; }
+.cv[data-layout='solo'] .cv__blurb { grid-area: blurb; }
+.cv[data-layout='solo'] .cv__stamp { position: relative; grid-area: stamp; inset: auto; margin: -0.4rem 0.2rem -0.4rem 0; }
 .cv:not([data-layout='wide']) :is(.cv__title, .cv__side) { grid-column: 1 / -1; }
 .cv:not([data-layout='wide']) .cv__note { grid-column: 1; grid-row: 3; flex-direction: column; align-items: flex-start; gap: 0; }
+.cv[data-layout='solo'] .cv__note { flex-direction: row; gap: 0.3rem; margin-left: 0.2rem; }
 .cv:not([data-layout='wide']) .cv__arrow { margin-left: 2.4rem; }
-.cv:not([data-layout='wide']) .cv__stamp { position: relative; grid-column: 2; grid-row: 3; right: auto; top: auto; margin-right: 0.3rem; }
+.cv[data-layout='solo'] .cv__arrow { margin-left: 0; }
+.cv[data-layout='solo'] .cv__note-text { font-size: 1.6rem; }
 /* tablet: the stamp sits beside the title, near the end of the word, like on the wide cover */
-.cv[data-layout='duo'] .cv__stamp { position: absolute; grid-column: auto; grid-row: auto; right: 0.2cqw; top: -2.6rem; margin: 0; }
+.cv[data-layout='duo'] .cv__stamp { right: 0.2cqw; top: -2.6rem; }
 
 /* ==========================================================================
    The deck
@@ -304,6 +370,9 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
   transition: none;
 }
 .cv-folder .cv-face { height: 100%; }
+/* the keyboard ring is bolder than the primitive's default: in the deck the neighbours are busy, so it is a 4px ink line inside a 4px cream halo */
+.cv-folder:focus-visible .pm-folder__ring--in { stroke-width: 9px; }
+.cv-folder:focus-visible .pm-folder__ring--out { stroke-width: 17px; }
 /* depth where papers overlap: a faint contact shadow round every folder falls on the one behind it */
 .cv-folder > .pm-folder__art { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--ink) 30%, transparent)); }
 .cv-folder__arrow {
@@ -407,9 +476,11 @@ html.js .cv-deck[data-in] .cv-face__concept {
 }
 
 /* ---- lift + peek -------------------------------------------------------------------------------------------------- */
+/* Every cut-out is a die-cut sticker: the same 2.5px cream halo all round (the magazine, the moon poster, the book and the tag get
+   it too, so they read as paper cut-outs and not as pasted screenshots), the same hard contact shadow and soft drop shadow. */
 .cv-peek {
-  --rise: 0.64; /* how much of the cut-out stands above the folder on hover / focus (share of its height) */
-  --ph: clamp(8rem, 14.6cqw, 20rem);
+  --halo: var(--cream);
+  --ph: calc(clamp(7.5rem, 13.4cqw, 18.5rem) * var(--pk, 1)); /* height: ~ equal AREA for every cut-out (--pk, Deck.tsx) */
   --pw: calc(var(--ph) * var(--ar, 0.75));
   --tabw: 9rem;
   position: absolute;
@@ -422,7 +493,8 @@ html.js .cv-deck[data-in] .cv-face__concept {
   opacity: 0;
   transform: translate(-50%, 0) rotate(0deg);
   transform-origin: 50% 100%;
-  filter: drop-shadow(0 2px 0 color-mix(in srgb, var(--ink) 26%, transparent)) drop-shadow(0 12px 10px color-mix(in srgb, var(--ink) 30%, transparent));
+  filter: drop-shadow(2.5px 0 0 var(--halo)) drop-shadow(-2.5px 0 0 var(--halo)) drop-shadow(0 2.5px 0 var(--halo)) drop-shadow(0 -2.5px 0 var(--halo))
+    drop-shadow(0 2px 0 color-mix(in srgb, var(--ink) 26%, transparent)) drop-shadow(0 10px 8px color-mix(in srgb, var(--ink) 28%, transparent));
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -431,13 +503,13 @@ html.js .cv-deck[data-in] .cv-face__concept {
     opacity 0.16s ease;
 }
 
-/* front row (wide): its cut-out comes up in front of the back row's text, so it rises a little less than the back row's does */
-.cv-slot:not([data-rest]) .cv-peek { --rise: 0.54; }
-
-/* back row (wide): the cut-out already stands part-way out of its folder; after the folders land it slides up out of the folder */
+/* back row (wide): the cut-out already stands part-way out of its folder; after the folders land it slides up out of the folder.
+   On hover or focus it does NOT climb higher: the rise is capped by the gap between the blurb and the deck, so a raised cut-out
+   can never cover the words above it. The folder lifts, the cut-out leans to its full angle and swells a little instead. */
 .cv-slot[data-rest] .cv-peek {
+  --rest: calc(var(--tab-h) + 8px + var(--ph) * 0.25);
   opacity: 1;
-  transform: translate(-50%, calc(-1 * (var(--tab-h) + 8px + var(--ph) * 0.27))) rotate(calc(var(--tilt) * 0.55));
+  transform: translate(-50%, calc(-1 * var(--rest))) rotate(calc(var(--tilt) * 0.55));
 }
 .cv-deck[data-in] .cv-slot[data-rest] .cv-peek {
   animation: cv-peek-in 0.7s var(--spring-peek) backwards;
@@ -447,30 +519,51 @@ html.js .cv-deck[data-in] .cv-face__concept {
   from { opacity: 0; transform: translate(-50%, 0) rotate(0deg); }
 }
 
+/* front row (wide): its cut-out is stuck on the folder's own empty lower-right corner (nothing but paper there: the title, kind
+   and label sit on the left), so it can never cover the back row's titles. It slaps on with a spring when the folder is hovered
+   or focused. Height is capped by width so a landscape sticker (Gotet) never reaches the kind line. */
+.cv-deck[data-layout='wide'] .cv-slot:not([data-rest]) .cv-peek {
+  --ph: min(calc(clamp(6rem, 9.6cqw, 12.5rem) * var(--pk, 1)), calc(7.6cqw / var(--ar, 0.75)));
+  z-index: 3;
+  left: auto;
+  right: 4.5%;
+  top: auto;
+  bottom: 7%;
+  transform: translateY(16%) rotate(0deg) scale(0.86);
+}
+
 @media (hover: hover) {
   .cv-slot:hover .cv-lift { transform: translateY(calc(var(--lift) * -1)) rotate(calc(var(--tilt) * 0.12)); }
   .cv-slot:hover .pm-folder__art { filter: var(--pm-float); }
   .cv-slot:hover .cv-folder__arrow { transform: translateX(3px); }
-  .cv-slot:hover .cv-peek {
-    opacity: 1;
-    transform: translate(-50%, calc(-1 * (var(--tab-h) + 8px + var(--ph) * var(--rise)))) rotate(var(--tilt));
-  }
+  .cv-slot[data-rest]:hover .cv-peek { transform: translate(-50%, calc(-1 * var(--rest) + var(--lift) * 0.5)) rotate(var(--tilt)) scale(1.05); }
+  .cv-deck[data-layout='wide'] .cv-slot:not([data-rest]):hover .cv-peek { opacity: 1; transform: translateY(0) rotate(var(--tilt)) scale(1); }
 }
 .cv-slot:has(.cv-folder:focus-visible) .cv-lift { transform: translateY(calc(var(--lift) * -1)) rotate(calc(var(--tilt) * 0.12)); }
 .cv-slot:has(.cv-folder:focus-visible) .pm-folder__art { filter: var(--pm-float); }
-.cv-slot:has(.cv-folder:focus-visible) .cv-peek {
-  opacity: 1;
-  transform: translate(-50%, calc(-1 * (var(--tab-h) + 8px + var(--ph) * var(--rise)))) rotate(var(--tilt));
-}
+.cv-slot[data-rest]:has(.cv-folder:focus-visible) .cv-peek { transform: translate(-50%, calc(-1 * var(--rest) + var(--lift) * 0.5)) rotate(var(--tilt)) scale(1.05); }
+.cv-deck[data-layout='wide'] .cv-slot:not([data-rest]):has(.cv-folder:focus-visible) .cv-peek { opacity: 1; transform: translateY(0) rotate(var(--tilt)) scale(1); }
 
 /* a quick tab previews its folders (mouse hover or keyboard focus on the tab, see Cover.tsx): the ones filed under that kind of
-   work step forward and float. The shadow is the still-motion version of the same answer. */
+   work are pulled out of the drawer (a clear lift, full colour, their cut-outs leaning out) while the rest wash out. */
+.cv[data-hint] .cv-slot .cv-lift {
+  filter: saturate(0.2) brightness(1.12);
+  transition:
+    transform 0.5s var(--spring-lift),
+    filter 0.3s ease;
+}
 .cv[data-hint='branding'] .cv-slot[data-cat~='branding'] .cv-lift,
 .cv[data-hint='editorial'] .cv-slot[data-cat~='editorial'] .cv-lift,
-.cv[data-hint='illustration'] .cv-slot[data-cat~='illustration'] .cv-lift { transform: translateY(calc(var(--lift) * -0.8)); }
+.cv[data-hint='illustration'] .cv-slot[data-cat~='illustration'] .cv-lift { transform: translateY(calc(var(--lift) * -1.15)); filter: none; }
 .cv[data-hint='branding'] .cv-slot[data-cat~='branding'] .pm-folder__art,
 .cv[data-hint='editorial'] .cv-slot[data-cat~='editorial'] .pm-folder__art,
 .cv[data-hint='illustration'] .cv-slot[data-cat~='illustration'] .pm-folder__art { filter: var(--pm-float); }
+.cv[data-hint='branding'] .cv-slot[data-rest][data-cat~='branding'] .cv-peek,
+.cv[data-hint='editorial'] .cv-slot[data-rest][data-cat~='editorial'] .cv-peek,
+.cv[data-hint='illustration'] .cv-slot[data-rest][data-cat~='illustration'] .cv-peek { transform: translate(-50%, calc(-1 * var(--rest) + var(--lift) * 0.5)) rotate(var(--tilt)) scale(1.05); }
+.cv[data-hint='branding'] .cv-deck[data-layout='wide'] .cv-slot:not([data-rest])[data-cat~='branding'] .cv-peek,
+.cv[data-hint='editorial'] .cv-deck[data-layout='wide'] .cv-slot:not([data-rest])[data-cat~='editorial'] .cv-peek,
+.cv[data-hint='illustration'] .cv-deck[data-layout='wide'] .cv-slot:not([data-rest])[data-cat~='illustration'] .cv-peek { opacity: 1; transform: translateY(0) rotate(var(--tilt)) scale(1); }
 
 /* ==========================================================================
    Duo (tablet): two cascades of five folders. Solo (phone): one cascade of ten.
@@ -484,7 +577,7 @@ html.js .cv-deck[data-in] .cv-face__concept {
   --fpad: 0.7rem 1rem 0.6rem;
   --ov: 0%;
   height: calc(4 * var(--step) + var(--fh) + 4rem);
-  margin-top: 1.4rem;
+  margin-top: 3.4rem;
 }
 .cv-deck:not([data-layout='wide']) .cv-slot {
   left: calc(var(--c2) * 51%);
@@ -521,21 +614,23 @@ html.js .cv-deck[data-in] .cv-face__concept {
 .cv-deck[data-layout='solo'] .cv-face__n { font-size: 2.5rem; }
 .cv-deck[data-layout='solo'] .cv-face__title { font-size: 1.15rem; }
 
-/* The cut-outs in a cascade: each one stands behind its folder's top edge, at the right, over the blank lower corner of the folder
-   above (the hook of every cut-out is in its top 40 %, and that is the part that shows). They are always out: a phone has no hover.
-   On a pointer device, hover and keyboard focus raise the cut-out a little further. */
+/* The cut-outs in a cascade: each one stands behind its folder's top edge, at the right, over the blank lower-right corner of the
+   folder above, and about three quarters of it shows (the folder above keeps the right 5.6rem of its face empty for exactly this:
+   its titles wrap before they reach it). They are always out: a phone has no hover. A pointer lifts the cut-out a little further. */
+.cv-deck:not([data-layout='wide']) .cv-face__kind { padding-right: 5.4rem; }
 .cv-deck:not([data-layout='wide']) .cv-peek {
-  --ph: 6.9rem;
+  --ph: min(calc(6.6rem * var(--pk, 1)), calc(4.9rem / var(--ar, 0.75)));
   left: auto;
-  right: 6%;
-  top: -1.05rem;
+  right: 5%;
+  top: -3rem;
   opacity: 1;
   transform: rotate(var(--tilt));
+  transform-origin: 50% 100%;
 }
 @media (hover: hover) {
-  .cv-deck:not([data-layout='wide']) .cv-slot:hover .cv-peek { transform: translateY(-1.5rem) rotate(var(--tilt)); }
+  .cv-deck:not([data-layout='wide']) .cv-slot:hover .cv-peek { transform: translateY(-0.7rem) rotate(var(--tilt)); }
 }
-.cv-deck:not([data-layout='wide']) .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: translateY(-1.5rem) rotate(var(--tilt)); }
+.cv-deck:not([data-layout='wide']) .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: translateY(-0.7rem) rotate(var(--tilt)); }
 
 /* ==========================================================================
    Entrance and the wait for the intro (html.js only), then the still (reduced / paused) overrides
@@ -553,7 +648,8 @@ html.js .cv:not([data-ready]) :is(.pm-sw__s, .pm-sc__p, .pm-stamp) { animation-p
   .cv-lift,
   .cv-peek,
   .cv-iris,
-  .cv-folder__arrow { transition: none; }
+  .cv-folder__arrow,
+  .cv[data-hint] .cv-slot .cv-lift { transition: none; }
   .cv-slot:hover .cv-lift,
   .cv-slot:has(.cv-folder:focus-visible) .cv-lift,
   .cv[data-hint='branding'] .cv-slot[data-cat~='branding'] .cv-lift,
@@ -563,8 +659,10 @@ html.js .cv:not([data-ready]) :is(.pm-sw__s, .pm-sc__p, .pm-stamp) { animation-p
   .cv-deck:not([data-layout='wide']) .cv-slot:hover .cv-peek,
   .cv-deck:not([data-layout='wide']) .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: rotate(var(--tilt)); }
   /* no travel: the cut-out simply appears where it would have ended */
-  .cv-slot:hover .cv-peek,
-  .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: translate(-50%, calc(-1 * (var(--tab-h) + 8px + var(--ph) * var(--rise)))) rotate(var(--tilt)); }
+  .cv-slot[data-rest]:hover .cv-peek,
+  .cv-slot[data-rest]:has(.cv-folder:focus-visible) .cv-peek { transform: translate(-50%, calc(-1 * var(--rest))) rotate(var(--tilt)); }
+  .cv-deck[data-layout='wide'] .cv-slot:not([data-rest]):hover .cv-peek,
+  .cv-deck[data-layout='wide'] .cv-slot:not([data-rest]):has(.cv-folder:focus-visible) .cv-peek { transform: rotate(var(--tilt)); }
   .cv__word:hover .pm-sw__gl { animation: none; }
   .cv-deck[data-in] .cv-slot[data-rest] .cv-peek { animation: none; }
   html.js .cv-deck[data-in] .cv-face__concept { animation: none; }
@@ -576,7 +674,8 @@ html[data-motion='paused'] .cv-slot,
 html[data-motion='paused'] .cv-lift,
 html[data-motion='paused'] .cv-peek,
 html[data-motion='paused'] .cv-iris,
-html[data-motion='paused'] .cv-folder__arrow { transition: none; }
+html[data-motion='paused'] .cv-folder__arrow,
+html[data-motion='paused'] .cv[data-hint] .cv-slot .cv-lift { transition: none; }
 html[data-motion='paused'] .cv-slot:hover .cv-lift,
 html[data-motion='paused'] .cv-slot:has(.cv-folder:focus-visible) .cv-lift,
 html[data-motion='paused'] .cv[data-hint='branding'] .cv-slot[data-cat~='branding'] .cv-lift,
@@ -585,8 +684,10 @@ html[data-motion='paused'] .cv[data-hint='illustration'] .cv-slot[data-cat~='ill
 html[data-motion='paused'] .cv-slot:hover .cv-folder__arrow { transform: none; }
 html[data-motion='paused'] .cv-deck:not([data-layout='wide']) .cv-slot:hover .cv-peek,
 html[data-motion='paused'] .cv-deck:not([data-layout='wide']) .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: rotate(var(--tilt)); }
-html[data-motion='paused'] .cv-slot:hover .cv-peek,
-html[data-motion='paused'] .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: translate(-50%, calc(-1 * (var(--tab-h) + 8px + var(--ph) * var(--rise)))) rotate(var(--tilt)); }
+html[data-motion='paused'] .cv-slot[data-rest]:hover .cv-peek,
+html[data-motion='paused'] .cv-slot[data-rest]:has(.cv-folder:focus-visible) .cv-peek { transform: translate(-50%, calc(-1 * var(--rest))) rotate(var(--tilt)); }
+html[data-motion='paused'] .cv-deck[data-layout='wide'] .cv-slot:not([data-rest]):hover .cv-peek,
+html[data-motion='paused'] .cv-deck[data-layout='wide'] .cv-slot:not([data-rest]):has(.cv-folder:focus-visible) .cv-peek { transform: rotate(var(--tilt)); }
 html[data-motion='paused'] .cv__word:hover .pm-sw__gl { animation: none; }
 html[data-motion='paused'] .cv-deck[data-in] .cv-slot[data-rest] .cv-peek { animation: none; }
 html[data-motion='paused'].js .cv-deck[data-in] .cv-face__concept { animation: none; }

@@ -38,7 +38,7 @@
   border-radius: 6px;
   background-color: var(--paper);
   background-image: var(--pm-grain);
-  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 var(--ab-edge), 0 18px 18px -14px color-mix(in srgb, var(--ink) 55%, transparent);
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 var(--ab-edge), 0 18px 18px -14px color-mix(in srgb, var(--ink) 55%, transparent); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   color: var(--ink);
 }
 
@@ -62,7 +62,7 @@
   border-radius: 10px 10px 0 0;
   background-color: var(--c);
   background-image: var(--pm-grain);
-  box-shadow: inset 0 1px 0 var(--pm-hl);
+  box-shadow: inset 0 1px 0 var(--pm-hl); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   color: var(--on);
   font-family: var(--font-label);
   font-size: var(--fs-label);
@@ -99,7 +99,7 @@
   border-radius: 4px 4px 2px 2px;
   background-color: var(--c);
   background-image: var(--pm-grain);
-  box-shadow: inset 0 1px 0 var(--pm-hl), 2px 0 0 color-mix(in srgb, var(--c) 62%, var(--ink));
+  box-shadow: inset 0 1px 0 var(--pm-hl), 2px 0 0 color-mix(in srgb, var(--c) 62%, var(--ink)); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
   transform-origin: 13px 100%;
   transform: translateY(-100%) rotate(var(--a));
 }
@@ -119,16 +119,16 @@ html[data-motion='paused'] .pm-ab-skill__in--design:hover .pm-ab-fan__chip { tra
   height: 10px;
   border-radius: 2px;
   background: var(--tomato);
-  box-shadow: 0 2px 0 color-mix(in srgb, var(--tomato) 62%, var(--ink));
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--tomato) 62%, var(--ink)); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
-.pm-ab-skill__in--design .pm-ab-points li:nth-child(2)::before { background: var(--lagoon); box-shadow: 0 2px 0 color-mix(in srgb, var(--lagoon) 62%, var(--ink)); }
-.pm-ab-skill__in--design .pm-ab-points li:nth-child(3)::before { background: var(--ultraviolet); box-shadow: 0 2px 0 color-mix(in srgb, var(--ultraviolet) 62%, var(--ink)); }
+.pm-ab-skill__in--design .pm-ab-points li:nth-child(2)::before { background: var(--lagoon); box-shadow: 0 2px 0 color-mix(in srgb, var(--lagoon) 62%, var(--ink)); } /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
+.pm-ab-skill__in--design .pm-ab-points li:nth-child(3)::before { background: var(--ultraviolet); box-shadow: 0 2px 0 color-mix(in srgb, var(--ultraviolet) 62%, var(--ink)); } /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 
 /* ---- draw: sketchbook page ----------------------------------------------------------------------------------------------- */
 .pm-ab-skill__in--draw .pm-ab-card {
   padding-left: clamp(30px, 2.6vw, 40px);
   background-image:
-    radial-gradient(circle, color-mix(in srgb, var(--ink) 22%, transparent) 1px, transparent 1.3px),
+    radial-gradient(circle, color-mix(in srgb, var(--ink) 22%, transparent) 1px, transparent 1.3px), /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
     var(--pm-grain);
   background-size: 17px 17px, auto;
   background-position: 6px 8px, 0 0;
@@ -174,7 +174,7 @@ html[data-motion='paused'] .pm-ab-skill__in--design:hover .pm-ab-fan__chip { tra
   --ab-edge: color-mix(in srgb, var(--ink) 55%, var(--lagoon));
   background-color: var(--ink);
   color: var(--cream);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--cream) 18%, transparent), 0 3px 0 color-mix(in srgb, var(--ink-3) 90%, var(--ink)), 0 18px 18px -14px color-mix(in srgb, var(--ink) 70%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--cream) 18%, transparent), 0 3px 0 color-mix(in srgb, var(--ink-3) 90%, var(--ink)), 0 18px 18px -14px color-mix(in srgb, var(--ink) 70%, transparent); /* taste-skill-ignore: paper object (concept: physical sheets on a desk) */
 }
 .pm-ab-points--code li { padding-left: 34px; }
 .pm-ab-ln {

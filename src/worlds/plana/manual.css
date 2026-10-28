@@ -1,0 +1,440 @@
+/* ==========================================================================
+   plate 6 "Manual": a pile of 17 pages that fans out like a sunrise. The pile stands behind a holm-oak horizon (the symbol's own field and
+   stripe), so the pages rise out of the ground like rays and pivot about a point under it. Plus the viewer (lightbox).
+   Transforms only. The viewer is portalled into the shell's folder body, so it carries its own copy of the palette (see plana.css).
+   ========================================================================== */
+
+.w-plana-manual {
+  container: w-plana-manual / inline-size;
+  display: flex;
+  flex-direction: column;
+  background: var(--wheat);
+  color: var(--night);
+}
+
+.w-plana-manual__top {
+  display: grid;
+  gap: 0.5rem;
+  padding: clamp(1rem, 4cqw, 1.7rem) clamp(1rem, 4.5cqw, 1.9rem) 0;
+}
+
+.w-plana-manual__head {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(0.5rem, 2cqw, 0.9rem);
+  margin: 0;
+}
+
+.w-plana-manual__big {
+  color: var(--holm);
+  font-family: var(--font-display);
+  font-size: clamp(4.6rem, 26cqw, 8.6rem);
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  line-height: 0.78;
+}
+
+.w-plana-manual__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 7cqw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.w-plana-manual__sub {
+  max-width: 34ch;
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+/* ---- the fan ----------------------------------------------------------------------------------------------------------- */
+.w-plana-fan {
+  --lw: min(56cqw, 34rem); /* a page's width */
+  --lh: calc(var(--lw) * 0.625); /* 8 : 5 */
+  --py: 5%; /* the pivot sits this far above the bottom edge, behind the horizon */
+
+  position: relative;
+  flex: 1 1 auto;
+  min-height: calc(var(--lh) * 1.95); /* the fan (a page's height, the arc and the lifted page) plus a little sky for the margin note; any extra height is sky too */
+  overflow: hidden;
+}
+
+.w-plana-fan__stack {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* the ground the pages rise from: holm-oak field with the symbol's field-green stripe */
+.w-plana-fan__horizon {
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 15%;
+  border-top: var(--outline) solid var(--night);
+  background: linear-gradient(var(--holm) 0 34%, var(--field) 34% 62%, var(--holm) 62% 100%);
+}
+
+/* a margin note in my hand, pointing at the pile; it goes away once the fan has been opened */
+.w-plana-fan__note {
+  position: absolute;
+  z-index: 120;
+  top: 3%;
+  right: 6%;
+  display: grid;
+  justify-items: end;
+  margin: 0;
+  color: var(--holm);
+  rotate: 4deg;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.w-plana-fan__note[data-gone='true'] {
+  opacity: 0;
+}
+
+.w-plana-fan__note span {
+  max-width: 9ch;
+  font-family: var(--font-hand);
+  font-size: clamp(1.4rem, 6cqw, 1.9rem);
+  line-height: 1;
+  text-align: right;
+}
+
+.w-plana-fan__note svg {
+  margin: 0.15rem 1.6rem 0 0;
+}
+
+.w-plana-leaf {
+  --r: calc(var(--jr) * 1deg);
+  --lift: -9%;
+  --sc: 1.12;
+
+  position: absolute;
+  z-index: var(--z);
+  bottom: calc(var(--py) + var(--lh) * 0.18);
+  left: 50%;
+  width: var(--lw);
+  aspect-ratio: 8 / 5;
+  translate: -50% 0;
+  rotate: var(--r);
+  transform: translateY(var(--lift)) scale(var(--sc));
+  transform-origin: 50% 118%;
+  transition:
+    rotate 0.85s var(--ease-out),
+    transform 0.45s var(--ease-spring);
+  transition-delay: calc((16 - var(--i)) * 7ms), 0s;
+}
+
+/* open: 17 pages over a 72 degree arc, centred on the middle page */
+.w-plana-manual[data-open='true'] .w-plana-leaf {
+  --r: calc((var(--i) - 8) * 4.5deg);
+  --lift: 0%;
+  --sc: 1;
+
+  transition-delay: calc(var(--i) * 12ms), 0s;
+}
+
+/* the page you point at lifts out of the fan and comes to the front; the others fall away on both sides of it */
+.w-plana-manual[data-open='true'] .w-plana-leaf[data-active='true'] {
+  --lift: -17%;
+  --sc: 1.07;
+
+  transition-delay: 0s, 0s;
+}
+
+.w-plana-leaf__btn {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 2.5px solid var(--night);
+  border-radius: 9px;
+  background: var(--bg);
+}
+
+/* only the page on top (the cover, or the one you are pointing at) casts the solid shadow; a stack of shadows would turn the fan black */
+.w-plana-leaf:first-child .w-plana-leaf__btn,
+.w-plana-leaf[data-active='true'] .w-plana-leaf__btn {
+  box-shadow: 3px 4px 0 var(--night);
+}
+
+.w-plana-leaf__btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.w-plana-leaf__btn:focus-visible {
+  outline: 3px solid var(--night);
+  outline-offset: 2px;
+  box-shadow:
+    3px 4px 0 var(--night),
+    0 0 0 6px var(--paper);
+}
+
+/* ---- the bar under the fan ----------------------------------------------------------------------------------------------- */
+.w-plana-manual__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.55rem clamp(0.8rem, 3cqw, 1.3rem) 0.8rem;
+  border-top: var(--outline) solid var(--night);
+  background: var(--paper);
+}
+
+.w-plana-manual__now {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  min-height: 2.4rem;
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+
+.w-plana-manual__no {
+  color: var(--poppy);
+  font-size: 1.7rem;
+  letter-spacing: -0.06em;
+}
+
+.w-plana-manual__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.3rem 0.2rem;
+}
+
+/* ==========================================================================
+   the viewer
+   ========================================================================== */
+.w-plana-viewer {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: clamp(8px, 2vw, 28px);
+  color: var(--night);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+}
+
+.w-plana-viewer__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgb(24 24 27 / 0.9);
+  cursor: zoom-out;
+}
+
+.w-plana-viewer__panel {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  width: min(1180px, 100%);
+  max-height: 100%;
+  gap: 0.6rem;
+  padding: clamp(0.7rem, 1.4vw, 1.2rem);
+  border: var(--outline) solid var(--night);
+  border-radius: 18px;
+  background: var(--paper);
+  box-shadow: var(--shadow-x) var(--shadow-y) 0 var(--poppy);
+  animation: w-plana-viewer-in 0.35s var(--ease-out) both;
+}
+
+@keyframes w-plana-viewer-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.w-plana-viewer__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.w-plana-viewer__count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.w-plana-viewer__n {
+  color: var(--poppy);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+}
+
+.w-plana-viewer__stage {
+  display: flex;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.3rem, 1.2vw, 0.9rem);
+}
+
+.w-plana-viewer__side {
+  flex: none;
+}
+
+.w-plana-viewer__figure {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  flex: 1 1 auto;
+  place-items: center;
+  margin: 0;
+}
+
+.w-plana-viewer__img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(62vh, 640px);
+  border: var(--outline) solid var(--night);
+  border-radius: 10px;
+  object-fit: contain;
+  animation: w-plana-page-in 0.3s var(--ease-out) both;
+}
+
+@keyframes w-plana-page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.w-plana-viewer__foot {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.w-plana-viewer__caption {
+  max-width: 78ch;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.w-plana-viewer__lang {
+  margin: 0;
+  color: var(--night-2);
+  font-size: 0.875rem;
+}
+
+.w-plana-viewer__thumbs {
+  display: flex;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.3rem 0.2rem 0.45rem;
+  overflow-x: auto;
+  list-style: none;
+  scrollbar-width: thin;
+}
+
+.w-plana-viewer__thumbs li {
+  flex: none;
+}
+
+.w-plana-viewer__thumb {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border: 2.5px solid var(--night);
+  border-radius: 8px;
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+}
+
+.w-plana-viewer__thumb span {
+  padding: 0 0.25rem;
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--night);
+}
+
+.w-plana-viewer__thumb[aria-current='page'] {
+  box-shadow: 3px 4px 0 var(--night);
+  transform: translateY(-3px);
+}
+
+@media (pointer: coarse) {
+  .w-plana-viewer__thumb {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
+
+@media (max-width: 759px) {
+  .w-plana-viewer {
+    padding: 6px;
+  }
+  /* the page gets the full width; previous and next sit under it */
+  .w-plana-viewer__stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 0.4rem;
+    align-items: start;
+  }
+  .w-plana-viewer__figure {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .w-plana-viewer__stage > .w-plana-viewer__side:first-child {
+    grid-row: 2;
+    justify-self: start;
+  }
+  .w-plana-viewer__stage > .w-plana-viewer__side:last-child {
+    grid-row: 2;
+    grid-column: 2;
+    justify-self: end;
+  }
+  .w-plana-viewer__img {
+    max-height: 40vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .w-plana-viewer__panel,
+  .w-plana-viewer__img {
+    animation: none;
+  }
+}
+html[data-motion='paused'] .w-plana-viewer__panel,
+html[data-motion='paused'] .w-plana-viewer__img {
+  animation: none;
+}

@@ -1,0 +1,13 @@
+m01-shopfront.svg
+m02-social-greeting.svg
+m03-social-xips.svg
+m04-social-raig.svg
+m05-cups.svg
+m06-menu.svg
+m09-bottle.svg
+m11-siphon.svg
+m15-glass.svg
+m17-tote.svg
+m18-apron.svg
+m19-flyer.svg
+m20-stickers.svg

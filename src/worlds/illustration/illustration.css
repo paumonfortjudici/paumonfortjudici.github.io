@@ -1,0 +1,535 @@
+/* ==========================================================================
+   World 10, "Sticker Sheet": the field (a sticker maker's cutting mat), the stage (title, lid, controls, sheet) and the two surfaces.
+   Prefix w-illustration-. The world's own palette is defined here: the nine sticker accents, white vinyl, the sheet's cream.
+   Display face: Cherry Bomb One (loaded with the chunk by the shell). Body face: Karla (core).
+   ========================================================================== */
+
+.w-illustration {
+  /* tapes and shadows may hang over the edge of the page: they are cut here, so the world never scrolls sideways */
+  overflow-x: clip;
+  --wi-lilac: #c6b1fe;
+  --wi-tangerine: #ffa65f;
+  --wi-sky: #85cef9;
+  --wi-mint: #8eebc3;
+  --wi-butter: #fce67a;
+  --wi-tomato: #fe7d6c;
+  --wi-pink: #ff9fc5;
+  --wi-teal: #66cbc7;
+  --wi-lime: #c5eb7c;
+  --wi-white: #ffffff;
+  --wi-vinyl: #fffefa;
+  --wi-paper: #ffefdf;
+  --wi-cut: #8c6442;
+  --wi-brown: #4a2c18;
+  /* the laptop: brushed aluminium (a broad reflection across the lid), its edge and its hinge */
+  --wi-metal: #cdc7d2;
+  --wi-metal-edge: #8a8392;
+  --wi-brushed: linear-gradient(116deg, #f1edf3 0%, #d6d0da 17%, #bcb5c3 29%, #e6e1ea 44%, #c5bec9 60%, #dcd6e0 76%, #cbc4d0 90%, #e9e4ec 100%);
+  --wi-hinge: linear-gradient(#5a5260 0, #2e2833 45%, #19131d 100%);
+  --wi-hinge-tipped: linear-gradient(#6c6372 0, #38313e 45%, #1c1620 100%);
+  /* the lifted corner of a sticker sheet: the paper's back, darker at the fold */
+  --wi-flap: linear-gradient(135deg, #fff9ee 0%, #f2e6d3 52%, #cdb99f 100%);
+  /* the back of the vinyl on a peeling corner: shaded at the fold, white at the tip */
+  --wi-flap-fold: #c9c1b7;
+  --wi-flap-mid: #ebe7df;
+  --wi-flap-tip: #fdfcf8;
+  /* the lever's brass brad */
+  --wi-brass: radial-gradient(circle at 35% 30%, #fff6dc, #c9a85a 55%, #7d6224);
+  --wi-grid: color-mix(in srgb, var(--ink) 11%, transparent);
+  --wi-grid-fine: color-mix(in srgb, var(--ink) 5.5%, transparent);
+  --font-display: 'Cherry Bomb One', var(--font-body);
+  /* everything on the first screen except the lid (strip aside): padding, head, tab zone, hinge, one row of controls */
+  --wi-chrome: clamp(350px, calc(350px + (100vw - 1280px) * 0.11), 424px);
+
+  position: relative;
+  min-height: 100%;
+  color: var(--ink);
+  /* the mat: a faint 24 px grid with a stronger line every 120 px, printed on the folder's lilac */
+  background-color: var(--w-color);
+  background-image:
+    linear-gradient(var(--wi-grid) 1.5px, transparent 1.5px), linear-gradient(90deg, var(--wi-grid) 1.5px, transparent 1.5px),
+    linear-gradient(var(--wi-grid-fine) 1px, transparent 1px), linear-gradient(90deg, var(--wi-grid-fine) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px;
+}
+
+.w-illustration-inner {
+  /* a stacking context of its own: the stickers' z-indexes (up to 1000+ while lifted) stay inside it, under the lightbox */
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 4.6vw, 80px);
+  width: min(100%, 1880px);
+  margin-inline: auto;
+  padding: clamp(14px, 2.2vw, 40px) clamp(14px, 2.4vw, 44px) clamp(48px, 6vw, 96px);
+  padding-bottom: calc(clamp(48px, 6vw, 96px) + env(safe-area-inset-bottom, 0px));
+}
+
+/* ---- the stage: [title, lid, controls] beside [sheet]; the stickers float above both in .w-illustration-layer ------------ */
+.w-illustration-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(22px, 3.2vw, 60px);
+  align-items: start;
+}
+
+.w-illustration-lidcol {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.w-illustration-sheetcol {
+  min-width: 0;
+  padding-top: clamp(6px, 1.2vw, 22px);
+}
+
+@media (max-width: 899px) {
+  .w-illustration-stage {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(26px, 6vw, 44px);
+  }
+
+  /* on a phone the tools come first and the lid sits right above the sheet, so lid and sheet fit on one screen together
+     and a sticker only has to travel a short way */
+  .w-illustration-lidcol .w-illustration-head {
+    margin-bottom: 18px;
+  }
+
+  .w-illustration-lidwrap {
+    width: 100%;
+  }
+
+  .w-illustration-lidwrap > .w-illustration-controls {
+    order: -1;
+    margin: 0 0 18px;
+  }
+
+  .w-illustration-lidbox {
+    margin-bottom: 0;
+  }
+
+  .w-illustration-head .w-illustration-title {
+    font-size: min(14cqw, 7rem);
+  }
+}
+
+@media (max-width: 520px) {
+  .w-illustration-head .w-illustration-title {
+    font-size: min(17cqw, 7rem);
+  }
+}
+
+/* ---- head: the die-cut title and the lede ------------------------------------------------------------------------------ */
+.w-illustration-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: clamp(10px, 1.6vw, 28px) clamp(18px, 2.6vw, 44px);
+  margin-bottom: 40px; /* room for the Save tab that stands on the lid's top edge */
+}
+
+.w-illustration-title {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0.04em 0.08em 0.1em 0.06em;
+  font-family: 'Cherry Bomb One', var(--font-body);
+  font-size: min(9.8cqw, 6.6rem);
+  font-weight: 400;
+  line-height: 0.96;
+  letter-spacing: -0.012em;
+  text-wrap: nowrap;
+}
+
+.w-illustration-word {
+  display: inline-flex;
+}
+
+/* every letter is a vinyl letter sticker: its accent, an ink keyline, a thick white halo behind it and a hard shadow */
+.w-illustration-ch {
+  position: relative;
+  display: inline-block;
+  color: var(--c);
+  -webkit-text-stroke: 0.1em var(--ink);
+  paint-order: stroke fill;
+  transform: translateY(var(--drop)) rotate(var(--tilt));
+  filter: drop-shadow(0 0.04em 0 color-mix(in srgb, var(--ink) 55%, transparent));
+}
+
+.w-illustration-ch::before {
+  content: attr(data-c);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  color: var(--wi-white);
+  -webkit-text-stroke: 0.36em var(--wi-white);
+  paint-order: stroke fill;
+}
+
+.w-illustration-lede {
+  flex: 1 1 15rem;
+  margin: 0 0 0.4rem;
+  max-width: 40ch;
+  font-size: var(--fs-lead);
+  line-height: 1.42;
+  color: var(--ink);
+}
+
+.w-illustration-lede strong {
+  font-family: 'Cherry Bomb One', var(--font-body);
+  font-size: 1.22em;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+
+/* ---- how it works: one paper leaflet taped under the stage, a column per way of playing, torn along dashed folds ---------------- */
+.w-illustration-how {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.62fr) repeat(3, minmax(0, 1fr));
+  align-items: start;
+  width: 100%;
+  padding: clamp(20px, 2.2vw, 32px) clamp(18px, 2.4vw, 36px) clamp(18px, 2vw, 28px);
+  border-radius: 6px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow: 0 3px 0 var(--cream-2), 0 24px 26px -18px color-mix(in srgb, var(--ink) 55%, transparent);
+  transform: rotate(-0.35deg);
+}
+
+.w-illustration-how-title {
+  margin: 0;
+  padding-right: 16px;
+  font-family: 'Cherry Bomb One', var(--font-body);
+  font-size: clamp(1.9rem, 1.3rem + 1.6vw, 2.9rem);
+  font-weight: 400;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.w-illustration-how-list {
+  display: contents;
+  margin: 0;
+}
+
+.w-illustration-how-list > div {
+  align-self: stretch;
+  padding: 2px clamp(14px, 1.8vw, 28px);
+  border-left: 2.5px dashed color-mix(in srgb, var(--wi-cut) 70%, var(--paper));
+}
+
+.w-illustration-how-list dt {
+  margin-bottom: 6px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.w-illustration-how-list dd {
+  margin: 0;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  max-width: 40ch;
+}
+
+@media (max-width: 1099px) {
+  .w-illustration-how {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 18px 0;
+  }
+
+  .w-illustration-how-title {
+    grid-column: 1 / -1;
+  }
+
+  .w-illustration-how-list > div:first-child {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .w-illustration-how-list > div:last-child {
+    grid-column: 1 / -1;
+    border-left: 0;
+    padding-left: 0;
+    padding-top: 14px;
+    border-top: 2.5px dashed color-mix(in srgb, var(--wi-cut) 70%, var(--paper));
+  }
+}
+
+@media (max-width: 599px) {
+  .w-illustration-how {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .w-illustration-how-list > div,
+  .w-illustration-how-list > div:last-child {
+    grid-column: 1;
+    padding: 12px 0 0;
+    border-left: 0;
+    border-top: 2.5px dashed color-mix(in srgb, var(--wi-cut) 70%, var(--paper));
+  }
+}
+
+/* the wrapper sizes the lid (it never gets taller than the screen leaves room for) and carries the tab that stands on its edge */
+.w-illustration-lidwrap {
+  display: flex;
+  flex-direction: column;
+  /* as wide as the column, but never so tall that the controls fall off the first screen; a short window keeps a decent lid */
+  width: min(100%, max(calc((100dvh - var(--w-strip, 44px) - var(--wi-chrome, 360px)) * 1.6), 620px));
+}
+
+.w-illustration-lidbox {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.w-illustration-lidtabs {
+  position: absolute;
+  right: clamp(14px, 3cqw, 40px);
+  bottom: calc(100% - 1px);
+  z-index: 2;
+  display: flex;
+}
+
+.w-illustration-lidframe {
+  --lid-r: clamp(14px, 2.2cqw, 28px);
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  isolation: isolate;
+  transform-origin: 50% 50%;
+}
+
+.w-illustration-lid {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: var(--lid-r);
+  background-color: var(--wi-metal);
+  background-image:
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--wi-white) 6%, transparent) 0 1px, color-mix(in srgb, var(--ink-2) 3.5%, transparent) 1px 3px, transparent 3px 4px),
+    linear-gradient(180deg, color-mix(in srgb, var(--wi-white) 16%, transparent), transparent 30%, transparent 70%, color-mix(in srgb, var(--ink-2) 10%, transparent)),
+    var(--wi-brushed),
+    var(--pm-grain);
+  background-blend-mode: normal, normal, normal, soft-light;
+  box-shadow:
+    inset 0 1.5px 0 color-mix(in srgb, var(--wi-white) 85%, transparent),
+    inset 0 -3px 0 color-mix(in srgb, var(--ink-2) 18%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--ink-2) 14%, transparent),
+    0 3px 0 var(--wi-metal-edge),
+    0 30px 46px -20px color-mix(in srgb, var(--desk) 70%, transparent);
+}
+
+/* a broad soft reflection across the lid */
+.w-illustration-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(112deg, transparent 24%, color-mix(in srgb, var(--wi-white) 34%, transparent) 38%, color-mix(in srgb, var(--wi-white) 5%, transparent) 52%, transparent 64%);
+  pointer-events: none;
+}
+
+.w-illustration-engrave {
+  position: absolute;
+  left: clamp(14px, 2.4cqw, 28px);
+  bottom: clamp(10px, 1.6cqw, 20px);
+  font-family: var(--font-body);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--ink-2) 76%, transparent);
+  filter: drop-shadow(0 1px 0 color-mix(in srgb, var(--wi-white) 60%, transparent));
+  user-select: none;
+  pointer-events: none;
+}
+
+.w-illustration-hinge {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: -14px;
+  z-index: -1;
+  height: 22px;
+  border-radius: 0 0 14px 14px;
+  background: var(--wi-hinge);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--wi-white) 25%, transparent), 0 14px 18px -8px color-mix(in srgb, var(--desk) 60%, transparent);
+}
+
+/* gravity: the lid tips (the board rotates it) and the hinge catches the pile */
+.w-illustration-stage[data-gravity] .w-illustration-hinge {
+  background: var(--wi-hinge-tipped);
+}
+
+/* ---- the sticker sheet: cream paper, die-cut ghosts, a curled corner ------------------------------------------------------- */
+.w-illustration-sheetframe {
+  --curl: 13cqw;
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, calc((100dvh - var(--w-strip, 44px) - 120px) * 0.75), 640px);
+  aspect-ratio: 3 / 4;
+  margin-inline: auto;
+}
+
+@media (max-width: 899px) {
+  .w-illustration-sheetframe {
+    width: min(100%, 560px);
+  }
+}
+
+.w-illustration-paper {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--sheet-rot, -1.3deg));
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 2px 0 color-mix(in srgb, var(--wi-brown) 20%, transparent)) drop-shadow(0 26px 22px color-mix(in srgb, var(--ink) 38%, transparent));
+}
+
+.w-illustration-paperface {
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+  background-color: var(--wi-paper);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--wi-white) 70%, transparent);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--curl)), calc(100% - var(--curl)) 100%, 0 100%);
+}
+
+.w-illustration-ghost {
+  position: absolute;
+  display: block;
+  transform-origin: 50% 50%;
+}
+
+.w-illustration-ghost svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* what a peeled sticker leaves behind: its own silhouette, a shade darker than the sheet, with the cutter's dashed line */
+.w-illustration-ghost path {
+  fill: color-mix(in srgb, var(--wi-cut) 9%, var(--wi-paper));
+  stroke: var(--wi-cut);
+  stroke-opacity: 0.6;
+  stroke-width: 1.4px;
+  stroke-dasharray: 6 4;
+  vector-effect: non-scaling-stroke;
+}
+
+/* what belongs here: its number and its caption, printed on the backing paper like the label of a die-cut sheet */
+.w-illustration-ghost-label {
+  position: absolute;
+  left: 50%;
+  top: 53%;
+  display: grid;
+  gap: 3px;
+  width: 64%;
+  justify-items: center;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  color: color-mix(in srgb, var(--wi-cut) 62%, var(--ink));
+  user-select: none;
+}
+
+/* the label is for the empty slot: once the sticker is home it would only peek out from behind its edge */
+.w-illustration-ghost-label {
+  transition: opacity 0.22s var(--ease-out);
+}
+
+.w-illustration-ghost[data-home='true'] .w-illustration-ghost-label {
+  opacity: 0;
+}
+
+.w-illustration-ghost-n {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.w-illustration-ghost-cap {
+  font-family: 'Cherry Bomb One', var(--font-body);
+  font-size: clamp(13px, 3.1cqw, 17px);
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.w-illustration-curl {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--curl);
+  height: var(--curl);
+  filter: drop-shadow(1px 2px 1.5px color-mix(in srgb, var(--wi-brown) 34%, transparent));
+  pointer-events: none;
+}
+
+.w-illustration-curl-flap {
+  position: absolute;
+  inset: 0;
+  background: var(--wi-flap);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* ---- the foot: the set's one rule on a paper strip, beside the facts slate ---------------------------------------------------- */
+.w-illustration-foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(30px, 4vw, 72px);
+  align-items: start;
+}
+
+@media (max-width: 999px) {
+  .w-illustration-foot {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.w-illustration-foot .pm-wf {
+  grid-template-columns: minmax(0, 1fr);
+  padding-top: 4px;
+}
+
+.w-illustration-foot .pm-wf__slate,
+.w-illustration-foot .pm-wf__tix {
+  grid-column: 1;
+}
+
+.w-illustration-why {
+  position: relative;
+  width: 100%;
+  padding: clamp(26px, 3vw, 44px) clamp(22px, 3.4vw, 52px) clamp(22px, 2.6vw, 38px);
+  border-radius: 6px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  color: var(--ink);
+  box-shadow: 0 3px 0 var(--cream-2), 0 26px 30px -20px color-mix(in srgb, var(--ink) 55%, transparent);
+  transform: rotate(-0.5deg);
+}
+
+.w-illustration-why-title {
+  margin: 0;
+  font-family: 'Cherry Bomb One', var(--font-body);
+  font-size: clamp(1.7rem, 1.1rem + 2.4vw, 3.1rem);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.w-illustration-why-text {
+  margin: clamp(10px, 1.4vw, 16px) 0 0;
+  max-width: 62ch;
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+}

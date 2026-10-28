@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react'
 import { motion, useIsPresent, type Variants } from 'framer-motion'
 import { UI, pad2 } from '../lib/copy'
-import { useKey } from '../lib/hooks/useKey'
+import { useKey, isTextEntryTarget } from '../lib/hooks/useKey'
 import { spring, useMotion } from '../lib/motion'
 import { closeWork, folderLayoutId, getOpener, getRoute, openWork, workHref } from '../lib/router'
 import { nextOf, prevOf, type WorkMeta } from '../lib/works'
@@ -92,8 +92,9 @@ export default function WorldShell({ work, origin, dir = 0, children }: WorldShe
     },
     { enabled: isPresent, ignoreTyping: false },
   )
-  useKey(']', next, { enabled: isPresent })
-  useKey('[', prev, { enabled: isPresent })
+  // a focused slider or checkbox is not typing: only text fields keep the brackets to themselves
+  useKey(']', (e) => { if (!isTextEntryTarget(e.target)) next() }, { enabled: isPresent, ignoreTyping: false })
+  useKey('[', (e) => { if (!isTextEntryTarget(e.target)) prev() }, { enabled: isPresent, ignoreTyping: false })
 
   // focus: into the scroller on open (so arrows / space scroll the world and screen readers announce the dialog)
   useEffect(() => {

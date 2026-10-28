@@ -1,0 +1,77 @@
+# Section 04 Works: the cabinet of ten folders (API note)
+
+Source: `src/components/sections/Works.tsx`, `src/components/sections/works.css`, `src/components/sections/works/*` (`WorkCard`, `YoursCard`, `NoteCard`, `FilterRail`, `KeysCard`, `data.ts`, `strings.ts`). `export default Works` (also named). Mounted by `App` between About and Process. A cream `Sheet` (`id="works"`, page "Works", n = 4) that owns the `<h2>` (StrokeWord WORKS). Nothing to wire up: no props, no context.
+
+## What it renders
+
+1. **Head**: StrokeWord `WORKS` (h2, tint fill, accent shadow), the sub from `WORKS_SECTION.sub` (the `[ and ]` in it is drawn as two keycaps that never break across lines), the ghost count `(NN)` that follows the filter (it slides in again when the number changes), and an **index card** (`KeysCard`, paper-clipped, tilted, `role="note"`) with `[` Previous, `]` Next, `Esc` Close as keycaps. The card is hidden on touch and below 900px (no keyboard to press).
+2. **Drawer rail** (`FilterRail`): a brass **label holder** (a typed card slips into it when the filter changes: filter name + the file numbers on show, e.g. `FILES 02–03 · 07–08`), then the **divider tabs** All / Editorial / Branding / Web / Illustration / Print with the counts from `categoryCounts()` (through `WORKS_SECTION.filters()`), on a slotted metal **bar** that takes the active tab's colour. The active tab is taller and fused with the bar. A real `role="tablist"` (roving tabindex, Arrow keys / Home / End, automatic activation) that controls the grid (`role="tabpanel"`). From 1340px the holder sits beside the tabs (tab padding is trimmed to 14px between 1340 and 1459px so the six tabs end inside the bar on a 1366px laptop); below 1340px the holder stacks above the tabs; below 1100px the row of tabs scrolls sideways when it does not fit (soft edge masks, the active tab is centred; it fits down to 900px).
+3. **Cabinet** (the grid): ten folder cards + the drawer note (short drawers, desktop) + the empty last folder, laid out by a recipe per filter (see "Layout").
+4. A visually hidden polite status line (`role="status"`): "Showing 4 of 10 folders: Branding."
+
+## Filtering
+
+* State `filter: 'all' | Category`. Sources: the tabs, the drawer note's tab, and the window event `pm:filter` (`FILTER_EVENT`; `detail` = a `Category` or `'all'`; sent by the sheet meta bar and the cover quick tabs through `requestFilter(category)`). Unknown details are ignored. After a filter arrives from an event or the note, two animation frames later the rail is scrolled to the top of the viewport (`scrollIntoView({ block: 'start' })`, smooth unless `isStill()`), so the page makes one smooth move even though `requestFilter()` also scrolls to `#works`.
+* Counts (never typed): All 10 / Editorial 3 / Branding 4 / Web 2 / Illustration 7 / Print 2.
+* Re-flow: every card keeps its key (`slug-kind`) and carries a `layoutId`, so framer-motion glides it to its new cell; cards that do not match leave with `AnimatePresence mode="popLayout"` (fade + shrink 0.22 s). New cells land with the same spring as on the first scroll. Under reduced or paused motion (`useMotion().still`) the presence mode is `sync`, cards mount with `initial={false}` and the grid simply changes.
+* The card tab relabels to the active category: `{CATEGORY} {NN}` where NN stays the project's own number (`n`), as in the template.
+
+## Layout (`data.ts`)
+
+* **>= 1100px**: a 12-column grid with one recipe per filter (`LAYOUTS`), composed so no list leaves a hole. A featured folder (`f`) is 6 columns x 2 rows (Proyecto Contract, Plana Digital, Spelled Guilty in "All"), a small one (`s`) 3 x 1, the empty folder (`y`) 3 x 1 or 6 x 1 (`w`), the drawer note (`n`) 6 x 1. "All" = 3 featured + 7 small + the empty folder = exactly 5 rows. Row height comes from the column width (`--rowh`); sizes inside a card are in `cqw`, so a featured folder is the same object at twice the size. Every card has a small pose (`POSES`: resting offset, tilt of +/- 0.3 to 0.5 degrees, tilt of the print, where the tab sits).
+* **640 to 1099px**: 2 columns, registry order; Proyecto Contract and Plana Digital run across both (print beside the words), the rest are one column wide; the empty folder takes the full width only when it would sit alone in a row (`TABLET_WIDE`); the drawer note is hidden.
+* **< 640px**: one generous column, no resting tilt or offset (JS: `flat`), featured folders keep their blurb and roles.
+* Short drawers: **the drawer note** (`NoteCard`) is a taped sticky note in the gap of Editorial, Web and Print: "Only 2 of 10 folders live in Web." (the number is circled in pencil), "The rest are in the other drawers.", and a tab "Show all 10" that brings every folder back and lands the rail. It is not a link or a folder, so it only lands and leaves (no `layoutId`).
+
+## The card (`WorkCard`)
+
+A `<Folder as={motion.a} href="#/work/slug">`: a real link (middle click works), `layoutId={folderLayoutId(slug, 'works')}`, `onClick` runs `openWork(slug, 'works')` (modifier clicks stay with the browser), `onMouseEnter` / `onFocus` run `prefetchWorld(slug)`, `data-cursor="Open"`, accessible name `Title. Kind, years. Open folder.` (years only when they have digits; concept art adds "AI-assisted."). Back to front:
+
+* the **file under it**: the paper edge of the next folder in the drawer shows on the side opposite to the tilt (`.pm-folder__body::before`); on hover the folder lifts out of the stack and that layer stays put;
+* the **peek** (`peek.webp`, `alt=""`): a cut-out that sticks out from behind the folder (z-index -1 in the folder's own stacking context) and rises on hover or keyboard focus;
+* the **print**: the 4:5 `thumb.webp` (720x900 attributes, lazy, async) on a paper mount, tilted, taped where `ART` says so (Proyecto Contract and 44 Lab); concept folders carry the **CONCEPT stamp with the line "AI-assisted"** (from the registry's `tools`), so concept art never travels unlabelled;
+* the **text**: the title in the project's own display face (Bitter, Sora, Chango, Archivo, Orbitron, Gloria Hallelujah, Cormorant, Anybody, Cherry Bomb One; Gotet is set in the shell's Fraunces, lowercase red with an ink keyline and a blue offset like its wordmark), the kind, the years chip (hidden when the registry has no digits, e.g. "Early work"); featured folders add the blurb, the roles line and a tab-shaped "Open folder" label (decorative: the whole card is the link);
+* the **tab**: `{CATEGORY} {NN}`.
+
+Faces: `loadWorldFonts(slug)` runs when the card is within ~2200px of the viewport (`IntersectionObserver`, disconnected after the first hit), so the face is in before the card is seen. Until it is decoded (`html.js .pm-wk-card:not([data-face]) .pm-wk-title { opacity: 0 }`) the title is invisible, then it fades in: no flash of the fallback. The Foley card's title reserves two lines (its wide face wraps at every width, the fallback does not) so no card ever changes height when a face arrives.
+
+**Hover / focus.** The pointer lifts the folder with a spring (framer-motion `whileHover`: 14px up, the tilt relaxes to a quarter; stiffness 340, damping 17). Keyboard focus (`:focus-visible`) lifts it in CSS (`translate: 0 -14px` with `--ease-spring`), so a folder that gets focus back after a mouse click or a tap does not stay raised. Both raise the peek 6cqw and step the shadow up (`--pm-float`). Still motion (OS reduced or "Pause motion"): no lift, the peek stays put, the shadow still steps up.
+
+## Art and fallbacks
+
+Stage 1 shipped `thumb.webp` + `peek.webp` for seven folders. The three concept folders (`concept-brand`, `concept-portfolio`, `illustration`) do not have them at `public/works/<slug>/` yet. `OFFICIAL_ART` in `data.ts` lists the slugs whose files exist; any other folder goes straight to `FALLBACK` (real pieces from `public/works/<slug>/art/`: the Gotet cast sheet crop, slide 1 of the deck with slide 2 sticking out as a paper-bordered peek, a four-sticker collage) and **never requests the missing file** (the dev server hides 404s as `index.html`, the live site would not). `<img onError>` remains the safety net for listed slugs. When the card-art files land: add the three slugs to `OFFICIAL_ART`, delete `FALLBACK`, and check `ART.<slug>.peek` (its measured size). Measured peek sizes are the files' real sizes.
+
+## The empty folder (`YoursCard`)
+
+A blank manila folder drawn with `Folder dashed` (hand-wobbled pencil outline through the `#pm-wk-pencil` SVG filter defined inside the section), a pencil-written tab "Next folder:", a dashed ghost peek with a question mark, an empty graphic frame (a box with a cross through it, as InDesign draws an empty picture frame) with "yours? Tell me what you're making." written over it in the thin hand face, and one real control, the Contact tab. It is `<a href="#contact">`; a plain click runs `scrollToSection('contact')`. 3 x 1 columns on the desktop grid, 6 x 1 (frame left, words and tab right) on short drawers; the same row layout applies from 1100 to 1199px with smaller lettering.
+
+## Strings
+
+`works/strings.ts` (`WORKS_UI`) adds the UI chrome that `src/lib/copy.ts` does not have: the keys card, the label holder, the drawer note, the status sentence, the accessible names. Merge candidates for `copy.ts`. Everything else comes from `@/lib/copy` (`WORKS_SECTION`, `CATALOG.button`, `CONCEPT.stamp`, `pad2`) and `@/lib/works`. No arrow glyphs are typed anywhere (SVG icons).
+
+## Motion contract
+
+* Folders land on the desk when they come within 90px of the fold (`LAND_MARGIN`: the peek and the tab are seen arriving and a 768px-tall laptop never shows a blank band under the rail; spring with one small overshoot, a tilt that settles, 0 to 0.28 s stagger by column), once. Pressing a folder (`whileTap`) pushes it back down 3px and shrinks it 1.2 %, so the click answers at once, before the shell opens the folder. The tab text, the holder card, the ghost count and the titles each have one short enter. Only `transform`, `opacity` and `clip-path` animate.
+* Still: `initial={false}`, no `whileHover`, `AnimatePresence mode="sync"`, no CSS lift, peeks do not move, base.css shortens every CSS animation. Hidden initial states exist only under `html.js`.
+* No loops, no rAF, no timers except the two animation frames of the filter landing (cancelled on unmount); every observer is disconnected.
+
+## Verified (2026-10-28, `vite build` served by `vite preview`, Chromium)
+
+* Filters: every tab (counts 10 / 3 / 4 / 2 / 7 / 2 equal the rendered cards), one selected tab, the panel labelled by it, every card tab starts with the active category, the holder lists the right file numbers, the status line, the empty folder in every drawer; Arrow / Home / End and the roving tabindex.
+* `pm:filter`: applied (and ignored for unknown details), the cover quick tab and the sheet meta bar both work, the rail lands 82px below the viewport top (under the nav).
+* Open and close: Enter opens, Escape closes, the page returns to the same scroll and focus returns to the card, for four ways of arriving (no hash, `#works` in the URL, the nav pill, keyboard Tab only) and in reduced motion.
+* Layout audit at 23 widths (320 to 2560) x 6 filters: no text overflowing a folder, no clipped tab label, no title over its years chip, no overlapping cells, no horizontal scroll.
+* No console errors or warnings, no failed requests or 404s, every image has width and height and is lazy + async, layout shift 0 to 0.002 over a full page scroll (390, 1440, reduced, paused), touch targets >= 44px on a phone.
+
+## Shared requests and things other agents must know
+
+* **Router (platform): Close loses scroll and focus when the URL carries a section anchor.** `openWork` pushes one entry and `closeWork` calls `history.back()`. When the entry before it is `…/#works` (the nav pills, a shared link) Chrome answers the traversal with its own scroll-to-fragment after the router's `scrollTo`, so the page jumps to the top of the section and focus ends on `<body>`. This section works around it locally (`dropSectionAnchor()` in `WorkCard.tsx`: it strips the anchor from the current entry before opening). The Cover deck and the Catalog bands have the same problem. One fix for every origin, inside `openWork` before `pushState`: `if (window.location.hash && !WORK_HASH.test(window.location.hash)) window.history.replaceState(window.history.state, '', baseUrl())` (keep reading `prevHash` first).
+* **Card art for the three concept folders** (`concept-brand`, `concept-portfolio`, `illustration`): `thumb.webp` (720x900) and `peek.webp` (transparent cut-out) are still missing, and the registry points at them. See "Art and fallbacks" for what to flip when they land. Any other consumer that requests the registry paths gets 404s on the live site until then.
+* `WORKS_UI` strings into `src/lib/copy.ts` (optional).
+* The sheet meta bar and the cover quick tabs already dispatch `pm:filter`; nothing else is needed from them.
+
+## Known weaknesses
+
+* The three concept cards use art assembled from `public/works/<slug>/art/`, not the die-cut card-art language of the other seven (the portfolio's peek is a rectangular slide).
+* At 1920px and up a featured folder is about 1340px tall: taller than a 1080p viewport, so the first screen of the section shows about half of one.
+* Nothing moves for about 0.4 s after Enter or a click (screencast of the preview build: the page stays as it is, then the desk dims and the folder body flies out in about 0.2 s), and the card's contents disappear when the flight starts. That is the shell's choreography (chunk and face loading, then the flight), not the card; it is only visible when opening from a card.

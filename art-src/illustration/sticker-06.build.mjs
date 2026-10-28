@@ -1,4 +1,4 @@
-// sticker-06 "Case of the missing sock" - trench-coated detective (accent: tomato #FA6A57).
+// sticker-06 "Case of the missing sock" - trench-coated detective (accent: tomato #FE7D6C).
 //
 //   node art-src/illustration/sticker-06.build.mjs            -> art-src/illustration/sticker-06.svg
 //   FX=0 node art-src/illustration/sticker-06.build.mjs x.svg -> fast draft without filters
@@ -18,7 +18,7 @@ const OUT = process.argv[2] || path.join(here, 'sticker-06.svg')
 const st = createSticker({
   title: 'Case of the missing sock - doodle sticker 06',
   desc: 'A trench-coated detective in a fedora creeps forward, one eye hugely magnified by an oversized lens, pinching a single striped sock. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
-  accent: '#FA6A57',
+  accent: '#FE7D6C',
   seed: 23,
   root: 'translate(-1,-114) scale(1.045)',
 })

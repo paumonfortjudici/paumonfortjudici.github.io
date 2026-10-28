@@ -25,7 +25,17 @@ const st = createSticker({
   seed: 11,
   root: 'translate(-22,-36) scale(1.037)',
 })
-const { shape, use, line, fillp, raw, clip, group, S } = st
+const { shape, use, line, fillp, raw, clip, group, S, defs, sil } = st
+/** an OPEN path (steam, zzz...) registered for the die-cut with ROUND caps: the lib's halo stroke has butt caps, so a plain shape()
+ *  leaves the die-cut hugging the ends of an open polyline (ink 2-7 px from the edge). Paint it afterwards with use(id, 'k2'). */
+const shapeOpen = (id, d, tf = '') => { defs.push(`<path id="${id}" d="${d}" stroke-linecap="round"${tf ? ` transform="${tf}"` : ''}/>`); sil.push(id) }
+/** the kit's ear() paints with fillp() and is NOT registered for the halo: when the ear sticks out of the hair it ends up on the die-cut edge. This one is registered. */
+const mirrorPts = (pts) => pts.map(([x, y, f]) => (f === undefined ? [-x, y] : [-x, y, f]))
+function earShape(id, fr, mirrored = false) {
+  const m = mirrored ? mirrorPts : (q) => q
+  shape(id, S(fr.H(m([[-98, -8, 'c'], [-126, -14], [-146, 10], [-144, 40], [-124, 62], [-100, 54, 'c']])), { closed: true })); use(id)
+  line(S(fr.H(m([[-116, 8], [-128, 22], [-120, 38]]))), 'k3')
+}
 const PAPER = st.cfg.paper, INK = st.cfg.ink, ACC = st.cfg.accent
 
 const P2 = (p) => `${fmt(p[0])} ${fmt(p[1])}`
@@ -156,7 +166,9 @@ group('mug', () => {
   shape('mugHandle', S(capsule([[34, -60], [62, -54], [66, -30], [40, -20]], [10, 10, 10, 10]), { closed: true }), { tf })
   use('mugHandle'); use('mugBody')
   raw(`<g transform="${tf}"><path class="fi" d="M0 -12C-11 -22 -18 -31 -18 -40C-18 -47 -12 -51 -7 -50C-3 -49 -1 -47 0 -44C1 -47 3 -49 7 -50C12 -51 18 -47 18 -40C18 -31 11 -22 0 -12Z"/>`)
-  raw('<path class="k2" d="M44 -84Q62 -100 50 -118Q38 -136 54 -152"/><path class="k3" d="M-2 -92Q-14 -104 -2 -118"/></g>')
+  raw('</g>')
+  shapeOpen('steamA', 'M44 -84Q62 -100 50 -118Q38 -136 54 -152', tf); use('steamA', 'k2')
+  shapeOpen('steamB', 'M-2 -92Q-14 -104 -2 -118', tf); use('steamB', 'k3')
 })
 
 // ============================================================ 3. TORSO (the chest between the sleeves)
@@ -302,8 +314,7 @@ const { H: HF, hp } = fr
 const sc = fr.scale
 group('head', () => {
   face(st, fr)
-  ear(st, fr, { hoop: false })
-  ear(st, fr, { hoop: false, mirrorIt: true })
+  earShape('earL', fr); earShape('earR', fr, true)
   features(st, fr, { eyes: 'sleepy', brows: 'arch', nose: 'small', mouth: 'none' })
   line(S(HF([[-20, 88], [4, 102], [32, 84]])), 'k2')
   const c1 = hp([52, 54]), c2 = hp([58, 68]), c3 = hp([68, 48]), c4 = hp([74, 62])
@@ -338,10 +349,11 @@ group('head', () => {
 
 // ============================================================ 9. EXTRAS: zzz right of the head (the reader is nodding off too), a tiny heart on the left
 group('extras', () => {
-  const z = (id, x, y, s, cls) => { shape(id, `M0 0H${26 * s}L0 ${32 * s}H${26 * s}`, { tf: `translate(${x} ${y})` }); use(id, cls) }
+  const z = (id, x, y, s, cls) => { shapeOpen(id, `M0 0H${26 * s}L0 ${32 * s}H${26 * s}`, `translate(${x} ${y})`); use(id, cls) }
   z('zzA', 790, 398, 1.0, 'k3')
   z('zzB', 818, 336, 1.35, 'k2')
   z('zzC', 866, 258, 1.75, 'k2')
+  shape('zzFill', S([[786, 236, 'c'], [858, 236, 'c'], [858, 350, 'c'], [786, 350, 'c']], { closed: true }))   // halo-only: merges the zzz cloud with the head's halo (otherwise a 15 px hairline bay is left between them)
   shape('heartL', 'M0 28C-42 -2 -36 -36 -13 -34C-4 -33 0 -26 0 -21C0 -26 4 -33 13 -34C36 -36 42 -2 0 28Z', { tf: 'translate(420 378) rotate(-14) scale(.95)' })
   use('heartL')
 })

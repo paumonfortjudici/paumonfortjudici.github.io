@@ -1,0 +1,1719 @@
+/* ==========================================================================
+   44 Lab, "Workshop Wall"  (src/worlds/FortyFourLabWorld.tsx and ./*.tsx)
+
+   A tufted rug hung from a marigold rail (the folder's own colour), with the Instagram wall of the account pinned to it as hang tags
+   on one thread. The look is the logo's: dark outline, flat fills, hard offset shadows, Chango lettering, the five logo colours.
+   Everything here is prefixed w-fortyfour-lab-. Raw hex lives only in this file's palette variables and in the small drawn data-URI
+   motifs (rail loops, rug border, fringe, sprocket holes), which cannot read custom properties.
+
+   Layout: narrow (< 1000px) is one column with the thread along the right edge; wide is a three-column grid (tags left | spine | tags
+   right) where every post spans two rows starting one row below the previous one, so the columns stagger without any measuring.
+   Layers (z-index inside the wall): border 1, hero and banners 2, thread 3, tags and key 5, yarn ties and knots 6, the devil 7.
+   Motion: every ambient or scroll-driven thing is either in Thread.tsx (JS, off under reduced / paused motion) or sits under the
+   STILL block at the end of this file.
+   ========================================================================== */
+
+.w-fortyfour-lab {
+  /* the logo's palette (public/works/fortyfour-lab/logo/manifest.json) */
+  --ffl-tan: #c9a269;
+  --ffl-tan-dark: #a98350;
+  --ffl-red: #e8673f;
+  --ffl-outline: #2d2d2d;
+  --ffl-cream: #ffe4ab;
+  --ffl-yellow: #edb52b;
+  --ffl-sun: #f9b925;
+  /* text-safe red on cream: 6.1:1 (the logo red is 2.9:1 there) */
+  --ffl-brick: #a8301a;
+  --ffl-paper: var(--cream);
+  --ffl-film: #34302d;
+  /* the grey of a black-and-white rug, for the size chart */
+  --ffl-grey: #6b6660;
+  /* steel, for the needle at the end of the thread */
+  --ffl-steel: #eceef0;
+  --ffl-white: #ffffff;
+
+  --ffl-rail-h: clamp(26px, 3vw, 38px);
+  --ffl-border-w: clamp(12px, 3vw, 46px);
+  --ffl-pad: clamp(12px, 2.4vw, 40px);
+
+  /* tag geometry */
+  --ffl-bd: 3px;
+  --ffl-c: 26px;
+  --ffl-ci: calc(var(--ffl-c) - 0.586 * var(--ffl-bd));
+  --ffl-head: 54px;
+  --ffl-foot: 58px;
+  --ffl-pp: 12px;
+  --ffl-ring-x: 31px;
+  --ffl-ring-y: 29px;
+  --ffl-tag-w: min(100%, 31rem);
+
+  --ffl-walk-w: clamp(4.4rem, 21vw, 6.2rem);
+  --ffl-chango: 'Chango', var(--font-body);
+
+  position: relative;
+  min-height: 100%;
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+/* ---- the rail the rug hangs from -------------------------------------------------------------------------------------- */
+.w-fortyfour-lab-rail {
+  position: relative;
+  z-index: 6;
+  height: var(--ffl-rail-h);
+  background-color: var(--w-color);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 -4px 0 rgb(23 16 27 / 0.2), 0 3px 0 var(--ffl-outline);
+}
+
+.w-fortyfour-lab-loops {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  height: 28px;
+  margin-top: 3px;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='28' viewBox='0 0 104 28'%3E%3Cpath d='M40 0V13A12 12 0 0 0 64 13V0Z' fill='%23ffe4ab' stroke='%232d2d2d' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M52 4V12' stroke='%23e8673f' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 24px 0 / 104px 28px;
+}
+
+/* ---- the rug itself ------------------------------------------------------------------------------------------------------ */
+.w-fortyfour-lab-wall {
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+  background-color: var(--ffl-tan);
+  border-bottom: 3px solid var(--ffl-outline);
+}
+/* the pile fades in over the flat tan when its tile arrives from the worker */
+.w-fortyfour-lab-wall::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--ffl-pile);
+  background-size: 320px 320px;
+  opacity: 0;
+  transition: opacity 0.7s ease-out;
+}
+.w-fortyfour-lab[data-pile] .w-fortyfour-lab-wall::before {
+  opacity: 1;
+}
+
+/* the border of the rug: a chain of diamonds in the logo colours, with the same pile fuzz laid over it */
+.w-fortyfour-lab-border {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  width: var(--ffl-border-w);
+  pointer-events: none;
+  background-color: var(--ffl-cream);
+  background-image: var(--ffl-fuzz), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 80'%3E%3Crect width='40' height='80' fill='%23ffe4ab'/%3E%3Cpath d='M20 3 36 21 20 39 4 21Z' fill='%23e8673f' stroke='%232d2d2d' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M20 43 36 61 20 79 4 61Z' fill='%23edb52b' stroke='%232d2d2d' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M20 12 29 21 20 30 11 21Z' fill='%23ffe4ab'/%3E%3Cpath d='M20 52 29 61 20 70 11 61Z' fill='%23e8673f'/%3E%3C/svg%3E");
+  background-size: 200px 200px, 100% auto;
+  background-repeat: repeat, repeat-y;
+}
+.w-fortyfour-lab-border[data-side='left'] {
+  left: 0;
+  border-right: 3px solid var(--ffl-outline);
+}
+.w-fortyfour-lab-border[data-side='right'] {
+  right: 0;
+  border-left: 3px solid var(--ffl-outline);
+}
+
+/* ---- the hero: wordmark, label, intro; the devil stands in the empty slot --------------------------------------------- */
+.w-fortyfour-lab-hero {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(16px, 3.4vw, 30px);
+  /* the right edge stays free for the thread, like the feed's */
+  padding: clamp(20px, 5vw, 40px) calc(var(--ffl-border-w) + 58px) clamp(34px, 7vw, 64px) calc(var(--ffl-border-w) + var(--ffl-pad));
+}
+
+.w-fortyfour-lab-wordmark {
+  /* the right-hand gutter is only the thread's; the lettering may use most of it (it is turned, so it keeps clear of the border) */
+  width: min(calc(100% + 56px), 46rem);
+  height: auto;
+  justify-self: start;
+  rotate: -3deg;
+  transform-origin: 0 100%;
+  filter: drop-shadow(clamp(4px, 0.8vw, 10px) clamp(5px, 1vw, 12px) 0 var(--ffl-outline));
+}
+
+.w-fortyfour-lab-slot {
+  width: min(72vw, 21rem);
+  aspect-ratio: 1418 / 1762;
+  justify-self: center;
+}
+
+.w-fortyfour-lab-profile {
+  /* everything inside is in em: the label grows with the screen */
+  font-size: clamp(1rem, 0.62rem + 0.5vw, 1.34rem);
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75em 1em;
+  width: min(100%, 27em);
+  padding: 1.35em clamp(16px, 4vw, 1.4em) 1.1em;
+  background-color: var(--ffl-cream);
+  background-image: var(--pm-grain);
+  border: 3px solid var(--ffl-outline);
+  box-shadow: 7px 8px 0 var(--ffl-outline);
+  rotate: -1.5deg;
+}
+/* the stitched border of a woven maker's label */
+.w-fortyfour-lab-profile::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 2px dashed var(--ffl-red);
+  pointer-events: none;
+}
+.w-fortyfour-lab-avatar {
+  width: 5.1em;
+  height: 5.1em;
+  border: 3px solid var(--ffl-outline);
+  border-radius: 50%;
+  background: var(--ffl-tan);
+}
+.w-fortyfour-lab-who-name {
+  font-family: var(--ffl-chango);
+  font-size: clamp(1.6rem, 7.2vw, 2.1em);
+  line-height: 1;
+  color: var(--ffl-outline);
+}
+.w-fortyfour-lab-who-handle {
+  margin-top: 0.4em;
+  color: var(--ffl-brick);
+}
+.w-fortyfour-lab-bio {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.w-fortyfour-lab-bio li {
+  display: flex;
+  align-items: center;
+  gap: 0.75em;
+  font-size: 1.06em;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.w-fortyfour-lab-bio-icon {
+  flex: none;
+  width: 1.9em;
+  height: 1.9em;
+}
+.w-fortyfour-lab-profile-link {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  padding-bottom: 6px;
+}
+/* the ticket is a primitive: only its size is adapted here, so the handle never breaks in two on a phone */
+.w-fortyfour-lab-profile-link .pm-ticket__label {
+  font-size: clamp(1rem, 4.5vw, 1.3rem);
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+.w-fortyfour-lab-profile-link .pm-ticket__stub {
+  width: 3.2rem;
+}
+.w-fortyfour-lab-profile-link .pm-ticket__main {
+  padding-inline: 1.1rem 1rem;
+}
+
+.w-fortyfour-lab-intro {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 0.8rem;
+  max-width: clamp(28rem, 27vw, 40rem);
+}
+.w-fortyfour-lab-lead {
+  font-size: clamp(1.12rem, 0.86rem + 0.7vw, 1.8rem);
+  font-weight: 700;
+  line-height: 1.32;
+}
+.w-fortyfour-lab-lead-2 {
+  font-size: clamp(1rem, 0.88rem + 0.4vw, 1.3rem);
+  font-weight: 500;
+  line-height: 1.45;
+}
+.w-fortyfour-lab-follow {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.2rem;
+  margin: 0.4rem 0 0;
+  color: var(--ffl-outline);
+  rotate: -3deg;
+  font-size: clamp(1.6rem, 1.3rem + 0.9vw, 2.1rem);
+  white-space: nowrap;
+}
+
+/* ---- the feed: month banners, the key and the hang tags ---------------------------------------------------------------- */
+.w-fortyfour-lab-feed {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0 calc(var(--ffl-border-w) + 58px) clamp(120px, 15vw, 190px) calc(var(--ffl-border-w) + var(--ffl-pad));
+}
+
+.w-fortyfour-lab-anchor {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.w-fortyfour-lab-anchor--end {
+  position: relative;
+  justify-self: center;
+}
+
+.w-fortyfour-lab-walkprobe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ffl-walk-w);
+  height: 1px;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.w-fortyfour-lab-month {
+  position: relative;
+  z-index: 2;
+  padding: clamp(46px, 10vw, 90px) 0 clamp(8px, 2vw, 22px);
+}
+.w-fortyfour-lab-month-head {
+  width: fit-content;
+  max-width: 100%;
+  text-align: left;
+}
+.w-fortyfour-lab-month-name {
+  position: relative;
+  display: inline-block;
+  font-family: var(--ffl-chango);
+  font-size: min(16vw, 7rem);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--ffl-cream);
+  -webkit-text-stroke: 0.13em var(--ffl-outline);
+  paint-order: stroke fill;
+  text-shadow: 0.06em 0.08em 0 var(--ffl-red);
+}
+/* the same word again on top, clipped to the letter faces, carrying the yarn fuzz */
+.w-fortyfour-lab-month-name > span[aria-hidden]::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: transparent;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  background-image: var(--ffl-fuzz);
+  background-size: 200px 200px;
+  -webkit-background-clip: text;
+  background-clip: text;
+  pointer-events: none;
+}
+.w-fortyfour-lab-month-year {
+  position: absolute;
+  /* narrow layout: the thread runs down the right edge, so the badge sits over the left end of the word */
+  top: -0.6em;
+  left: 0.15em;
+  padding: 0.05em 0.3em 0;
+  font-size: 0.22em;
+  line-height: 1.3;
+  color: var(--ffl-outline);
+  background: var(--ffl-sun);
+  border: 0.14em solid var(--ffl-outline);
+  -webkit-text-stroke: 0;
+  paint-order: normal;
+  text-shadow: none;
+  rotate: -6deg;
+  box-shadow: 0.2em 0.24em 0 var(--ffl-outline);
+}
+.w-fortyfour-lab-anchor--month {
+  top: 52%;
+  left: 50%;
+}
+.w-fortyfour-lab-month-note {
+  margin: 0.5rem 0 0;
+  max-width: 22rem;
+  font-family: var(--font-hand);
+  font-size: clamp(1.45rem, 1.2rem + 0.8vw, 1.9rem);
+  line-height: 1.1;
+  color: var(--ffl-outline);
+  rotate: -2deg;
+}
+/* a number worth a patch of its own, hung under the post it comes from: a stitched label like the profile's, with an arrow up to the tag */
+.w-fortyfour-lab-fact {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  gap: 2px;
+  width: fit-content;
+  max-width: 100%;
+  margin: clamp(46px, 9vw, 64px) 0 0 clamp(8px, 4vw, 40px);
+  padding: 16px 22px 14px;
+  background-color: var(--ffl-cream);
+  background-image: var(--pm-grain);
+  border: 3px solid var(--ffl-outline);
+  box-shadow: 6px 7px 0 var(--ffl-outline);
+  rotate: 2deg;
+}
+.w-fortyfour-lab-fact::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed var(--ffl-red);
+  pointer-events: none;
+}
+.w-fortyfour-lab-fact-big {
+  margin: 0;
+  font-family: var(--ffl-chango);
+  font-size: clamp(3.4rem, 2.4rem + 3.2vw, 5.6rem);
+  line-height: 0.95;
+  color: var(--ffl-sun);
+  -webkit-text-stroke: 0.1em var(--ffl-outline);
+  paint-order: stroke fill;
+  text-shadow: 0.05em 0.07em 0 var(--ffl-red);
+}
+.w-fortyfour-lab-fact-text {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+.w-fortyfour-lab-fact-arrow {
+  position: absolute;
+  top: -3.9rem;
+  left: 2.4rem;
+}
+
+/* the size chart: a card on a cutting mat, drawn to scale (the same stitched card as the key and the fact) */
+.w-fortyfour-lab-sizes {
+  position: relative;
+  z-index: 5;
+  width: min(100%, 26rem);
+  margin: clamp(34px, 8vw, 54px) 0 0;
+  padding: 16px 20px 16px;
+  background-color: var(--ffl-cream);
+  background-image: var(--pm-grain);
+  border: 3px solid var(--ffl-outline);
+  box-shadow: 6px 7px 0 var(--ffl-outline);
+  rotate: -1.3deg;
+}
+.w-fortyfour-lab-sizes::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed var(--ffl-red);
+  pointer-events: none;
+}
+.w-fortyfour-lab-sizes-head {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+  margin: 0 0 12px;
+}
+.w-fortyfour-lab-sizes-label {
+  margin: 0;
+  padding: 3px 9px 2px;
+  background: var(--ffl-outline);
+  color: var(--ffl-cream);
+}
+.w-fortyfour-lab-sizes-note {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  line-height: 1;
+  rotate: -2deg;
+}
+.w-fortyfour-lab-mat {
+  position: relative;
+  border: 3px solid var(--ffl-outline);
+  background-color: color-mix(in srgb, var(--ffl-tan) 55%, var(--ffl-cream));
+  /* a grid line every 10 cm of the 330 x 190 cm mat */
+  background-image:
+    linear-gradient(to right, rgb(45 45 45 / 0.2) 1.5px, transparent 1.5px),
+    linear-gradient(to bottom, rgb(45 45 45 / 0.2) 1.5px, transparent 1.5px);
+  background-size: calc(100% * 10 / 330) calc(100% * 10 / 190);
+}
+.w-fortyfour-lab-mat-rug {
+  position: absolute;
+  display: block;
+  border: 2.5px solid var(--ffl-outline);
+  background-color: var(--ffl-red);
+  background-image: var(--ffl-fuzz);
+  background-size: 200px 200px;
+  box-shadow: 2px 3px 0 var(--ffl-outline);
+}
+.w-fortyfour-lab-mat-rug[data-n='2'] {
+  background-color: var(--ffl-cream);
+}
+.w-fortyfour-lab-mat-rug[data-n='3'] {
+  background-color: var(--ffl-sun);
+}
+.w-fortyfour-lab-mat-rug[data-n='4'] {
+  background-color: var(--ffl-tan-dark);
+}
+.w-fortyfour-lab-mat-rug[data-n='5'] {
+  background-color: var(--ffl-grey);
+}
+.w-fortyfour-lab-mat-n {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--ffl-outline);
+  border-radius: 50%;
+  background: var(--ffl-cream);
+  font-family: var(--font-label);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ffl-outline);
+}
+.w-fortyfour-lab-sizes-list {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px 16px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.w-fortyfour-lab-sizes-list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1px 8px;
+  line-height: 1.15;
+}
+.w-fortyfour-lab-sizes-n {
+  display: grid;
+  grid-row: span 2;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--ffl-outline);
+  border-radius: 50%;
+  background: var(--ffl-cream);
+  font-family: var(--font-label);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ffl-outline);
+}
+.w-fortyfour-lab-sizes-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.w-fortyfour-lab-sizes-dim {
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* the key to the wall: a stitched card, in the empty cell beside the first tag */
+.w-fortyfour-lab-key {
+  position: relative;
+  z-index: 5;
+  width: min(100%, 26rem);
+  margin: clamp(30px, 8vw, 52px) 0 0;
+  padding: 20px 22px 18px;
+  background-color: var(--ffl-cream);
+  background-image: var(--pm-grain);
+  border: 3px solid var(--ffl-outline);
+  box-shadow: 6px 7px 0 var(--ffl-outline);
+  rotate: 1.4deg;
+}
+.w-fortyfour-lab-key::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed var(--ffl-red);
+  pointer-events: none;
+}
+.w-fortyfour-lab-key-label {
+  margin: 0 0 12px;
+  width: fit-content;
+  padding: 3px 9px 2px;
+  background: var(--ffl-outline);
+  color: var(--ffl-cream);
+}
+.w-fortyfour-lab-key-list {
+  display: grid;
+  gap: 11px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.w-fortyfour-lab-key-list li {
+  display: grid;
+  grid-template-columns: 4.2rem minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.w-fortyfour-lab-key-tag,
+.w-fortyfour-lab-key-film {
+  position: relative;
+  justify-self: center;
+  width: 20px;
+  height: 26px;
+  border: 2.5px solid var(--ffl-outline);
+  box-shadow: 2px 2px 0 var(--ffl-outline);
+}
+.w-fortyfour-lab-key-tag {
+  background: var(--ffl-paper);
+  clip-path: polygon(0 0, 62% 0, 100% 30%, 100% 100%, 0 100%);
+}
+.w-fortyfour-lab-key-tag::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ffl-outline);
+}
+.w-fortyfour-lab-key-film {
+  background: var(--ffl-film);
+  background-image: linear-gradient(90deg, var(--ffl-cream) 0 2px, transparent 2px calc(100% - 2px), var(--ffl-cream) calc(100% - 2px));
+  background-size: 100% 6px;
+}
+.w-fortyfour-lab-key-play {
+  justify-self: center;
+  width: 20px;
+  height: 20px;
+  color: var(--ffl-outline);
+}
+.w-fortyfour-lab-key-still {
+  justify-self: center;
+  padding: 1px 6px;
+  border: 2.5px solid var(--ffl-outline);
+  background: var(--ffl-cream);
+  box-shadow: 2px 2px 0 var(--ffl-outline);
+  rotate: -3deg;
+}
+
+/* the post: title (read first, shown under the tag), the hanging tag, the note */
+.w-fortyfour-lab-post {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  width: var(--ffl-tag-w);
+  margin-top: clamp(34px, 9vw, 60px);
+}
+.w-fortyfour-lab-post[data-eyelet='right'] {
+  --s: 1;
+  --ring-origin: calc(100% - var(--ffl-ring-x)) var(--ffl-ring-y);
+}
+.w-fortyfour-lab-post[data-eyelet='left'] {
+  --s: -1;
+  --ring-origin: var(--ffl-ring-x) var(--ffl-ring-y);
+}
+
+.w-fortyfour-lab-hang {
+  order: 1;
+  transform-origin: var(--ring-origin);
+}
+.w-fortyfour-lab-title {
+  order: 2;
+  margin: 28px 0 0;
+  font-family: var(--ffl-chango);
+  font-size: clamp(1.5rem, 1.15rem + 1.2vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: 0.01em;
+  color: var(--ffl-sun);
+  -webkit-text-stroke: 0.13em var(--ffl-outline);
+  paint-order: stroke fill;
+  text-shadow: 0.06em 0.08em 0 var(--ffl-red);
+}
+.w-fortyfour-lab-note {
+  order: 3;
+  align-self: flex-start;
+  max-width: 100%;
+  margin: 12px 0 0;
+  padding: 7px 12px 8px;
+  background-color: var(--ffl-cream);
+  background-image: var(--pm-grain);
+  border: 2.5px solid var(--ffl-outline);
+  box-shadow: 4px 4px 0 var(--ffl-outline);
+  font-size: clamp(1rem, 0.78rem + 0.4vw, 1.3rem);
+  font-weight: 600;
+  line-height: 1.38;
+  rotate: -0.6deg;
+}
+.w-fortyfour-lab-post[data-eyelet='left'] .w-fortyfour-lab-note {
+  rotate: 0.6deg;
+}
+
+/* ---- the tag: a hard-edged paper tag with a chamfered corner at the eyelet ---------------------------------------- */
+.w-fortyfour-lab-media {
+  position: relative;
+  transform-origin: var(--ring-origin);
+}
+.w-fortyfour-lab-stack {
+  display: grid;
+}
+.w-fortyfour-lab-card {
+  position: relative;
+  grid-area: 1 / 1;
+  transform-origin: var(--ring-origin) !important;
+  touch-action: pan-y;
+}
+.w-fortyfour-lab-media[data-kind='reel'] .w-fortyfour-lab-card {
+  rotate: calc(var(--s) * 0.9deg);
+}
+
+.w-fortyfour-lab-card-shadow,
+.w-fortyfour-lab-card-edge {
+  position: absolute;
+  inset: 0;
+  background: var(--ffl-outline);
+}
+.w-fortyfour-lab-card-shadow {
+  translate: 7px 8px;
+}
+.w-fortyfour-lab-post[data-eyelet='right'] .w-fortyfour-lab-card-shadow,
+.w-fortyfour-lab-post[data-eyelet='right'] .w-fortyfour-lab-card-edge {
+  clip-path: polygon(0 0, calc(100% - var(--ffl-c)) 0, 100% var(--ffl-c), 100% 100%, 0 100%);
+}
+.w-fortyfour-lab-post[data-eyelet='left'] .w-fortyfour-lab-card-shadow,
+.w-fortyfour-lab-post[data-eyelet='left'] .w-fortyfour-lab-card-edge {
+  clip-path: polygon(var(--ffl-c) 0, 100% 0, 100% 100%, 0 100%, 0 var(--ffl-c));
+}
+
+.w-fortyfour-lab-card-paper {
+  position: relative;
+  margin: var(--ffl-bd);
+  padding: var(--ffl-head) var(--ffl-pp) var(--ffl-foot);
+  background-color: var(--ffl-paper);
+  background-image: var(--pm-grain);
+}
+.w-fortyfour-lab-post[data-eyelet='right'] .w-fortyfour-lab-card-paper {
+  clip-path: polygon(0 0, calc(100% - var(--ffl-ci)) 0, 100% var(--ffl-ci), 100% 100%, 0 100%);
+}
+.w-fortyfour-lab-post[data-eyelet='left'] .w-fortyfour-lab-card-paper {
+  clip-path: polygon(var(--ffl-ci) 0, 100% 0, 100% 100%, 0 100%, 0 var(--ffl-ci));
+}
+
+.w-fortyfour-lab-photo {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border: 2.5px solid var(--ffl-outline);
+  background-color: var(--ffl-tan-dark);
+}
+.w-fortyfour-lab-photo > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+/* a reel is a strip of film: dark paper, cream sprocket holes down both sides */
+.w-fortyfour-lab-media[data-kind='reel'] .w-fortyfour-lab-card-paper {
+  padding-inline: calc(var(--ffl-pp) + 20px);
+  background-color: var(--ffl-film);
+}
+.w-fortyfour-lab-media[data-kind='reel'] .w-fortyfour-lab-card-paper::before,
+.w-fortyfour-lab-media[data-kind='reel'] .w-fortyfour-lab-card-paper::after {
+  content: '';
+  position: absolute;
+  top: var(--ffl-head);
+  bottom: var(--ffl-foot);
+  width: 24px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='30' viewBox='0 0 24 30'%3E%3Crect x='6' y='8' width='12' height='14' rx='3' fill='%23ffe4ab'/%3E%3C/svg%3E") repeat-y 0 0 / 24px 30px;
+}
+.w-fortyfour-lab-media[data-kind='reel'] .w-fortyfour-lab-card-paper::before {
+  left: 6px;
+}
+.w-fortyfour-lab-media[data-kind='reel'] .w-fortyfour-lab-card-paper::after {
+  right: 6px;
+}
+.w-fortyfour-lab-media[data-kind='reel'] .w-fortyfour-lab-photo {
+  border-color: var(--ffl-cream);
+}
+
+/* the fixed layer over the stack: date stamp, eyelet, pager. It does not move when the tags flip. */
+.w-fortyfour-lab-tagui {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+}
+.w-fortyfour-lab-tagui-head {
+  position: absolute;
+  top: 0;
+  height: var(--ffl-head);
+  display: flex;
+  align-items: center;
+}
+.w-fortyfour-lab-post[data-eyelet='right'] .w-fortyfour-lab-tagui-head {
+  left: calc(var(--ffl-bd) + var(--ffl-pp));
+}
+.w-fortyfour-lab-post[data-eyelet='left'] .w-fortyfour-lab-tagui-head {
+  right: calc(var(--ffl-bd) + var(--ffl-pp));
+}
+.w-fortyfour-lab-eyelet,
+.w-fortyfour-lab-anchor[data-ffl-anchor='knot'] {
+  top: var(--ffl-ring-y);
+}
+.w-fortyfour-lab-post[data-eyelet='right'] .w-fortyfour-lab-eyelet,
+.w-fortyfour-lab-post[data-eyelet='right'] .w-fortyfour-lab-anchor[data-ffl-anchor='knot'] {
+  left: calc(100% - var(--ffl-ring-x));
+}
+.w-fortyfour-lab-post[data-eyelet='left'] .w-fortyfour-lab-eyelet,
+.w-fortyfour-lab-post[data-eyelet='left'] .w-fortyfour-lab-anchor[data-ffl-anchor='knot'] {
+  left: var(--ffl-ring-x);
+}
+.w-fortyfour-lab-eyelet {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--ffl-outline) 0 5.5px, var(--w-color) 6px 10px, var(--ffl-outline) 10.5px);
+}
+.w-fortyfour-lab-tagui-foot {
+  position: absolute;
+  right: calc(var(--ffl-bd) + var(--ffl-pp));
+  bottom: var(--ffl-bd);
+  left: calc(var(--ffl-bd) + var(--ffl-pp));
+  height: var(--ffl-foot);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.w-fortyfour-lab-kind {
+  color: var(--ffl-brick);
+}
+.w-fortyfour-lab-media[data-kind='reel'] .w-fortyfour-lab-kind {
+  color: var(--ffl-cream);
+}
+.w-fortyfour-lab-pager {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: auto;
+}
+.w-fortyfour-lab-count {
+  min-width: 5.2ch;
+  white-space: nowrap;
+  text-align: center;
+  color: var(--ink);
+}
+@media (max-width: 999px) {
+  /* the pager needs the room on a narrow tag; the arrows say it is a carousel */
+  .w-fortyfour-lab-media[data-kind='carousel'] .w-fortyfour-lab-kind {
+    display: none;
+  }
+  .w-fortyfour-lab-pager {
+    margin-left: auto;
+  }
+}
+
+/* the drag surface over the photo (a clip's own Pause tab stays free) */
+.w-fortyfour-lab-grab {
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: var(--ffl-head);
+  bottom: var(--ffl-foot);
+  z-index: 55;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.w-fortyfour-lab-grab:active {
+  cursor: grabbing;
+}
+.w-fortyfour-lab-grab[data-clip] {
+  bottom: calc(var(--ffl-foot) + 56px);
+}
+
+/* the badge on a still frame */
+.w-fortyfour-lab-still {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 6px;
+  border: 2.5px solid var(--ffl-outline);
+  background: var(--ffl-cream);
+  box-shadow: 3px 3px 0 var(--ffl-outline);
+  color: var(--ffl-outline);
+  rotate: -4deg;
+}
+
+/* the clip: fills its photo window; the Pause / Play tab grows out of the bottom edge like a folder tab */
+.w-fortyfour-lab-clip {
+  position: absolute;
+  inset: 0;
+}
+.w-fortyfour-lab-clip-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.w-fortyfour-lab-clip-tab {
+  position: absolute;
+  bottom: 0;
+  left: 12px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 11px 11px 0 0;
+  background: var(--ffl-outline);
+  color: var(--ffl-cream);
+}
+@media (pointer: coarse) {
+  .w-fortyfour-lab-clip-tab {
+    min-height: 44px;
+  }
+}
+
+/* ---- the thread, the devil and the yarn ties --------------------------------------------------------------------------- */
+.w-fortyfour-lab-thread,
+.w-fortyfour-lab-ties {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+.w-fortyfour-lab-thread {
+  z-index: 3;
+}
+.w-fortyfour-lab-ties {
+  z-index: 6;
+}
+.w-fortyfour-lab-thread svg,
+.w-fortyfour-lab-ties svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  max-width: none;
+  overflow: visible;
+}
+.w-fortyfour-lab-guide path {
+  fill: none;
+  stroke: rgb(45 45 45 / 0.5);
+  stroke-width: 4.2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 11;
+}
+/* a hand-written note beside the thread: how long after the previous post. It starts --off px from the thread (set by Thread.tsx),
+   just past the short side of the walking devil, and a dashed leader runs back to the thread. */
+.w-fortyfour-lab-gap {
+  position: absolute;
+  transition: opacity 0.3s ease-out;
+  white-space: nowrap;
+  font-family: var(--font-hand);
+  font-size: clamp(1.25rem, 1.05rem + 0.5vw, 1.55rem);
+  line-height: 1;
+  color: var(--ffl-outline);
+}
+.w-fortyfour-lab-gap::before {
+  content: '';
+  position: absolute;
+  top: 52%;
+  width: calc(var(--off, 40px) - 12px);
+  border-top: 3px dashed var(--ffl-outline);
+  opacity: 0.7;
+}
+.w-fortyfour-lab-gap[data-near] {
+  opacity: 0.1;
+}
+.w-fortyfour-lab-gap[data-side='right'] {
+  padding-left: var(--off, 40px);
+  translate: 0 -50%;
+  rotate: -3deg;
+}
+.w-fortyfour-lab-gap[data-side='right']::before {
+  left: 6px;
+}
+.w-fortyfour-lab-gap[data-side='left'] {
+  padding-right: var(--off, 40px);
+  translate: -100% -50%;
+  rotate: 3deg;
+}
+.w-fortyfour-lab-gap[data-side='left']::before {
+  right: 6px;
+}
+/* the sewn part of the thread: a window that clips (it moves down by the devil's depth) and the drawing inside it (which moves up by
+   the same amount, so it never moves on the page). Both are moved with transforms only (see Thread.tsx): nothing is repainted. */
+.w-fortyfour-lab-live {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: transform;
+}
+.w-fortyfour-lab-live-inner {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.w-fortyfour-lab-stitch-edge,
+.w-fortyfour-lab-stitch,
+.w-fortyfour-lab-stitch-light {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.w-fortyfour-lab-stitch-edge {
+  stroke: var(--ffl-outline);
+  stroke-width: 9;
+  stroke-dasharray: 16 13;
+}
+.w-fortyfour-lab-stitch {
+  stroke: var(--ffl-red);
+  stroke-width: 4.6;
+  stroke-dasharray: 16 13;
+}
+.w-fortyfour-lab-stitch-light {
+  stroke: var(--ffl-cream);
+  stroke-width: 1.5;
+  stroke-dasharray: 9 20;
+  stroke-dashoffset: -3;
+  transform: translate(-0.8px, -1.1px);
+}
+/* the yarn tie from the thread to a tag's eyelet: solid, not stitched */
+.w-fortyfour-lab-string-edge {
+  fill: none;
+  stroke: var(--ffl-outline);
+  stroke-width: 9.4;
+  stroke-linecap: round;
+}
+.w-fortyfour-lab-string {
+  fill: none;
+  stroke: var(--ffl-red);
+  stroke-width: 4.8;
+  stroke-linecap: round;
+}
+.w-fortyfour-lab-knot {
+  fill: var(--ffl-cream);
+  stroke: var(--ffl-outline);
+  stroke-width: 3;
+}
+.w-fortyfour-lab-knot-shine {
+  fill: var(--ffl-white);
+}
+.w-fortyfour-lab-needle-body {
+  fill: var(--ffl-steel);
+  stroke: var(--ffl-outline);
+  stroke-width: 2.6;
+  stroke-linejoin: round;
+}
+.w-fortyfour-lab-needle-eye {
+  fill: var(--ffl-tan);
+  stroke: var(--ffl-outline);
+  stroke-width: 2;
+}
+
+.w-fortyfour-lab-devil {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 7;
+  aspect-ratio: 1418 / 1762;
+  transform-origin: 0 0;
+  pointer-events: none;
+  will-change: transform;
+}
+.w-fortyfour-lab-devil-lean,
+.w-fortyfour-lab-devil-hop {
+  width: 100%;
+  height: 100%;
+  /* his feet: he turns round and waddles on his own shadow */
+  transform-origin: 63.4% 97.5%;
+}
+.w-fortyfour-lab-devil img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+/* he breathes twice when he stops (pm-ambient: stops under reduced / paused motion) and waddles while the page scrolls.
+   Two breaths, not a loop: nothing moves by itself for more than five seconds. */
+.w-fortyfour-lab-devil-hop {
+  animation: w-fortyfour-lab-breathe 2.4s ease-in-out 2;
+}
+.w-fortyfour-lab-devil[data-walking] .w-fortyfour-lab-devil-hop {
+  animation: w-fortyfour-lab-waddle 0.5s ease-in-out infinite;
+}
+@keyframes w-fortyfour-lab-breathe {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.012, 1.026);
+  }
+}
+@keyframes w-fortyfour-lab-waddle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3.5deg) scale(1.03, 0.965);
+  }
+  25% {
+    transform: translateY(-3.6%) rotate(0deg) scale(0.985, 1.04);
+  }
+  50% {
+    transform: translateY(0) rotate(3.5deg) scale(1.03, 0.965);
+  }
+  75% {
+    transform: translateY(-3.6%) rotate(0deg) scale(0.985, 1.04);
+  }
+}
+
+/* tags swing in from their eyelet when they first arrive, and sway when the devil walks past */
+.w-fortyfour-lab-post[data-seen] .w-fortyfour-lab-hang {
+  animation: w-fortyfour-lab-hang-in 0.95s cubic-bezier(0.2, 1.35, 0.4, 1) backwards;
+}
+html.js .w-fortyfour-lab-post:not([data-seen]) .w-fortyfour-lab-hang {
+  opacity: 0;
+}
+@keyframes w-fortyfour-lab-hang-in {
+  from {
+    opacity: 0;
+    rotate: calc(var(--s) * -16deg);
+  }
+  35% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    rotate: 0deg;
+  }
+}
+.w-fortyfour-lab-post[data-swing] .w-fortyfour-lab-media {
+  animation: w-fortyfour-lab-sway 1.2s ease-out;
+}
+@keyframes w-fortyfour-lab-sway {
+  0% {
+    rotate: 0deg;
+  }
+  18% {
+    rotate: calc(var(--s) * 2.6deg);
+  }
+  42% {
+    rotate: calc(var(--s) * -1.8deg);
+  }
+  66% {
+    rotate: calc(var(--s) * 0.9deg);
+  }
+  100% {
+    rotate: 0deg;
+  }
+}
+
+/* ---- the first screen arrives in order: the lettering thumps down, the devil steps in, the label pops, the words are wiped on ------
+   (about a second in all; hidden "from" states only under html.js; base.css cuts every animation to nothing under reduced / paused motion) */
+html.js .w-fortyfour-lab-wordmark {
+  animation: w-fortyfour-lab-thump 0.95s cubic-bezier(0.2, 1.45, 0.4, 1) backwards;
+}
+html.js .w-fortyfour-lab-devil img {
+  transform-origin: 63.4% 97.5%;
+  animation: w-fortyfour-lab-step-in 0.9s 0.2s cubic-bezier(0.2, 1.3, 0.4, 1) backwards;
+}
+html.js .w-fortyfour-lab-profile {
+  animation: w-fortyfour-lab-pop 0.85s 0.36s cubic-bezier(0.2, 1.35, 0.4, 1) backwards;
+}
+html.js .w-fortyfour-lab-intro {
+  animation: w-fortyfour-lab-wipe 0.85s 0.62s cubic-bezier(0.25, 0.8, 0.25, 1) backwards;
+}
+@keyframes w-fortyfour-lab-thump {
+  from {
+    opacity: 0;
+    scale: 1.18;
+    rotate: -8deg;
+  }
+  45% {
+    opacity: 1;
+  }
+}
+@keyframes w-fortyfour-lab-step-in {
+  from {
+    opacity: 0;
+    translate: 7% 14%;
+    scale: 0.92 1.07;
+  }
+  30% {
+    opacity: 1;
+  }
+}
+@keyframes w-fortyfour-lab-pop {
+  from {
+    opacity: 0;
+    scale: 0.9;
+    translate: 0 28px;
+    rotate: -5deg;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+@keyframes w-fortyfour-lab-wipe {
+  from {
+    clip-path: inset(-24px 100% -24px -40px);
+  }
+  to {
+    clip-path: inset(-24px -60px -24px -40px);
+  }
+}
+
+/* ---- the end: fringe over the folder's marigold, a note, the facts slate ------------------------------------------------- */
+.w-fortyfour-lab-foot {
+  position: relative;
+  padding: clamp(64px, 9vw, 120px) calc(var(--ffl-border-w) + var(--ffl-pad)) clamp(44px, 6vw, 84px);
+  background-color: var(--w-color);
+  background-image: var(--pm-grain);
+  color: var(--w-ink);
+}
+.w-fortyfour-lab-fringe {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 48px;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='48' viewBox='0 0 72 48'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cg stroke='%232d2d2d' stroke-width='6'%3E%3Cpath d='M6 0C5 14 9 28 6 41'/%3E%3Cpath d='M18 0C20 12 15 26 19 38'/%3E%3Cpath d='M30 0C29 16 33 30 30 45'/%3E%3Cpath d='M42 0C44 13 40 24 43 35'/%3E%3Cpath d='M54 0C53 15 57 27 54 42'/%3E%3Cpath d='M66 0C68 12 64 25 67 37'/%3E%3C/g%3E%3Cg stroke='%23ffe4ab' stroke-width='2.6'%3E%3Cpath d='M6 0C5 14 9 28 6 41'/%3E%3Cpath d='M18 0C20 12 15 26 19 38'/%3E%3Cpath d='M30 0C29 16 33 30 30 45'/%3E%3Cpath d='M42 0C44 13 40 24 43 35'/%3E%3Cpath d='M54 0C53 15 57 27 54 42'/%3E%3Cpath d='M66 0C68 12 64 25 67 37'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat-x 0 0 / 72px 48px;
+}
+.w-fortyfour-lab-foot-grid {
+  display: grid;
+  gap: clamp(34px, 6vw, 56px);
+  max-width: 100rem;
+  margin-top: clamp(18px, 3vw, 34px);
+}
+.w-fortyfour-lab-foot-main {
+  min-width: 0;
+  max-width: 84rem;
+}
+/* the facts slate is a primitive: only its proportions are adapted here, so the ticket's handle never breaks in two */
+.w-fortyfour-lab-foot .pm-ticket__label {
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+@media (min-width: 721px) {
+  .w-fortyfour-lab-foot .pm-wf {
+    grid-template-columns: minmax(0, 1.5fr) auto;
+  }
+}
+
+/* the right-hand side of the foot: the whole logo on a label, and the five yarns it is made of */
+.w-fortyfour-lab-foot-side {
+  display: grid;
+  gap: clamp(30px, 4vw, 44px);
+  justify-items: start;
+  width: min(100%, 17rem);
+}
+
+/* the whole logo, on a label of its own: the same stitched cream card as the profile, hung from the fringe on a loop of yarn */
+.w-fortyfour-lab-badge {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 15px 15px 10px;
+  background-color: var(--ffl-cream);
+  background-image: var(--pm-grain);
+  border: 3px solid var(--ffl-outline);
+  box-shadow: 7px 8px 0 var(--ffl-outline);
+  color: var(--ffl-outline);
+  rotate: 2.4deg;
+}
+.w-fortyfour-lab-badge::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed var(--ffl-red);
+  pointer-events: none;
+}
+.w-fortyfour-lab-badge img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 3px solid var(--ffl-outline);
+  background: var(--ffl-tan);
+}
+.w-fortyfour-lab-badge-note {
+  margin: 6px 0 0;
+  font-family: var(--font-hand);
+  font-size: clamp(1.5rem, 1.3rem + 0.4vw, 1.8rem);
+  line-height: 1.1;
+  text-align: center;
+  rotate: -1.6deg;
+}
+.w-fortyfour-lab-badge-eyelet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--ffl-outline) 0 5.5px, var(--w-color) 6px 10px, var(--ffl-outline) 10.5px);
+}
+/* the loop of yarn that goes up into the fringe (wide screens only: below that the label simply follows the slate) */
+.w-fortyfour-lab-badge-cord {
+  display: none;
+}
+@media (min-width: 1000px) {
+  .w-fortyfour-lab-foot {
+    --ffl-foot-top: clamp(64px, 9vw, 120px);
+  }
+  .w-fortyfour-lab-foot-grid {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+  .w-fortyfour-lab-foot-side {
+    width: clamp(15rem, 19vw, 24rem);
+    /* the label's top edge sits 44px under the rug's edge, so the cord is as long as that */
+    margin-top: calc(44px - var(--ffl-foot-top) - clamp(18px, 3vw, 34px));
+  }
+  .w-fortyfour-lab-badge {
+    padding: 18px 18px 12px;
+  }
+  .w-fortyfour-lab-badge-cord {
+    display: block;
+    position: absolute;
+    bottom: calc(100% - 3px);
+    left: 50%;
+    z-index: 1;
+    width: 6px;
+    height: 44px;
+    translate: -50% 0;
+    background: var(--ffl-red);
+    border: 2.5px solid var(--ffl-outline);
+    border-radius: 3px;
+  }
+}
+/* the five yarns: a tufter's shade card, one tuft of each colour with its name and hex; each row copies its hex */
+.w-fortyfour-lab-yarns {
+  position: relative;
+  width: 100%;
+  padding: 14px 14px 10px;
+  background-color: var(--ffl-cream);
+  background-image: var(--pm-grain);
+  border: 3px solid var(--ffl-outline);
+  box-shadow: 6px 7px 0 var(--ffl-outline);
+  color: var(--ffl-outline);
+  rotate: -1.4deg;
+}
+.w-fortyfour-lab-yarns::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed var(--ffl-red);
+  pointer-events: none;
+}
+.w-fortyfour-lab-yarns-label {
+  position: relative;
+  width: fit-content;
+  margin: 0 0 8px;
+  padding: 3px 9px 2px;
+  background: var(--ffl-outline);
+  color: var(--ffl-cream);
+}
+.w-fortyfour-lab-yarns-list {
+  position: relative;
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.w-fortyfour-lab-yarn {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0 12px;
+  width: 100%;
+  min-height: 46px;
+  padding: 4px 6px;
+  text-align: left;
+  border-radius: 6px;
+}
+.w-fortyfour-lab-yarn:hover,
+.w-fortyfour-lab-yarn[data-copied] {
+  background: color-mix(in srgb, var(--ffl-sun) 38%, transparent);
+}
+/* the tuft: a flat colour with the yarn fuzz laid over it, in the logo's outline */
+.w-fortyfour-lab-yarn-tuft {
+  height: 32px;
+  border: 2.5px solid var(--ffl-outline);
+  border-radius: 9px 9px 4px 4px;
+  background-image: var(--ffl-fuzz);
+  background-size: 200px 200px;
+  box-shadow: 2px 3px 0 var(--ffl-outline);
+}
+.w-fortyfour-lab-yarn-name {
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.w-fortyfour-lab-yarn-hex {
+  color: var(--ffl-brick);
+}
+.w-fortyfour-lab-yarn[data-copied] .w-fortyfour-lab-yarn-hex {
+  color: var(--ffl-outline);
+}
+
+.w-fortyfour-lab-end-title {
+  margin: 0 0 clamp(14px, 2vw, 26px);
+  font-family: var(--ffl-chango);
+  font-size: clamp(2.3rem, 1.3rem + 4vw, 5rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0.01em;
+  color: var(--ffl-outline);
+  text-shadow: 0.05em 0.07em 0 var(--ffl-cream);
+}
+
+/* the end of the thread, beside the last reel: the closing card, then the logo's five yarns on their shade card */
+.w-fortyfour-lab-endstack {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  gap: clamp(30px, 4vw, 46px);
+  justify-items: start;
+  width: min(100%, 28rem);
+  margin: clamp(34px, 8vw, 54px) 0 0;
+}
+.w-fortyfour-lab-endcard {
+  position: relative;
+  width: 100%;
+  padding: 1.3rem 1.5rem 1.2rem;
+  background-color: var(--ffl-cream);
+  background-image: var(--pm-grain);
+  border: 3px solid var(--ffl-outline);
+  box-shadow: 6px 7px 0 var(--ffl-outline);
+  rotate: -1.2deg;
+}
+.w-fortyfour-lab-endcard::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed var(--ffl-red);
+  pointer-events: none;
+}
+.w-fortyfour-lab-endcard-title {
+  font-family: var(--ffl-chango);
+  font-size: clamp(1.8rem, 1.3rem + 1.6vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--ffl-sun);
+  -webkit-text-stroke: 0.12em var(--ffl-outline);
+  paint-order: stroke fill;
+  text-shadow: 0.05em 0.07em 0 var(--ffl-red);
+}
+.w-fortyfour-lab-endcard-note {
+  margin: 0.9rem 0 0;
+  font-family: var(--font-hand);
+  font-size: clamp(1.6rem, 1.25rem + 1vw, 2.1rem);
+  line-height: 1.08;
+  color: var(--ffl-outline);
+}
+.w-fortyfour-lab-endcard-count {
+  margin: 0.8rem 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ---- very small phones (320 to 380px): the label and the key give back some room, so the handle and the key lines do not break ------ */
+@media (max-width: 380px) {
+  .w-fortyfour-lab-profile {
+    gap: 0.7em 0.8em;
+    padding-inline: 12px;
+  }
+  .w-fortyfour-lab-avatar {
+    width: 3.9em;
+    height: 3.9em;
+  }
+  .w-fortyfour-lab-who-handle {
+    letter-spacing: 0.05em;
+  }
+  .w-fortyfour-lab-key {
+    padding-inline: 16px;
+  }
+  .w-fortyfour-lab-key-list li {
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: 6px;
+  }
+}
+
+/* ---- tablet: the hero gets two columns, the feed is still one ------------------------------------------------------------- */
+@media (min-width: 700px) {
+  .w-fortyfour-lab {
+    --ffl-tag-w: min(100%, 38rem);
+    --ffl-walk-w: clamp(6rem, 15vw, 8.4rem);
+  }
+  .w-fortyfour-lab-hero {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+  }
+  .w-fortyfour-lab-wordmark {
+    grid-column: 1 / -1;
+    width: min(100%, 52rem);
+  }
+  .w-fortyfour-lab-slot {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    /* a little wider than its column: he reaches over towards the label, and fills the corner above him */
+    width: min(120%, 28rem);
+    justify-self: end;
+  }
+  .w-fortyfour-lab-profile {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .w-fortyfour-lab-intro {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .w-fortyfour-lab-feed {
+    padding-right: calc(var(--ffl-border-w) + 70px);
+  }
+}
+
+
+
+
+/* ---- wide: three columns (tags | spine | tags), the thread zigzags down the spine --------------------------------------- */
+@media (min-width: 1000px) {
+  .w-fortyfour-lab {
+    --ffl-tag-w: clamp(19rem, 29vw, 38rem);
+    --ffl-spine: clamp(13rem, 21vw, 28rem);
+    --ffl-pad: clamp(24px, 4vw, 64px);
+    --ffl-walk-w: clamp(8rem, 14vw, 15rem);
+    /* the breathing space above every tag: a post's note never reads as the caption of the tag below it */
+    --ffl-sep: clamp(34px, 4.4vw, 76px);
+  }
+
+  .w-fortyfour-lab-hero {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(10px, 1.6vw, 28px);
+    row-gap: clamp(14px, 3vh, 34px);
+    align-items: start;
+    min-height: calc(100dvh - var(--w-strip) - var(--ffl-rail-h) - 4px);
+    padding-block: clamp(22px, 4.4vh, 52px) clamp(26px, 5vh, 66px);
+  }
+  .w-fortyfour-lab-wordmark {
+    grid-column: 1 / span 10;
+    grid-row: 1;
+    /* never taller than 40% of the screen (the art is 1420 x 456), so the label and the devil stay above the fold on short screens */
+    width: min(100%, calc(40dvh * 3.11));
+    max-width: 86rem;
+  }
+  .w-fortyfour-lab-slot {
+    grid-column: 8 / span 5;
+    grid-row: 1 / span 2;
+    align-self: end;
+    justify-self: center;
+    width: min(100%, calc((100dvh - 200px) * 0.805));
+  }
+  .w-fortyfour-lab-profile {
+    grid-column: 1 / span 4;
+    grid-row: 2;
+    align-self: end;
+  }
+  .w-fortyfour-lab-intro {
+    grid-column: 5 / span 3;
+    grid-row: 2;
+    align-self: end;
+  }
+
+  .w-fortyfour-lab-feed {
+    grid-template-columns: minmax(0, 1fr) var(--ffl-spine) minmax(0, 1fr);
+    /* every box is hung by Feed.tsx / pack.ts on rows this tall (the same number as UNIT there) */
+    grid-auto-rows: 8px;
+    max-width: 1900px;
+    margin-inline: auto;
+    padding-inline: calc(var(--ffl-border-w) + var(--ffl-pad));
+  }
+  .w-fortyfour-lab-anchor--end {
+    grid-column: 1 / -1;
+    grid-row: var(--row);
+  }
+  /* a box keeps its own height (it is measured, then hung): never stretched to its rows */
+  .w-fortyfour-lab-feed > [data-pack] {
+    align-self: start;
+  }
+
+  /* the first month is a banner across all three columns; the others sit in the free cell beside their first tag */
+  .w-fortyfour-lab-month {
+    grid-row: var(--row) / span var(--span, 1);
+  }
+  .w-fortyfour-lab-month[data-mode='full'] {
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+  .w-fortyfour-lab-month[data-mode='full'] .w-fortyfour-lab-month-name {
+    /* MARCH is 5.08em wide: about 88% of the feed (86vw) at 15vw, until the feed stops growing at 1900px */
+    font-size: clamp(7rem, 15vw, 19rem);
+  }
+  .w-fortyfour-lab-month[data-mode='full'] .w-fortyfour-lab-month-head {
+    margin-inline: auto;
+  }
+  .w-fortyfour-lab-month[data-mode='full'] .w-fortyfour-lab-month-year {
+    top: -0.1em;
+    right: -0.32em;
+    left: auto;
+    rotate: 7deg;
+  }
+  .w-fortyfour-lab-month[data-mode='side'] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: start;
+    container-type: inline-size;
+    padding-top: clamp(14px, 2vw, 30px);
+    text-align: center;
+  }
+  /* a side banner spans its own column and the spine, so the thread and the devil cross its letters like the first banner's */
+  .w-fortyfour-lab-month[data-mode='side'][data-col='left'] {
+    grid-column: 1 / span 2;
+  }
+  .w-fortyfour-lab-month[data-mode='side'][data-col='right'] {
+    grid-column: 2 / span 2;
+  }
+  /* the word fills its cell: Chango is 4.35em wide for APRIL, 3.19em for MAY and 3.39em for JUNE (measured, letter-spacing included),
+     plus about 0.1em of outline and shadow, and the cell is one column plus the spine */
+  .w-fortyfour-lab-month[data-mode='side'] .w-fortyfour-lab-month-name {
+    font-size: calc(100cqw / 4.8);
+  }
+  .w-fortyfour-lab-month[data-mode='side'][data-month='05'] .w-fortyfour-lab-month-name {
+    font-size: calc(100cqw / 3.55);
+  }
+  .w-fortyfour-lab-month[data-mode='side'][data-month='06'] .w-fortyfour-lab-month-name {
+    font-size: calc(100cqw / 3.75);
+  }
+  /* the thread crosses a banner at the end that touches the spine (the right end of a left banner, the left end of a right one):
+     the note hangs under the other end */
+  .w-fortyfour-lab-month[data-mode='side'][data-col='right'] .w-fortyfour-lab-month-head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .w-fortyfour-lab-month[data-mode='side'][data-col='right'] .w-fortyfour-lab-month-note {
+    text-align: right;
+    rotate: 2deg;
+  }
+
+  /* the small cards sit in the cell under a post, in the same column */
+  .w-fortyfour-lab-fact,
+  .w-fortyfour-lab-sizes {
+    grid-row: var(--row) / span var(--span, 1);
+    align-self: start;
+    width: var(--ffl-tag-w);
+    margin-top: clamp(14px, 2vw, 30px);
+  }
+  .w-fortyfour-lab-fact {
+    width: fit-content;
+    margin-top: clamp(52px, 5vw, 70px);
+  }
+  .w-fortyfour-lab-fact[data-col='left'],
+  .w-fortyfour-lab-sizes[data-col='left'] {
+    grid-column: 1;
+    justify-self: end;
+  }
+  .w-fortyfour-lab-fact[data-col='right'],
+  .w-fortyfour-lab-sizes[data-col='right'] {
+    grid-column: 3;
+    justify-self: start;
+  }
+  .w-fortyfour-lab-sizes {
+    align-self: start;
+    margin-top: clamp(30px, 3.4vw, 52px);
+  }
+
+  .w-fortyfour-lab-endstack {
+    grid-column: 3;
+    grid-row: var(--row) / span var(--span, 1);
+    align-self: start;
+    justify-self: start;
+    width: var(--ffl-tag-w);
+    margin-top: clamp(14px, 2vw, 30px);
+  }
+  .w-fortyfour-lab-key {
+    grid-column: 3;
+    grid-row: var(--row) / span var(--span, 1);
+    align-self: start;
+    justify-self: start;
+    width: var(--ffl-tag-w);
+    margin-top: 0;
+  }
+
+  .w-fortyfour-lab-post {
+    grid-row: var(--row) / span var(--span, 1);
+    align-self: start;
+    margin-top: calc(var(--gap, 0) * clamp(1.2rem, 2.6vw, 2.8rem) + var(--ffl-sep));
+  }
+  /* a reel is a slim strip of film (9:16): narrower than a photo tag, so its height matches the tags beside it and no column is left empty */
+  .w-fortyfour-lab-post[data-kind='reel'] {
+    width: calc(var(--ffl-tag-w) * 0.84);
+  }
+  .w-fortyfour-lab-post[data-side='left'] {
+    grid-column: 1;
+    justify-self: end;
+  }
+  .w-fortyfour-lab-post[data-side='right'] {
+    grid-column: 3;
+    justify-self: start;
+  }
+}
+
+/* ---- STILL: reduced motion and "Pause motion" show everything at once, nothing moves ------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html.js .w-fortyfour-lab-post:not([data-seen]) .w-fortyfour-lab-hang {
+    opacity: 1;
+  }
+  .w-fortyfour-lab-post[data-seen] .w-fortyfour-lab-hang {
+    animation: none;
+  }
+  .w-fortyfour-lab-post[data-swing] .w-fortyfour-lab-media {
+    animation: none;
+  }
+}
+html[data-motion='paused'].js .w-fortyfour-lab-post:not([data-seen]) .w-fortyfour-lab-hang {
+  opacity: 1;
+}
+html[data-motion='paused'] .w-fortyfour-lab-post[data-seen] .w-fortyfour-lab-hang,
+html[data-motion='paused'] .w-fortyfour-lab-post[data-swing] .w-fortyfour-lab-media {
+  animation: none;
+}

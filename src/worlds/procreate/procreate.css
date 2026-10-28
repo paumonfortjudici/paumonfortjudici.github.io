@@ -1,0 +1,1181 @@
+/* ==========================================================================
+   world: procreate  -  "Sketchbook Wall"
+   A kraft-paper wall on a cork board, five prints taped / pinned / clipped to it, a ledge with a ruler, an eraser and a pencil.
+   Faces: Gloria Hallelujah (pencil handwriting, loaded by the world host) + Karla body, Courier Prime for the small labels.
+   Colour: the folder is bubblegum; the wall is kraft (#C9A778) on cork (#A8834F); bubblegum and marigold tape; ink for pencil.
+   Everything is prefixed w-procreate-. Animations: transform, opacity and clip-path only; every one has a still path
+   (base.css shortens all transitions under reduced / paused motion, the JS side drops momentum and sway).
+   ========================================================================== */
+
+.w-procreate,
+.w-procreate-lb {
+  --kraft: #c9a778;
+  --kraft-edge: #8d6b3d;
+  --cork: #a8834f;
+  --cork-lo: #7d5d31;
+  --wood: #ecd08f;
+  --wood-edge: #bf9c5e;
+  /* paper stocks the prints are printed on, and the card paper of the index */
+  --stock-default: #fffdf6;
+  --stock-photo: #ffffff;
+  --stock-sketch: #fffdf2;
+  --stock-grid: #fff1cf;
+  --stock-card: #fffaea;
+  --stock-index: #fffcf2;
+  --stock-pad: #f3e4c0;
+  /* the tools on the ledge */
+  --rubber: var(--bubblegum);
+  --rubber-edge: #d96a9c;
+  --pencil-wood: #f1d3a3;
+  --pencil-lit: #ffd067;
+  --pencil-shade: #d99700;
+  --steel: #c3c8d0;
+  --steel-dark: #7d8490;
+  --hand: 'Gloria Hallelujah', var(--font-body);
+  /* the world's display face (the contract: a world sets --font-display on its root so anything that inherits it speaks the same way) */
+  --font-display: var(--hand);
+}
+
+.w-procreate {
+  position: relative;
+  min-height: 100%;
+  padding: 0 var(--gap-x, clamp(10px, 1.7vw, 30px));
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+/* ---- the first screen: title + wall fill the viewport under the tab strip ------------------------------------------------ */
+.w-procreate-stage {
+  display: flex;
+  flex-direction: column;
+  /* a sliver of the next strip's cork rail shows at the foot of the first screen: the board plainly goes on below */
+  min-height: calc(100dvh - var(--w-strip, 44px) - 36px);
+  padding-top: clamp(8px, 1.1vw, 18px);
+}
+
+.w-procreate-head {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 27rem);
+  align-items: end;
+  column-gap: clamp(16px, 3vw, 56px);
+  /* the underline's second stroke hangs below the line: it needs air above the board */
+  padding: 0 6px clamp(22px, 2vw, 32px);
+}
+
+.w-procreate-title {
+  grid-column: 1;
+  grid-row: 1;
+  margin: 0;
+  font-family: var(--hand);
+  font-size: clamp(2.7rem, 0.6rem + 5.2vw, 7.6rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+}
+
+.w-procreate-title-ink {
+  display: inline-block;
+}
+
+.w-procreate-started {
+  position: relative;
+  display: inline-block;
+}
+
+/* the lede is a paper note taped to the folder */
+.w-procreate-lede {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 18px 22px 15px;
+  border-radius: 3px;
+  background-color: var(--stock-index);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--paper) 90%, transparent),
+    0 3px 0 color-mix(in srgb, var(--ink) 14%, transparent),
+    0 16px 20px -12px color-mix(in srgb, var(--ink) 55%, transparent);
+  transform: rotate(0.9deg);
+}
+
+.w-procreate-lede-text {
+  margin: 0;
+  font-size: clamp(1rem, 0.92rem + 0.42vw, 1.2rem);
+  font-weight: 500;
+  line-height: 1.4;
+  max-width: 40ch;
+}
+
+.w-procreate-hint {
+  margin: 0;
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0.005em;
+}
+
+/* ---- the board: cork frame, kraft wall, ledge ------------------------------------------------------------------------- */
+.w-procreate-board {
+  --frame-x: clamp(10px, 1.1vw, 18px);
+  --frame-t: clamp(16px, 1.6vw, 26px);
+  position: relative;
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  min-height: 480px;
+  margin-bottom: clamp(14px, 1.9vw, 28px);
+  padding: var(--frame-t) var(--frame-x) 0;
+  border-radius: 16px;
+  background-color: var(--cork);
+  background-image: url('./cork.webp');
+  background-size: 256px 256px;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--paper) 28%, transparent),
+    inset 0 0 0 2px color-mix(in srgb, var(--ink) 10%, transparent),
+    0 4px 0 var(--cork-lo),
+    0 24px 30px -18px color-mix(in srgb, var(--ink) 60%, transparent);
+}
+
+.w-procreate-wallbox {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.w-procreate-wall {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 380px;
+  overflow: hidden;
+  border-radius: 5px;
+  background-color: var(--kraft);
+  background-image: url('./kraft.webp');
+  background-size: 256px 256px;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--ink) 24%, transparent),
+    0 3px 0 var(--kraft-edge),
+    0 12px 16px -8px color-mix(in srgb, var(--ink) 55%, transparent);
+  /* the wall scrolls with the page; only the prints take the touch (touch-action: none on them) */
+  touch-action: pan-y;
+}
+
+.w-procreate[data-kind='mid'] .w-procreate-wall,
+.w-procreate[data-kind='narrow'] .w-procreate-wall {
+  flex: 0 0 auto;
+  min-height: 0;
+}
+
+.w-procreate[data-kind='mid'] .w-procreate-board,
+.w-procreate[data-kind='narrow'] .w-procreate-board {
+  min-height: 0;
+}
+
+.w-procreate[data-kind='mid'] .w-procreate-wallbox,
+.w-procreate[data-kind='narrow'] .w-procreate-wallbox {
+  flex: 0 0 auto;
+}
+
+/* what a print leaves on the kraft when it is picked up: a pin hole, the ghosts of its tape */
+.w-procreate-scar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  opacity: 0;
+  transform-origin: 50% 42%;
+  transition: opacity 0.5s var(--ease-out);
+  pointer-events: none;
+}
+
+.w-procreate-scar[data-away] {
+  opacity: 1;
+}
+
+.w-procreate-hole {
+  position: absolute;
+  left: calc(50% - 5px);
+  top: -2px;
+  width: 9px;
+  height: 7px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--cork-lo) 55%, black);
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--paper) 55%, transparent),
+    inset 0 1px 1px color-mix(in srgb, black 60%, transparent);
+}
+
+.w-procreate-scar .pm-tape {
+  opacity: 0.26;
+  filter: none;
+}
+
+/* the pencil line the neat row is hung on: it shows while the prints are squared up */
+.w-procreate-guide {
+  position: absolute;
+  z-index: 0;
+  left: 16px;
+  right: 16px;
+  top: 50%;
+  height: 0;
+  border-top: 2px dashed color-mix(in srgb, var(--ink) 30%, transparent);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease-out);
+  pointer-events: none;
+}
+
+.w-procreate-guide::before,
+.w-procreate-guide::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  width: 2px;
+  height: 18px;
+  background: color-mix(in srgb, var(--ink) 30%, transparent);
+}
+
+.w-procreate-guide::before {
+  left: 0;
+}
+
+.w-procreate-guide::after {
+  right: 0;
+}
+
+.w-procreate[data-mode='tidy'] .w-procreate-guide {
+  opacity: 1;
+}
+
+/* the wall's own note: it tells you what to do and points at the first print */
+.w-procreate-pickup {
+  position: absolute;
+  z-index: 0;
+  /* left, bottom and the lettering size are set from the plan (pickupSpot): the arrow ends just above the first print's top edge */
+  left: 9%;
+  bottom: 62%;
+  display: grid;
+  justify-items: start;
+  gap: 2px;
+  font-family: var(--hand);
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ink);
+  transform: rotate(-4deg);
+  transition: opacity 0.45s var(--ease-out), clip-path 0.6s var(--ease-out);
+  pointer-events: none;
+}
+
+/* its arrow is aimed with the same maths as the arrows on the prints (aim.ts): it starts under the gap between "pick" and "one" and
+   ends a hair above the first print's torn edge */
+.w-procreate-pickarrow {
+  position: absolute;
+  z-index: 0;
+  display: block;
+  transition: opacity 0.45s var(--ease-out), clip-path 0.6s var(--ease-out);
+  pointer-events: none;
+}
+
+/* once a print has been picked up (or squared up, or shuffled) the note has done its job and its arrow would point at nothing */
+.w-procreate[data-touched] .w-procreate-pickup,
+.w-procreate[data-touched] .w-procreate-pickarrow {
+  opacity: 0;
+}
+
+/* push pins holding the sheet to the cork */
+.w-procreate-corner {
+  position: absolute;
+  z-index: 40;
+  pointer-events: none;
+}
+.w-procreate-corner--tl { left: -3px; top: -3px; }
+.w-procreate-corner--tr { right: -3px; top: -3px; }
+.w-procreate-corner--bl { left: -3px; bottom: -3px; }
+.w-procreate-corner--br { right: -3px; bottom: -3px; }
+
+/* ---- a print ---------------------------------------------------------------------------------------------------------------- */
+.w-procreate-print {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  text-align: left;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  transform-origin: 50% 42%;
+  will-change: transform;
+}
+
+.w-procreate-print:active {
+  cursor: grabbing;
+}
+
+.w-procreate-shadow {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  box-shadow:
+    0 1px 0 color-mix(in srgb, var(--ink) 34%, transparent),
+    0 6px 7px -2px color-mix(in srgb, var(--ink) 24%, transparent),
+    0 18px 20px -9px color-mix(in srgb, var(--ink) 34%, transparent);
+  pointer-events: none;
+}
+
+.w-procreate-print[data-dragging] .w-procreate-shadow {
+  box-shadow:
+    0 2px 0 color-mix(in srgb, var(--ink) 30%, transparent),
+    0 18px 16px -4px color-mix(in srgb, var(--ink) 30%, transparent),
+    0 44px 34px -14px color-mix(in srgb, var(--ink) 42%, transparent);
+}
+
+.w-procreate-paper {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background-color: var(--stock, var(--stock-default));
+  /* the paper tooth, softened by a veil so it does not read as dirt on white stock */
+  background-image: linear-gradient(color-mix(in srgb, var(--paper) 55%, transparent), color-mix(in srgb, var(--paper) 55%, transparent)), var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--paper) 85%, transparent),
+    inset 0 -3px 0 color-mix(in srgb, var(--ink) 10%, transparent);
+  pointer-events: none;
+}
+
+[data-stock='photo'] { --stock: var(--stock-photo); }
+[data-stock='sketch'] { --stock: var(--stock-sketch); }
+[data-stock='grid'] { --stock: var(--stock-grid); }
+[data-stock='card'] { --stock: var(--stock-card); }
+
+/* a page torn out of a spiral pad: half-round bites along the top edge */
+[data-stock='sketch'] > .w-procreate-shadow {
+  top: 12px;
+}
+[data-stock='sketch'] > .w-procreate-paper {
+  -webkit-mask:
+    radial-gradient(circle at 50% 0, transparent 5.2px, black 5.8px) 0 0 / 17px 13px repeat-x,
+    linear-gradient(black, black) 0 12px / 100% calc(100% - 12px) no-repeat;
+  mask:
+    radial-gradient(circle at 50% 0, transparent 5.2px, black 5.8px) 0 0 / 17px 13px repeat-x,
+    linear-gradient(black, black) 0 12px / 100% calc(100% - 12px) no-repeat;
+}
+
+/* squared (graph) paper */
+[data-stock='grid'] > .w-procreate-paper {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--paper) 50%, transparent), color-mix(in srgb, var(--paper) 50%, transparent)),
+    var(--pm-grain);
+  background-size: 13px 13px, 13px 13px, auto, auto;
+  background-position: 6px 5px, 6px 5px, 0 0, 0 0;
+}
+
+/* thick card with softly rounded corners */
+[data-stock='card'] > .w-procreate-paper,
+[data-stock='card'] > .w-procreate-shadow {
+  border-radius: 8px;
+}
+
+.w-procreate-pic {
+  position: absolute;
+  overflow: hidden;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+}
+
+[data-stock='photo'] > .w-procreate-pic::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 14%, transparent);
+}
+
+.w-procreate-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* ink on paper: the white of a drawing becomes the paper's own tone, so no pale rectangle sits on the sheet */
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+/* the quiff portrait is clipped to a page from a pad that peeks out behind it */
+.w-procreate-print[data-id='quiff']::before {
+  content: '';
+  position: absolute;
+  inset: -7px -11px 9px 10px;
+  z-index: -1;
+  border-radius: 3px;
+  background-color: var(--stock-pad);
+  background-image:
+    repeating-linear-gradient(transparent 0 21px, color-mix(in srgb, var(--ink) 16%, transparent) 21px 22px),
+    var(--pm-grain);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--ink) 12%, transparent), 0 14px 18px -10px color-mix(in srgb, var(--ink) 50%, transparent);
+  transform: rotate(3.4deg);
+  pointer-events: none;
+}
+
+/* ---- handwriting on the prints ------------------------------------------------------------------------------------------ */
+/* the eraser wipes the writing away from left to right (clip-path only; the insets are negative so the arrows may overhang) */
+.w-procreate-ink {
+  clip-path: inset(-60% -60% -60% -60%);
+  transition: clip-path 0.6s var(--ease-out);
+}
+
+[data-notes='off'] .w-procreate-ink {
+  clip-path: inset(-60% -60% -60% 130%);
+}
+
+/* the strip under the picture: the note sits in the middle of it */
+.w-procreate-strip {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.w-procreate-note {
+  position: relative;
+  display: inline-block;
+  font-family: var(--hand);
+  font-size: max(14.5px, calc(var(--pw, 300px) * 0.078));
+  font-weight: 400;
+  line-height: 1.05;
+  white-space: nowrap;
+  color: var(--ink);
+  transform-origin: 0 50%;
+}
+
+.w-procreate-note[data-ink='oxblood'] {
+  color: var(--oxblood);
+}
+
+/* the line under a note sits below the baseline instead of through the letters */
+.w-procreate-note .pm-sc[data-at='under'] {
+  top: 86%;
+  bottom: auto;
+  left: -2%;
+  width: 104%;
+}
+
+.w-procreate-arrow {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+.w-procreate-pin {
+  position: absolute;
+  left: 50%;
+  top: -0.95rem;
+  z-index: 3;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.w-procreate-clip {
+  position: absolute;
+  top: -1.9rem;
+  right: 13%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ---- the ledge: ruler, tabs, key label, eraser, pencil ------------------------------------------------------------------ */
+.w-procreate-ledge {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.6vw, 26px);
+  min-height: 84px;
+  padding: 12px clamp(4px, 0.8vw, 14px) 12px;
+}
+
+.w-procreate-prop {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  line-height: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.w-procreate-rulerbox {
+  position: relative;
+  flex: 0 1 clamp(240px, 26vw, 520px);
+  min-width: 0;
+}
+
+.w-procreate-ruler {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  transform: rotate(-1.4deg);
+  transform-origin: 8% 60%;
+  transition: transform 0.6s cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+
+.w-procreate-ruler[data-on] {
+  transform: rotate(0deg) translateY(-2px);
+}
+
+.w-procreate-ruler-art {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(2px 4px 2px color-mix(in srgb, var(--ink) 42%, transparent));
+}
+
+.w-procreate-ruler-body { fill: var(--wood); }
+.w-procreate-ruler-edge { fill: var(--wood-edge); }
+.w-procreate-ruler-bevel { fill: color-mix(in srgb, var(--paper) 36%, transparent); }
+.w-procreate-ruler-tick { fill: none; stroke: var(--ink); stroke-width: 1.3; opacity: 0.82; }
+.w-procreate-ruler-tick--long { stroke-width: 1.9; opacity: 0.92; }
+.w-procreate-ruler-hole { fill: var(--cork-lo); }
+.w-procreate-ruler-mark { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; opacity: 0.28; }
+
+.w-procreate-tools {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px clamp(4px, 0.6vw, 10px);
+}
+
+.w-procreate-dymo {
+  flex: 0 0 auto;
+  min-width: 0;
+  /* a label-maker strip is one line: the ruler gives way before the label wraps */
+  white-space: nowrap;
+  margin: 0 auto;
+  padding: 7px 12px 6px;
+  border-radius: 3px;
+  background: var(--ink);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--cream) 22%, transparent),
+    0 2px 0 color-mix(in srgb, var(--ink) 40%, transparent),
+    0 8px 8px -4px color-mix(in srgb, var(--ink) 50%, transparent);
+  color: var(--cream);
+  font-size: var(--fs-label);
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  transform: rotate(-0.8deg);
+}
+
+.w-procreate-dymo-part {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.w-procreate-eraser {
+  flex: 0 0 auto;
+  width: clamp(62px, 6vw, 100px);
+  margin-left: auto;
+  cursor: pointer;
+  transform: rotate(6deg);
+  transition: transform 0.5s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.w-procreate-eraser[data-on] {
+  transform: rotate(-12deg) translateX(-8px);
+}
+
+.w-procreate-eraser-art {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(2px 4px 2px color-mix(in srgb, var(--ink) 40%, transparent));
+}
+
+.w-procreate-eraser-body { fill: var(--rubber); }
+.w-procreate-eraser-edge { fill: var(--rubber-edge); }
+.w-procreate-eraser-sleeve { fill: var(--ultraviolet); }
+.w-procreate-eraser-sleeve-lit { fill: color-mix(in srgb, var(--paper) 20%, transparent); }
+.w-procreate-eraser-print { fill: none; stroke: var(--cream); stroke-width: 3.4; stroke-linecap: round; opacity: 0.8; }
+.w-procreate-crumbs { fill: var(--rubber-edge); opacity: 0; transition: opacity 0.4s var(--ease-out); }
+.w-procreate-eraser[data-on] .w-procreate-crumbs { opacity: 1; }
+
+.w-procreate-pencil {
+  position: absolute;
+  left: 24%;
+  top: -34%;
+  width: 54%;
+  transform: rotate(-9deg);
+  pointer-events: none;
+}
+
+.w-procreate-pencil-art {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(2px 4px 2px color-mix(in srgb, var(--ink) 40%, transparent));
+}
+
+.w-procreate-pencil-wood { fill: var(--pencil-wood); }
+.w-procreate-pencil-lead { fill: var(--ink); }
+.w-procreate-pencil-body { fill: var(--marigold); }
+.w-procreate-pencil-lit { fill: var(--pencil-lit); }
+.w-procreate-pencil-shade { fill: var(--pencil-shade); }
+.w-procreate-pencil-line { fill: none; stroke: var(--ink); stroke-width: 1.6; opacity: 0.55; }
+.w-procreate-pencil-ferrule { fill: var(--steel); }
+.w-procreate-pencil-groove { fill: none; stroke: var(--steel-dark); stroke-width: 1.4; }
+.w-procreate-pencil-rubber { fill: var(--bubblegum); }
+
+/* ---- below the wall: the index and the palette, on a second strip of kraft ---------------------------------------------- */
+.w-procreate-index {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(22px, 3vw, 52px);
+  margin-bottom: clamp(22px, 3vw, 46px);
+  padding: clamp(46px, 4.4vw, 70px) clamp(16px, 2.6vw, 48px) clamp(30px, 3.4vw, 56px);
+  border-radius: 16px;
+  background-color: var(--kraft);
+  background-image: url('./kraft.webp');
+  background-size: 256px 256px;
+  box-shadow:
+    0 3px 0 var(--kraft-edge),
+    0 24px 30px -18px color-mix(in srgb, var(--ink) 60%, transparent);
+  /* clip (not hidden): the rounded corners still cut the cork rail, and the sticky side column keeps the world's scroller */
+  overflow: clip;
+}
+
+/* the cork rail along the top of the strip */
+.w-procreate-index::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: clamp(18px, 1.7vw, 26px);
+  background-color: var(--cork);
+  background-image: url('./cork.webp');
+  background-size: 256px 256px;
+  box-shadow: 0 2px 0 var(--cork-lo);
+}
+
+.w-procreate-card {
+  position: relative;
+  padding: clamp(24px, 2.4vw, 38px) clamp(18px, 2.2vw, 36px) clamp(22px, 2.2vw, 34px);
+  border-radius: 3px;
+  background-color: var(--stock-index);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--paper) 90%, transparent),
+    0 3px 0 color-mix(in srgb, var(--ink) 12%, transparent),
+    0 16px 22px -12px color-mix(in srgb, var(--ink) 55%, transparent);
+  color: var(--ink);
+}
+
+.w-procreate-card--list {
+  transform: rotate(-0.55deg);
+}
+
+.w-procreate-card--palette {
+  transform: rotate(0.9deg);
+}
+
+.w-procreate-card-title {
+  margin: 0;
+  padding-bottom: 0.3em;
+  font-family: var(--hand);
+  font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+/* the title is underlined by hand (a drawn mark, not a ruled border) */
+.w-procreate-card-title-ink {
+  position: relative;
+  display: inline-block;
+}
+
+.w-procreate-card-intro {
+  margin: 12px 0 0;
+  max-width: 52ch;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+}
+
+.w-procreate-list {
+  display: grid;
+  gap: 4px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-procreate-list-item {
+  display: grid;
+  grid-template-columns: clamp(100px, 9.6vw, 138px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px clamp(16px, 2vw, 32px);
+  padding: 18px 0 19px;
+  border-bottom: 1.5px dashed color-mix(in srgb, var(--ink) 28%, transparent);
+  cursor: pointer;
+}
+
+.w-procreate-list-item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* a little print glued to the card: the same stock as on the wall, the drawing printed in it, the number written on its corner */
+.w-procreate-thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.16;
+  border-radius: 3px;
+  background-color: var(--stock, var(--stock-default));
+  background-image: linear-gradient(color-mix(in srgb, var(--paper) 55%, transparent), color-mix(in srgb, var(--paper) 55%, transparent)), var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--paper) 85%, transparent),
+    0 1px 0 color-mix(in srgb, var(--ink) 30%, transparent),
+    0 8px 9px -5px color-mix(in srgb, var(--ink) 38%, transparent);
+  transform: rotate(var(--r, 0deg));
+  transition: transform 0.35s var(--ease-out);
+}
+
+.w-procreate-thumb[data-stock='grid'] {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--ink) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--paper) 50%, transparent), color-mix(in srgb, var(--paper) 50%, transparent)),
+    var(--pm-grain);
+  background-size: 11px 11px, 11px 11px, auto, auto;
+  background-position: 4px 4px, 4px 4px, 0 0, 0 0;
+}
+
+.w-procreate-thumb[data-stock='card'] {
+  border-radius: 6px;
+}
+
+/* the picture is laid in absolutely: a tall portrait must not stretch the frame, the frame keeps its own proportions */
+.w-procreate-thumb img {
+  position: absolute;
+  left: 7%;
+  top: 7%;
+  width: 86%;
+  height: 86%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.w-procreate-list-item:hover .w-procreate-thumb,
+.w-procreate-list-item:focus-within .w-procreate-thumb {
+  transform: rotate(0deg) translateY(-2px);
+}
+
+.w-procreate-list-n {
+  position: absolute;
+  left: -9px;
+  top: -15px;
+  min-width: 1.2ch;
+  font-family: var(--hand);
+  font-size: clamp(2rem, 1.6rem + 1.1vw, 2.9rem);
+  line-height: 1;
+  color: var(--oxblood);
+  text-align: center;
+  transform: rotate(-9deg);
+  /* a paper-coloured halo keeps the digit readable where it crosses the picture's edge */
+  text-shadow:
+    0 0 3px var(--stock-index),
+    0 0 6px var(--stock-index);
+}
+
+.w-procreate-loupe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.w-procreate-loupe-glint {
+  stroke-width: 1.6;
+  opacity: 0.55;
+}
+
+.w-procreate-list-text {
+  min-width: 0;
+}
+
+.w-procreate-list-title {
+  margin: 0;
+  font-family: var(--hand);
+  font-size: clamp(1.3rem, 1.1rem + 0.6vw, 1.8rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: 0;
+}
+
+/* Gloria's descenders hang low (the g of "logo"): the sentence under the title keeps clear of them */
+.w-procreate-list-line {
+  margin: 9px 0 0;
+  max-width: 62ch;
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+}
+
+/* the four colours as big dabs of paint, the way the drawings show them beside the heads */
+.w-procreate-chips {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px clamp(8px, 1.2vw, 20px);
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-procreate-chip {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.w-procreate-chip-dot {
+  width: 100%;
+  max-width: 104px;
+  aspect-ratio: 1;
+  border-radius: 52% 46% 54% 48% / 48% 54% 46% 52%;
+  box-shadow: inset 0 -4px 0 color-mix(in srgb, var(--ink) 16%, transparent), 0 3px 0 color-mix(in srgb, var(--ink) 14%, transparent);
+}
+
+.w-procreate-chip:nth-child(2) .w-procreate-chip-dot {
+  border-radius: 46% 54% 48% 52% / 54% 48% 52% 46%;
+}
+
+.w-procreate-chip:nth-child(3) .w-procreate-chip-dot {
+  border-radius: 54% 48% 52% 46% / 46% 52% 48% 54%;
+}
+
+.w-procreate-chip-hex {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.w-procreate-stamp {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  /* a rubber stamp is typeset, not handwritten: it keeps the site's display face (same stack as typography.css) */
+  --font-display: 'Fraunces Variable', 'Fraunces Fallback', Georgia, 'Times New Roman', serif;
+}
+
+/* the right-hand column of the strip: the palette card, then the facts slate that ends the world. While the five rows
+   scroll past it stays in view (it is a column of paper stuck to the board), and it comes to rest with the end of the strip. */
+.w-procreate-side {
+  display: grid;
+  gap: clamp(26px, 3vw, 46px);
+  align-content: start;
+}
+
+@media (min-width: 960px) {
+  .w-procreate-side {
+    position: sticky;
+    top: calc(var(--w-strip, 44px) + clamp(14px, 1.6vw, 26px));
+  }
+}
+
+.w-procreate-facts {
+  min-width: 0;
+}
+
+.w-procreate-facts .pm-wf {
+  grid-template-columns: minmax(0, 1fr);
+  padding-top: 0;
+}
+
+.w-procreate-facts .pm-wf__slate,
+.w-procreate-facts .pm-wf__tix {
+  grid-column: 1;
+}
+
+.w-procreate-facts .pm-wf__note {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---- the close-up ----------------------------------------------------------------------------------------------------------- */
+.w-procreate-lb {
+  position: absolute;
+  inset: 0;
+  z-index: 100; /* above everything the world draws, the corner pins included */
+  overflow: hidden;
+  color: var(--cream);
+  outline: none;
+}
+
+/* the column of the close-up: paper, caption, tabs. Auto margins on its first and last child centre it when it fits and start it at
+   the top when it does not (justify-content: center would cut the top off), and then it scrolls. */
+.w-procreate-lb-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  gap: 12px;
+  padding: 14px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.w-procreate-lb-scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--ink) 98%, transparent);
+}
+
+.w-procreate-lb-stage {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  /* holders overhang the paper (a clip hangs about 30 px above it, tape corners poke out): 20 px above and 14 px below are kept
+     clear, and the paper's size is worked out with the same numbers (see Lightbox.tsx) */
+  margin: auto 0 14px;
+  padding-top: 20px;
+}
+
+/* a hyphenated word that must not be split over two lines */
+.w-procreate-nb {
+  white-space: nowrap;
+}
+
+.w-procreate-lb-print {
+  position: relative;
+  touch-action: pan-y; /* a horizontal swipe changes print; vertical gestures stay the browser's */
+}
+
+.w-procreate-lb-caption {
+  position: relative;
+  max-width: 56rem;
+  text-align: center;
+}
+
+.w-procreate-lb-title {
+  margin: 0;
+  font-family: var(--hand);
+  font-size: clamp(1.8rem, 1.2rem + 1.7vw, 2.9rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+/* Gloria's descenders are long (the g of "logo"): the line below needs clear air under the title */
+.w-procreate-lb-line {
+  margin: 14px auto 0;
+  max-width: 60ch;
+  font-size: clamp(1rem, 0.94rem + 0.3vw, 1.2rem);
+  line-height: 1.45;
+  color: var(--cream-2);
+}
+
+.w-procreate-lb-bar {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px 18px;
+  margin-bottom: auto;
+}
+
+.w-procreate-lb-count {
+  align-self: center;
+  min-width: 5ch;
+  margin: 0 0 6px;
+  text-align: center;
+  color: var(--cream);
+}
+
+/* ---- motion: the title is written on, once ----------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not([data-motion='paused']) .w-procreate-title-ink {
+    animation: w-procreate-write 1s var(--ease-out) 0.15s both;
+  }
+}
+
+@keyframes w-procreate-write {
+  from {
+    clip-path: inset(-12% 100% -22% -2%);
+  }
+  to {
+    clip-path: inset(-12% -2% -22% -2%);
+  }
+}
+
+/* ---- narrower walls ---------------------------------------------------------------------------------------------------------- */
+@media (max-width: 1180px) {
+  .w-procreate-dymo {
+    display: none;
+  }
+}
+
+/* The tool tray follows the kind of wall the layout engine chose (data-kind), not the viewport: with two columns of prints
+   (mid) or one (narrow) it moves to the top of the board, where the thumb is. */
+.w-procreate:not([data-kind='wide']) .w-procreate-ledge {
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  min-height: 0;
+  padding: 4px 6px 14px;
+}
+
+/* the two props share the first line (ruler at one end, eraser at the other), the three tabs take the second */
+.w-procreate:not([data-kind='wide']) .w-procreate-rulerbox {
+  order: 1;
+  flex: 0 1 min(360px, 64%);
+  margin-top: 14px;
+}
+
+.w-procreate:not([data-kind='wide']) .w-procreate-eraser {
+  order: 2;
+  margin-left: auto;
+}
+
+.w-procreate:not([data-kind='wide']) .w-procreate-tools {
+  order: 3;
+  flex: 1 1 100%;
+  justify-content: flex-start;
+}
+
+/* with two columns of prints (a laptop window or a tablet with a mouse) the keyboard hint sits beside the tabs, wrapped to two or three lines */
+.w-procreate[data-kind='mid'] .w-procreate-tools {
+  flex: 0 1 auto;
+}
+
+.w-procreate[data-kind='mid'] .w-procreate-dymo {
+  display: block;
+  order: 4;
+  flex: 1 1 190px;
+  max-width: 300px;
+  margin: 0 0 6px;
+  white-space: normal;
+  align-self: center;
+}
+
+.w-procreate[data-kind='narrow'] .w-procreate-ledge {
+  padding-inline: 2px;
+}
+
+.w-procreate[data-kind='narrow'] .w-procreate-rulerbox {
+  flex: 0 1 calc(100% - 84px);
+}
+
+.w-procreate[data-kind='narrow'] .w-procreate-eraser {
+  width: 56px;
+}
+
+.w-procreate[data-kind='narrow'] .w-procreate-tools {
+  justify-content: space-between;
+  gap: 8px 4px;
+}
+
+/* three tabs have to share one line of a 360 px phone: tighter paper, tighter tracking (the text stays 13 px and up) */
+.w-procreate[data-kind='narrow'] .w-procreate-tools .pm-tabbtn {
+  --fr: 8px;
+  padding-inline: 9px;
+  letter-spacing: 0.05em;
+}
+
+/* the third tab reads "Rub out" on a phone (the accessible name keeps the full phrase) */
+.w-procreate-lab-short {
+  display: none;
+}
+
+.w-procreate[data-kind='narrow'] .w-procreate-lab-long {
+  display: none;
+}
+
+.w-procreate[data-kind='narrow'] .w-procreate-lab-short {
+  display: inline;
+}
+
+@media (max-width: 959px) {
+  .w-procreate-head {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 12px;
+  }
+  .w-procreate-lede-text {
+    max-width: 62ch;
+  }
+  .w-procreate-lede {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .w-procreate-title {
+    padding-bottom: 0.3em;
+    font-size: clamp(2.8rem, 0.8rem + 8.6vw, 6rem);
+  }
+  .w-procreate-index {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 599px) {
+  .w-procreate {
+    --gap-x: 10px;
+  }
+  /* Previous, the count and Next share one line on a phone; Back to the wall takes the second */
+  .w-procreate-lb-bar {
+    gap: 4px 8px;
+  }
+  .w-procreate-lb-count {
+    min-width: 4.4ch;
+  }
+  .w-procreate-title {
+    font-size: clamp(3rem, 15.4vw, 5rem);
+    line-height: 0.98;
+  }
+  .w-procreate-card--list,
+  .w-procreate-card--palette {
+    transform: none;
+  }
+  .w-procreate-list-item {
+    grid-template-columns: 84px minmax(0, 1fr);
+    align-items: start;
+    gap: 6px 16px;
+  }
+  .w-procreate-list-item > .w-procreate-thumb {
+    grid-row: 1 / span 2;
+    margin-top: 6px;
+  }
+  .w-procreate-list-item > .pm-tabbtn {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .w-procreate-chips {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px 8px;
+  }
+}

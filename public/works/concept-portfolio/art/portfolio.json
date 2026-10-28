@@ -1,0 +1,159 @@
+{
+  "slug": "concept-portfolio",
+  "title": "A Portfolio for a Client",
+  "generated": "2026-10-28",
+  "basePath": "works/concept-portfolio/art/",
+  "usage": "Every 'file' is relative to public/works/concept-portfolio/art/. In Vite use `${import.meta.env.BASE_URL}works/concept-portfolio/art/${file}`. w/h are intrinsic pixel sizes. Slides are portrait 1080 x 1920 WebP; 'sheet' is the five slides side by side with 20 px ink gutters; 'thumb' is the cover at 700 px wide. Everything on the slides (name, studios, film titles, domain, phone number) is fictional.",
+  "label": "Concept project - art-directed by Pau, built with AI-assisted tools",
+  "client": {
+    "name": "Ona Ribas",
+    "profession": "Foley artist and sound designer",
+    "city": "Girona, Catalonia",
+    "bio": "Ona gives films their footsteps, rustling coats, slamming doors and sighs. For ten years she has worked in a studio full of gravel, celery and old shoes: first as a foley walker, then cutting foley for 22 films, and now performing it herself on features, series, shorts and games. She talks to directors in objects (“this scene is wet cardboard”) and keeps one very patient neighbour."
+  },
+  "palette": [
+    {
+      "name": "Teal",
+      "hex": "#007E9B",
+      "role": "field of slides 1 and 5"
+    },
+    {
+      "name": "Butter",
+      "hex": "#FDEFAF",
+      "role": "field of slides 2 and 4; type on teal and deep teal"
+    },
+    {
+      "name": "Deep teal",
+      "hex": "#1B6885",
+      "role": "field of slide 3; type on butter; panels"
+    },
+    {
+      "name": "Steel",
+      "hex": "#63A0AC",
+      "role": "secondary shapes, halftone on teal"
+    },
+    {
+      "name": "Ink",
+      "hex": "#101820",
+      "role": "linework, hair, shoes, hard shadows"
+    },
+    {
+      "name": "Paper",
+      "hex": "#F6F0DC",
+      "role": "frames, collage, tickets, boot soles"
+    },
+    {
+      "name": "Sun",
+      "hex": "#F2C62F",
+      "role": "sunbursts, headphones, numerals"
+    },
+    {
+      "name": "Tomato",
+      "hex": "#E8553E",
+      "role": "dungarees, sound bursts, years on butter"
+    },
+    {
+      "name": "Salmon",
+      "hex": "#F2A29A",
+      "role": "blush, tape, halftone dots on butter"
+    },
+    {
+      "name": "Lilac",
+      "hex": "#B58AD6",
+      "role": "sweater, moon sky"
+    },
+    {
+      "name": "Periwinkle",
+      "hex": "#7A8CE8",
+      "role": "hardware: mic clamps, umbrella, duffel"
+    },
+    {
+      "name": "Celery",
+      "hex": "#9CCF9A",
+      "role": "celery, cabbage, labels on deep teal"
+    }
+  ],
+  "fonts": [
+    {
+      "name": "Anybody",
+      "role": "Display titles",
+      "detail": "Variable font at weight 600, with a different width (50 to 150) for every letter",
+      "license": "SIL OFL 1.1",
+      "source": "@fontsource-variable/anybody"
+    },
+    {
+      "name": "Syne",
+      "role": "Labels, subheads and project titles",
+      "detail": "Bold 700, caps or small caps, tracked",
+      "license": "SIL OFL 1.1",
+      "source": "@fontsource/syne"
+    },
+    {
+      "name": "DM Sans",
+      "role": "Body copy",
+      "detail": "Medium 500, with italic for asides",
+      "license": "SIL OFL 1.1",
+      "source": "@fontsource-variable/dm-sans"
+    }
+  ],
+  "slides": [
+    {
+      "n": 1,
+      "file": "slide-1.webp",
+      "title": "Cover: Foley Portfolio",
+      "alt": "Teal cover: FOLEY PORTFOLIO in huge stretched cream letters above a giant furry boom microphone, with yellow sunburst rays and red and yellow SNAP! and CRUNCH! bursts. The tagline reads “The small noises that make a film feel real.”",
+      "w": 1080,
+      "h": 1920
+    },
+    {
+      "n": 2,
+      "file": "slide-2.webp",
+      "title": "About: I’m Ona Ribas",
+      "alt": "Butter slide headed I’M ONA RIBAS over a yellow sunburst, with a short bio and five taped frames of foley props. Ona, in a lilac sweater and red dungarees, kicks one knee up and claps two coconut halves.",
+      "w": 1080,
+      "h": 1920
+    },
+    {
+      "n": 3,
+      "file": "slide-3.webp",
+      "title": "Selected projects",
+      "alt": "Deep-teal slide, SELECTED PROJECTS: Salt Season (2025), Kettle & Crow (2024) and The Understudy Moon (2023), each with a small gouache illustration of red boots on a salt flat, a screaming kettle under a crow with umbrella wings, and a smiling paper moon.",
+      "w": 1080,
+      "h": 1920
+    },
+    {
+      "n": 4,
+      "file": "slide-4.webp",
+      "title": "Experience and education",
+      "alt": "Butter slide headed EXPERIENCE & EDUCATION: a pinned wall of waveforms, polaroids and tickets, with Ona at a mixing desk in yellow headphones. Below, a footprint trail links four timeline entries from film school in 2012 to Casa Grava Studio today.",
+      "w": 1080,
+      "h": 1920
+    },
+    {
+      "n": 5,
+      "file": "slide-5.webp",
+      "title": "Contact: Thanks for listening",
+      "alt": "Teal closing slide, THANKS FOR LISTENING, with Ona walking off at sunrise, waving back, a boom pole in one hand and a duffel bag with a black cat on her back. A deep-teal card lists her email, website, phone and base in Girona, with a tag saying she is available from January 2027.",
+      "w": 1080,
+      "h": 1920
+    }
+  ],
+  "sheet": {
+    "file": "sheet.webp",
+    "w": 2600,
+    "h": 896,
+    "alt": "All five portfolio slides side by side: a teal cover, a butter About page, a deep-teal Projects page, a butter Experience page and a teal Contact page, each with the same hand-cut lettering, footprints and sunbursts."
+  },
+  "thumb": {
+    "file": "thumb.webp",
+    "w": 700,
+    "h": 1244,
+    "alt": "The cover slide: FOLEY PORTFOLIO above a giant furry boom microphone on a teal background."
+  },
+  "contactSheet": {
+    "file": "contact-sheet.webp",
+    "w": 720,
+    "h": 6400,
+    "alt": "The five slides stacked in one tall strip, teal, butter, deep teal, butter, teal."
+  }
+}

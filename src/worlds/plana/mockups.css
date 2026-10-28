@@ -1,0 +1,166 @@
+/* ==========================================================================
+   plate 5 "Mockups": a poppy ground, a draggable rail of prints, each with a museum-style label card and a "sample mockup" tag.
+   ========================================================================== */
+
+.w-plana-rail {
+  container: w-plana-rail / inline-size;
+  display: flex;
+  flex-direction: column;
+  background: var(--poppy);
+  color: var(--night);
+}
+
+.w-plana-rail__viewport {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.w-plana-rail__viewport:active {
+  cursor: grabbing;
+}
+
+.w-plana-rail__viewport:focus-visible {
+  outline: 2px solid var(--night);
+  outline-offset: -5px;
+  box-shadow: inset 0 0 0 5px var(--paper);
+}
+
+.w-plana-rail__track {
+  --item-w: min(86cqw, 40rem);
+
+  position: relative;
+  display: flex;
+  width: max-content;
+  align-items: stretch;
+  gap: clamp(0.9rem, 2.4cqw, 1.6rem);
+  padding: clamp(1.1rem, 3cqw, 1.8rem) 16px clamp(0.9rem, 2.4cqw, 1.4rem);
+  user-select: none;
+}
+
+.w-plana-shot {
+  display: grid;
+  flex: none;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: var(--item-w);
+  gap: 0;
+  margin: 0;
+}
+
+.w-plana-shot[data-tilt='a'] {
+  rotate: -0.7deg;
+}
+
+.w-plana-shot[data-tilt='b'] {
+  rotate: 0.6deg;
+}
+
+.w-plana-shot__print {
+  position: relative;
+  border: var(--outline) solid var(--night);
+  border-radius: 14px 14px 0 0;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.w-plana-shot__print img {
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+/* the honest label: this is a mockup, whatever is printed inside it */
+.w-plana-shot__tag {
+  position: absolute;
+  top: 0.65rem;
+  left: 0.65rem;
+  padding: 0.18rem 0.55rem;
+  border: 2.5px solid var(--night);
+  border-radius: 8px;
+  background: var(--wheat);
+  box-shadow: 2px 3px 0 var(--night);
+  color: var(--night);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  rotate: -3deg;
+}
+
+.w-plana-shot__label {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  padding: 0.7rem 0.9rem 0.85rem;
+  border: var(--outline) solid var(--night);
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+  background: var(--paper);
+  box-shadow: var(--shadow-x) var(--shadow-y) 0 var(--night);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.w-plana-shot__label strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.w-plana-shot__label em {
+  color: var(--night-2);
+  font-size: 0.875rem;
+  font-style: normal;
+  border-top: 1.5px dashed var(--night-2);
+  padding-top: 0.3rem;
+  margin-top: 0.1rem;
+}
+
+.w-plana-rail__bar {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.5rem clamp(0.8rem, 2cqw, 1.3rem) 0.8rem;
+  border-top: var(--outline) solid var(--night);
+  background: var(--paper);
+}
+
+.w-plana-rail__count {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.15rem 0.4rem;
+  margin: 0 0 0.7rem;
+  font-family: var(--font-label);
+  font-size: 0.875rem;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+.w-plana-rail__count span {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--poppy);
+}
+
+.w-plana-rail__count em {
+  flex-basis: 100%;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+@media (hover: hover) {
+  .w-plana-shot:hover {
+    rotate: 0deg;
+  }
+}

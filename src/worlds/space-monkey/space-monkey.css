@@ -1,0 +1,1508 @@
+/* ==========================================================================
+   Space Monkey: "Mission Dossier"   (prefix w-space-monkey-)
+   A folder with a window onto deep space. The folder colour (ultraviolet) stays as a frame round a sticky starfield; the
+   content scrolls inside the window. Palette = the two posters (public/works/space-monkey/manifest.json), plus the shell's
+   cream / ink / paper for the dossier objects. Orbitron (loaded by the shell) for display and labels, Courier Prime for the
+   typed parts, Karla for sentences, Gochi Hand for Pau's handwriting.
+   Motion: everything that moves has a still path (reduced motion + "Pause motion"): base.css shortens every transition and
+   animation, tilt.ts removes the rotation, sky.ts draws one static frame.
+   ========================================================================== */
+
+.w-space-monkey {
+  /* the posters' palette */
+  --sm-space: #020308;
+  --sm-navy: #0c152f;
+  --sm-silver: #dedede;
+  --sm-earth: #065d8c;
+  --sm-royal: #1961d0;
+  --sm-gold: #c89231;
+  --sm-yellow: #e1de0a;
+
+  /* geometry: the frame is the folder showing round the window */
+  --sm-frame: clamp(8px, 0.95vw, 14px);
+  --sm-r: clamp(14px, 1.7vw, 26px);
+  --sm-pad: clamp(16px, 3vw, 52px);
+  --sm-gap: clamp(14px, 1.9vw, 34px);
+  --sm-h: calc(100dvh - var(--w-strip, 44px)); /* the scroller's height; the world measures it and overwrites this */
+  --sm-content: calc(100cqw - 2 * (var(--sm-frame) + var(--sm-pad)));
+  --sm-title: clamp(2rem, min(calc(var(--sm-h) * 0.112), calc(var(--sm-content) / 10.2)), 8rem); /* the flat title (tiers M and S) */
+
+  --sm-type: 'Courier Prime', 'Courier Prime Fallback', 'Courier New', monospace;
+  --font-display: 'Orbitron Variable', var(--font-body);
+  --font-label: 'Orbitron Variable', var(--font-body);
+
+  position: relative;
+  min-height: 100%;
+  overflow-x: clip;
+  color: var(--cream);
+  font-family: var(--font-body);
+  container-type: inline-size;
+  container-name: sm;
+}
+
+/* light text on the sky: a dark halo (not a glow) keeps it readable when the bright Earth limb scrolls behind it */
+.w-space-monkey-title,
+.w-space-monkey-h3,
+.w-space-monkey-tape-legend,
+.w-space-monkey-tape-gap,
+.w-space-monkey-brief-hint,
+.w-space-monkey-seal-note,
+.w-space-monkey-tiltctl,
+.w-space-monkey-end > .w-space-monkey-facts .pm-wf__note {
+  --halo: 0 0 3px rgb(2 3 8 / 0.95), 0 0 10px rgb(2 3 8 / 0.85), 0 1px 14px rgb(2 3 8 / 0.7);
+}
+.w-space-monkey-h3,
+.w-space-monkey-tape-legend,
+.w-space-monkey-tape-gap,
+.w-space-monkey-brief-hint,
+.w-space-monkey-seal-note,
+.w-space-monkey-tiltctl,
+.w-space-monkey-end > .w-space-monkey-facts .pm-wf__note {
+  text-shadow: var(--halo);
+}
+
+/* the margin notes wait (at most 0.9 s) for Gochi Hand, so the fallback handwriting never flashes */
+html.js .w-space-monkey[data-hand='pending'] :is(.w-space-monkey-brief-hint, .w-space-monkey-seal-note, .w-space-monkey-back-hand) {
+  opacity: 0;
+}
+.w-space-monkey-brief-hint,
+.w-space-monkey-seal-note,
+.w-space-monkey-back-hand {
+  transition: opacity 0.3s ease-out;
+}
+
+/* ---- 1. the window: sticky sky + sticky frame (both exactly as tall as the scroller, taking no room in the flow) ---- */
+.w-space-monkey-sky,
+.w-space-monkey-frame {
+  position: sticky;
+  top: 0;
+  height: var(--sm-h);
+  margin-bottom: calc(var(--sm-h) * -1);
+  pointer-events: none;
+}
+.w-space-monkey-sky {
+  z-index: 0;
+}
+.w-space-monkey-window {
+  position: absolute;
+  inset: var(--sm-frame);
+  overflow: hidden;
+  border-radius: var(--sm-r);
+  background: var(--sm-space);
+}
+.w-space-monkey-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.w-space-monkey-earth {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  /* the height sky.ts will give it (limb + 210px), known in advance so the canvas never changes size when it is first drawn
+     (a bare canvas is 300x150 until then: a 2:1 box, which was reported as a layout shift) */
+  height: calc(clamp(64px, (var(--sm-h) - 2 * var(--sm-frame)) * 0.105, 116px) + 210px);
+}
+/* above the content: the folder colour closes round the window, so the content scrolls INSIDE it */
+.w-space-monkey-frame {
+  z-index: 6;
+}
+.w-space-monkey-frame::before {
+  content: '';
+  position: absolute;
+  inset: var(--sm-frame);
+  border-radius: var(--sm-r);
+  box-shadow:
+    0 0 0 100vmax var(--w-color),
+    inset 0 0 0 2px rgb(0 0 0 / 0.55),
+    inset 0 7px 18px rgb(0 0 0 / 0.38);
+}
+
+.w-space-monkey-flow {
+  position: relative;
+  z-index: 2;
+}
+
+/* ---- 2. hero --------------------------------------------------------------------------------------------------------- */
+/* Wide (1100px and up): the title stands on the left edge like the label on the spine of a film can, the two posters take the
+   middle at the largest size the height allows, and a rail on the right holds the margin note, the patch and the brief.
+   Below 1100px the title lies flat on top and the rail's contents go underneath the posters (see section 10). */
+.w-space-monkey-hero {
+  --sm-pt: calc(var(--sm-frame) + clamp(12px, 2.6vh, 28px));
+  --sm-pb: calc(var(--sm-frame) + clamp(14px, 2.4vh, 26px));
+  --sm-inner: calc(var(--sm-h) - var(--sm-pt) - var(--sm-pb));
+  --sm-title-v: clamp(2.8rem, calc(var(--sm-inner) / 10.6), 7.6rem);
+  --sm-spine: calc(var(--sm-title-v) * 0.92);
+  --sm-rail: clamp(200px, 17cqw, 340px);
+  /* the strip above each poster (Tilt control, and the room the print needs when it tilts towards you) grows with the screen */
+  --sm-strip: clamp(46px, calc(var(--sm-inner) * 0.066), 66px);
+  --sm-ph: clamp(430px, calc(var(--sm-inner) - var(--sm-strip)), 1100px);
+  --sm-pw: min(calc(var(--sm-ph) * 0.667), calc((var(--sm-content) - var(--sm-spine) - var(--sm-rail) - 3 * var(--sm-gap)) / 2));
+  --sm-wipe: w-space-monkey-wipe-v;
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--sm-spine) minmax(0, 1fr);
+  column-gap: var(--sm-gap);
+  min-height: var(--sm-h);
+  padding: var(--sm-pt) calc(var(--sm-frame) + var(--sm-pad)) var(--sm-pb);
+}
+
+.w-space-monkey-title {
+  align-self: start;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--sm-title-v);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--cream);
+  /* reads from the bottom up, like a spine label */
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  /* a hard offset in the uniform's blue: the misregistered-print look, and a nod to SMITH (the element is turned, so the offset is too) */
+  text-shadow: -0.032em -0.04em 0 var(--sm-royal), var(--halo);
+  font-variation-settings: normal;
+}
+html.js .w-space-monkey-title {
+  animation: var(--sm-wipe) 1s 0.1s var(--ease-out) both;
+}
+@keyframes w-space-monkey-wipe {
+  from {
+    clip-path: inset(-12% 100% -12% -2%);
+  }
+  to {
+    clip-path: inset(-12% -4% -12% -2%);
+  }
+}
+@keyframes w-space-monkey-wipe-v {
+  from {
+    clip-path: inset(-2% -12% 100% -12%);
+  }
+  to {
+    clip-path: inset(-2% -12% -4% -12%);
+  }
+}
+
+.w-space-monkey-deck {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--sm-gap);
+  align-items: start;
+}
+.w-space-monkey-posters {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sm-gap);
+}
+
+/* ---- 3. posters ------------------------------------------------------------------------------------------------------ */
+.w-space-monkey-poster {
+  position: relative;
+  flex: none;
+  width: var(--sm-pw);
+}
+.w-space-monkey-enter {
+  /* the strip (Tilt) comes after the poster in the DOM so the tab order is poster, Flip, Tilt; it is drawn above it */
+  display: flex;
+  flex-direction: column-reverse;
+}
+/* Above the print: the Tilt gauge. It sits ABOVE the poster in z-order (a print that tilts towards you grows a little and must never
+   hide its label) and lets the pointer through everywhere except on the gauge itself, so the Flip tab stays clickable. */
+.w-space-monkey-strip {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: var(--sm-strip);
+  padding: 4px 0 0 6px;
+  pointer-events: none;
+}
+.w-space-monkey-strip > .w-space-monkey-tiltctl {
+  pointer-events: auto;
+}
+.w-space-monkey-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  /* the farther the eye, the less a tilted print grows towards you: the perspective follows the print's width (about 2.6 widths) */
+  perspective: max(900px, calc(var(--sm-pw) * 2.6));
+  touch-action: pan-y;
+  cursor: pointer;
+  border-radius: 12px;
+  transform: rotate(var(--rest));
+  -webkit-tap-highlight-color: transparent;
+}
+.w-space-monkey-stage:focus-visible {
+  /* the global two-tone ring, redrawn so it reads on space: ink against the cream print edge, cream against the stars */
+  outline: none;
+  box-shadow:
+    0 0 0 3px var(--focus-in),
+    0 0 0 6.5px var(--focus-out);
+}
+.w-space-monkey-tilt {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.w-space-monkey-flip {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.3, 1.2, 0.4, 1);
+}
+.w-space-monkey-poster[data-flipped='true'] .w-space-monkey-flip {
+  transform: rotateY(180deg);
+}
+.w-space-monkey-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 11px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  background: var(--paper);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.14),
+    0 22px 38px -10px rgb(0 0 0 / 0.7);
+}
+.w-space-monkey-back {
+  transform: rotateY(180deg);
+  container-type: size;
+  container-name: smback;
+}
+
+/* the file tab: stands up from the top edge of the print (it tilts with it, but does not turn over) */
+.w-space-monkey-tab {
+  position: absolute;
+  right: 7%;
+  bottom: 100%;
+  margin-bottom: -5px;
+  transform: translateZ(-2px);
+}
+.w-space-monkey-tab .pm-tabbtn {
+  margin-bottom: 0;
+}
+
+.w-space-monkey-print {
+  position: absolute;
+  inset: clamp(5px, 0.6vw, 9px);
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--sm-space);
+}
+html.js .w-space-monkey-art:not([data-loaded]) {
+  opacity: 0;
+}
+.w-space-monkey-art {
+  transition: opacity 0.45s ease-out;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* the grease-pencil ring round the real patch on SMITH's sleeve */
+.w-space-monkey-sleeve {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--r);
+  aspect-ratio: 1.16;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  pointer-events: none;
+}
+
+/* ---- 4. the foil (holographic layers on the front; all move by transform / opacity only) -------------------------------- */
+/* NOT isolated: the blend modes of the layers must see the print underneath (the face is the isolation group) */
+.w-space-monkey-foil {
+  --lx: 0.4;
+  --ly: 0.44;
+  --mag: 0.2;
+  /* the spectrum of the foil, six stops (bow = the visible bands, dodge = the same hues kept dim for colour-dodge). The default is the
+     full rainbow SMITH wears; TYLER gets a cooler, space-blue spectrum (below): one foil per poster, not one preset on two. */
+  --fa: #ff5f9e;
+  --fb: #ffb347;
+  --fc: #f2ee5c;
+  --fd: #4ff0b0;
+  --fe: #4cc4ff;
+  --ff: #8f6bff;
+  --da: rgb(150 52 100);
+  --db: rgb(158 106 40);
+  --dc: rgb(136 130 46);
+  --dd: rgb(44 146 116);
+  --de: rgb(44 116 158);
+  --df: rgb(92 62 158);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.w-space-monkey-foil > i {
+  position: absolute;
+  display: block;
+  will-change: transform, opacity;
+}
+/* TYLER: ice, violet, magenta and aqua: no yellow or green, which on a black-and-silver print read as a tint, not as light */
+.w-space-monkey-poster[data-poster='tyler'] .w-space-monkey-foil {
+  --fa: #ff7bd5;
+  --fb: #b58bff;
+  --fc: #7aa8ff;
+  --fd: #5fe3ff;
+  --fe: #9bf5e4;
+  --ff: #d9a0ff;
+  --da: rgb(140 60 120);
+  --db: rgb(100 70 150);
+  --dc: rgb(60 90 150);
+  --dd: rgb(40 120 150);
+  --de: rgb(60 130 120);
+  --df: rgb(110 70 140);
+}
+.w-space-monkey-foil-bow {
+  inset: -38%;
+  /* bands with clear gaps between them: foil catches the light in a stripe, it does not tint the whole card */
+  background: repeating-linear-gradient(
+    112deg,
+    transparent 0%,
+    var(--fa) 5%,
+    var(--fb) 10%,
+    var(--fc) 15%,
+    var(--fd) 20%,
+    var(--fe) 25%,
+    var(--ff) 30%,
+    transparent 36%,
+    transparent 52%
+  );
+  mix-blend-mode: overlay;
+  opacity: calc(0.32 + var(--mag) * 0.4);
+  transform: translate3d(calc((var(--lx) - 0.5) * -44%), calc((var(--ly) - 0.5) * -24%), 0);
+}
+/* dim colours on purpose: colour-dodge divides by (1 - colour), so only the bright parts of the print (suit, lettering) flare */
+.w-space-monkey-foil-dodge {
+  inset: -38%;
+  background: repeating-linear-gradient(
+    112deg,
+    transparent 0%,
+    var(--da) 5%,
+    var(--db) 10%,
+    var(--dc) 15%,
+    var(--dd) 20%,
+    var(--de) 25%,
+    var(--df) 30%,
+    transparent 36%,
+    transparent 52%
+  );
+  mix-blend-mode: color-dodge;
+  opacity: calc(0.04 + var(--mag) * 0.42);
+  transform: translate3d(calc((var(--lx) - 0.5) * -60%), calc((var(--ly) - 0.5) * -18%), 0);
+}
+.w-space-monkey-foil-lines {
+  inset: -10%;
+  background: repeating-linear-gradient(-33deg, rgb(255 255 255 / 0.16) 0 1px, transparent 1px 6px);
+  mix-blend-mode: overlay;
+  opacity: calc(0.12 + var(--mag) * 0.5);
+  transform: translate3d(calc((var(--lx) - 0.5) * 36px), calc((var(--ly) - 0.5) * 22px), 0);
+}
+.w-space-monkey-foil-glitter {
+  inset: -20%;
+  mix-blend-mode: screen;
+}
+.w-space-monkey-foil-glitter-a {
+  background-image:
+    radial-gradient(circle at 12% 14%, #fff 0 0.9px, transparent 1.8px),
+    radial-gradient(circle at 63% 8%, rgb(160 235 255) 0 1px, transparent 2px),
+    radial-gradient(circle at 87% 22%, #fff 0 0.8px, transparent 1.6px),
+    radial-gradient(circle at 38% 31%, rgb(255 226 160) 0 1px, transparent 2px),
+    radial-gradient(circle at 74% 47%, #fff 0 1.1px, transparent 2.2px),
+    radial-gradient(circle at 21% 55%, rgb(255 170 220) 0 0.9px, transparent 1.9px),
+    radial-gradient(circle at 52% 63%, #fff 0 0.8px, transparent 1.7px),
+    radial-gradient(circle at 91% 71%, rgb(160 235 255) 0 1px, transparent 2px),
+    radial-gradient(circle at 8% 84%, #fff 0 1px, transparent 2px),
+    radial-gradient(circle at 44% 90%, rgb(255 226 160) 0 0.9px, transparent 1.8px),
+    radial-gradient(circle at 69% 95%, #fff 0 0.8px, transparent 1.6px),
+    radial-gradient(circle at 30% 8%, #fff 0 0.7px, transparent 1.5px);
+  background-size: 150px 150px;
+  opacity: calc(0.1 + var(--mag) * 0.8);
+  transform: translate3d(calc((var(--lx) - 0.5) * 74px), calc((var(--ly) - 0.5) * 52px), 0);
+}
+.w-space-monkey-foil-glitter-b {
+  background-image:
+    radial-gradient(circle at 18% 22%, #fff 0 1.1px, transparent 2.2px),
+    radial-gradient(circle at 71% 12%, rgb(255 190 230) 0 0.9px, transparent 1.9px),
+    radial-gradient(circle at 46% 48%, #fff 0 0.8px, transparent 1.7px),
+    radial-gradient(circle at 90% 55%, rgb(170 240 255) 0 1px, transparent 2px),
+    radial-gradient(circle at 27% 78%, #fff 0 0.9px, transparent 1.8px),
+    radial-gradient(circle at 78% 86%, rgb(255 233 170) 0 1px, transparent 2px),
+    radial-gradient(circle at 56% 92%, #fff 0 0.7px, transparent 1.5px);
+  background-size: 97px 97px;
+  opacity: calc(0.1 + var(--mag) * 0.6);
+  transform: translate3d(calc((var(--lx) - 0.5) * -46px), calc((var(--ly) - 0.5) * -34px), 0);
+}
+.w-space-monkey-foil-spec {
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.9) 0, rgb(255 255 255 / 0.3) 17%, rgb(255 255 255 / 0) 44%);
+  mix-blend-mode: overlay;
+  opacity: calc(0.28 + var(--mag) * 0.6);
+  transform: translate3d(calc((var(--lx) - 0.5) * 100%), calc((var(--ly) - 0.5) * 100%), 0);
+}
+
+/* ---- 5. the dossier side ----------------------------------------------------------------------------------------------- */
+.w-space-monkey-back {
+  --lx: 0.5;
+  --ly: 0.4;
+  --mag: 0;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  color: var(--ink);
+}
+.w-space-monkey-back-sheet {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto auto auto auto 1fr auto;
+  row-gap: max(8px, 2.1cqh);
+  padding: max(16px, 6.4cqw) max(16px, 6.6cqw) max(14px, 5.6cqw);
+}
+.w-space-monkey-back-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.w-space-monkey-back-no,
+.w-space-monkey-back-label,
+.w-space-monkey-back-fields dt {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: max(13px, 3.1cqw);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--ultraviolet);
+}
+.w-space-monkey-back-stamp {
+  position: absolute;
+  top: max(12px, 4.2cqw);
+  right: max(10px, 4.4cqw);
+}
+.w-space-monkey-back-stamp .pm-stamp[data-in] {
+  animation-delay: 0.45s;
+}
+.w-space-monkey-back-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: max(28px, 11.2cqw);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 0.95;
+  color: var(--ink);
+}
+.w-space-monkey-back-caption {
+  margin: 0;
+  font-size: max(14px, 3.7cqw);
+  line-height: 1.35;
+  color: var(--ink-3);
+}
+.w-space-monkey-back-fields {
+  display: grid;
+  margin: 0;
+  border-top: 2px solid var(--ink);
+}
+.w-space-monkey-back-fields > div {
+  display: grid;
+  grid-template-columns: 7.2em 1fr;
+  align-items: baseline;
+  gap: 0 8px;
+  padding: max(5px, 1.45cqh) 0;
+  border-bottom: 1.5px dashed color-mix(in srgb, var(--ink) 38%, transparent);
+  font-size: max(13px, 3.1cqw);
+}
+.w-space-monkey-back-fields dt {
+  font-size: inherit;
+}
+.w-space-monkey-back-fields dd {
+  margin: 0;
+  font-family: var(--sm-type);
+  font-size: max(14px, 4cqw);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+/* the palette takes whatever height the card has left between the table and the note: on a tall card the paint chips simply grow */
+.w-space-monkey-back-palette {
+  align-self: stretch;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  row-gap: max(6px, 1.3cqh);
+}
+.w-space-monkey-back-chips {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: minmax(max(44px, 6.5cqh), 1fr);
+  gap: max(7px, 1.7cqw);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.w-space-monkey-back-chips li {
+  display: flex;
+  min-width: 0;
+}
+/* a paint chip: colour block on top, hex and name typed underneath. Click or tap copies the hex. */
+.w-space-monkey-chip {
+  display: grid;
+  grid-template-rows: minmax(26px, 1fr) auto auto;
+  width: 100%;
+  height: 100%;
+  min-height: 44px;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: 5px;
+  background: var(--paper);
+  box-shadow: 0 3px 0 var(--ink);
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transform: rotate(var(--tilt));
+  transition: transform 0.18s var(--ease-out);
+}
+.w-space-monkey-chip:hover,
+.w-space-monkey-chip:focus-visible {
+  transform: translateY(-3px) rotate(0deg) scale(1.04);
+}
+.w-space-monkey-chip:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 1px 0 var(--ink);
+}
+.w-space-monkey-chip-color {
+  display: block;
+  min-height: max(22px, 4.3cqh);
+  background: var(--sw);
+  border-bottom: 2px solid var(--ink);
+}
+.w-space-monkey-chip-hex {
+  padding: 4px 6px 0;
+  font-family: var(--sm-type);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+.w-space-monkey-chip[data-copied='true'] .w-space-monkey-chip-hex {
+  color: var(--ultraviolet);
+}
+.w-space-monkey-chip-name {
+  padding: 1px 6px 5px;
+  overflow: hidden;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  color: var(--ink-3);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.w-space-monkey-back-note {
+  display: grid;
+  row-gap: 2px;
+  margin: 0;
+  padding-top: max(6px, 1.2cqh);
+  border-top: 2px solid var(--ink);
+}
+.w-space-monkey-back-hand {
+  display: block;
+  font-family: var(--font-hand);
+  font-size: max(24px, 7.6cqw);
+  line-height: 1.05;
+  color: var(--sm-royal);
+  transform: rotate(-1.6deg);
+  transform-origin: left center;
+}
+.w-space-monkey-back-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.85) 0, rgb(255 255 255 / 0.25) 20%, rgb(255 255 255 / 0) 46%);
+  mix-blend-mode: soft-light;
+  opacity: calc(0.25 + var(--mag) * 0.6);
+  transform: translate3d(calc((var(--lx) - 0.5) * 100%), calc((var(--ly) - 0.5) * 100%), 0);
+}
+/* when the card is short (a small phone) the second-tier lines go first */
+@container smback (max-height: 540px) {
+  .w-space-monkey-back-caption {
+    display: none;
+  }
+}
+/* the smallest phones (a 320 px screen makes a 272 px card): the tool line goes too (the slate at the end says Photoshop), the
+   stamp would sit on the title, and the chip names are squeezed a little so none is cut */
+@container smback (max-height: 440px) {
+  .w-space-monkey-back-fields > div:last-child {
+    display: none;
+  }
+}
+/* a short laptop screen (1280x600) makes a 304 px card: the chip text gets a little tighter so "Space black" is not cut */
+@container smback (max-width: 330px) {
+  .w-space-monkey-chip-hex,
+  .w-space-monkey-chip-name {
+    padding-inline: 4px;
+  }
+  .w-space-monkey-chip-name {
+    letter-spacing: -0.03em;
+  }
+}
+@container smback (max-width: 300px) {
+  .w-space-monkey-back-stamp {
+    display: none;
+  }
+  /* the hex is the identifier (and the button's label still carries the name); two short lines per chip is all a 272 px card has room for */
+  .w-space-monkey-chip-name {
+    display: none;
+  }
+  .w-space-monkey-chip-hex {
+    padding: 4px 4px 5px;
+  }
+}
+
+/* ---- the Tilt gauge (the touch / pointer-free way to tilt) ----------------------------------------------------------------
+   Drawn as a ruler, like the tape further down: eight divisions, a longer tick for "level", and a yellow diamond that marks the
+   angle. The ticks stand on a wrapper so they line up with the centres of the thumb at both ends of its travel. */
+.w-space-monkey-tiltctl {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--cream);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+.w-space-monkey-tiltscale {
+  position: relative;
+  display: block;
+  width: clamp(64px, calc(var(--sm-pw) - 235px), 200px);
+  height: 32px;
+}
+.w-space-monkey-tiltscale::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 50%;
+  height: 18px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  background:
+    linear-gradient(var(--cream), var(--cream)) 50% 50% / 2.5px 18px no-repeat,
+    linear-gradient(90deg, var(--cream) 0 1.5px, transparent 1.5px) 0 50% / calc(100% / 8) 9px repeat-x,
+    linear-gradient(var(--cream), var(--cream)) 100% 50% / 1.5px 9px no-repeat;
+}
+.w-space-monkey-tiltscale input {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 32px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.w-space-monkey-tiltscale input::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--cream);
+}
+.w-space-monkey-tiltscale input::-moz-range-track {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--cream);
+}
+.w-space-monkey-tiltscale input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -8.5px;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: var(--sm-yellow);
+  box-shadow: 0 2px 0 var(--ink);
+  transform: rotate(45deg);
+}
+.w-space-monkey-tiltscale input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background: var(--sm-yellow);
+  box-shadow: 0 2px 0 var(--ink);
+  transform: rotate(45deg);
+}
+@media (pointer: coarse) {
+  .w-space-monkey-tiltscale,
+  .w-space-monkey-tiltscale input {
+    height: 44px;
+  }
+}
+
+/* ---- 6. the rail: margin note, patch, brief ------------------------------------------------------------------------------ */
+.w-space-monkey-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 22px;
+  min-width: 0;
+  min-height: calc(var(--sm-ph) + var(--sm-strip));
+}
+
+/* the margin note stands level with the posters' Flip tabs; its arrow points at the nearest one (SMITH's) */
+.w-space-monkey-brief-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  padding-left: 2px;
+  font-family: var(--font-hand);
+  font-size: clamp(1.45rem, 1.1rem + 0.9vw, 2.35rem);
+  line-height: 0.98;
+  color: var(--cream);
+  text-align: left;
+  transform: rotate(-2deg);
+}
+.w-space-monkey-brief-hint > span:last-child {
+  padding-top: 4px;
+  text-wrap: balance;
+}
+.w-space-monkey-hint-arrow {
+  flex: none;
+  margin-top: 2px;
+  color: var(--sm-yellow);
+}
+
+.w-space-monkey-seal {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  row-gap: 10px;
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+}
+.w-space-monkey-patch {
+  display: block;
+  width: clamp(11rem, 15.5cqw, 20rem);
+  height: auto;
+  overflow: visible;
+  transform: rotate(-9deg);
+  filter: drop-shadow(0 12px 12px rgb(0 0 0 / 0.55));
+}
+.w-space-monkey-patch-type text {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.w-space-monkey-seal-note {
+  max-width: clamp(15rem, 14cqw, 19rem);
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: clamp(1.45rem, 1.1rem + 0.9vw, 2.3rem);
+  line-height: 1.05;
+  color: var(--cream);
+  transform: rotate(-2deg);
+}
+
+.w-space-monkey-brief {
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+}
+.w-space-monkey-brief-folder {
+  width: min(100%, clamp(16rem, 17cqw, 22rem));
+  transform: rotate(-1.6deg);
+}
+.w-space-monkey-brief-body {
+  --fpad: 18px;
+}
+/* the postscript: Pau's pen on the cover sheet (it is the one hint that the page goes on below the posters) */
+.w-space-monkey-brief-more {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 10px 0 0;
+  font-family: var(--font-hand);
+  font-size: clamp(1.15rem, 1rem + 0.45vw, 1.5rem);
+  line-height: 1;
+  /* a deeper violet than the folder's own: ultraviolet on this beige paper measures 4.3:1 once the grain is counted, this is 5.7:1 */
+  color: color-mix(in srgb, var(--ultraviolet) 78%, var(--ink));
+  transform: rotate(-1.5deg);
+  transform-origin: left center;
+}
+.w-space-monkey-brief-more > span:first-child {
+  text-wrap: balance;
+}
+html.js .w-space-monkey[data-hand='pending'] .w-space-monkey-brief-more {
+  opacity: 0;
+}
+.w-space-monkey-brief-more {
+  transition: opacity 0.3s ease-out;
+}
+.w-space-monkey-brief-lead {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.42;
+  text-wrap: pretty;
+}
+
+/* ---- 7. mission tape ---------------------------------------------------------------------------------------------------- */
+.w-space-monkey-h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.w-space-monkey-tape-section {
+  display: grid;
+  row-gap: clamp(8px, 1.4vw, 18px);
+  padding: clamp(24px, 4vw, 64px) calc(var(--sm-frame) + var(--sm-pad));
+}
+.w-space-monkey-tape-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 32px;
+}
+.w-space-monkey-tape-legend {
+  margin: 0;
+  font-family: var(--sm-type);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--cream) 82%, transparent);
+}
+.w-space-monkey-tape {
+  --band: clamp(58px, 4.4cqw, 84px);
+  --rail: 120px; /* room above and below the band for the tags */
+  --stem: 34px;
+  position: relative;
+  height: calc(var(--band) + 2 * var(--rail));
+  margin-top: 4px;
+}
+.w-space-monkey-tape-band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--rail);
+  height: var(--band);
+  border-radius: 4px;
+  color: var(--ink);
+  background:
+    linear-gradient(90deg, var(--ink) 1.5px, transparent 1.5px) 0 100% / calc(100% / var(--days)) 11px repeat-x,
+    linear-gradient(90deg, var(--ink) 2.5px, transparent 2.5px) 0 100% / calc(100% * 7 / var(--days)) 20px repeat-x,
+    var(--sm-yellow);
+  box-shadow:
+    0 4px 0 #8d8b05,
+    0 20px 28px -8px rgb(0 0 0 / 0.55);
+}
+.w-space-monkey-tape-band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--pm-grain);
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.w-space-monkey-tape-month {
+  position: absolute;
+  top: 7px;
+  left: calc(var(--at) * 100% + 8px);
+  font-family: var(--font-display);
+  font-size: clamp(13.5px, 0.7rem + 0.32cqw, 17px);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+.w-space-monkey-tape-month::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: -7px;
+  width: 3px;
+  height: var(--band);
+  background: var(--ink);
+}
+.w-space-monkey-tape-marks {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+/* every mark is as tall as the tape and 0 wide, so its stem and tag can be placed from the tape's own top and bottom */
+.w-space-monkey-tape-mark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--at) * 100%);
+  width: 0;
+}
+.w-space-monkey-tape-stem {
+  position: absolute;
+  left: -1px;
+  width: 2px;
+  background: var(--cream);
+}
+.w-space-monkey-tape-tag {
+  position: absolute;
+  left: -1px;
+  display: grid;
+  row-gap: 2px;
+  width: max-content;
+  max-width: 10.5rem;
+  padding: 9px 12px 10px;
+  border-radius: 3px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow: 0 3px 0 rgb(0 0 0 / 0.3);
+  color: var(--ink);
+  font-family: var(--sm-type);
+  font-size: clamp(0.95rem, 0.78rem + 0.35cqw, 1.15rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.w-space-monkey-tape-tag b {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: var(--ultraviolet);
+}
+.w-space-monkey-tape-mark[data-side='up'] .w-space-monkey-tape-stem {
+  top: calc(var(--rail) - var(--stem));
+  height: var(--stem);
+}
+.w-space-monkey-tape-mark[data-side='up'] .w-space-monkey-tape-tag {
+  bottom: calc(100% - var(--rail) + var(--stem));
+}
+.w-space-monkey-tape-mark[data-side='down'] .w-space-monkey-tape-stem {
+  top: calc(var(--rail) + var(--band));
+  height: var(--stem);
+}
+.w-space-monkey-tape-mark[data-side='down'] .w-space-monkey-tape-tag {
+  top: calc(var(--rail) + var(--band) + var(--stem));
+}
+/* opening day: the one yellow tag, hanging to the left of its stem so it stays on the page */
+.w-space-monkey-tape-mark[data-strong='true'] .w-space-monkey-tape-tag {
+  left: auto;
+  right: -1px;
+  max-width: 14rem;
+  background-color: var(--sm-yellow);
+}
+.w-space-monkey-tape-mark[data-strong='true'] .w-space-monkey-tape-tag b {
+  color: var(--ink);
+}
+/* the span between the last save and opening day: the two stems are its ends, this line joins them */
+.w-space-monkey-tape-gap {
+  position: absolute;
+  left: calc(var(--from) * 100%);
+  width: calc((var(--to) - var(--from)) * 100%);
+  top: calc(var(--rail) - 16px);
+  height: 0;
+  border-top: 2px solid var(--cream);
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(0.9rem, 0.8rem + 0.3cqw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+.w-space-monkey-tape-gap > span:first-child {
+  position: relative;
+  top: -29px;
+  padding: 0 12px;
+}
+
+/* ---- 8. mission log: a typed, punched sheet ---------------------------------------------------------------------------- */
+.w-space-monkey-close {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 72px);
+  align-items: start;
+  padding: clamp(10px, 2vw, 30px) calc(var(--sm-frame) + var(--sm-pad)) calc(var(--sm-frame) + clamp(110px, 16vh, 190px));
+}
+.w-space-monkey-log {
+  min-width: 0;
+}
+.w-space-monkey-sheet-shadow {
+  filter: drop-shadow(0 22px 22px rgb(0 0 0 / 0.55)) drop-shadow(0 2px 0 rgb(0 0 0 / 0.3));
+  transform: rotate(-0.9deg);
+}
+.w-space-monkey-sheet {
+  position: relative;
+  padding: clamp(22px, 3vw, 44px) clamp(20px, 3vw, 44px) clamp(24px, 3vw, 40px) clamp(52px, 6vw, 84px);
+  border-radius: 4px;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(90deg, transparent calc(clamp(52px, 6vw, 84px) - 10px), rgb(255 75 43 / 0.5) calc(clamp(52px, 6vw, 84px) - 10px) calc(clamp(52px, 6vw, 84px) - 8px), transparent calc(clamp(52px, 6vw, 84px) - 8px)),
+    var(--pm-grain);
+  /* two binder holes: the space behind shows through */
+  -webkit-mask:
+    radial-gradient(circle 12px at 27px 22%, #0000 98%, #000) intersect,
+    radial-gradient(circle 12px at 27px 78%, #0000 98%, #000) intersect;
+  -webkit-mask-composite: source-in;
+  mask:
+    radial-gradient(circle 12px at 27px 22%, #0000 98%, #000),
+    radial-gradient(circle 12px at 27px 78%, #0000 98%, #000);
+  mask-composite: intersect;
+}
+.w-space-monkey-sheet-clip {
+  position: absolute;
+  top: -1.6rem;
+  right: 11%;
+  z-index: 2;
+}
+.w-space-monkey-sheet-title {
+  color: var(--ink);
+  text-shadow: none; /* on paper, not on the sky: no halo */
+}
+.w-space-monkey-sheet-sub {
+  margin: 6px 0 18px;
+  font-family: var(--sm-type);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink-3);
+}
+.w-space-monkey-log-lines {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px solid var(--ink);
+}
+.w-space-monkey-log-lines > li {
+  display: grid;
+  grid-template-columns: clamp(5.6rem, -1.37rem + 7.9cqw, 8rem) minmax(0, 1fr); /* 5.6rem at 1440, 8rem at 1920 */
+  gap: 4px 14px;
+  align-items: baseline;
+  padding: 11px 0;
+  border-bottom: 1.5px dashed color-mix(in srgb, var(--ink) 35%, transparent);
+}
+.w-space-monkey-log-k {
+  font-family: var(--font-display);
+  font-size: clamp(13px, 0.52rem + 0.3cqw, 17px);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ultraviolet);
+}
+.w-space-monkey-log-v {
+  font-family: var(--sm-type);
+  /* 18.4px at 1440 (as before), growing with the page to 22px at 1920 and 24px on the biggest screens */
+  font-size: clamp(1rem, 0.49rem + 0.75cqw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.38;
+  color: var(--ink);
+  min-width: 0;
+}
+.w-space-monkey-ghost {
+  visibility: hidden;
+}
+/* The caret is the right border of the typed text itself (a block as wide as a character, given back with a negative margin so it
+   takes no room). Not a pseudo-element: an inline-block is a place where a line may break (a caret in the middle of "station" let
+   the browser split the word and re-wrap the row while it was typed), and any box that moves a character at a time is reported as
+   a layout shift. The typed span keeps its start, only its end grows. */
+.w-space-monkey-log-lines > li[data-active='true'] .w-space-monkey-log-v [data-part='typed'] {
+  margin-right: -0.55em;
+  border-right: 0.55em solid var(--ultraviolet);
+  animation: w-space-monkey-caret 0.9s step-end infinite;
+}
+@keyframes w-space-monkey-caret {
+  50% {
+    border-right-color: transparent;
+  }
+}
+
+/* ---- 9. facts + the way back ------------------------------------------------------------------------------------------------------------ */
+.w-space-monkey-end {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-self: stretch;
+  gap: 26px;
+  min-width: 0;
+  padding-top: clamp(22px, 3vw, 44px);
+}
+.w-space-monkey-facts {
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  padding-top: 0;
+  color: var(--cream);
+}
+.w-space-monkey-facts .pm-wf__slate,
+.w-space-monkey-facts .pm-wf__tix {
+  grid-column: 1;
+}
+/* the role cell takes a whole row (Orbitron is wide: "Illustration" must not break), year and tools share the next one */
+.w-space-monkey-facts .pm-slate__cell:first-child {
+  flex: 1 1 100%;
+}
+.w-space-monkey-facts .pm-slate__v {
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  letter-spacing: 0.04em;
+}
+
+/* the way back: the two posters in miniature, taped up, and the tab that scrolls to them */
+.w-space-monkey-return {
+  display: grid;
+  justify-items: start;
+  row-gap: 14px;
+  min-width: 0;
+}
+.w-space-monkey-minis {
+  --mw: clamp(104px, 9.6cqw, 156px);
+  position: relative;
+  width: calc(var(--mw) * 1.98);
+  height: calc(var(--mw) * 1.52 + 18px);
+}
+.w-space-monkey-mini {
+  position: absolute;
+  width: var(--mw);
+  margin: 0;
+  padding: 4px;
+  border-radius: 6px;
+  background: var(--paper);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.14),
+    0 16px 24px -8px rgb(0 0 0 / 0.8);
+}
+.w-space-monkey-mini img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+}
+.w-space-monkey-mini[data-poster='tyler'] {
+  left: 0;
+  top: 14px;
+  transform: rotate(-5deg);
+}
+.w-space-monkey-mini[data-poster='smith'] {
+  left: calc(var(--mw) * 0.96);
+  top: 2px;
+  transform: rotate(4deg);
+}
+
+/* ---- still: no tilt at all, so the posters also lose their resting angle (tilt.ts never writes a transform in this state) ---- */
+@media (prefers-reduced-motion: reduce) {
+  .w-space-monkey-stage {
+    transform: none;
+  }
+  .w-space-monkey-brief-folder,
+  .w-space-monkey-brief-hint,
+  .w-space-monkey-brief-more,
+  .w-space-monkey-patch,
+  .w-space-monkey-seal-note,
+  .w-space-monkey-sheet-shadow {
+    transform: none;
+  }
+}
+html[data-motion='paused'] .w-space-monkey-stage,
+html[data-motion='paused'] .w-space-monkey-brief-folder,
+html[data-motion='paused'] .w-space-monkey-brief-hint,
+html[data-motion='paused'] .w-space-monkey-brief-more,
+html[data-motion='paused'] .w-space-monkey-patch,
+html[data-motion='paused'] .w-space-monkey-seal-note,
+html[data-motion='paused'] .w-space-monkey-sheet-shadow {
+  transform: none;
+}
+
+/* ---- 10. responsive ------------------------------------------------------------------------------------------------------ */
+/* tier M (under 1100px): the title lies flat on top, the posters take the middle of the page, and the rail's contents
+   (patch and brief) sit side by side underneath. The margin note goes: every poster has its own labelled Flip tab. */
+@container sm (max-width: 1099px) {
+  .w-space-monkey-hero {
+    --sm-spine: 0px;
+    --sm-ph: clamp(430px, calc(var(--sm-h) - var(--sm-title) * 1.06 - 132px), 1000px);
+    --sm-pw: min(calc(var(--sm-ph) * 0.667), calc((var(--sm-content) - var(--sm-gap)) / 2));
+    --sm-wipe: w-space-monkey-wipe;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: clamp(8px, 1.6vh, 22px);
+  }
+  .w-space-monkey-title {
+    align-self: auto;
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: var(--sm-title);
+    text-shadow: 0.032em 0.04em 0 var(--sm-royal), var(--halo);
+  }
+  .w-space-monkey-deck {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    row-gap: clamp(22px, 3.4vw, 40px);
+  }
+  .w-space-monkey-posters {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-content: center;
+  }
+  .w-space-monkey-rail {
+    display: contents;
+  }
+  .w-space-monkey-brief,
+  .w-space-monkey-seal {
+    grid-row: 2;
+  }
+  .w-space-monkey-seal {
+    justify-items: center;
+    row-gap: 4px;
+  }
+  .w-space-monkey-brief-hint {
+    display: none;
+  }
+  .w-space-monkey-brief-folder {
+    width: min(100%, 22rem);
+  }
+  .w-space-monkey-patch {
+    width: clamp(11rem, 21cqw, 14rem);
+  }
+  .w-space-monkey-seal-note {
+    max-width: min(100%, 23rem);
+    font-size: clamp(1.3rem, 1.05rem + 0.9cqw, 1.65rem);
+    text-align: center;
+  }
+}
+
+/* a narrower rail (1100 to 1299px) or a short screen: the margin note goes (each poster has its own labelled Flip tab), the patch and
+   the brief shrink so the rail never grows taller than the posters */
+@container sm (min-width: 1100px) and (max-width: 1299px) {
+  .w-space-monkey-brief-hint {
+    display: none;
+  }
+  .w-space-monkey-patch {
+    width: 11rem;
+  }
+  .w-space-monkey-seal-note {
+    font-size: clamp(1.3rem, 1.05rem + 0.9cqw, 1.6rem);
+  }
+  .w-space-monkey-brief-lead {
+    font-size: 0.95rem;
+  }
+  .w-space-monkey-brief-body {
+    --fpad: 14px;
+  }
+}
+@media (max-height: 700px) {
+  .w-space-monkey-brief-hint {
+    display: none;
+  }
+}
+
+/* tier S (phones): one column, the posters stacked and as wide as the page, the patch, then the brief */
+@container sm (max-width: 719px) {
+  .w-space-monkey-hero {
+    --sm-title: calc(var(--sm-content) / 6.05);
+    --sm-pw: min(28rem, var(--sm-content));
+  }
+  .w-space-monkey-title {
+    white-space: normal;
+    line-height: 0.96;
+  }
+  .w-space-monkey-title > span {
+    display: block;
+  }
+  .w-space-monkey-deck {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 26px;
+  }
+  .w-space-monkey-posters {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    grid-row: 1;
+  }
+  .w-space-monkey-seal {
+    grid-row: 2;
+  }
+  .w-space-monkey-patch {
+    width: clamp(11rem, 70cqw, 15.5rem);
+  }
+  .w-space-monkey-brief {
+    grid-row: 3;
+  }
+  .w-space-monkey-brief-folder {
+    width: 100%;
+    transform: none;
+  }
+  .w-space-monkey-stage {
+    transform: none;
+  }
+}
+
+/* narrower than 1000px the tape cannot hang three tags in 12 days: it turns, day 0 at the top, tags to the left and right of the band */
+@container sm (max-width: 999px) {
+  .w-space-monkey-tape-section {
+    padding-block: 6px 28px;
+  }
+  .w-space-monkey-tape {
+    --band: 50px;
+    --stem: 12px;
+    height: 650px;
+    margin: 6px 0 0;
+  }
+  /* tags on the tall tape: less padding and a touch smaller, so "Space Monkey opens in Granollers" takes four lines, not six */
+  .w-space-monkey-tape-tag {
+    padding: 8px 10px 9px;
+    font-size: 0.9rem;
+  }
+  .w-space-monkey-tape-band {
+    top: 0;
+    bottom: 0;
+    left: calc(50% - var(--band) / 2);
+    right: auto;
+    width: var(--band);
+    height: auto;
+    background:
+      linear-gradient(0deg, var(--ink) 1.5px, transparent 1.5px) 100% 0 / 11px calc(100% / var(--days)) repeat-y,
+      linear-gradient(0deg, var(--ink) 2.5px, transparent 2.5px) 100% 0 / 20px calc(100% * 7 / var(--days)) repeat-y,
+      var(--sm-yellow);
+  }
+  .w-space-monkey-tape-month {
+    top: calc(var(--at) * 100% + 8px);
+    left: 10px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    transform-origin: 50% 50%;
+    height: 7.2em;
+    line-height: 1;
+  }
+  .w-space-monkey-tape-month::before {
+    left: auto;
+    top: auto;
+    right: -4px;
+    bottom: calc(100% + 6px);
+    width: var(--band);
+    height: 3px;
+    transform: translateX(10px);
+  }
+  .w-space-monkey-tape-mark {
+    top: calc(var(--at) * 100%);
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 0;
+  }
+  .w-space-monkey-tape-stem {
+    top: -1px;
+    height: 2px;
+    width: var(--stem);
+  }
+  .w-space-monkey-tape-mark[data-side='up'] .w-space-monkey-tape-stem {
+    top: -1px;
+    left: auto;
+    right: calc(50% + var(--band) / 2);
+    height: 2px;
+  }
+  .w-space-monkey-tape-mark[data-side='down'] .w-space-monkey-tape-stem {
+    top: -1px;
+    left: calc(50% + var(--band) / 2);
+    height: 2px;
+  }
+  .w-space-monkey-tape-mark[data-side='up'] .w-space-monkey-tape-tag {
+    top: 50%;
+    bottom: auto;
+    left: auto;
+    right: calc(50% + var(--band) / 2 + var(--stem));
+    transform: translateY(-50%);
+    max-width: calc(50% - var(--band) / 2 - var(--stem) - 4px);
+  }
+  .w-space-monkey-tape-mark[data-side='down'] .w-space-monkey-tape-tag {
+    top: 50%;
+    left: calc(50% + var(--band) / 2 + var(--stem));
+    transform: translateY(-50%);
+    max-width: calc(50% - var(--band) / 2 - var(--stem) - 4px);
+  }
+  .w-space-monkey-tape-mark[data-strong='true'] .w-space-monkey-tape-tag {
+    right: calc(50% + var(--band) / 2 + var(--stem));
+    left: auto;
+  }
+  .w-space-monkey-tape-gap {
+    top: calc(var(--from) * 100%);
+    left: calc(50% + var(--band) / 2 + 12px);
+    width: 0;
+    height: calc((var(--to) - var(--from)) * 100%);
+    border-top: 0;
+    border-left: 2px solid var(--cream);
+  }
+  .w-space-monkey-tape-gap > span:first-child {
+    top: 50%;
+    left: 10px;
+    display: block;
+    padding: 0;
+    writing-mode: vertical-rl;
+    transform: translateY(-50%);
+    white-space: nowrap;
+  }
+}
+
+/* the sheet and the facts share a row only when there is room for both */
+@container sm (max-width: 899px) {
+  .w-space-monkey-close {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .w-space-monkey-sheet-shadow {
+    transform: none;
+  }
+}
+
+@container sm (max-width: 719px) {
+  .w-space-monkey-sheet-shadow {
+    transform: none;
+  }
+  .w-space-monkey-sheet {
+    padding-left: 44px;
+  }
+  .w-space-monkey-log-lines > li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+  /* the two miniatures take most of the width on a phone (they are the picture at the end of the page) */
+  .w-space-monkey-minis {
+    --mw: clamp(120px, 38cqw, 190px);
+  }
+}
+
+@container sm (min-width: 1000px) and (max-width: 1299px) {
+  .w-space-monkey-tape-tag {
+    max-width: 7.7rem;
+    padding-inline: 10px;
+    font-size: 0.9rem;
+  }
+  .w-space-monkey-tape-mark[data-strong='true'] .w-space-monkey-tape-tag {
+    max-width: 14rem;
+  }
+}

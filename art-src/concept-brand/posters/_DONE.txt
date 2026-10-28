@@ -1,0 +1,6 @@
+poster-1.svg
+poster-2.svg
+poster-3.svg
+png/poster-1.png
+png/poster-2.png
+png/poster-3.png

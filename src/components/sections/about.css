@@ -1,0 +1,113 @@
+/* ==========================================================================
+   03 About: layout of the marigold sheet
+   Desktop: a two-column grid. Left = the outline heading, the greeting, the words and the three skill objects; right = the portrait
+   folder, starting level with the heading. Then the career (full width) and the small print.
+   Phone: one column, heading, portrait, greeting, words, skills, career, small print.
+   Part files: about/portrait.css, about/skills.css, about/timeline.css, about/credentials.css (classes pm-ab-*).
+   ========================================================================== */
+
+.pm-about { --ab-rest: clamp(46px, 5vw, 92px); }
+
+.pm-ab-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(380px, 30vw, 540px);
+  grid-template-areas:
+    'head portrait'
+    'intro portrait'
+    'skills portrait';
+  grid-template-rows: auto auto 1fr;
+  column-gap: clamp(30px, 3.6vw, 72px);
+  row-gap: clamp(22px, 2.4vw, 40px);
+  align-items: start;
+}
+.pm-ab-head { grid-area: head; position: relative; min-width: 0; padding-top: clamp(34px, 4.1vw, 66px); }
+.pm-ab-intro { grid-area: intro; container-type: inline-size; display: grid; gap: clamp(22px, 2.4vw, 40px); min-width: 0; padding-top: clamp(8px, 1.4vw, 24px); }
+/* the skills end level with the education strips under the portrait (end, not start: a taller right column must not leave a hole under them) */
+.pm-ab-skillswrap { grid-area: skills; container-type: inline-size; min-width: 0; align-self: end; }
+.pm-ab-cell { grid-area: portrait; display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(26px, 3vw, 44px); min-width: 0; align-self: start; padding-top: clamp(6px, 1vw, 18px); }
+
+/* the ghost: a pale solid #PAU peeking out above the outline word, as in the template */
+.pm-ab-ghost { position: absolute; left: 0.06em; top: -0.05em; z-index: 0; }
+.pm-ab-head h2 { position: relative; z-index: 1; }
+
+/* ---- greeting -------------------------------------------------------------------------------------------------------------------- */
+.pm-ab-hello { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 26px; }
+.pm-ab-hi {
+  margin: 0;
+  font-size: clamp(3.9rem, 9.2vw, 11.6rem);
+  line-height: 0.92;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: var(--on-sheet);
+  text-wrap: balance;
+}
+.pm-ab-hi__last { position: relative; display: inline-block; }
+.pm-ab-hi__last .pm-sc[data-at='under'] { bottom: -0.07em; }
+/* the comma of "Hi," hangs below the baseline of the big line: the name keeps clear of its tail */
+.pm-ab-name { margin: clamp(8px, 0.9vw, 14px) 0 0; color: var(--muted-on-sheet); font-size: clamp(1.6rem, 1.2rem + 1vw, 2.5rem); line-height: 1.05; }
+
+/* ---- the words: a standfirst (display) beside the body (grotesk) when the column is wide enough ------------------------------- */
+.pm-ab-copy { display: grid; gap: 18px 36px; align-items: start; }
+.pm-ab-lead {
+  margin: 0;
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+  font-optical-sizing: auto;
+  font-size: clamp(1.75rem, 1.15rem + 1.5vw, 2.85rem);
+  line-height: 1.06;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--on-sheet);
+  text-wrap: balance;
+}
+.pm-ab-body {
+  margin: 0;
+  max-width: 60ch;
+  text-wrap: pretty;
+  font-size: clamp(1.0625rem, 0.95rem + 0.36vw, 1.3rem);
+  line-height: 1.55;
+  color: var(--on-sheet);
+}
+/* an italic phrase is one unit: it moves to the next line whole instead of splitting across two */
+.pm-ab-em { white-space: nowrap; }
+@container (min-width: 700px) {
+  .pm-ab-copy { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr); }
+  .pm-ab-lead { padding-top: 0.12em; }
+}
+
+/* ---- rhythm between the blocks -------------------------------------------------------------------------------------------------- */
+.pm-ab-tlwrap { margin-top: var(--ab-rest); }
+.pm-ab-cred { margin-top: var(--ab-rest); }
+
+@media (max-width: 1099px) {
+  .pm-ab-grid { grid-template-columns: minmax(0, 1fr) clamp(320px, 38vw, 400px); column-gap: clamp(22px, 3vw, 40px); }
+}
+/* tablet: the words sit beside the portrait, the three skill objects run underneath */
+@media (min-width: 700px) and (max-width: 899px) {
+  .pm-ab-grid {
+    grid-template-columns: minmax(0, 1fr) clamp(300px, 42vw, 360px);
+    grid-template-areas:
+      'head head'
+      'intro portrait'
+      'skills skills';
+    grid-template-rows: auto auto auto;
+  }
+  .pm-ab-ghost { top: -0.05em; }
+  .pm-ab-head { padding-top: clamp(30px, 6vw, 44px); }
+}
+/* phone: heading, portrait, words, skills; the education strips follow the certificates */
+@media (max-width: 699px) {
+  .pm-ab-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'head'
+      'portrait'
+      'intro'
+      'skills';
+    grid-template-rows: auto;
+    row-gap: clamp(22px, 5vw, 34px);
+  }
+  .pm-ab-cell { justify-self: start; width: min(100%, 500px); }
+  .pm-ab-ghost { top: -0.05em; }
+  .pm-ab-head { padding-top: clamp(30px, 8vw, 44px); }
+}

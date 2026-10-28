@@ -158,8 +158,12 @@ export function openWork(slug: string, origin?: string, options: OpenOptions = {
     session.hopped = true
   }
   pendingDir = options.dir ?? 0
-  if (fromHome && !options.replace) window.history.pushState({ pmWork: 'from-home' }, '', url)
-  else window.history.replaceState(window.history.state, '', url)
+  if (fromHome && !options.replace) {
+    // Leave the entry we came from without its section anchor. Otherwise Back lands on ".../#works" and the browser scrolls
+    // to that fragment on top of the scroll position restored here, and focus drops on <body>.
+    if (isSection(window.location.hash.slice(1))) window.history.replaceState(window.history.state, '', baseUrl())
+    window.history.pushState({ pmWork: 'from-home' }, '', url)
+  } else window.history.replaceState(window.history.state, '', url)
   refresh()
 }
 

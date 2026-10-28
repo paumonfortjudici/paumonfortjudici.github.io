@@ -1,0 +1,669 @@
+/* ==========================================================================
+   process / bench: the film strip, its frames, the ruler (tablist), the buttons and the tool shelf.
+   Prefix pm-proc-. Layout: a vertical stack of film (full sheet width), controls, shelf.
+   Modes (data-mode on .pm-proc-bench): "strip" = horizontal film that is dragged or flipped; "stack" = phones: the film is
+   vertical, every frame is shown, the ruler and the buttons are not needed.
+   Everything that moves is a transform, an opacity or a clip-path; the STILL block at the end shows every frame developed.
+   ========================================================================== */
+
+.pm-proc-bench {
+  --pm-frame-gap: 18px;
+  position: relative;
+  display: block;
+}
+
+/* ---- the film ----------------------------------------------------------------------------------------------------- */
+.pm-proc-film {
+  /* the strip runs through the sheet, edge to edge */
+  margin: clamp(14px, 2vw, 30px) calc(var(--sheet-pad, 28px) * -1) 0;
+}
+.pm-proc-vp {
+  position: relative;
+  overflow: hidden;
+  container-type: inline-size;
+  cursor: grab;
+  overscroll-behavior-x: contain; /* a sideways swipe on the film must not become the browser's back / forward gesture */
+  -webkit-tap-highlight-color: transparent;
+}
+.pm-proc-vp[data-dragging] { cursor: grabbing; user-select: none; -webkit-user-select: none; }
+
+.pm-proc-track {
+  --pm-frame-w: min(78cqw, 1320px);
+  --lead: calc((100cqw - var(--pm-frame-w)) / 2);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  touch-action: pan-y;
+  will-change: transform;
+}
+
+.pm-proc-perf { --perf: var(--ink); flex: none; width: 100%; }
+
+/* the labels on the leader and the tail of the roll: a scrap of paper, written by hand, held with a strip of tape */
+.pm-proc-roll {
+  position: relative;
+  display: inline-block;
+  padding: 0.6em 0.72em 0.5em;
+  border-radius: 3px;
+  background-color: var(--cream);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 color-mix(in srgb, var(--cream) 58%, var(--ink));
+  color: var(--ink);
+  font-family: var(--font-hand);
+  /* it has to fit in the leader, which is (strip - frame) / 2 wide: 136px at the narrowest width where it is shown */
+  font-size: clamp(1.1rem, calc(var(--lead) * 0.16), 1.7rem);
+  line-height: 1;
+  white-space: nowrap;
+  transform: rotate(var(--r, 0deg));
+}
+.pm-proc-lead { position: absolute; top: 50%; z-index: 3; pointer-events: none; }
+.pm-proc-lead--head { left: calc(var(--lead) / 2); transform: translate(-50%, -50%); }
+.pm-proc-lead--tail { right: calc(var(--lead) / 2); transform: translate(50%, -50%); }
+@container (max-width: 1240px) {
+  .pm-proc-lead { display: none; }
+}
+
+.pm-proc-frames {
+  display: flex;
+  align-items: stretch;
+  gap: var(--pm-frame-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: var(--ink);
+  background-image: var(--pm-grain);
+}
+.pm-proc-slot:first-child { margin-left: var(--lead); }
+.pm-proc-slot:last-child { margin-right: var(--lead); }
+
+.pm-proc-slot {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: var(--pm-frame-w);
+  padding: 34px 0 16px;
+  scroll-margin-top: calc(var(--nav-h, 72px) + 12px);
+  transition: transform 0.5s var(--ease-out);
+}
+.pm-proc-bench[data-mode='strip'] .pm-proc-slot:not([data-active]) { transform: scale(0.945); cursor: pointer; }
+
+/* the edge print on the film: the frame number and name, where real film has them */
+.pm-proc-edge {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  color: var(--marigold);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  line-height: 1;
+  text-transform: uppercase;
+  font-synthesis: none;
+  white-space: nowrap;
+}
+.pm-proc-edge::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0.4em 0 0.4em 0.7em;
+  border-color: transparent transparent transparent currentColor;
+}
+
+/* ---- a frame ------------------------------------------------------------------------------------------------------ */
+.pm-proc-frame {
+  position: relative;
+  isolation: isolate;
+  container-type: inline-size;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 14px;
+  background-color: color-mix(in srgb, var(--c) 16%, var(--ink));
+  color: var(--ink);
+}
+/* the colour floods in from the bottom, like developer rising in a tray */
+.pm-proc-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--c);
+  background-image: var(--pm-grain);
+  clip-path: inset(0);
+  transition: clip-path 0.95s cubic-bezier(0.65, 0, 0.25, 1);
+}
+html.js .pm-proc-slot[data-dev='0'] .pm-proc-frame::before { clip-path: inset(100% 0 0 0); }
+
+/* a frame that is not in the light is pushed back */
+.pm-proc-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: var(--ink);
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease-out);
+}
+.pm-proc-slot[data-active] .pm-proc-frame::after,
+.pm-proc-bench[data-mode='stack'] .pm-proc-frame::after { opacity: 0; }
+.pm-proc-frame:focus-visible { outline-offset: 0; }
+
+/* a tool is hovered: the frames where it is used get a dashed marquee */
+.pm-proc-slot::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  top: 28px;
+  bottom: 10px;
+  z-index: 5;
+  border: 3px dashed var(--marigold);
+  border-radius: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease-out);
+}
+.pm-proc-slot[data-lit]::after { opacity: 1; }
+
+/* picture + words: two columns, or one when the frame is narrow */
+.pm-proc-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr);
+  height: 100%;
+}
+.pm-proc-pic {
+  container-type: inline-size; /* the label strips size themselves from the picture they sit on */
+  align-self: center;
+  min-width: 0;
+  padding: clamp(10px, 2.4cqw, 30px) clamp(2px, 0.8cqw, 10px) clamp(10px, 2.4cqw, 30px) clamp(10px, 2.4cqw, 30px);
+}
+.pm-proc-art { position: relative; }
+.pm-proc-art .pm-scene { width: 100%; height: auto; }
+
+/* label-maker strips: the chips under the paragraph and the names of the objects in the picture */
+.pm-proc-chip,
+.pm-proc-lbl {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-label);
+  font-size: clamp(0.8125rem, 0.9cqw + 0.2rem, 1.15rem);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  line-height: 1.1;
+  text-transform: uppercase;
+  font-synthesis: none;
+  text-shadow: 0 1px 0 color-mix(in srgb, var(--paper) 26%, transparent);
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+  transform: rotate(var(--r, 0deg));
+}
+.pm-proc-chip { padding: 0.6em 1.05em 0.5em; }
+.pm-proc-lbl {
+  position: absolute;
+  z-index: 2;
+  padding: 0.45em 0.8em 0.4em;
+  font-size: clamp(0.8125rem, 2.3cqw, 1.25rem);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(var(--tx, 0%)) rotate(var(--r, 0deg));
+  transition: opacity 0.4s ease 1.6s;
+}
+/* on a small picture the strips tighten up, and on a tiny one they step aside (the paragraph names the same things) */
+@container (max-width: 400px) {
+  .pm-proc-lbl { padding: 0.36em 0.58em 0.3em; letter-spacing: 0.04em; }
+}
+@container (max-width: 270px) {
+  .pm-proc-lbl { display: none; }
+}
+html.js .pm-proc-slot[data-dev='0'] .pm-proc-lbl { opacity: 0; transition-delay: 0s; }
+
+/* copy */
+.pm-proc-copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: clamp(18px, 3.2cqw, 44px) clamp(18px, 3.4cqw, 46px) clamp(20px, 3.4cqw, 46px) clamp(8px, 1.4cqw, 20px);
+}
+.pm-proc-num {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+  font-size: clamp(5.5rem, 18cqw, 11.5rem);
+  line-height: 0.78;
+  letter-spacing: -0.02em; /* the 4 of 04 tucks under the 0 when it is set tighter than this */
+  color: color-mix(in srgb, var(--c) 62%, var(--ink));
+  user-select: none;
+}
+.pm-proc-name {
+  position: relative;
+  margin: -0.1em 0 0;
+  font-size: clamp(2.6rem, 6.6cqw, 5rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.pm-proc-body {
+  max-width: 40ch;
+  margin: clamp(12px, 1.8cqw, 22px) 0 0;
+  font-size: clamp(1rem, 1.5cqw + 0.12rem, 1.5rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--ink);
+}
+/* a margin note in my hand, between the paragraph and the chips */
+.pm-proc-hand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: auto 0;
+  padding: clamp(10px, 1.6cqw, 22px) 0;
+  font-family: var(--font-hand);
+  font-size: clamp(1.7rem, 3.3cqw, 2.6rem);
+  line-height: 1;
+  color: var(--ink);
+  transform: rotate(-2.5deg);
+  transform-origin: 0 50%;
+}
+.pm-proc-hand .pm-sc { flex: none; }
+.pm-proc-hand > span { text-wrap: balance; } /* "AI explores, / I decide", never a lonely "I" at the end of a line */
+.pm-proc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 8px;
+  margin: 0;
+  padding: clamp(10px, 1.4cqw, 18px) 0 0;
+  list-style: none;
+}
+
+/* the words of a frame arrive when it comes into the light; neighbours show only their picture and number */
+.pm-proc-copy > :not(.pm-proc-num) {
+  transition:
+    opacity 0.45s var(--ease-out) calc(var(--k, 0) * 70ms + 0.3s),
+    transform 0.6s var(--ease-out) calc(var(--k, 0) * 70ms + 0.3s);
+}
+.pm-proc-copy > :nth-child(2) { --k: 0; }
+.pm-proc-copy > :nth-child(3) { --k: 1; }
+.pm-proc-copy > :nth-child(4) { --k: 2; }
+.pm-proc-copy > :nth-child(5) { --k: 3; }
+.pm-proc-bench[data-mode='strip'] .pm-proc-slot:not([data-active]) .pm-proc-copy > :not(.pm-proc-num),
+html.js .pm-proc-slot[data-dev='0'] .pm-proc-copy > :not(.pm-proc-num) {
+  opacity: 0;
+  transform: translateY(12px);
+  transition-delay: 0s;
+  transition-duration: 0.2s;
+}
+html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
+.pm-proc-num { transition: opacity 0.6s ease 0.5s; }
+
+/* ---- controls: the ruler (a tablist) and the two tab buttons ------------------------------------------------------- */
+.pm-proc-ctl {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px 22px;
+  margin-top: clamp(16px, 2vw, 28px);
+}
+.pm-proc-ruler {
+  position: relative;
+  display: grid;
+  flex: 1 1 26rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  min-height: 4.4rem;
+  border-radius: 6px;
+  background-color: var(--cream-2);
+  background-image:
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--ink) 72%, transparent) 0 1.5px, transparent 1.5px 10px),
+    repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 50px),
+    var(--pm-grain);
+  background-size: 100% 9px, 100% 17px, auto;
+  background-position: 0 8px, 0 8px, 0 0;
+  background-repeat: repeat-x, repeat-x, repeat;
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 color-mix(in srgb, var(--cream-2) 56%, var(--ink));
+  color: var(--ink);
+}
+/* the gate: one block of the playing frame's colour that slides along the ruler to the active tab (--ai = its index, --ac = its colour).
+   Exactly one column wide, with 2px of paper either side (padding + background-clip), so it moves on transform alone. */
+.pm-proc-ruler::before {
+  content: '';
+  position: absolute;
+  top: 22px;
+  bottom: 4px;
+  left: 0;
+  z-index: 0;
+  box-sizing: border-box;
+  width: 25%;
+  padding: 0 2px;
+  border-radius: 7px;
+  background: var(--ac, var(--marigold));
+  background-clip: content-box;
+  transform: translateX(calc(var(--ai, 0) * 100%));
+  /* ease-out, no overshoot: it is a tab indicator, and an overshoot would poke it out of the ruler on a three-tab slide */
+  transition: transform 0.5s var(--ease-out);
+  pointer-events: none;
+}
+.pm-proc-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.65em;
+  min-width: 0;
+  min-height: 44px;
+  padding: 26px 10px 10px 14px;
+  border-radius: 6px;
+  text-align: left;
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  line-height: 1.1;
+  text-transform: uppercase;
+  font-synthesis: none;
+  cursor: pointer;
+}
+/* the tick bar along the top edge: one segment per frame, filled with the frame's colour once it has been developed */
+.pm-proc-tab::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  top: 0;
+  height: 7px;
+  border-radius: 0 0 3px 3px;
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+  transform-origin: 50% 0;
+  transition: transform 0.3s var(--ease-out);
+}
+.pm-proc-tab[data-seen]::before { background: var(--c); box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--c) 58%, var(--ink)); }
+.pm-proc-tab[aria-selected='true']::before { background: var(--c); transform: scaleY(1.7); box-shadow: inset 0 -2px 0 color-mix(in srgb, var(--c) 58%, var(--ink)); }
+/* hover on a tab that is not playing: a soft wash of its own colour (the gate itself is .pm-proc-ruler::before) */
+.pm-proc-tab::after {
+  content: '';
+  position: absolute;
+  inset: 22px 2px 4px;
+  z-index: 0;
+  border-radius: 5px;
+  background: var(--c);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-out);
+}
+.pm-proc-tab > * { position: relative; z-index: 1; }
+.pm-proc-tabn {
+  padding: 3px 5px 2px;
+  border-radius: 4px;
+  background: var(--ink);
+  color: var(--cream);
+}
+.pm-proc-tab[data-lit] .pm-proc-tabn { background: var(--marigold); color: var(--ink); box-shadow: 0 0 0 2px var(--ink); }
+.pm-proc-tab[data-lit]::before { background: var(--marigold); transform: scaleY(1.9); }
+.pm-proc-tabt { overflow-wrap: anywhere; }
+@media (hover: hover) {
+  .pm-proc-tab[aria-selected='false']:hover::after { opacity: 0.5; }
+}
+
+.pm-proc-btns { display: flex; align-items: flex-end; gap: 2px; margin-left: auto; padding-bottom: 3px; }
+.pm-proc-btns .pm-tabbtn { white-space: nowrap; }
+
+/* ---- the shelf ----------------------------------------------------------------------------------------------------- */
+.pm-proc-shelf { margin-top: clamp(36px, 4.2vw, 68px); }
+.pm-proc-shelf-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px clamp(18px, 3vw, 44px);
+  margin-bottom: clamp(14px, 2vw, 28px);
+}
+.pm-proc-shelf-title {
+  margin: 0;
+  font-size: var(--fs-h3);
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: var(--ls-h3);
+  color: var(--cream);
+}
+.pm-proc-note--shelf {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  height: 3.4rem;
+  margin: 0 0 0 auto;
+  transform: rotate(-2deg);
+}
+/* the notes at the shelf are pink (the one in the sheet's head is marigold), 24px or larger: 3.7:1 on the ultraviolet */
+.pm-proc-note--shelf, .pm-proc-note--spare { color: var(--proc-pink); }
+/* the shelf's title carries a hand-drawn underline that draws itself when it scrolls into view */
+.pm-proc-shelf-word { position: relative; display: inline-block; padding-bottom: 0.12em; }
+.pm-proc-shelf-lead { max-width: 48ch; margin: 0; color: var(--muted-on-sheet); font-size: var(--fs-body); line-height: 1.45; }
+
+.pm-proc-tools {
+  --tk: clamp(150px, 10.4vw, 212px); /* never under 150: the 13px names written on the objects scale with the drawing */
+  --art: var(--tk);
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pm-proc-tool { position: relative; min-width: 0; }
+/* the shelf board: one plank behind the feet of every row of tokens */
+.pm-proc-tool::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--art) - 10px);
+  height: 16px;
+  z-index: 0;
+  background-color: var(--cream-2);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 color-mix(in srgb, var(--cream-2) 54%, var(--ink));
+}
+.pm-proc-tool:first-child::before { border-radius: 5px 0 0 5px; }
+.pm-proc-tool:nth-child(7)::before { border-radius: 0 5px 5px 0; } /* the seventh tool; the eighth <li> is the spare slot that holds the tablet note */
+
+.pm-proc-tk {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 0 clamp(6px, 0.9vw, 14px) 8px;
+  text-align: center;
+  color: var(--cream);
+  border-radius: 4px;
+}
+.pm-proc-tk-art {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  height: var(--art);
+  margin-bottom: 26px;
+  transition: transform 0.4s var(--ease-spring);
+}
+/* two discs behind the object: a dashed marigold ring (the same marquee the lit frames get) says "the playing frame uses this", and a
+   flat marigold spot fills in under the one that is being pointed at (hover, focus, a tap) */
+.pm-proc-tk-art::before,
+.pm-proc-tk-art::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: var(--cy, 50%); /* centred on the object, which sits at a different height in each drawing (set per tool below) */
+  z-index: -1;
+  box-sizing: border-box;
+  width: calc(var(--tk) * 0.84);
+  height: calc(var(--tk) * 0.84);
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+  transition: opacity 0.25s var(--ease-out), transform 0.45s var(--ease-spring);
+}
+.pm-proc-tk-art::before { background: var(--marigold); }
+.pm-proc-tk-art::after { width: calc(var(--tk) * 0.98); height: calc(var(--tk) * 0.98); border: 3px dashed var(--marigold); }
+.pm-proc-tk[data-lit] .pm-proc-tk-art, .pm-proc-tk[data-hot] .pm-proc-tk-art { transform: translateY(-12px); }
+.pm-proc-tk[data-lit] .pm-proc-tk-art::after, .pm-proc-tk[data-hot] .pm-proc-tk-art::after { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.pm-proc-tk[data-hot] .pm-proc-tk-art::before { opacity: 0.96; transform: translate(-50%, -50%) scale(1); }
+/* hand-placed: each object leans a little and is a touch larger or smaller, standing on the plank (the origin is the foot) */
+.pm-proc-tool .pm-tk-svg { transform: rotate(var(--tr, 0deg)) scale(var(--ts, 1)); transform-origin: 50% 94%; }
+.pm-proc-tool:nth-child(1) { --tr: -2deg; --ts: 1.1; --cy: 56%; }
+.pm-proc-tool:nth-child(2) { --tr: 3deg; --ts: 1.02; --cy: 64%; }
+.pm-proc-tool:nth-child(3) { --tr: -2deg; --ts: 1.05; --cy: 56%; }
+.pm-proc-tool:nth-child(4) { --tr: 2deg; --ts: 1.08; --cy: 48%; }
+.pm-proc-tool:nth-child(5) { --tr: -3deg; --ts: 1.04; --cy: 52%; }
+.pm-proc-tool:nth-child(6) { --tr: 1deg; --ts: 1.06; --cy: 55%; }
+.pm-proc-tool:nth-child(7) { --tr: -2deg; --ts: 1.02; --cy: 58%; }
+.pm-proc-tk-txt { display: flex; flex-direction: column; align-items: center; width: 100%; min-width: 0; }
+.pm-proc-tk-name {
+  display: block;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  line-height: 1.2;
+  text-transform: uppercase;
+  font-synthesis: none;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 5px;
+  text-decoration-color: transparent;
+}
+.pm-proc-tk[data-lit] .pm-proc-tk-name { text-decoration-color: var(--marigold); }
+.pm-proc-tk-use {
+  display: block;
+  max-width: 24ch;
+  margin-top: 8px;
+  color: var(--muted-on-sheet);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.pm-proc-tk-steps { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 10px; }
+.pm-proc-tk-n {
+  padding: 3px 6px 2px;
+  border: 2px solid var(--cream);
+  border-radius: 4px;
+  color: var(--cream);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  font-synthesis: none;
+}
+.pm-proc-tk-n[data-on] { background: var(--marigold); border-color: var(--marigold); color: var(--ink); }
+
+/* the eighth slot of the tablet plank: it holds the margin note (hidden on a desktop, where the note sits in the shelf's head, and on phones) */
+.pm-proc-spare { display: none; }
+/* the arrow sits above the words here (the slot is one column wide), pointing back at the tools */
+.pm-proc-spare .pm-proc-note { flex-direction: column; align-items: flex-start; gap: 0.2rem; height: auto; max-width: 11rem; margin: 0; white-space: normal; text-wrap: balance; }
+
+/* ---- tablet: four slots a row, so seven tools make two shelves; the eighth slot carries the note --------------------------- */
+@media (max-width: 1180px) {
+  .pm-proc-tools { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 34px; }
+  .pm-proc-tool:nth-child(4)::before { border-radius: 0 5px 5px 0; }
+  .pm-proc-tool:nth-child(5)::before { border-radius: 5px 0 0 5px; }
+  .pm-proc-tool:nth-child(7)::before { border-radius: 0 5px 5px 0; }
+  .pm-proc-note--shelf { display: none; }
+  .pm-proc-spare { display: flex; align-items: flex-start; justify-content: center; padding: calc(var(--art) * 0.28) 0 0 8px; }
+}
+@media (max-width: 900px) {
+  .pm-proc-bench { --pm-frame-gap: 14px; }
+  .pm-proc-track { --pm-frame-w: min(90cqw, 820px); }
+}
+
+/* a frame narrower than 560px stacks its picture over its words */
+@container (max-width: 560px) {
+  .pm-proc-grid { grid-template-columns: minmax(0, 1fr); }
+  .pm-proc-pic { align-self: start; padding: clamp(10px, 3cqw, 22px) clamp(10px, 3cqw, 22px) 0; }
+  .pm-proc-copy { padding: clamp(14px, 3cqw, 26px) clamp(16px, 4cqw, 30px) clamp(20px, 4cqw, 32px); }
+  .pm-proc-num { position: absolute; right: 4cqw; top: -3.4cqw; font-size: clamp(5rem, 22cqw, 8rem); }
+  .pm-proc-name { margin-top: 0; font-size: clamp(2.6rem, 9cqw, 4.2rem); }
+  .pm-proc-body { max-width: none; }
+}
+
+/* ---- phones: the film turns vertical and every frame is shown ------------------------------------------------------- */
+.pm-proc-bench[data-mode='stack'] { --lane: 20px; }
+.pm-proc-bench[data-mode='stack'] .pm-proc-film { margin-inline: calc(var(--sheet-pad, 18px) * -1); }
+.pm-proc-bench[data-mode='stack'] .pm-proc-vp { overflow: visible; cursor: auto; }
+.pm-proc-bench[data-mode='stack'] .pm-proc-track { --pm-frame-w: calc(100cqw - 2 * var(--lane) - 12px); --lead: 0px; width: 100%; touch-action: auto; will-change: auto; }
+.pm-proc-bench[data-mode='stack'] .pm-proc-perf { display: none; }
+.pm-proc-bench[data-mode='stack'] .pm-proc-frames {
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 0;
+  background-color: transparent;
+  background-image: linear-gradient(var(--ink), var(--ink)), var(--pm-grain);
+  background-size: calc(100% - 2 * var(--lane)) 100%, auto;
+  background-position: center, 0 0;
+  background-repeat: no-repeat, repeat;
+}
+.pm-proc-bench[data-mode='stack'] .pm-proc-frames::before,
+.pm-proc-bench[data-mode='stack'] .pm-proc-frames::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--lane);
+  background-color: var(--ink);
+  background-image: var(--pm-grain);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 20'%3E%3Cpath fill-rule='evenodd' d='M0 0H14V20H0Z M3.2 6.8A1.8 1.8 0 0 1 5 5H9A1.8 1.8 0 0 1 10.8 6.8V13.2A1.8 1.8 0 0 1 9 15H5A1.8 1.8 0 0 1 3.2 13.2Z'/%3E%3C/svg%3E") 50% 0 / 100% auto repeat-y;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 20'%3E%3Cpath fill-rule='evenodd' d='M0 0H14V20H0Z M3.2 6.8A1.8 1.8 0 0 1 5 5H9A1.8 1.8 0 0 1 10.8 6.8V13.2A1.8 1.8 0 0 1 9 15H5A1.8 1.8 0 0 1 3.2 13.2Z'/%3E%3C/svg%3E") 50% 0 / 100% auto repeat-y;
+}
+.pm-proc-bench[data-mode='stack'] .pm-proc-frames::before { left: 0; }
+.pm-proc-bench[data-mode='stack'] .pm-proc-frames::after { right: 0; }
+.pm-proc-bench[data-mode='stack'] .pm-proc-slot { width: var(--pm-frame-w); margin: 0 !important; padding: 30px 0 4px; }
+.pm-proc-bench[data-mode='stack'] .pm-proc-ctl { display: none; }
+.pm-proc-bench[data-mode='stack'] .pm-proc-slot::after { top: 24px; bottom: 0; }
+@container (max-width: 520px) {
+  .pm-proc-num { position: static; font-size: clamp(4.5rem, 24cqw, 6rem); margin-bottom: -0.05em; }
+}
+
+/* phones: the shelf becomes a list, the drawing on the left and its words on the right, with a dashed rule between the tools */
+@media (max-width: 720px) {
+  .pm-proc-shelf-head { flex-direction: column; align-items: flex-start; }
+  .pm-proc-note--shelf { display: flex; height: auto; margin: 6px 0 0; white-space: normal; }
+  .pm-proc-spare { display: none; }
+  .pm-proc-tools { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .pm-proc-tool::before { display: none; }
+  .pm-proc-tool + .pm-proc-tool { border-top: 2px dashed color-mix(in srgb, var(--cream) 30%, transparent); }
+  .pm-proc-tk { display: grid; grid-template-columns: var(--tk) minmax(0, 1fr); column-gap: 14px; align-items: center; text-align: left; padding: 12px 0; }
+  .pm-proc-tk-art { margin: 0; height: var(--tk); }
+  .pm-proc-tk-txt { align-items: flex-start; }
+  .pm-proc-tk-use { max-width: none; margin-top: 6px; }
+  .pm-proc-tk-steps { justify-content: flex-start; }
+}
+
+
+/* ---- ambient bits of the bench (none yet: the scenes carry their own loops) ------------------------------------------ */
+
+/* ---- STILL: reduced motion or "Pause motion". Everything is developed, nothing travels, no springs. ------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html.js .pm-proc-slot[data-dev='0'] .pm-proc-frame::before { clip-path: inset(0); }
+  html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 1; }
+  .pm-proc-bench[data-mode='strip'] .pm-proc-slot:not([data-active]) { transform: none; }
+  .pm-proc-slot, .pm-proc-frame::before, .pm-proc-frame::after, .pm-proc-copy > *, .pm-proc-num, .pm-proc-tab::before, .pm-proc-tab::after,
+  .pm-proc-ruler::before, .pm-proc-tk-art, .pm-proc-tk-art::before, .pm-proc-tk-art::after { transition: none !important; }
+  .pm-proc-tk[data-lit] .pm-proc-tk-art, .pm-proc-tk[data-hot] .pm-proc-tk-art { transform: none; }
+}
+html[data-motion='paused'].js .pm-proc-slot[data-dev='0'] .pm-proc-frame::before { clip-path: inset(0); }
+html[data-motion='paused'].js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 1; }
+html[data-motion='paused'] .pm-proc-bench[data-mode='strip'] .pm-proc-slot:not([data-active]) { transform: none; }
+html[data-motion='paused'] .pm-proc-slot, html[data-motion='paused'] .pm-proc-frame::before, html[data-motion='paused'] .pm-proc-frame::after,
+html[data-motion='paused'] .pm-proc-copy > *, html[data-motion='paused'] .pm-proc-num, html[data-motion='paused'] .pm-proc-tab::before,
+html[data-motion='paused'] .pm-proc-tab::after, html[data-motion='paused'] .pm-proc-ruler::before, html[data-motion='paused'] .pm-proc-tk-art,
+html[data-motion='paused'] .pm-proc-tk-art::before, html[data-motion='paused'] .pm-proc-tk-art::after { transition: none !important; }
+html[data-motion='paused'] .pm-proc-tk[data-lit] .pm-proc-tk-art, html[data-motion='paused'] .pm-proc-tk[data-hot] .pm-proc-tk-art { transform: none; }

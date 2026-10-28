@@ -1,0 +1,717 @@
+/* ==========================================================================
+   plate 1 "Sunrise": the hero.  Wheat sky, holm-oak deck, the symbol standing on the horizon, a slider that drags the sun.
+   The frame is a size container (cqw = 1% of the plate), so the whole composition scales from a phone to a 1920 desktop.
+   Only transform, opacity and clip-path animate.
+   ========================================================================== */
+
+.w-plana-p1 {
+  container: w-plana-p1 / inline-size;
+  display: flex;
+  flex-direction: column;
+  background: var(--wheat); /* the sky's own colour: the story text sits on it (over the sky on a wide plate, under the deck on a phone) */
+}
+
+/* the hero's printed caption runs the full width of the plate (one line on a laptop) */
+.w-plana-plate--sunrise .w-plana-plate__caption {
+  max-width: none;
+}
+
+/* ---- sky --------------------------------------------------------------------------------------------------------- */
+.w-plana-sky {
+  position: relative;
+  flex: 1 0 auto;
+  overflow: hidden;
+  aspect-ratio: 880 / 480;
+  background: var(--wheat);
+}
+
+.w-plana-sky__text {
+  position: absolute;
+  z-index: 2;
+  top: 3.5cqw;
+  left: 3.6cqw;
+  width: 40cqw;
+  pointer-events: none;
+}
+
+/* Poppy on Wheat is only 2.5:1: on the sky the full stop stays in Night (the brand's own rule: Poppy on Wheat is avoided) */
+.w-plana-p1__headline .w-plana-dot {
+  color: var(--night);
+}
+
+.w-plana-p1__headline {
+  margin: 0;
+  color: var(--holm);
+  font-family: var(--font-display);
+  font-size: 5.7cqw;
+  font-weight: 800;
+  letter-spacing: -0.048em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+.w-plana-dot {
+  color: var(--poppy);
+}
+
+.w-plana-p1__lede {
+  max-width: 31cqw;
+  margin: 1.7cqw 0 0;
+  color: var(--night);
+  font-size: max(0.9375rem, 1.75cqw);
+  line-height: 1.45;
+}
+
+/* the symbol stands on the horizon (the bottom edge of the sky) and rises from behind it */
+.w-plana-rise {
+  position: absolute;
+  z-index: 1;
+  right: 4.6cqw;
+  bottom: 1.5cqw;
+  width: 54cqw;
+  transition: transform 0.95s var(--ease-out);
+}
+
+/* the symbol waits below the horizon until the page has loaded (hidden state only under html.js) */
+html.js .w-plana-rise[data-risen='false'] {
+  transform: translateY(calc(100% + 4cqw));
+}
+
+.w-plana-p1__symbol {
+  width: 100%;
+  height: auto;
+}
+
+/* ---- the symbol's own parts ---------------------------------------------------------------------------------------- */
+.w-plana-sym {
+  display: block;
+  overflow: visible;
+}
+
+.w-plana-sym__ink {
+  fill: var(--night);
+  stroke: var(--night);
+}
+
+.w-plana-sym__night {
+  fill: var(--night);
+}
+
+.w-plana-sym__paper {
+  fill: var(--paper);
+}
+
+.w-plana-sym__edge {
+  fill: var(--paper);
+  stroke: var(--paper);
+  stroke-linejoin: round;
+}
+
+.w-plana-sym__field {
+  fill: var(--holm);
+}
+
+.w-plana-sym__stripe {
+  fill: var(--field);
+}
+
+.w-plana-sym__frame {
+  fill: none;
+  stroke: var(--night);
+  stroke-width: 7.5;
+}
+
+.w-plana-sym__sun {
+  fill: var(--poppy);
+  transform: translateY(calc(var(--sun, 0) * 1px));
+  transition: transform 0.45s var(--ease-out);
+}
+
+.w-plana-sym__dot-off {
+  fill: var(--dot-off);
+}
+
+.w-plana-sym__dot {
+  opacity: 0;
+  transform: scale(0.3);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition:
+    opacity 0.25s ease,
+    transform 0.4s var(--ease-spring);
+}
+
+.w-plana-sym__dot[data-lit='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.w-plana-sym__dot--1 {
+  fill: var(--wheat);
+}
+
+.w-plana-sym__dot--2 {
+  fill: var(--sunrise);
+}
+
+.w-plana-sym__dot--3 {
+  fill: var(--poppy);
+}
+
+/* the cursor (and its solid shadow, and its paper edge) presses down at the tip: a click */
+.w-plana-sym__cursor {
+  transform-origin: 98px 70px;
+  transition: transform 0.12s ease-out;
+}
+
+.w-plana-sym[data-pressed='true'] .w-plana-sym__cursor {
+  transform: translate(1.6px, 1.8px) scale(0.93);
+}
+
+/* ---- the sticker ---------------------------------------------------------------------------------------------------- */
+.w-plana-sticker {
+  position: absolute;
+  z-index: 3;
+  top: 2.4cqw;
+  right: 2.2cqw;
+  width: max(19cqw, 9.6rem); /* wide enough that the ring text is never under 13px */
+  transform: rotate(-9deg);
+}
+
+.w-plana-sticker svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.w-plana-sticker__shadow {
+  fill: var(--night);
+}
+
+.w-plana-sticker__disc {
+  fill: var(--poppy);
+  stroke: var(--night);
+  stroke-width: 6;
+}
+
+.w-plana-sticker__line {
+  fill: none;
+  stroke: var(--night);
+  stroke-width: 2.4;
+}
+
+.w-plana-sticker__ring {
+  fill: var(--night);
+  font-family: var(--font-label);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.w-plana-sticker__num {
+  fill: var(--paper);
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+/* it thumps onto the page when the 72 hours are up (hidden state only under html.js) */
+html.js .w-plana-sticker[data-in='false'] {
+  opacity: 0;
+  transform: rotate(-9deg) scale(1.55);
+}
+
+.w-plana-sticker[data-in='true'] {
+  animation: w-plana-thump 0.46s var(--ease-spring) both;
+}
+
+@keyframes w-plana-thump {
+  0% {
+    opacity: 0;
+    transform: rotate(-9deg) scale(1.55);
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(-9deg) scale(1);
+  }
+}
+
+/* ---- the handwritten hint: under the end of the slider, its arrow pointing up at the sun-thumb ----------------------------- */
+.w-plana-note {
+  position: relative;
+  grid-column: 3;
+  grid-row: 1;
+  display: grid;
+  justify-items: end;
+  align-self: start;
+  margin: -0.2rem 0.4rem 0 0;
+  color: var(--wheat);
+  rotate: -3deg;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.w-plana-note[data-gone='true'] {
+  opacity: 0;
+}
+
+.w-plana-note__t {
+  font-family: var(--font-hand);
+  font-size: clamp(1.4rem, 2.7cqw, 1.9rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.w-plana-note__arrow {
+  margin: 0 0.7rem 0.45rem 0;
+}
+
+/* ---- deck: the horizon, the slider and the caption --------------------------------------------------------------------- */
+.w-plana-deck {
+  display: grid;
+  gap: max(0.8rem, 1.5cqw);
+  padding: max(0.7rem, 1.1cqw) 3.6cqw max(1rem, 2.2cqw);
+  background: var(--holm);
+  color: var(--paper);
+}
+
+.w-plana-deck__track {
+  position: relative;
+}
+
+/* the range: a horizon line with a little poppy sun for a thumb */
+.w-plana-range {
+  --track: linear-gradient(90deg, var(--wheat) 0 var(--p), var(--field) var(--p) 100%);
+
+  display: block;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: grab;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.w-plana-range:active {
+  cursor: grabbing;
+}
+
+.w-plana-range::-webkit-slider-runnable-track {
+  height: 12px;
+  border: 2.5px solid var(--night);
+  border-radius: 8px;
+  background: var(--track);
+}
+
+.w-plana-range::-moz-range-track {
+  height: 12px;
+  border: 2.5px solid var(--night);
+  border-radius: 8px;
+  background: var(--track);
+}
+
+.w-plana-range::-webkit-slider-thumb {
+  width: 38px;
+  height: 38px;
+  margin-top: -16.5px;
+  border: 3px solid var(--night);
+  border-radius: 50%;
+  background: var(--poppy);
+  box-shadow: 3px 4px 0 var(--night);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.w-plana-range::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--night);
+  border-radius: 50%;
+  background: var(--poppy);
+  box-shadow: 3px 4px 0 var(--night);
+}
+
+.w-plana-range:focus-visible {
+  /* on the dark deck the ring is cream inside and ink outside (the global ring is ink inside and cream outside: it would vanish here) */
+  outline: 2px solid var(--paper);
+  outline-offset: 3px;
+  border-radius: 12px;
+  box-shadow: 0 0 0 5px var(--night);
+}
+
+.w-plana-range:focus-visible::-webkit-slider-thumb {
+  box-shadow:
+    3px 4px 0 var(--night),
+    0 0 0 3px var(--paper);
+}
+
+.w-plana-range:focus-visible::-moz-range-thumb {
+  box-shadow:
+    3px 4px 0 var(--night),
+    0 0 0 3px var(--paper);
+}
+
+.w-plana-ticks {
+  position: relative;
+  height: 1.4rem;
+  margin: 7px 19px 0; /* clear of the focus ring that goes round the slider */
+  color: var(--paper);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.w-plana-ticks span {
+  position: absolute;
+  top: 0;
+  left: calc(var(--f) * 100%);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.w-plana-ticks span:first-child {
+  transform: translateX(-19px);
+}
+
+.w-plana-ticks span:last-child {
+  transform: translateX(calc(-100% + 19px));
+}
+
+.w-plana-deck__body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 2.4cqw;
+}
+
+.w-plana-deck__body > .w-plana-hours {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.w-plana-deck__body > .w-plana-step {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.w-plana-hours {
+  display: flex;
+  align-items: baseline;
+  min-width: 3.3ch;
+  margin: 0;
+  color: var(--wheat);
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 7.6cqw, 6.2rem);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+}
+
+.w-plana-hours__n {
+  min-width: 1.25em; /* two tabular figures (measured: 1.242em with the tracking): the unit stays put while the count runs from 0 to 72 */
+  text-align: right;
+}
+
+.w-plana-hours__u {
+  margin-left: 0.04em;
+  color: var(--paper);
+  font-size: 0.5em;
+  letter-spacing: -0.02em;
+}
+
+/* the three captions sit in one grid cell (the box is as tall as the tallest one) and the current one is shown */
+.w-plana-step {
+  display: grid;
+  min-width: 0;
+}
+
+.w-plana-step__in {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+
+.w-plana-step__in[data-on='true'] {
+  visibility: visible;
+  animation: w-plana-step-in 0.45s var(--ease-out) both;
+}
+
+@keyframes w-plana-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.w-plana-step__when {
+  margin: 0;
+  color: var(--wheat);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.w-plana-step__title {
+  margin: 0.25rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.55cqw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+}
+
+.w-plana-step__text {
+  margin: 0.5rem 0 0;
+  font-size: max(0.9375rem, 1.75cqw);
+  line-height: 1.45;
+  color: color-mix(in srgb, var(--paper) 92%, var(--holm));
+}
+
+/* the three windows of the manual (page 3), as buttons that jump to a day: in the sky on a wide plate, in the deck on a narrow one */
+.w-plana-days {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.w-plana-days--sky {
+  position: absolute;
+  z-index: 2;
+  bottom: 2.2cqw;
+  left: 3.3cqw;
+}
+
+.w-plana-days--sky .w-plana-day {
+  width: clamp(4.4rem, 9.6cqw, 6.6rem);
+  color: var(--night);
+}
+
+.w-plana-days--sky .w-plana-day[aria-pressed='true'] {
+  background: var(--holm);
+  color: var(--paper);
+}
+
+.w-plana-days--deck {
+  display: none;
+}
+
+.w-plana-day {
+  display: grid;
+  justify-items: center;
+  gap: 0.3rem;
+  width: clamp(4.2rem, 8.6cqw, 6.2rem);
+  padding: 0.35rem 0.25rem 0.4rem;
+  border-radius: 12px;
+  color: var(--paper);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  transition: transform 0.2s var(--ease-spring);
+}
+
+.w-plana-day__sym {
+  width: 100%;
+  height: auto;
+}
+
+.w-plana-day[aria-pressed='true'] {
+  background: var(--wheat);
+  color: var(--night);
+}
+
+@media (hover: hover) {
+  .w-plana-day:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.w-plana-day:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--night);
+}
+
+/* ---- narrower plates: text above the symbol, deck stacked ---------------------------------------------------------------- */
+@container w-plana-p1 (max-width: 639px) {
+  .w-plana-sky {
+    display: grid;
+    align-content: start;
+    justify-items: center;
+    order: 1;
+    aspect-ratio: auto;
+    padding: 1.3rem 1rem 0;
+  }
+
+  .w-plana-deck {
+    order: 2;
+  }
+
+  /* the story goes under the slider, on the sky's own wheat: the symbol and the slider fill the first screen of a phone */
+  .w-plana-sky__text {
+    position: static;
+    order: 3;
+    width: auto;
+    padding: 1.1rem 1rem 1.3rem;
+    border-top: var(--outline) solid var(--night);
+    background: var(--wheat);
+    pointer-events: auto;
+  }
+
+  .w-plana-p1__headline {
+    font-size: clamp(2rem, 9cqw, 2.6rem);
+  }
+
+  .w-plana-p1__lede {
+    max-width: 34rem;
+    margin-top: 0.6rem;
+    font-size: 1rem;
+  }
+
+  .w-plana-rise {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: min(78cqw, 21rem);
+    margin-bottom: 0.2rem;
+  }
+
+  html.js .w-plana-rise[data-risen='false'] {
+    transform: translateY(calc(100% + 1.4rem));
+  }
+
+  /* a phone: the ring text would be tiny, so the sticker keeps its "72 h" (its accessible name still says what it says) */
+  .w-plana-sticker {
+    top: auto;
+    right: 3cqw;
+    bottom: 17cqw;
+    width: 28cqw;
+  }
+
+  .w-plana-sticker__ring {
+    display: none;
+  }
+
+  .w-plana-note,
+  .w-plana-days--sky {
+    display: none;
+  }
+
+  .w-plana-days--deck {
+    display: flex;
+  }
+
+  .w-plana-deck {
+    padding: 0.5rem 1rem 1.2rem;
+  }
+
+  .w-plana-deck__body {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.8rem 1rem;
+  }
+
+  .w-plana-deck__body > .w-plana-step {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .w-plana-days--deck {
+    justify-self: end;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .w-plana-hours {
+    font-size: 3.3rem;
+  }
+
+  .w-plana-days {
+    gap: 0.3rem;
+  }
+
+  .w-plana-day {
+    width: 4rem;
+  }
+
+  .w-plana-step__title {
+    font-size: 1.3rem;
+  }
+
+  .w-plana-step__text {
+    font-size: 1rem;
+  }
+}
+
+/* ---- laptop screens: a shallower sky so the whole plate, its caption and the contents list sit on the first screen ---- */
+@media (min-width: 1180px) and (max-height: 960px) {
+  .w-plana-sky {
+    aspect-ratio: 880 / 432;
+  }
+  .w-plana-rise {
+    right: 5cqw;
+    width: 46cqw;
+    bottom: 1.3cqw;
+  }
+}
+
+@media (min-width: 1180px) and (max-height: 820px) {
+  .w-plana-sky {
+    aspect-ratio: 880 / 425;
+  }
+  .w-plana-rise {
+    right: 5cqw;
+    width: 50cqw;
+    bottom: 1.2cqw;
+  }
+  .w-plana-deck {
+    gap: max(0.55rem, 1cqw);
+    padding-top: 0.5rem;
+  }
+}
+
+@media (min-width: 1180px) and (max-height: 740px) {
+  .w-plana-sky {
+    aspect-ratio: 880 / 400;
+  }
+  .w-plana-rise {
+    width: 46cqw;
+  }
+  .w-plana-p1__lede {
+    display: none;
+  }
+}
+
+/* ---- still: the symbol stands at day 3, nothing travels --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html.js .w-plana-rise[data-risen='false'] {
+    transform: none;
+  }
+  .w-plana-sticker[data-in='true'] {
+    animation: none;
+  }
+  html.js .w-plana-sticker[data-in='false'] {
+    opacity: 1;
+    transform: rotate(-9deg);
+  }
+}
+
+html[data-motion='paused'].js .w-plana-rise[data-risen='false'] {
+  transform: none;
+}
+html[data-motion='paused'] .w-plana-sticker[data-in='true'] {
+  animation: none;
+}
+html[data-motion='paused'].js .w-plana-sticker[data-in='false'] {
+  opacity: 1;
+  transform: rotate(-9deg);
+}

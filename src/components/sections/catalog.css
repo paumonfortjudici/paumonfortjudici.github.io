@@ -1,0 +1,1024 @@
+/* ==========================================================================
+   02 Catalog: the index of the cabinet.
+   A dark sheet holding a STACK of ten bands, one per project (a filmstrip of folders: perforated rails down both sides), each band in its
+   own folder colour and set in its own typeface. A typewritten index card searches the stack live; the group tabs stand on a shelf above it.
+   Prefix pm-cat-. Tokens only (colours come from tokens.css or from the registry through --c / --on); no raw hex.
+   Motion: transform, opacity and clip-path, plus ONE kind of layout fold, grid-template-rows 0fr -> 1fr, because the page below has to follow
+   it: the open band, the swap between a band's giant title and its one-line strip (a band that does not match the search) and the empty slip.
+   Every animation also has a STILL path (prefers-reduced-motion and html[data-motion='paused']): see the end of the file.
+   ========================================================================== */
+
+.pm-cat {
+  isolation: isolate; /* the backdrop sits between the sheet's paper and its content (z-index: -1 inside this stacking context) */
+  --cat-th: 28px; /* tab height of the bands */
+  --cat-rail: clamp(14px, 1.7vw, 28px); /* the film rail on each side of the stack */
+  --cat-size: clamp(2.35rem, 1rem + 5vw, 7rem); /* the giant titles */
+  --cat-padx: clamp(14px, 1.9vw, 30px);
+  --cat-print: clamp(11.5rem, 23vw, 32rem); /* width of the taped print in the open band */
+  /* one cell of film perforation, drawn as a hole in a mask (what lies behind the rail shows through it) */
+  --cat-hole: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 20'%3E%3Cpath fill-rule='evenodd' d='M0 0H14V20H0Z M3.2 6.8A1.8 1.8 0 0 1 5 5H9A1.8 1.8 0 0 1 10.8 6.8V13.2A1.8 1.8 0 0 1 9 15H5A1.8 1.8 0 0 1 3.2 13.2Z'/%3E%3C/svg%3E");
+  /* three hand-drawn pen lines (two passes each) that underline the matched words */
+  --cat-pen-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M3 8C18 3 28 11 44 6S72 4 97 7M12 11C34 8 62 10 90 9' fill='none' stroke='black' stroke-width='2.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  --cat-pen-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M2 6C16 10 30 3 48 8S78 11 98 5M8 10C30 12 55 8 84 11' fill='none' stroke='black' stroke-width='2.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  --cat-pen-c: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 14' preserveAspectRatio='none'%3E%3Cpath d='M4 7C20 4 26 10 50 7S80 3 96 8M16 11C40 9 66 12 88 9' fill='none' stroke='black' stroke-width='2.8' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* ==========================================================================
+   backdrop: halftone plate + the countdown-leader gauge
+   ========================================================================== */
+.pm-cat-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.pm-cat-halftone {
+  position: absolute;
+  left: 0;
+  top: var(--meta-h, 48px);
+  width: 64%;
+  height: min(46rem, 62%);
+  background-image: radial-gradient(circle, var(--marigold) 1.7px, transparent 2.3px);
+  background-size: 16px 16px;
+  opacity: 0.2;
+  -webkit-mask-image: radial-gradient(ellipse 100% 100% at 0% 0%, var(--ink) 8%, transparent 74%);
+  mask-image: radial-gradient(ellipse 100% 100% at 0% 0%, var(--ink) 8%, transparent 74%);
+}
+.pm-cat-leader {
+  position: absolute;
+  right: -7vw;
+  top: calc(var(--meta-h, 48px) + 1.2vw);
+  width: min(44vw, 46rem);
+  aspect-ratio: 1;
+  color: color-mix(in srgb, var(--cream) 16%, transparent);
+}
+.pm-cat-leader__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  overflow: visible;
+}
+.pm-cat-leader__arcs path { opacity: 0.07; transition: opacity 0.5s ease; }
+.pm-cat-leader__arcs path[data-lit] { opacity: 0.4; }
+/* the needle: a wider copy of the open band's arc laid over it (so only opacity moves), full strength */
+.pm-cat-leader__needle path { opacity: 0; transition: opacity 0.4s ease; }
+.pm-cat-leader__needle path[data-open] { opacity: 0.8; }
+
+/* ==========================================================================
+   title block: the word, the sub, the index card
+   ========================================================================== */
+.pm-cat-top {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.26fr) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(1.5rem, 4vw, 4.5rem);
+  padding: clamp(10px, 1.4vw, 22px) 0 clamp(26px, 3vw, 46px);
+}
+.pm-cat-top__word {
+  position: relative;
+  min-width: 0;
+  padding-top: clamp(2.4rem, 5.2vw, 5.4rem);
+}
+/* the ghost count peeks out above the first letter, like the template's (05) */
+.pm-cat-ghost {
+  position: absolute;
+  left: 0.2%;
+  top: 0;
+  max-width: none;
+  color: var(--marigold);
+  --ghost-a: 0.26;
+}
+.pm-cat-sub {
+  max-width: 36ch;
+  text-wrap: balance;
+  margin: clamp(0.9rem, 1.5vw, 1.6rem) 0 0;
+  color: var(--muted-on-sheet);
+}
+
+.pm-cat-top__card {
+  --cat-cardpad: clamp(3rem, 4vw, 4rem);
+  position: relative;
+  justify-self: end;
+  width: min(100%, clamp(30rem, 29vw, 44rem));
+  padding-bottom: var(--cat-cardpad);
+}
+
+/* ---- the index card ----------------------------------------------------------------------------------------------- */
+.pm-cat-card {
+  --cp: clamp(16px, 1.8vw, 26px); /* the card's side padding: the red rule and the ruled lines bleed through it */
+  --line: color-mix(in srgb, var(--lagoon) 38%, var(--paper));
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.55rem var(--cp) clamp(12px, 1.1vw, 18px);
+  border-radius: 5px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 var(--edge-h) 0 color-mix(in srgb, var(--paper) 62%, var(--ink)),
+    0 26px 30px -18px color-mix(in srgb, var(--desk) 85%, transparent);
+  color: var(--ink);
+  transform: rotate(-1.5deg);
+}
+/* the typed field: ruled lines like an index card, one per row of text */
+.pm-cat-card__field {
+  position: relative;
+  display: block;
+  min-height: max(1.85rem, var(--hint-h, 3.7rem));
+  margin: 0.2rem calc(var(--cp) * -1) 0;
+  padding: 0 var(--cp);
+  background-image: repeating-linear-gradient(to bottom, transparent 0 calc(1.85rem - 1.5px), var(--line) calc(1.85rem - 1.5px) 1.85rem);
+  font-family: var(--font-label);
+  font-size: clamp(1.1rem, 0.92rem + 0.6vw, 1.65rem);
+  line-height: 1.85rem;
+  font-weight: 400;
+  cursor: text;
+}
+.pm-cat-card__input {
+  position: relative;
+  z-index: 1;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: 1.85rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: 0;
+  caret-color: transparent; /* the block below is the caret */
+  text-shadow: 0.35px 0 0 color-mix(in srgb, var(--ink) 55%, transparent); /* ribbon bleed */
+  -webkit-appearance: none;
+  appearance: none;
+}
+.pm-cat-card__input:focus-visible { outline-offset: 5px; }
+.pm-cat-card__hint {
+  position: absolute;
+  left: var(--cp);
+  right: var(--cp);
+  top: 0;
+  z-index: 0;
+  color: var(--ink-3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.pm-cat-card__hint[data-show] { opacity: 1; }
+.pm-cat-card__measure {
+  position: absolute;
+  left: var(--cp);
+  top: 0;
+  visibility: hidden;
+  white-space: pre;
+  font: inherit;
+  letter-spacing: 0;
+  pointer-events: none;
+}
+.pm-cat-card__caret {
+  position: absolute;
+  left: var(--cp);
+  top: 0.22rem;
+  z-index: 2;
+  width: 0.58em;
+  height: 1.42rem;
+  background: var(--tomato);
+  opacity: 0;
+  transform: translateX(var(--x, 0px));
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+.pm-cat-card__caret[data-on] {
+  opacity: 0.92;
+  animation: pm-cat-blink 1.1s steps(1) infinite;
+}
+@keyframes pm-cat-blink {
+  0%,
+  54% { opacity: 0.92; }
+  55%,
+  100% { opacity: 0; }
+}
+
+/* the header line of the card: the three example searches, and under it the red rule of a real index card */
+.pm-cat-card__try {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.2rem;
+  margin: 0 calc(var(--cp) * -1);
+  padding: 0 var(--cp) 0.3rem;
+  border-bottom: 2px solid var(--tomato);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+}
+.pm-cat-card__try-k { margin-right: 0.55rem; text-transform: uppercase; letter-spacing: var(--ls-label); }
+.pm-cat-card__try-w { display: inline-flex; align-items: center; }
+.pm-cat-card__try-w > [aria-hidden] { margin: 0 0.45rem 0 -0.15rem; }
+.pm-cat-card__ex {
+  position: relative;
+  min-height: 24px;
+  padding: 0 2px;
+  border-radius: 3px;
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: 0.02em;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.3em;
+  cursor: pointer;
+}
+.pm-cat-card__ex::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: -0.12rem;
+  height: 0.5rem;
+  background: var(--tomato);
+  -webkit-mask: var(--cat-pen-b) center / 100% 100% no-repeat;
+  mask: var(--cat-pen-b) center / 100% 100% no-repeat;
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.3s var(--ease-out);
+}
+@media (hover: hover) {
+  .pm-cat-card__ex:hover { text-decoration-color: transparent; }
+  .pm-cat-card__ex:hover::after { clip-path: inset(0 0 0 0); }
+}
+.pm-cat-card__ex:focus-visible { text-decoration-color: transparent; }
+.pm-cat-card__ex:focus-visible::after { clip-path: inset(0 0 0 0); }
+@media (pointer: coarse) {
+  .pm-cat-card__ex { min-height: 44px; padding: 0 6px; display: inline-flex; align-items: center; }
+}
+
+/* the hand-written note and the arrow that points from the card down to the first folder's tab */
+.pm-cat-note {
+  position: absolute;
+  left: 0.4rem;
+  top: calc(100% - var(--cat-cardpad) + 0.95rem);
+  display: block;
+  color: var(--marigold);
+  pointer-events: none;
+}
+.pm-cat-note__t {
+  display: block;
+  text-shadow: 0 0 5px var(--ink), 0 0 2px var(--ink), 0 0 12px var(--ink);
+  margin-left: 0.8rem;
+  white-space: nowrap;
+  transform: rotate(-2.5deg);
+  transform-origin: left center;
+}
+.pm-cat-note__arrow { position: relative; display: block; width: 5rem; height: 9.5rem; margin: 0.1rem 0 0 0.8rem; }
+.pm-cat-note__arrow .pm-sc { position: absolute; left: 50%; top: 50%; max-width: none; margin: -2.5rem 0 0 -4.75rem; }
+/* the arrow crosses the leader gauge: an ink keyline keeps the marigold line readable over any folder colour */
+.pm-cat-note__arrow svg { filter: drop-shadow(0 0 1.5px var(--ink)) drop-shadow(0 0 4px var(--ink)); }
+
+/* ==========================================================================
+   shelf: group tabs standing on a rule, the typed count, Clear
+   ========================================================================== */
+.pm-cat-shelf {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.6rem 2rem;
+  margin: 0 0 calc(var(--cat-th) + 6px);
+  padding: 0 var(--cat-rail);
+  border-bottom: 3px solid color-mix(in srgb, var(--cream) 24%, transparent);
+}
+.pm-cat-shelf__tabs { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0 0.5rem; }
+.pm-cat-shelf__end { display: flex; align-items: flex-end; gap: 0.6rem 1.4rem; margin-bottom: 0.2rem; }
+.pm-cat-count {
+  margin: 0 0 0.5rem;
+  color: var(--cream);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.pm-cat-count[data-empty] { color: var(--tomato); }
+.pm-cat-clear { transition: opacity 0.2s ease, visibility 0s, transform 0.16s var(--ease-out), --pm-lift 0.16s var(--ease-out); }
+.pm-cat-clear[data-idle] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0s 0.2s;
+}
+
+/* the empty state: a typed slip that folds open above the stack (the stack stays where it is, intact and dimmed) */
+.pm-cat-empty {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin: 0 var(--cat-rail);
+  visibility: hidden;
+  transition: grid-template-rows 0.45s var(--ease-out), visibility 0s 0.45s;
+}
+.pm-cat-empty[data-show] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.pm-cat-empty__in { min-height: 0; overflow: hidden; padding: 0 0.6rem; }
+.pm-cat-slip {
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: min(100%, 40rem);
+  margin: 0.2rem 0 clamp(26px, 3vw, 40px);
+  padding: 0.95rem 1.4rem 1.05rem;
+  border-radius: 4px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 5px 0 0 var(--tomato),
+    0 var(--edge-h) 0 color-mix(in srgb, var(--paper) 62%, var(--ink));
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: clamp(1.05rem, 1rem + 0.35vw, 1.3rem);
+  line-height: 1.4;
+  transform: rotate(0.7deg);
+}
+
+/* ==========================================================================
+   the stack: ten bands between two perforated rails
+   ========================================================================== */
+.pm-cat-stack {
+  position: relative;
+  margin: 0;
+  padding: 0 var(--cat-rail);
+  list-style: none;
+}
+.pm-cat-stack::before,
+.pm-cat-stack::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(var(--cat-rail) - 5px);
+  background-color: color-mix(in srgb, var(--cream) 13%, var(--ink));
+  -webkit-mask: var(--cat-hole) 0 0 / 100% auto repeat-y;
+  mask: var(--cat-hole) 0 0 / 100% auto repeat-y;
+  pointer-events: none;
+}
+.pm-cat-stack::before { left: 0; border-radius: 5px 0 0 5px; }
+.pm-cat-stack::after { right: 0; border-radius: 0 5px 5px 0; }
+
+.pm-cat-item { position: relative; margin: 0; padding: 0; list-style: none; }
+/* every band's tab is stood up over the bottom of the band before it, like folders in a drawer */
+.pm-cat-item + .pm-cat-item { margin-top: calc(var(--cat-th) * -1); }
+
+.pm-cat-band.pm-folder {
+  --th: var(--cat-th);
+  --fpad: 0px;
+  --br: 18px;
+}
+.pm-cat-band .pm-cat-body { padding: 0 0 calc(var(--cat-th) + 6px); } /* the landing zone of the next band's tab */
+.pm-cat-band .pm-folder__tab { cursor: pointer; }
+/* what the giant title and its meta keep while a band is dimmed (they fade out over the veil, they never change colour) */
+.pm-cat-band { --on-rest: var(--on); --on2-rest: var(--on2); }
+/* a band that does not match the search: a dark, tinted veil over its body (opacity is all that moves; the tab stays in the folder's colour,
+   like the index tab of a drawer that is shut). The text that stays (number, plus, the one-line label) goes cream. */
+.pm-cat-band .pm-cat-body::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--br);
+  background-color: color-mix(in srgb, var(--ink) 76%, var(--c));
+  background-image: var(--pm-grain);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.pm-cat-band[data-state='thin'] .pm-cat-body::before { opacity: 1; }
+.pm-cat-band[data-state='thin'] .pm-cat-body { --on: var(--cream); --on2: var(--cream-2); }
+.pm-cat-band[data-state='thin'] .pm-cat-big { --on: var(--on-rest); --on2: var(--on2-rest); }
+.pm-cat-band[data-state='thin'] .pm-cat-no { color: var(--ink); }
+
+/* the tab says FOLDER 03 and points; the arrow turns down when the band is open */
+.pm-cat-tab { display: inline-flex; align-items: center; }
+.pm-cat-tab__arrow { display: inline-flex; flex: none; width: 1.3em; height: 1.3em; margin: 0 -0.25em 0 0.2em; transition: transform 0.35s var(--ease-out); }
+.pm-cat-tab__arrow > svg { width: 100%; height: 100%; }
+.pm-cat-band[data-state='open'] .pm-cat-tab__arrow { transform: rotate(90deg); }
+
+/* ---- the header: one button per band ----------------------------------------------------------------------------- */
+.pm-cat-h {
+  margin: 0;
+  font: inherit;
+  font-variation-settings: normal;
+  letter-spacing: normal;
+  line-height: normal;
+  text-wrap: auto;
+}
+.pm-cat-head {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--cat-no, 3rem) minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: clamp(10px, 1.7vw, 26px);
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding: 0 var(--cat-padx);
+  border-radius: var(--br) var(--br) 0 0;
+  color: var(--on);
+  text-align: left;
+  cursor: pointer;
+}
+.pm-cat-head:focus-visible { outline-offset: -6px; }
+
+.pm-cat-no {
+  justify-self: start;
+  padding: 5px 9px 4px;
+  border-radius: 6px;
+  background: var(--on);
+  color: var(--c);
+  font-family: var(--font-label);
+  font-size: calc(var(--fs-label) * 1.12);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+}
+
+/* the main cell holds two rows that trade places: the giant title (rest, open) and a one-line label (thin) */
+.pm-cat-main {
+  display: grid;
+  grid-template-rows: 1fr 0fr;
+  min-width: 0;
+  transition: grid-template-rows 0.5s var(--ease-out);
+}
+.pm-cat-band[data-state='thin'] .pm-cat-main { grid-template-rows: 0fr 1fr; }
+.pm-cat-big,
+.pm-cat-small { min-height: 0; min-width: 0; overflow: hidden; }
+.pm-cat-big { transition: opacity 0.25s ease; }
+.pm-cat-band[data-state='thin'] .pm-cat-big { opacity: 0; }
+.pm-cat-big__in {
+  --cat-gapx: clamp(1rem, 2.4vw, 2.6rem);
+  --cat-meta-w: max(10rem, min(21rem, 36%)); /* the meta column; the folder stock (the motif) ends where it begins */
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--cat-meta-w);
+  align-items: center;
+  gap: 0.3rem var(--cat-gapx);
+  /* the vertical air of a closed band lives here (inside the row that collapses), so a thin band keeps none of it */
+  padding: clamp(14px, 1.5vw, 22px) 0.12em calc(clamp(8px, 0.9vw, 14px) + 0.14em) 0;
+  min-height: calc(var(--cat-size) * var(--cat-adj, 1) * 0.98);
+}
+
+/* ---- the folder stock: each band's world drawn tone-on-tone between the title and the meta column (Motif.tsx) ------------ */
+.pm-cat-motif {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  right: calc(var(--cat-meta-w) + var(--cat-gapx) * 0.6);
+  /* --m-room is measured in JS (useMotifRoom): the space between the end of the title's longest line and the meta column; 0 = no room */
+  width: min(var(--m-room, 0px), 31rem);
+  height: min(88%, 9.5rem);
+  transform: translateY(-50%);
+  color: color-mix(in srgb, var(--on) 20%, transparent);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, var(--ink) 16%);
+  mask-image: linear-gradient(to right, transparent 0, var(--ink) 16%);
+  transition: transform 0.6s var(--ease-out);
+}
+.pm-cat-motif .m-b { color: color-mix(in srgb, var(--on) 36%, transparent); }
+/* cream ink on pine, oxblood and ultraviolet: light lines on a dark field need more weight to read at the same quietness */
+.pm-cat-band[data-dark] .pm-cat-motif { color: color-mix(in srgb, var(--on) 27%, transparent); }
+.pm-cat-band[data-dark] .pm-cat-motif .m-b { color: color-mix(in srgb, var(--on) 46%, transparent); }
+/* the die-cut paper edge of a sticker: a wide pale line under the drawing, with a faint paper fill */
+.pm-cat-motif .m-keyline { stroke: var(--paper); stroke-opacity: 0.85; stroke-width: 11; fill: var(--paper); fill-opacity: 0.28; }
+.pm-cat-motif .m-text { font-family: var(--font-label); font-weight: 700; font-size: 18px; }
+.pm-cat-title,
+.pm-cat-metarow { position: relative; z-index: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .pm-cat-head:hover .pm-cat-motif { transform: translate(-0.6rem, -50%); }
+}
+
+/* the giant title, in the project's own face (the rules per project are at the end of the file) */
+.pm-cat-title {
+  display: block;
+  min-width: 0;
+  font-family: var(--cat-face, var(--font-display));
+  font-size: calc(var(--cat-size) * var(--cat-adj, 1));
+  font-weight: var(--cat-w, 800);
+  font-stretch: var(--cat-stretch, 100%);
+  font-variation-settings: normal;
+  font-optical-sizing: auto;
+  font-synthesis: none;
+  line-height: 0.96;
+  letter-spacing: var(--cat-ls, -0.02em);
+  text-transform: var(--cat-case, none);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  color: var(--on);
+  transition: transform 0.4s var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .pm-cat-head:hover .pm-cat-title { transform: translateX(0.12em); }
+}
+
+.pm-cat-metarow { display: flex; align-items: center; justify-content: flex-end; gap: 1rem; min-width: 0; }
+.pm-cat-meta { display: grid; justify-items: end; gap: 0.35rem; min-width: 0; text-align: right; }
+.pm-cat-kind {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+  font-size: clamp(1.15rem, 1rem + 0.7vw, 1.75rem);
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: var(--on);
+  text-wrap: balance;
+}
+.pm-cat-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.15rem 0;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  font-synthesis: none;
+  color: var(--on2);
+}
+.pm-cat-line > span:not(:last-child)::after { content: '·'; margin: 0 0.7em; }
+.pm-cat-found {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.3;
+  font-weight: 400;
+  color: var(--on);
+}
+.pm-cat-found .pm-cat-mark { font-weight: 700; }
+
+.pm-cat-small__in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 10px 0 4px;
+}
+.pm-cat-small {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  font-synthesis: none;
+  color: var(--on);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.pm-cat-band[data-state='thin'] .pm-cat-small { opacity: 1; }
+.pm-cat-small__t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pm-cat-small__g { flex: none; opacity: 0.8; }
+
+.pm-cat-plus {
+  width: clamp(26px, 2.4vw, 36px);
+  height: clamp(26px, 2.4vw, 36px);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.4s var(--ease-out);
+}
+.pm-cat-band[data-state='open'] .pm-cat-plus { transform: rotate(45deg); }
+
+/* touch / still motion: a small thumbnail instead of the cursor preview */
+.pm-cat-ithumb { flex: none; width: clamp(54px, 8vw, 68px); transform: rotate(2.2deg); box-shadow: 0 2px 0 color-mix(in srgb, var(--ink) 30%, transparent), 0 8px 10px -4px color-mix(in srgb, var(--ink) 40%, transparent); border-radius: 3px; overflow: hidden; }
+.pm-cat-band[data-state='thin'] .pm-cat-ithumb { opacity: 0.55; }
+
+/* ---- the open band ------------------------------------------------------------------------------------------------ */
+.pm-cat-fold {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 0.55s var(--ease-out), visibility 0s 0.55s;
+}
+.pm-cat-fold[data-open] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.pm-cat-fold__in { min-height: 0; overflow: hidden; }
+/* the open band: a text column (blurb, slate, notes: spread to the height of the print) and the taped print; the file line and the button across the bottom */
+.pm-cat-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'text art'
+    'foot foot';
+  gap: clamp(14px, 2vw, 30px) clamp(24px, 4vw, 72px);
+  margin: 0 var(--cat-padx);
+  padding: clamp(16px, 1.9vw, 28px) 0 2px;
+  border-top: 2px dashed color-mix(in srgb, var(--on) 36%, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.pm-cat-fold[data-open] .pm-cat-panel { opacity: 1; transition-delay: 0.12s; }
+
+/* the text block sits beside the print, centred on it: one cohesive block instead of a blurb stuck to the top and a slate stuck to the bottom */
+.pm-cat-panel__text {
+  grid-area: text;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(20px, 2.4vw, 44px);
+  min-width: 0;
+}
+.pm-cat-blurb {
+  max-width: 38ch;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(1.15rem, 0.8rem + 1.2vw, 2.3rem);
+  line-height: 1.36;
+  font-weight: 500;
+  color: var(--on);
+  text-wrap: pretty;
+}
+/* the clapper stick rises over whatever is above it while it waits to snap shut: leave it room */
+.pm-cat-kit { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1.8rem clamp(1.4rem, 2.6vw, 3rem); margin-top: clamp(0.6rem, 2vw, 2.4rem); }
+.pm-cat-slate { flex: 0 1 clamp(20rem, 27vw, 36rem); min-width: min(100%, 19rem); }
+
+/* ---- the contents slip: a typed paper slip taped to the folder (Inside.tsx) --------------------------------------------------- */
+.pm-cat-inside {
+  --line: color-mix(in srgb, var(--lagoon) 38%, var(--paper));
+  position: relative;
+  flex: 1 1 14.5rem;
+  max-width: 21rem;
+  box-sizing: border-box;
+  margin: 0.5rem 0 0;
+  padding: 0.65rem 1.1rem 0.8rem 1.15rem;
+  border-radius: 3px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 var(--edge-h) 0 color-mix(in srgb, var(--paper) 62%, var(--ink)),
+    0 16px 20px -12px color-mix(in srgb, var(--ink) 60%, transparent);
+  color: var(--ink);
+  transform: rotate(1.3deg);
+}
+.pm-cat-inside__t {
+  margin: 0 0 0.45rem;
+  padding: 0 0 0.35rem;
+  border-bottom: 2px solid var(--tomato);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  font-synthesis: none;
+  color: var(--ink);
+}
+.pm-cat-inside__list { display: grid; margin: 0; padding: 0; list-style: none; }
+.pm-cat-inside__list li {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0 0.6rem;
+  padding: 0.32rem 0 0.34rem;
+  border-bottom: 1.5px solid var(--line);
+  font-family: var(--font-label);
+  font-size: clamp(0.9rem, 0.84rem + 0.22vw, 1.04rem);
+  line-height: 1.32;
+  font-weight: 400;
+  font-synthesis: none;
+  text-wrap: pretty;
+}
+.pm-cat-inside__list li:last-child { border-bottom: 0; padding-bottom: 0; }
+.pm-cat-tick { width: 1.25rem; height: 1.25rem; margin-top: 0.02rem; overflow: visible; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.pm-cat-tick__box { stroke: color-mix(in srgb, var(--ink) 70%, transparent); stroke-width: 1.7; }
+.pm-cat-tick__pen { stroke: var(--tomato); stroke-width: 2.4; }
+/* the ticks are drawn in one after the other when the band opens (clip-path only; the hidden start state exists only under html.js) */
+html.js .pm-cat-fold[data-open] .pm-cat-tick__pen { animation: pm-cat-tick 0.32s var(--ease-out) calc(0.55s + var(--n, 0) * 0.16s) both; }
+@keyframes pm-cat-tick {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+/* the slate reads like a real one: the role is the wide first row, the other cells share the row under it */
+.pm-cat-slate .pm-slate__cell:first-child { flex-basis: 100%; }
+.pm-cat-concept { flex: 0 0 auto; width: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1.4rem; }
+.pm-cat-concept__line { max-width: 34ch; margin: 0; font-family: var(--font-body); font-size: var(--fs-caption); line-height: 1.4; font-weight: 500; color: var(--on); }
+
+/* the print lands on the folder when the band opens (a physical object: it may overshoot) */
+html.js .pm-cat-fold[data-open] .pm-cat-panel__art .pm-polaroid { animation: pm-cat-land 0.75s cubic-bezier(0.2, 1.35, 0.4, 1) 0.14s both; }
+@keyframes pm-cat-land {
+  from { opacity: 0; transform: translateY(-30px) rotate(calc(var(--rot) - 6deg)) scale(1.05); }
+  to { opacity: 1; transform: rotate(var(--rot)); }
+}
+.pm-cat-panel__art { position: relative; grid-area: art; align-self: start; padding: 1.3rem 0.9rem 1.4rem 0.4rem; }
+.pm-cat-panel__art[data-cut] { padding-left: calc(var(--cat-print) * 0.3 + 0.4rem); }
+/* the cut-out of the project, stuck on the lower left corner of the print (it lands a beat after the print does) */
+.pm-cat-cut {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  bottom: 5.4rem; /* above the caption under the print */
+  width: auto;
+  max-width: none;
+  /* tall enough to read, never wider than most of the print (a wide cut-out like Plana's symbol would hide the caption) */
+  height: min(clamp(9rem, 15vw, 20rem), calc(var(--cat-print) * 0.9 / var(--asp, 0.75)));
+  transform: rotate(-7deg);
+  transform-origin: 50% 88%;
+  filter: drop-shadow(0 2px 0 color-mix(in srgb, var(--ink) 26%, transparent)) drop-shadow(0 12px 10px color-mix(in srgb, var(--ink) 34%, transparent));
+  pointer-events: none;
+  user-select: none;
+}
+html.js .pm-cat-fold[data-open] .pm-cat-cut { animation: pm-cat-stick 0.7s cubic-bezier(0.2, 1.4, 0.4, 1) 0.34s both; }
+@keyframes pm-cat-stick {
+  from { opacity: 0; transform: translate(-26px, -22px) rotate(-16deg) scale(1.12); }
+  to { opacity: 1; transform: rotate(-7deg); }
+}
+.pm-cat-foot { grid-area: foot; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 0.8rem 1.6rem; }
+.pm-cat-foot__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem 1.8rem; margin-bottom: 0.9rem; }
+.pm-cat-file { margin: 0; color: var(--on2); }
+/* the categories are typed labels stuck on the folder: paper, a typed word, a hair off the straight */
+.pm-cat-filed { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.7rem; margin: 0; padding: 0; list-style: none; }
+.pm-cat-filed__c {
+  --r: -1.4deg;
+  margin: 0;
+  padding: 0.38rem 0.8rem 0.3rem;
+  border-radius: 2px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--paper) 58%, var(--ink)), 0 7px 8px -4px color-mix(in srgb, var(--ink) 40%, transparent);
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  font-synthesis: none;
+  transform: rotate(var(--r));
+}
+.pm-cat-filed__c:nth-child(even) { --r: 1.1deg; }
+.pm-cat-filed__c:nth-child(3n) { --r: -0.5deg; }
+
+.pm-cat-open { white-space: nowrap; }
+
+/* ---- thumbnails (shared by the taped print, the cursor preview and the touch thumbnail) ------------------------------- */
+.pm-cat-thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--c);
+  color: var(--on);
+  container-type: inline-size;
+}
+/* the number behind a thumbnail scales with the thumbnail */
+.pm-cat-thumb__no {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 44cqw;
+  line-height: 1;
+  opacity: 0.55;
+}
+.pm-cat-thumb > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.pm-cat-thumb > img[data-ok] { opacity: 1; }
+.pm-cat-panel__art .pm-polaroid__photo > .pm-cat-thumb { height: 100%; }
+
+/* ---- the cursor-following preview ---------------------------------------------------------------------------------- */
+.pm-cat-peek {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 30;
+  box-sizing: border-box;
+  width: 12.25rem;
+  padding: 8px 8px 0;
+  border-radius: 3px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 var(--edge-h) 0 color-mix(in srgb, var(--paper) 62%, var(--ink)),
+    0 22px 24px -12px color-mix(in srgb, var(--desk) 82%, transparent);
+  color: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.pm-cat-peek__photo { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--ink-2); }
+.pm-cat-peek__img { position: absolute; inset: 0; opacity: 0; transition: opacity 0.18s ease; }
+.pm-cat-peek__img.is-on { opacity: 1; }
+.pm-cat-peek__cap {
+  display: block;
+  padding: 9px 2px 10px;
+  text-align: center;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  font-synthesis: none;
+  white-space: nowrap;
+}
+
+/* ---- the matched words: a pen line under them, drawn in ------------------------------------------------------------- */
+.pm-cat-mark {
+  position: relative;
+  background: none;
+  color: inherit;
+  white-space: inherit;
+}
+.pm-cat-mark::after {
+  content: '';
+  position: absolute;
+  left: -3%;
+  right: -3%;
+  bottom: -0.2em;
+  height: 0.34em;
+  background: currentColor;
+  -webkit-mask: var(--cat-pen-a) center / 100% 100% no-repeat;
+  mask: var(--cat-pen-a) center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+.pm-cat-mark[data-v='1']::after { -webkit-mask-image: var(--cat-pen-b); mask-image: var(--cat-pen-b); }
+.pm-cat-mark[data-v='2']::after { -webkit-mask-image: var(--cat-pen-c); mask-image: var(--cat-pen-c); }
+html.js .pm-cat-mark::after { animation: pm-cat-pen 0.5s var(--ease-out) both; }
+@keyframes pm-cat-pen {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+.pm-cat-title .pm-cat-mark::after { bottom: -0.1em; height: 0.2em; }
+
+/* ---- the stack arrives once, like files shuffled into the drawer ----------------------------------------------------- */
+.pm-cat-item { transition: opacity 0.5s ease, transform 0.75s var(--ease-out); }
+html.js .pm-cat-stack:not([data-in]) .pm-cat-item { opacity: 0; transition-delay: calc(var(--i, 0) * 55ms); }
+html.js .pm-cat-stack:not([data-in]) .pm-cat-item:nth-child(odd) { transform: translateX(-44px); }
+html.js .pm-cat-stack:not([data-in]) .pm-cat-item:nth-child(even) { transform: translateX(44px); }
+html.js .pm-cat-stack[data-in] .pm-cat-item { transition-delay: calc(var(--i, 0) * 55ms); }
+
+/* ==========================================================================
+   the ten voices: one rule per project, in its own typeface (notes/typography.md section 4)
+   --cat-adj scales the size optically (a wide face needs less, a light one more).
+   ========================================================================== */
+.pm-cat-item[data-slug='contract'] { --cat-face: 'Bitter Variable', var(--font-display); --cat-w: 800; --cat-ls: -0.03em; }
+
+.pm-cat-item[data-slug='plana'] { --cat-face: 'Sora Variable', var(--font-display); --cat-w: 800; --cat-adj: 0.92; --cat-ls: -0.05em; }
+.pm-cat-item[data-slug='plana'] .pm-cat-t2 { font-weight: 300; }
+
+.pm-cat-item[data-slug='fortyfour-lab'] { --cat-face: 'Chango', var(--font-display); --cat-w: 400; --cat-adj: 0.82; --cat-ls: 0.005em; }
+.pm-cat-item[data-slug='fortyfour-lab'] .pm-cat-title { text-shadow: 0.05em 0.065em 0 var(--tomato); }
+
+.pm-cat-item[data-slug='spelled-guilty'] { --cat-face: 'Archivo Variable', var(--font-display); --cat-w: 800; --cat-stretch: 85%; --cat-adj: 1.14; --cat-case: uppercase; --cat-ls: 0.01em; }
+.pm-cat-item[data-slug='spelled-guilty'] .pm-cat-title { text-shadow: 0.035em 0.045em 0 var(--ink); }
+
+.pm-cat-item[data-slug='space-monkey'] { --cat-face: 'Orbitron Variable', var(--font-display); --cat-w: 800; --cat-adj: 0.8; --cat-case: uppercase; --cat-ls: 0.12em; }
+
+.pm-cat-item[data-slug='procreate'] { --cat-face: 'Gloria Hallelujah', var(--font-display); --cat-w: 400; --cat-adj: 0.9; --cat-ls: -0.01em; }
+
+.pm-cat-item[data-slug='somia'] { --cat-face: 'Cormorant Variable', var(--font-display); --cat-w: 300; --cat-adj: 1.2; --cat-ls: -0.02em; }
+
+.pm-cat-item[data-slug='concept-brand'] { --cat-face: 'Shrikhand', var(--font-display); --cat-w: 400; --cat-adj: 0.96; --cat-ls: 0; }
+
+.pm-cat-item[data-slug='concept-portfolio'] { --cat-face: 'Anybody Variable', var(--font-display); --cat-w: 900; --cat-stretch: 125%; --cat-adj: 0.6; --cat-case: uppercase; --cat-ls: -0.01em; }
+
+.pm-cat-item[data-slug='illustration'] { --cat-face: 'Cherry Bomb One', var(--font-display); --cat-w: 400; --cat-adj: 0.94; --cat-ls: 0.005em; }
+.pm-cat-item[data-slug='illustration'] .pm-cat-title {
+  -webkit-text-stroke: 0.16em var(--paper);
+  paint-order: stroke fill;
+  text-shadow: 0.05em 0.06em 0 color-mix(in srgb, var(--ink) 50%, transparent);
+}
+
+/* the two-line titles break where the design says (Band.tsx LINES), in every face, so a band never changes height when its face swaps in */
+.pm-cat-ln { display: block; }
+
+/* ==========================================================================
+   small screens: the rails slim down, the title takes the full width, the meta drops under it
+   ========================================================================== */
+@media (max-width: 1000px) {
+  .pm-cat-top { grid-template-columns: minmax(0, 1fr); gap: 1.6rem; }
+  .pm-cat-top__card { justify-self: start; width: min(100%, 34rem); padding-bottom: 0.6rem; }
+  .pm-cat-leader { right: -16vw; top: calc(var(--meta-h, 48px) + 34vw); width: min(70vw, 40rem); }
+  /* stacked: the arrow would point at the filter tabs, not at the first folder, so only the note stays */
+  .pm-cat-note { position: static; margin-top: 0.4rem; }
+  .pm-cat-note__arrow { display: none; }
+  /* the meta column is narrower than the title: years and group stack instead of running on */
+  .pm-cat-big__in { --cat-meta-w: max(8rem, min(15rem, 34%)); }
+  .pm-cat-line { display: grid; justify-items: end; gap: 0.1rem; }
+  .pm-cat-line > span::after { content: none !important; }
+  /* the filter tabs take the compact size so all four share one row */
+  .pm-cat-shelf { padding-inline: 0; }
+  .pm-cat-shelf .pm-tabbtn.pm-cat-shelf__tab { padding: 0 12px; letter-spacing: 0.05em; }
+}
+/* a wide screen (1600 and up): the print grows and the blurb takes more of the row, so the open band has no hole beside its text */
+@media (min-width: 1600px) {
+  .pm-cat { --cat-print: clamp(28rem, 25vw, 38rem); }
+  .pm-cat-blurb { max-width: 46ch; }
+  .pm-cat-kit { gap: 1.8rem clamp(2rem, 3.4vw, 4.4rem); }
+  .pm-cat-slate { flex-basis: clamp(26rem, 25vw, 40rem); }
+  .pm-cat-inside { flex-basis: 17rem; max-width: 24rem; }
+}
+
+/* a tablet: the slate and the slip run along the whole panel, under the blurb and the print, so the print never leaves a hole beside them */
+@media (min-width: 761px) and (max-width: 1000px) {
+  .pm-cat-panel { grid-template-areas: 'text art' 'kit kit' 'foot foot'; }
+  .pm-cat-panel__text { display: contents; }
+  .pm-cat-blurb { grid-area: text; align-self: center; }
+  .pm-cat-kit { grid-area: kit; margin-top: 0; }
+}
+@media (max-width: 760px) {
+  .pm-cat { --cat-rail: 13px; --cat-padx: 14px; --cat-no: 2.5rem; }
+  .pm-cat-head { grid-template-columns: var(--cat-no) minmax(0, 1fr) auto; align-items: start; }
+  /* the open band's slate and slip stack, each as wide as the column */
+  .pm-cat-kit { flex-direction: column; align-items: stretch; margin-top: 0.4rem; }
+  .pm-cat-slate { flex: 0 0 auto; min-width: 0; }
+  .pm-cat-inside { flex: 0 0 auto; max-width: none; margin-top: 0.2rem; transform: rotate(0.7deg); }
+  .pm-cat-no { margin-top: clamp(14px, 1.5vw, 22px); }
+  .pm-cat-head .pm-cat-plus { margin-top: clamp(14px, 1.5vw, 22px); }
+  .pm-cat-band[data-state='thin'] .pm-cat-no,
+  .pm-cat-band[data-state='thin'] .pm-cat-plus { margin-top: 10px; }
+  .pm-cat-big__in { grid-template-columns: minmax(0, 1fr); gap: 0.55rem; }
+  /* the folder stock is for the wide bands: a phone's band is all title and thumbnail */
+  .pm-cat-motif { display: none; }
+  /* the wrapped "years / group" lines are left-aligned (the meta column's right alignment must not reach them) */
+  .pm-cat-meta { text-align: left; }
+  /* the kind runs the full width; years and group stack beside the thumbnail */
+  .pm-cat-metarow { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: 'kind kind' 'line thumb' 'found thumb'; align-items: end; gap: 0.4rem 0.8rem; }
+  .pm-cat-meta { display: contents; }
+  .pm-cat-kind { grid-area: kind; text-align: left; }
+  .pm-cat-line { grid-area: line; display: grid; justify-items: start; justify-content: start; gap: 0.1rem; letter-spacing: 0.04em; }
+  .pm-cat-line > span::after { content: none !important; }
+  .pm-cat-found { grid-area: found; text-align: left; }
+  .pm-cat-ithumb { grid-area: thumb; width: 54px; }
+  .pm-cat-item[data-slug='concept-portfolio'] { --cat-stretch: 100%; --cat-adj: 0.72; }
+  .pm-cat-item[data-slug='space-monkey'] { --cat-adj: 0.66; --cat-ls: 0.08em; }
+  .pm-cat-panel { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'art' 'text' 'foot'; }
+  .pm-cat-panel__art[data-cut] { padding-left: 0.4rem; }
+  .pm-cat-cut { left: -10%; bottom: 5rem; height: min(8.6rem, calc(var(--cat-print) * 0.8 / var(--asp, 0.75))); }
+  .pm-cat-panel__art { justify-self: center; padding-top: 1.8rem; }
+  .pm-cat-foot { justify-content: space-between; }
+  /* the filter tabs share two rows instead of a staircase of four */
+  .pm-cat-shelf { gap: 0.6rem 1rem; padding-inline: 0; }
+  .pm-cat-shelf__tabs { gap: 0; }
+  .pm-cat-shelf .pm-tabbtn.pm-cat-shelf__tab { padding: 0 12px; letter-spacing: 0.05em; }
+  .pm-cat-shelf__end { width: 100%; justify-content: space-between; }
+  /* the leader and the arrow belong to the wide layout: on a phone the arrow would point at a tab, not at the first folder */
+  .pm-cat-leader { display: none; }
+  .pm-cat-note__arrow { display: none; }
+  .pm-cat-note { position: static; margin-top: 0.4rem; }
+  .pm-cat-top__card { padding-bottom: 0.6rem; }
+  /* the tape on the index card hangs over the sheet, not over the edge of the screen */
+  .pm-cat-card > .pm-tape { margin: 0.5rem 0 0 1.1rem; }
+}
+
+/* a narrow phone (360 and below is most Android devices): every pixel goes to the giant titles, which must still wrap within two lines */
+@media (max-width: 420px) {
+  .pm-cat { --sheet-pad: 14px; --cat-rail: 9px; --cat-padx: 11px; --cat-no: 2.1rem; --cat-size: clamp(1.7rem, 9vw, 2.35rem); }
+  .pm-cat-head { column-gap: 8px; }
+}
+
+/* ==========================================================================
+   STILL: reduced motion or "Pause motion". Everything is already in its end state; the caret is a solid block, the matched
+   words are underlined at once, the stack is simply there. (base.css also shortens every transition to 0.01ms.)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html.js .pm-cat-stack:not([data-in]) .pm-cat-item { opacity: 1; transform: none; }
+  html.js .pm-cat-mark::after { animation: none; }
+  .pm-cat-card__caret[data-on] { animation: none; }
+  .pm-cat-head:hover .pm-cat-title { transform: none; }
+  .pm-cat-head:hover .pm-cat-motif { transform: translateY(-50%); }
+  html.js .pm-cat-fold[data-open] .pm-cat-tick__pen { animation: none; }
+}
+html[data-motion='paused'] .pm-cat-head:hover .pm-cat-motif { transform: translateY(-50%); }
+html[data-motion='paused'].js .pm-cat-fold[data-open] .pm-cat-tick__pen { animation: none; }
+html[data-motion='paused'].js .pm-cat-stack:not([data-in]) .pm-cat-item { opacity: 1; transform: none; }
+html[data-motion='paused'].js .pm-cat-mark::after { animation: none; }
+html[data-motion='paused'] .pm-cat-card__caret[data-on] { animation: none; }
+html[data-motion='paused'] .pm-cat-head:hover .pm-cat-title { transform: none; }

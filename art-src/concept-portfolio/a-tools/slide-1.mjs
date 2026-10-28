@@ -34,7 +34,7 @@ const badgesFlat = `<g id="badges-flat">
 </g>`
 const crunchFlat = `<g id="burst-crunch" transform="rotate(-8 215 1535)"><use href="#bst-15" x="85" y="1405" width="260" height="260" fill="#E8553E"/></g>`
 
-const feet = `<g id="footprints">\n${trail(40, 1884, 1040, 1884, 8, { w: 44, h: 115, fill: '#1B6885', op: 0.9, gap: 14 })}\n</g>`
+const feet = `<g id="footprints">\n${trail(40, 1884, 1040, 1884, 8, { w: 44, h: 115, fill: '#FDEFAF', op: 0.7, gap: 14 })}\n</g>`
 
 const art = [
   feet,
@@ -63,7 +63,7 @@ const type = `
 <path id="seal-arc" d="M900 1618A72 72 0 1 1 899.9 1618" fill="none"/>
 <text class="t-label" xml:space="preserve" font-size="20" fill="#FDEFAF"><textPath href="#seal-arc" textLength="446" lengthAdjust="spacing">FOOTSTEPS  ·  CLOTH  ·  PROPS  ·  </textPath></text>
 <g class="t-body" font-size="38" fill="#FDEFAF"><text x="72" y="1700">The small noises that make a</text><text x="72" y="1754">film feel real.</text></g>
-<text class="t-sc" xml:space="preserve" x="72" y="1790" font-size="24" fill="#FDEFAF">PORTFOLIO 2026  ·  GIRONA</text>`
+<text class="t-sc" xml:space="preserve" x="72" y="1800" font-size="24" fill="#FDEFAF">PORTFOLIO 2026  ·  GIRONA</text>`
 
 const chrome = `
 <g class="t-sc" font-size="28" fill="#FDEFAF"><text x="72" y="112">FOLEY &amp; SOUND DESIGN</text><text x="1010.5" y="112" text-anchor="end">ONA RIBAS</text></g>`

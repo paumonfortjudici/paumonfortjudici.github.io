@@ -1,0 +1,163 @@
+/* ==========================================================================
+   process / art: the one graphic language of the Process section (scenes in the film frames and the tool tokens).
+   Rules: 4px ink outline with round caps and joins, flat fills from the folder palette, a hard offset shadow, no gradients.
+   Everything is scoped under .pm-art, so none of these short class names can leak.
+
+     .o    a drawn shape: outline + flat fill (--f). It is drawn on with stroke-dash (pathLength is set to 1 in JS)
+     .t    thin detail line (2.6px)           .x   heavy line (5.6px)         .n   fill only, no outline
+     .sh   the hard offset shadow (flat, --shd)
+     .ob   an object: a group that lands (tiny transform) and draws its strokes in sequence (--o = its turn)
+     .f0   text / dashed things that fade in instead of drawing
+     fills: .cr .pa .c2 .to .mg .bg .lg .uv .ol .bt .lc .pn .ik  (+ darker tones .dto .dmg .dbg .dc2 .dlc)
+     strokes: .w paper line  .gr graphite  .lt faint  .s-to .s-lg .s-pa coloured line  .dsh dashed guide
+
+   --shd (the shadow colour) is set by whatever holds the art: a frame sets it from its own colour.
+   Motion: html.js hides the art until data-dev="1" is set on the <svg>; reduced / paused motion shows it all, drawn.
+   ========================================================================== */
+
+.pm-art {
+  --ol: var(--ink);
+  --shd: color-mix(in srgb, var(--ink) 38%, transparent);
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.pm-art .o {
+  fill: var(--f, none);
+  stroke: var(--ol);
+  stroke-width: var(--sw, 4);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.pm-art .t { --sw: 2.6; }
+.pm-art .x { --sw: 5.6; }
+.pm-art .n { stroke: none; }
+.pm-art .sh { fill: var(--shd); stroke: none; }
+.pm-art .tp { --f: color-mix(in srgb, var(--butter) 80%, transparent); }   /* a strip of tape */
+.pm-art .w { stroke: var(--paper); }          /* a white-ish line (highlights, stitches) */
+.pm-art .lt { stroke-opacity: 0.3; }          /* a faint ruled line */
+.pm-art .gr { stroke: var(--ink-3); }         /* graphite */
+.pm-art .s-to { stroke: var(--tomato); }
+.pm-art .s-lg { stroke: var(--lagoon); }
+.pm-art .s-pa { stroke: var(--paper); }
+.pm-art .dsh { stroke-dasharray: 5 7; }       /* dashed guides (selections): they fade in with .f0 instead of drawing on */
+html.js .pm-art[data-dev='1'] .o.dsh { stroke-dasharray: 5 7; }
+.pm-art .nofill { fill: none; }
+
+/* flat fills */
+.pm-art .cr { --f: var(--cream); }
+.pm-art .pa { --f: var(--paper); }
+.pm-art .c2 { --f: var(--cream-2); }
+.pm-art .to { --f: var(--tomato); }
+.pm-art .mg { --f: var(--marigold); }
+.pm-art .bg { --f: var(--bubblegum); }
+.pm-art .lg { --f: var(--lagoon); }
+.pm-art .uv { --f: var(--ultraviolet); }
+.pm-art .ol { --f: var(--olive); }
+.pm-art .bt { --f: var(--butter); }
+.pm-art .lc { --f: var(--lilac); }
+.pm-art .pn { --f: var(--pine); }
+.pm-art .ik { --f: var(--ink); }
+/* darker tones of the same colours (the shaded side of a thing) */
+.pm-art .dto { --f: color-mix(in srgb, var(--tomato) 70%, var(--ink)); }
+.pm-art .dmg { --f: color-mix(in srgb, var(--marigold) 74%, var(--ink)); }
+.pm-art .dbg { --f: color-mix(in srgb, var(--bubblegum) 72%, var(--ink)); }
+.pm-art .dc2 { --f: color-mix(in srgb, var(--cream-2) 78%, var(--ink)); }
+.pm-art .dlc { --f: color-mix(in srgb, var(--lilac) 74%, var(--ink)); }
+
+.pm-art text { fill: var(--ink); stroke: none; }
+.pm-art .hand { font-family: var(--font-hand); font-size: 30px; }
+.pm-art .lab { font-family: var(--font-label); font-weight: 700; font-size: 13px; text-transform: uppercase; font-synthesis: none; }
+.pm-art .disp { font-family: var(--font-display); font-weight: 900; font-variation-settings: 'SOFT' 100, 'WONK' 1; }
+
+
+/* ---- draw-on ---------------------------------------------------------------------------------------------------------
+   data-dev="0": latent (nothing drawn). data-dev="1": developing, every object lands and draws its strokes in order.
+   --t0 = when the first object starts, --o = the object's turn (150ms apart), --i = a stroke's turn inside an object. */
+/* latent: the film has not seen the light yet. What sits in the emulsion is a faint ghost of the picture, line work only, in the
+   frame's own colour; development wipes it and draws the real thing. (Frames outside the light show it dimmed.) */
+html.js .pm-art[data-dev='0'] .o:not(.n) {
+  stroke: var(--c, var(--cream));
+  stroke-opacity: 0.42;
+  stroke-width: 2.4px !important;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+  fill: none;
+}
+html.js .pm-art[data-dev='0'] .sh,
+html.js .pm-art[data-dev='0'] .o.n,
+html.js .pm-art[data-dev='0'] :is(circle, text):not(.o) { display: none; }
+
+html.js .pm-art[data-dev='1'] .ob {
+  animation: pm-art-pop 0.55s var(--ease-out) both;
+  animation-delay: calc(var(--t0, 0.3s) + var(--o, 0) * 150ms);
+}
+html.js .pm-art[data-dev='1'] .o {
+  stroke-dasharray: 1 2;
+  animation:
+    pm-art-draw 0.8s cubic-bezier(0.5, 0, 0.2, 1) both,
+    pm-art-fill 0.4s ease both;
+  animation-delay:
+    calc(var(--t0, 0.3s) + var(--o, 0) * 150ms + var(--i, 0) * 45ms),
+    calc(var(--t0, 0.3s) + var(--o, 0) * 150ms + var(--i, 0) * 45ms + 0.45s);
+}
+html.js .pm-art[data-dev='1'] .f0 {
+  animation: pm-art-fade 0.45s ease both;
+  animation-delay: calc(var(--t0, 0.3s) + var(--o, 0) * 150ms + 0.55s);
+}
+/* back in the light after being developed: the objects settle again (the strokes stay drawn) */
+html.js .pm-art[data-dev='1'][data-bump='a'] .ob { animation: pm-art-settle-a 0.6s var(--ease-out) both; animation-delay: calc(var(--o, 0) * 45ms); }
+html.js .pm-art[data-dev='1'][data-bump='b'] .ob { animation: pm-art-settle-b 0.6s var(--ease-out) both; animation-delay: calc(var(--o, 0) * 45ms); }
+html.js .pm-art[data-dev='1'][data-bump] .o { animation: none; stroke-dashoffset: 0; fill-opacity: 1; }
+html.js .pm-art[data-dev='1'][data-bump] .f0 { animation: none; opacity: 1; }
+@keyframes pm-art-settle-a { from { transform: translateY(9px) rotate(-1.1deg) scale(0.985); } to { transform: none; } }
+@keyframes pm-art-settle-b { from { transform: translateY(9px) rotate(-1.1deg) scale(0.985); } to { transform: none; } }
+
+/* a few strokes inside an object come a beat after the first ones */
+.pm-art .ob > :nth-child(2) { --i: 1; }
+.pm-art .ob > :nth-child(3) { --i: 2; }
+.pm-art .ob > :nth-child(4) { --i: 3; }
+.pm-art .ob > :nth-child(5) { --i: 4; }
+.pm-art .ob > :nth-child(6) { --i: 5; }
+.pm-art .ob > :nth-child(n + 7) { --i: 6; }
+
+.pm-art .ob { transform-box: fill-box; transform-origin: 50% 60%; }
+
+@keyframes pm-art-draw { from { stroke-dashoffset: 1.1; } to { stroke-dashoffset: 0; } }
+@keyframes pm-art-fill { from { fill-opacity: 0; } to { fill-opacity: 1; } }
+@keyframes pm-art-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pm-art-pop {
+  from { opacity: 0; transform: translateY(12px) rotate(-1.6deg) scale(0.965); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---- STILL: reduced motion or "Pause motion": every scene is fully drawn, nothing moves --------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html.js .pm-art .ob,
+  html.js .pm-art .f0 { opacity: 1 !important; animation: none !important; transform: none; }
+  html.js .pm-art .o { animation: none !important; stroke-dashoffset: 0 !important; fill-opacity: 1 !important; }
+}
+html[data-motion='paused'].js .pm-art .ob,
+html[data-motion='paused'].js .pm-art .f0 { opacity: 1 !important; animation: none !important; transform: none; }
+html[data-motion='paused'].js .pm-art .o { animation: none !important; stroke-dashoffset: 0 !important; fill-opacity: 1 !important; }
+
+/* ---- ambient loops: one small thing per scene, only on the frame that is in the light, only while the section is on screen.
+   They carry .pm-ambient, so base.css stops them for reduced motion and for "Pause motion". ----------------------------------- */
+.pm-art .lp { transform-box: fill-box; transform-origin: 50% 50%; }
+.pm-proc-bench[data-live] .pm-proc-slot[data-active] .lp-sway { transform-origin: 36% 34%; animation: pm-lp-sway 5.5s ease-in-out infinite; }
+.pm-proc-bench[data-live] .pm-proc-slot[data-active] .lp-wig { transform-origin: 8% 92%; animation: pm-lp-wig 1.7s ease-in-out infinite; }
+.pm-proc-bench[data-live] .pm-proc-slot[data-active] .lp-nudge { animation: pm-lp-nudge 4.2s ease-in-out infinite; }
+.pm-proc-bench[data-live] .pm-proc-slot[data-active] .lp-twink { animation: pm-lp-twink 3.2s ease-in-out infinite; }
+.pm-proc-bench[data-live] .pm-proc-slot[data-active] .lp-pulse { animation: pm-lp-pulse 2.6s ease-in-out infinite; }
+.pm-proc-bench[data-live] .pm-proc-slot[data-active] .lp-swing { transform-origin: 34% 4%; animation: pm-lp-swing 4.4s ease-in-out infinite; }
+@keyframes pm-lp-sway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(5deg) translate(4px, 3px); } }
+@keyframes pm-lp-wig { 0%, 100% { transform: translate(0, 0) rotate(0); } 35% { transform: translate(-4px, 3px) rotate(-2deg); } 70% { transform: translate(3px, -2px) rotate(1.5deg); } }
+@keyframes pm-lp-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-6px); } }
+@keyframes pm-lp-twink { 0%, 100% { transform: scale(0.88) rotate(0); } 50% { transform: scale(1.12) rotate(18deg); } }
+@keyframes pm-lp-pulse { 0%, 100% { transform: scale(0.92); } 50% { transform: scale(1.1); } }
+@keyframes pm-lp-swing { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+
+/* scenes take the frame's own colour for their shadows: a darker tone of the field they lie on */
+.pm-scene { --shd: color-mix(in srgb, var(--c, var(--marigold)) 54%, var(--ink)); }

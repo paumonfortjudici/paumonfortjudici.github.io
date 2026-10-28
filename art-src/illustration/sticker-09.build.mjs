@@ -1,4 +1,4 @@
-// sticker-09 "Headphones on, world off" - the dancer (accent: lime #C2ED6B).
+// sticker-09 "Headphones on, world off" - the dancer (accent: lime #C5EB7C).
 //
 //   node art-src/illustration/sticker-09.build.mjs            -> art-src/illustration/sticker-09.svg
 //   FX=0 node art-src/illustration/sticker-09.build.mjs x.svg -> fast draft without filters
@@ -21,7 +21,7 @@ const OUT = process.argv[2] || path.join(here, 'sticker-09.svg')
 const st = createSticker({
   title: 'Headphones on, world off - doodle sticker 09',
   desc: 'A dancer lost in the music: eyes shut and laughing, headphones on, ponytail whipping, one foot on tiptoe and the other leg kicked high in parachute trousers and an oversized track jacket. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
-  accent: '#C2ED6B',
+  accent: '#C5EB7C',
   seed: 37,
   root: process.env.ROOT || 'translate(29,-71)',
 })

@@ -24,6 +24,14 @@ export function isTypingTarget(target: EventTarget | null): boolean {
   return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT'
 }
 
+const NON_TEXT_INPUT = new Set(['range', 'checkbox', 'radio', 'button', 'submit', 'reset', 'image', 'file', 'color'])
+
+/** Text-entry fields only: a focused range slider, checkbox or button is not typing, so `[` and `]` may still hop between folders. */
+export function isTextEntryTarget(target: EventTarget | null): boolean {
+  if (!isTypingTarget(target)) return false
+  return !(target instanceof HTMLInputElement && NON_TEXT_INPUT.has(target.type))
+}
+
 const matches = (event: KeyboardEvent, keys: string[]): boolean =>
   keys.some((key) => event.key === key || (key.length === 1 && event.key.toLowerCase() === key.toLowerCase()))
 

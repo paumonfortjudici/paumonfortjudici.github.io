@@ -1,0 +1,225 @@
+/* ==========================================================================
+   plate 7 "Website": a browser window (the brand's own look: Night outline, solid Night shadow) touring the captured live site.
+   The page is one tall stack of captures; a stop is a translateY, so it glides on the compositor. Only transform and opacity change.
+   ========================================================================== */
+
+.w-plana-site {
+  container: w-plana-site / inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 2.2cqw, 1.5rem);
+  padding: clamp(0.9rem, 3cqw, 1.8rem);
+  padding-bottom: clamp(0.8rem, 2cqw, 1.3rem);
+  background: var(--holm);
+  color: var(--paper);
+}
+
+.w-plana-browser {
+  --y: 0%;
+
+  overflow: hidden;
+  border: var(--outline) solid var(--night);
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 7px 8px 0 var(--night);
+}
+
+.w-plana-browser__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.5rem 0.8rem;
+  border-bottom: var(--outline) solid var(--night);
+  background: var(--paper);
+}
+
+.w-plana-browser__dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.w-plana-browser__dots i {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: var(--wheat);
+}
+
+.w-plana-browser__dots i:nth-child(2) {
+  background: var(--sunrise);
+}
+
+.w-plana-browser__dots i:nth-child(3) {
+  background: var(--poppy);
+}
+
+.w-plana-browser__url {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.12rem 0.7rem;
+  border: 2px solid var(--night);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--night);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+.w-plana-browser__view {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--vw) / var(--vh);
+  background: var(--paper);
+  cursor: pointer;
+}
+
+/* the sticky header of the real site stays put while the page glides under it */
+.w-plana-browser__nav {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  border-bottom: 1px solid rgb(24 24 27 / 0.9);
+  pointer-events: none;
+}
+
+.w-plana-browser__nav img,
+.w-plana-seg img {
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.w-plana-browser__page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateY(calc(var(--y) * -1));
+  transition: transform 1.25s cubic-bezier(0.62, 0, 0.2, 1);
+}
+
+.w-plana-seg {
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* the six captured states of the process section, one on top of the other; the current one is visible (its sticky header is cropped away by the offset set inline) */
+.w-plana-seg--scenes {
+  background: var(--wheat);
+}
+
+.w-plana-seg--scenes img {
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.w-plana-seg--scenes img[data-on='true'] {
+  opacity: 1;
+}
+
+.w-plana-seg--closing {
+  background: var(--poppy);
+}
+
+.w-plana-seg--closing img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+/* ---- controls --------------------------------------------------------------------------------------------------------------- */
+.w-plana-site__controls {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.w-plana-site__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.4rem 1.1rem;
+}
+
+.w-plana-site__stops {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.2rem 0.1rem;
+}
+
+.w-plana-site__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.2rem;
+  min-height: 3.1em;
+}
+
+.w-plana-site__caption p {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--paper);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.w-plana-site__hours {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-plana-site__hours button {
+  min-width: 2.9rem;
+  min-height: 2.2rem;
+  padding: 0.2rem 0.5rem;
+  border: 2px solid var(--wheat);
+  border-radius: 8px;
+  color: var(--wheat);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+}
+
+.w-plana-site__hours button[aria-pressed='true'] {
+  background: var(--wheat);
+  color: var(--night);
+}
+
+.w-plana-site__hours button:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--night);
+}
+
+@media (pointer: coarse) {
+  .w-plana-site__hours button {
+    min-height: 2.75rem;
+    min-width: 3.2rem;
+  }
+}
+
+/* ---- still: the tour cuts instead of gliding ------------------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .w-plana-browser__page,
+  .w-plana-seg--scenes img {
+    transition: none;
+  }
+}
+html[data-motion='paused'] .w-plana-browser__page,
+html[data-motion='paused'] .w-plana-seg--scenes img {
+  transition: none;
+}

@@ -17,7 +17,7 @@ const linkOf = (slug: string): string => workBySlug(slug)?.links?.[0]?.href ?? '
 
 // ---- Meta / SEO ----------------------------------------------------------------------------------------------------
 export const META = {
-  title: 'Pau Monfort — Graphic designer, illustrator & front-end developer',
+  title: 'Pau Monfort · Graphic designer, illustrator & front-end developer',
   description:
     'Portfolio of Pau Monfort Judici: branding, editorial design, illustration and web. Based in Barcelona, worked in Sydney. Open for freelance projects.',
   lang: 'en',
@@ -101,8 +101,8 @@ export const COVER = {
 export const CATALOG = {
   strokeWord: 'CATALOG',
   ghost: '(10)',
-  sub: 'Everything in the cabinet, indexed. Search by name, tool or kind of work — or just open a folder.',
-  searchPlaceholder: 'Search the catalog — try “poster”, “magazine” or “logo”',
+  sub: 'Everything in the cabinet, indexed. Search by name, tool or kind of work, or just open a folder.',
+  searchPlaceholder: 'Search the catalog: try “poster”, “magazine” or “logo”',
   /** added: accessible name of the search field */
   searchLabel: 'Search the catalog',
   empty: (query: string): string => `Nothing filed under “${query}” yet. Try “logo”, “book” or “poster”.`,
@@ -137,7 +137,7 @@ export const ABOUT = {
   greeting: 'Hi, I’m Pau!',
   greetingSmall: 'Pau Monfort Judici',
   paragraph:
-    'I’m a graphic designer from Cardedeu, near Barcelona. I started out drawing posters as a kid and never really stopped — now I design brands, lay out magazines, art-direct illustrated books and build the websites that go with them. In 2025–26 I worked in Sydney as a front-end developer, which taught me to treat design as something people actually click, scroll and live in.',
+    'I’m a graphic designer from Cardedeu, near Barcelona. I started out drawing posters as a kid and never really stopped. Now I design brands, lay out magazines, art-direct illustrated books and build the websites that go with them. In 2025–26 I worked in Sydney as a front-end developer, which taught me to treat design as something people actually click, scroll and live in.',
   /** handwritten hint next to the animated portrait */
   videoHint: 'move your pointer to bring him to life',
   /** ART_DIRECTION 12.1: the portrait video is an AI-generated stylised likeness, never footage */
@@ -236,7 +236,7 @@ export const PROCESS = {
     {
       n: 1,
       title: 'COLLECT',
-      body: 'I start by listening and hoarding: the story behind the brand, who it speaks to, what is already on the shelf. Pinterest boards, screenshots, objects on my desk — a reference wall until a one-line promise appears.',
+      body: 'I start by listening and hoarding: the story behind the brand, who it speaks to, what is already on the shelf. Pinterest boards, screenshots, objects on my desk: a reference wall until a one-line promise appears.',
       chips: ['Pinterest boards', 'Reference wall', 'One-line promise'],
     },
     {
@@ -248,7 +248,7 @@ export const PROCESS = {
     {
       n: 3,
       title: 'MAKE',
-      body: 'The sketch gets built properly: vectors in Illustrator, layouts in InDesign, retouching in Photoshop, a quick sculpt in Nomad when a 3D reference helps, and AI tools to explore variations faster — always art-directed and finished by hand.',
+      body: 'The sketch gets built properly: vectors in Illustrator, layouts in InDesign, retouching in Photoshop, a quick sculpt in Nomad when a 3D reference helps, and AI tools to explore variations faster, always art-directed and finished by hand.',
       chips: ['Illustrator', 'InDesign', 'Photoshop', 'Nomad Sculpt', 'AI-assisted exploration'],
     },
     {

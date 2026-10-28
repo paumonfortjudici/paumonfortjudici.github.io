@@ -1,0 +1,2869 @@
+/* ==========================================================================
+   World 7: Somia, "Storefront"   (all classes are w-somia-*)
+   Somia's own look on top of the lagoon folder: black / ink, paper beige, white, light grey, periwinkle, plus the sage and
+   concrete of the photography. Headlines: Cormorant (look-alike of PP Hatton, which is commercial and never self-hosted);
+   text: Fira Sans 300 / 400.
+   Parts: front (fascia, awning, wall, window, riser) / tape / brand strip (shelves) / gallery (frames, lightbox) / counter.
+   Motion: entrances exist only under html.js; reduced motion and "Pause motion" show everything at once, the tour does not
+   autoplay (see Showcase.tsx), the ring does not turn (pm-ambient).
+   ========================================================================== */
+
+/* the lightbox is portalled outside .w-somia (into the folder body), so it needs the same variables */
+.w-somia,
+.w-somia-lb {
+  --sm-black: #040404;
+  --sm-ink: #1c1c1c;
+  --sm-paper: #f5f4f1;
+  --sm-white: #ffffff;
+  --sm-grey: #efefef;
+  --sm-peri: #bfd2e8;
+  --sm-hair: #cfcfcf;
+  --sm-sage: #a9aa98;
+  --sm-sage-dk: #6c7161;
+  --sm-sage-hi: #c6c7b6;
+  --sm-sage-lo: #8c8f7f;
+  --sm-concrete: #8d8780;
+  --sm-chalk: #f2f0e9;
+  --sm-edge: rgba(23, 16, 27, 0.55);
+  --head: 'Cormorant Variable', 'Cormorant', Georgia, 'Times New Roman', serif;
+  --text: 'Fira Sans', var(--font-body), Arial, 'Helvetica Neue', sans-serif;
+}
+
+.w-somia {
+  --font-display: var(--head);
+  --font-label: var(--text);
+  --w-bg: var(--sm-paper);
+  /* wide screens: the brand strip, the wall and the counter keep their 1440 layout and grow with the screen */
+  --zoom: 1;
+
+  position: relative;
+  isolation: isolate;
+  min-height: 100%;
+  overflow-x: clip;
+  background: var(--sm-paper);
+  color: var(--sm-ink);
+  font-family: var(--text);
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  font-variant-numeric: normal;
+}
+
+/* hidden until the faces are in: no reflow in front of the visitor (only under html.js; reduced motion shows it at once).
+   Until then the folder's own colour stays under the world, so the folder that has just opened does not turn into a blank page */
+html.js .w-somia[data-ready='false'] > * {
+  opacity: 0;
+}
+.w-somia > * {
+  transition: opacity 0.3s ease;
+}
+.w-somia::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--w-color, var(--lagoon));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease-out 0.1s;
+}
+html.js .w-somia[data-ready='false']::before {
+  opacity: 1;
+  transition: none;
+}
+
+@media (min-width: 1680px) {
+  .w-somia {
+    --zoom: 1.12;
+  }
+}
+@media (min-width: 1880px) {
+  .w-somia {
+    --zoom: 1.22;
+  }
+}
+@media (min-width: 2300px) {
+  .w-somia {
+    --zoom: 1.45;
+  }
+}
+
+/* touch: no double-tap-zoom delay on the controls; the objects have their own pressed states, so no grey tap flash */
+.w-somia button,
+.w-somia label,
+.w-somia-lb button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* resets at zero specificity, so every w-somia-* class rule below can set its own margins and padding */
+:where(.w-somia) :where(p, h3, h4, figure, dl, dd, ul, fieldset) {
+  margin: 0;
+  padding: 0;
+}
+.w-somia ul {
+  list-style: none;
+}
+.w-somia fieldset {
+  min-width: 0;
+  border: 0;
+}
+.w-somia h3,
+.w-somia h4 {
+  font-family: var(--head);
+  font-weight: 300;
+  font-variation-settings: normal;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+.w-somia b {
+  font-weight: 500;
+}
+.w-somia img {
+  max-width: 100%;
+}
+
+/* radio groups: the input is visually hidden (pm-sr), the label is the object; the ring goes on the object */
+.w-somia label:has(input:focus-visible) {
+  outline: 2px solid var(--focus-in);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--focus-out);
+}
+.w-somia .w-somia-tag:has(input:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+.w-somia .w-somia-tag:has(input:focus-visible) .w-somia-tag__card {
+  outline: 2px solid var(--focus-in);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--focus-out);
+}
+
+/* ---- Somia's own buttons: rectangles, 2px radius, uppercase 15px, .05em tracking, with a paper edge ------------------- */
+.w-somia-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  font-family: var(--text);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.14s var(--ease-out);
+}
+.w-somia-btn__icon {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+}
+.w-somia-btn--solid {
+  border-color: var(--sm-white);
+  background: var(--sm-white);
+  color: var(--sm-black);
+  box-shadow: 0 3px 0 #a7a49d;
+}
+.w-somia-btn--ghost {
+  border-color: rgba(245, 244, 241, 0.7);
+  background: transparent;
+  color: var(--sm-paper);
+}
+.w-somia-btn--light {
+  border-color: rgba(245, 244, 241, 0.75);
+  background: transparent;
+  color: var(--sm-paper);
+}
+@media (hover: hover) {
+  .w-somia-btn--solid:hover {
+    transform: translateY(-1px);
+  }
+  .w-somia-btn--ghost:hover,
+  .w-somia-btn--light:hover {
+    background: var(--sm-paper);
+    color: var(--sm-black);
+  }
+}
+.w-somia-btn:active {
+  transform: translateY(2px);
+}
+.w-somia-btn--solid:active {
+  box-shadow: 0 1px 0 #a7a49d;
+}
+/* these objects carry their own edge shadow, which would swallow the global two-tone ring: put the ring back next to it */
+.w-somia-btn--solid:focus-visible {
+  box-shadow:
+    0 3px 0 #a7a49d,
+    0 0 0 4px var(--focus-out);
+}
+.w-somia-btn--solid:focus-visible:active {
+  box-shadow:
+    0 1px 0 #a7a49d,
+    0 0 0 4px var(--focus-out);
+}
+
+/* label-maker strip: black tape, white capitals (bay titles) */
+.w-somia .w-somia-dymo {
+  display: inline-block;
+  margin: 0;
+  padding: 5px 11px 4px;
+  border-radius: 2px;
+  background: var(--sm-black);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  color: var(--sm-white);
+  font-family: var(--text);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transform: rotate(-0.8deg);
+}
+/* ==========================================================================
+   FRONT: fascia, awning, wall, window
+   ========================================================================== */
+.w-somia-front {
+  container: somia-front / inline-size;
+  position: relative;
+}
+
+/* the folder's own colour as the painted fascia board: the tab above joins it */
+.w-somia-fascia {
+  height: 14px;
+  background-color: var(--w-color, var(--lagoon));
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 -2px 0 rgba(23, 16, 27, 0.22);
+}
+
+/* -- awning: stripes with their own scalloped ends -- */
+.w-somia-awning {
+  --n: 27;
+  --slope: clamp(30px, min(3.7cqw, 5.2svh), 72px);
+  --val: clamp(12px, 1.3cqw, 24px);
+  --seam: 5px;
+  position: relative;
+  z-index: 3;
+  filter: drop-shadow(0 3px 0 rgba(23, 16, 27, 0.4)) drop-shadow(0 13px 10px rgba(23, 16, 27, 0.3));
+}
+.w-somia-awning__row {
+  display: flex;
+}
+.w-somia-stripe {
+  --sc: calc(50cqw / var(--n));
+  --seam-c: #3d3d3d;
+  --valance-tone: rgba(255, 255, 255, 0.07);
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  height: calc(var(--slope) + var(--seam) + var(--val) + var(--sc));
+  background: var(--sm-black);
+  border-radius: 0 0 50% 50% / 0 0 var(--sc) var(--sc);
+}
+.w-somia-stripe:nth-child(even) {
+  --seam-c: #d2cfc7;
+  --valance-tone: rgba(0, 0, 0, 0.07);
+  background: var(--sm-paper);
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.12);
+}
+.w-somia-stripe::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--slope) + var(--seam)) 0 0;
+  background: var(--valance-tone);
+  border-radius: inherit;
+}
+.w-somia-stripe::after {
+  content: '';
+  position: absolute;
+  top: var(--slope);
+  right: 0;
+  left: 0;
+  height: var(--seam);
+  background: var(--seam-c);
+}
+@container somia-front (max-width: 1100px) {
+  .w-somia-awning {
+    --n: 19;
+  }
+  .w-somia-stripe:nth-child(n + 20) {
+    display: none;
+  }
+}
+@container somia-front (max-width: 640px) {
+  .w-somia-awning {
+    --n: 11;
+  }
+  .w-somia-stripe:nth-child(n + 12) {
+    display: none;
+  }
+}
+/* the awning rolls down when the world opens */
+html.js .w-somia-awning[data-ready='false'] {
+  clip-path: inset(0 0 100% 0);
+}
+html.js .w-somia-awning[data-ready='true'] {
+  animation: w-somia-unroll 0.95s var(--ease-out) both;
+}
+@keyframes w-somia-unroll {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 -70px 0);
+  }
+}
+
+/* -- the wall under the awning -- */
+.w-somia-facade {
+  /* the window never gets taller than the screen: the tab strip (44px) plus the awning, wall padding, frame, sill and kerb,
+     which grow with the width (measured: 344px at 1440 wide, 395px at 1920 wide = 191px + 10.6cqw). --sr = glass height / width
+     (the head row is 8.6 % of the width, the stage 50 %). --win = the widest the window may be */
+  --sr: 0.598;
+  --fit: calc((100svh - 44px - 205px - 10.6cqw) / var(--sr));
+  --win: max(600px, calc(var(--fit) + 24px));
+  /* on a wide screen the shopfront gets its stone pilasters (none under 1500px): the wall is framed, not stretched */
+  --pil: clamp(0px, calc((100cqw - 1500px) * 0.32), 150px);
+  position: relative;
+  display: grid;
+  /* the wall column is 21 % of the width, but never wider than a third of the window (its height follows its width) */
+  grid-template-columns: clamp(250px, min(21cqw, calc(var(--win) * 0.345)), 410px) minmax(0, var(--win));
+  /* the wall column and the window stand together in the middle of the wall, the pilasters (wide screens) frame the pair */
+  justify-content: center;
+  gap: clamp(18px, 2cqw, 40px);
+  align-items: start;
+  padding: clamp(18px, 1.7cqw, 34px) calc(var(--pil) + clamp(14px, 2.4cqw, 48px)) clamp(22px, 2.2cqw, 44px);
+  background-color: var(--sm-sage);
+  background-image: var(--pm-grain);
+}
+.w-somia-facade::before,
+.w-somia-facade::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--pil);
+  background-color: var(--sm-concrete);
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16) 0 2px, transparent 2px calc(100% - 4px), rgba(0, 0, 0, 0.24) calc(100% - 4px)),
+    repeating-linear-gradient(180deg, transparent 0 calc(6cqw - 2px), rgba(0, 0, 0, 0.17) calc(6cqw - 2px) 6cqw),
+    var(--pm-grain);
+  pointer-events: none;
+}
+.w-somia-facade::before {
+  left: 0;
+  box-shadow: 6px 0 12px -5px rgba(23, 16, 27, 0.5);
+}
+.w-somia-facade::after {
+  right: 0;
+  box-shadow: -6px 0 12px -5px rgba(23, 16, 27, 0.5);
+}
+.w-somia-wall {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.1cqw, 20px);
+  min-width: 0;
+}
+
+/* sign plate: an enamel plate with the wordmark, four screws */
+.w-somia-sign {
+  display: grid;
+  place-items: center;
+  min-height: clamp(70px, 6.2cqw, 110px);
+  padding: 14px 24px;
+  border-radius: 3px;
+  background-color: var(--sm-black);
+  background-image:
+    radial-gradient(circle at 12px 12px, #77746d 0 2.8px, transparent 2.8px), radial-gradient(circle at calc(100% - 12px) 12px, #77746d 0 2.8px, transparent 2.8px),
+    radial-gradient(circle at 12px calc(100% - 12px), #77746d 0 2.8px, transparent 2.8px), radial-gradient(circle at calc(100% - 12px) calc(100% - 12px), #77746d 0 2.8px, transparent 2.8px);
+  box-shadow:
+    inset 0 0 0 6px var(--sm-black),
+    inset 0 0 0 7.5px rgba(245, 244, 241, 0.5),
+    0 3px 0 #000,
+    0 16px 16px -10px var(--sm-edge);
+}
+.w-somia-sign img {
+  width: clamp(110px, 10.4cqw, 170px);
+  height: auto;
+}
+
+/* chalk panel: a raised wall panel with the motto in chalk, a paper label under it */
+.w-somia-panel {
+  position: relative;
+}
+.w-somia-panel__field {
+  padding: clamp(10px, 1cqw, 18px) clamp(12px, 1.4cqw, 24px);
+  border: clamp(7px, 0.8cqw, 13px) solid;
+  border-color: var(--sm-sage-hi) var(--sm-sage-lo) var(--sm-sage-lo) var(--sm-sage-hi);
+  border-radius: 2px;
+  background-color: var(--sm-sage-dk);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 4px 5px 12px rgba(0, 0, 0, 0.4),
+    0 2px 0 rgba(0, 0, 0, 0.2),
+    0 16px 16px -12px var(--sm-edge);
+}
+.w-somia-chalk {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.w-somia-chalk__ink {
+  fill: none;
+  stroke: var(--sm-chalk);
+  stroke-width: 10.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.w-somia-chalk__s {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+html.js .w-somia-chalk[data-ready='false'] .w-somia-chalk__s {
+  stroke-dashoffset: 1;
+}
+html.js .w-somia-chalk[data-ready='true'] .w-somia-chalk__s {
+  animation: w-somia-chalk 0.26s cubic-bezier(0.5, 0, 0.3, 1) both;
+  animation-delay: calc(450ms + var(--i, 0) * 62ms);
+}
+@keyframes w-somia-chalk {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.w-somia-panel__tag {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: min(100%, 17.5rem);
+  margin: -10px 0 0 auto;
+  padding: 10px 14px 11px;
+  background: var(--sm-paper);
+  border-radius: 1px;
+  box-shadow:
+    0 2px 0 #cfccc3,
+    0 12px 12px -9px var(--sm-edge);
+  transform: rotate(0.9deg);
+}
+.w-somia-panel__es {
+  font-family: var(--head);
+  font-size: 1.45rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+.w-somia-panel__en {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+.w-somia-panel__note {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* the notice: paper held up with the portfolio's lagoon tape */
+.w-somia-notice {
+  position: relative;
+  padding: 22px 16px 12px;
+  border-radius: 1px;
+  background: var(--sm-white);
+  box-shadow:
+    0 3px 0 #d6d3cb,
+    0 16px 16px -11px var(--sm-edge);
+  transform: rotate(-1deg);
+}
+.w-somia-notice__lead {
+  font-family: var(--head);
+  font-size: clamp(1.25rem, 1.45cqw, 1.7rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+.w-somia-notice__body {
+  margin-top: 0.55em;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.w-somia-notice__short {
+  display: none;
+}
+
+/* the kerb: the building's concrete base, where the wall meets the shop floor */
+.w-somia-kerb {
+  height: clamp(20px, 2.2cqw, 32px);
+  background-color: var(--sm-concrete);
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 calc(12.5cqw - 1px), rgba(0, 0, 0, 0.16) calc(12.5cqw - 1px) 12.5cqw),
+    var(--pm-grain);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.24),
+    0 12px 14px -8px rgba(23, 16, 27, 0.4);
+}
+
+/* -- the window and its controls -- */
+.w-somia-showcase {
+  /* --fit / --sr / --win live on the facade: the window never gets taller than the screen, and the wall column follows it */
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: var(--win);
+  min-width: 0;
+  margin-inline: auto;
+}
+.w-somia-window {
+  container: somia-window / inline-size;
+  position: relative;
+  padding: 12px 12px 0;
+  border-radius: 3px;
+  /* a painted wooden frame in the shop's paper white */
+  background-color: var(--sm-paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 0 0 1px #d6d3cb,
+    0 3px 0 #bdb9af,
+    0 22px 24px -14px var(--sm-edge);
+}
+.w-somia-glass {
+  --plinth: clamp(34px, 5.2cqw, 80px);
+  --hh: clamp(66px, 8.6cqw, 100px);
+  position: relative;
+  overflow: hidden;
+  border-radius: 1px;
+  /* the display niche: dark glass over a flat back wall (hard-edged bands, no blends); the lamp is a flat cone, see ::after */
+  background: linear-gradient(#2a2826 0 62%, #1a1918 62% 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.6),
+    inset 0 3px 8px rgba(0, 0, 0, 0.55);
+}
+/* the shop lamp over the rail: a flat, hard-edged cone of warm light falling on the window (behind the devices) */
+.w-somia-glass::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(255, 238, 205, 0.06);
+  clip-path: polygon(34% 0, 66% 0, 100% 100%, 0 100%);
+  pointer-events: none;
+}
+.w-somia-stage {
+  position: relative;
+  height: calc(0.5 * 100cqw);
+}
+.w-somia-plinth {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  height: var(--plinth);
+  background-color: var(--sm-concrete);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.24),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* -- the head of the window: hang tags on the left, the page switcher on the right -- */
+.w-somia-head {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  height: var(--hh);
+  padding: 0 clamp(12px, 2.4cqw, 36px);
+}
+/* the rail along the top of the glass: brushed metal, the tags hang from it */
+.w-somia-rail {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 5;
+  height: 6px;
+  /* brushed steel as three flat bands */
+  background: linear-gradient(#8c8a85 0 2px, #5a5855 2px 4px, #3a3937 4px);
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.45);
+}
+.w-somia-tags {
+  display: flex;
+  gap: clamp(6px, 1cqw, 14px);
+  height: 100%;
+}
+.w-somia-tag {
+  --drop: 0px;
+  position: relative;
+  display: block;
+  padding-top: clamp(20px, 2.5cqw, 32px);
+  transform-origin: 50% 0;
+  cursor: pointer;
+  transition: transform 0.55s var(--ease-spring);
+}
+.w-somia-tag[data-on='true'] {
+  --drop: clamp(6px, 0.9cqw, 12px);
+}
+.w-somia-tag::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1.5px;
+  height: clamp(36px, 4.4cqw, 56px);
+  background: #d9d5cb;
+  transform: translateX(-50%);
+}
+.w-somia-tag__card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: clamp(70px, 8cqw, 100px);
+  height: clamp(36px, 3.8cqw, 48px);
+  padding: 10px 14px 0;
+  white-space: nowrap;
+  border: 1px solid var(--sm-hair);
+  border-radius: 2px;
+  background: var(--sm-white);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.16),
+    0 9px 10px -6px rgba(0, 0, 0, 0.4);
+  color: var(--sm-ink);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+  transform: translateY(var(--drop));
+  transition: transform 0.4s var(--ease-spring);
+}
+.w-somia-tag__card::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: var(--sm-paper);
+  box-shadow: inset 0 0 0 1.5px var(--sm-ink);
+}
+.w-somia-tag[data-on='true'] .w-somia-tag__card {
+  border-color: var(--sm-peri);
+  background: var(--sm-peri);
+  color: var(--sm-black);
+}
+.w-somia-tag[data-on='true'] .w-somia-tag__card::before {
+  background: #2a2826;
+  box-shadow: inset 0 0 0 1.5px var(--sm-black);
+}
+@media (hover: hover) {
+  .w-somia-tag:not([data-on='true']):hover {
+    transform: rotate(3deg);
+  }
+  .w-somia-tag:not([data-on='true']):nth-of-type(even):hover {
+    transform: rotate(-3deg);
+  }
+}
+
+/* -- page switcher: the shop's own underlined navigation -- */
+.w-somia-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  min-width: 0;
+  padding-top: clamp(12px, 1.5cqw, 20px);
+}
+.w-somia-pages {
+  display: flex;
+  gap: clamp(10px, 1.8cqw, 26px);
+}
+.w-somia-page {
+  position: relative;
+  display: block;
+  padding: 10px 2px 7px;
+  border-bottom: 1px solid transparent;
+  color: var(--sm-paper);
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  cursor: pointer;
+}
+/* the real address of the page on show, small, under the switcher */
+.w-somia-url {
+  max-width: 40cqw;
+  margin-top: 2px;
+  color: #c9c5bb;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;
+}
+.w-somia-url span {
+  font-weight: 400;
+}
+
+/* a larger hit area than the words (44px on touch) */
+.w-somia-page::before {
+  content: '';
+  position: absolute;
+  inset: -4px -8px;
+}
+@media (pointer: coarse) {
+  .w-somia-page {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: 0;
+  }
+  .w-somia-window[data-narrow='true'] .w-somia-page {
+    padding-block: 0;
+  }
+}
+.w-somia-page[data-on='true'] {
+  border-bottom-color: var(--sm-paper);
+  color: var(--sm-white);
+  font-weight: 400;
+}
+@media (hover: hover) {
+  .w-somia-page:not([data-on='true']):hover {
+    border-bottom-color: rgba(245, 244, 241, 0.5);
+  }
+}
+
+/* -- devices -- */
+.w-somia-dev {
+  --dly: 0ms;
+  position: absolute;
+  bottom: var(--plinth);
+  /* above the plinth (the contact shadow and the tent card fall on it), below the head with its tags */
+  z-index: 3;
+  transform-origin: 50% 100%;
+  transition:
+    transform 0.8s var(--ease-out),
+    opacity 0.5s ease,
+    translate 0.9s var(--ease-out),
+    visibility 0s linear 0s;
+}
+.w-somia-dev[data-shown='false'] {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.8s var(--ease-out),
+    opacity 0.35s ease,
+    translate 0.9s var(--ease-out),
+    visibility 0s linear 0.4s;
+}
+.w-somia-dev--laptop {
+  --u: calc(62cqw / 100);
+  left: 3.5cqw;
+  width: 62cqw;
+}
+.w-somia-dev--phone {
+  --u: calc(18.5cqw / 100);
+  left: 75cqw;
+  width: 18.5cqw;
+}
+.w-somia-window[data-device='laptop'] .w-somia-dev--laptop {
+  transform: translateX(15.5cqw) scale(1.05);
+}
+.w-somia-window[data-device='laptop'] .w-somia-dev--phone {
+  transform: translateX(8cqw);
+}
+.w-somia-window[data-device='phone'] .w-somia-dev--phone {
+  transform: translateX(-34.25cqw) scale(1.25);
+}
+.w-somia-window[data-device='phone'] .w-somia-dev--laptop {
+  transform: translateX(-8cqw);
+}
+/* a soft contact shadow on the plinth */
+.w-somia-dev::after {
+  content: '';
+  position: absolute;
+  right: 4%;
+  bottom: calc(var(--u) * -1.2);
+  left: 4%;
+  z-index: -1;
+  height: calc(var(--u) * 3.4);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.34);
+  filter: blur(calc(var(--u) * 1.3));
+}
+/* entrance: the devices rise into the window (only under html.js) */
+html.js .w-somia-window[data-ready='false'] .w-somia-dev {
+  opacity: 0;
+  translate: 0 22px;
+}
+html.js .w-somia-window[data-ready='true'] .w-somia-dev--laptop {
+  transition-delay: 0.45s, 0.45s, 0.45s, 0s;
+}
+html.js .w-somia-window[data-ready='true'] .w-somia-dev--phone {
+  transition-delay: 0.65s, 0.65s, 0.65s, 0s;
+}
+html.js .w-somia-window[data-ready='false'] .w-somia-tag {
+  opacity: 0;
+  translate: 0 -28px;
+}
+.w-somia-tag {
+  transition:
+    transform 0.55s var(--ease-spring),
+    opacity 0.4s ease,
+    translate 0.7s var(--ease-spring);
+}
+html.js .w-somia-window[data-ready='true'] .w-somia-tag {
+  transition-delay: calc(0.9s + var(--k, 0) * 90ms);
+}
+
+/* laptop */
+.w-somia-laptop {
+  position: relative;
+}
+.w-somia-lid {
+  position: relative;
+  padding: calc(var(--u) * 2.3) calc(var(--u) * 2.3) calc(var(--u) * 3.1);
+  border-radius: calc(var(--u) * 2.6) calc(var(--u) * 2.6) calc(var(--u) * 0.9) calc(var(--u) * 0.9);
+  background: #111;
+  box-shadow:
+    inset 0 0 0 calc(var(--u) * 0.3) #5a5752,
+    inset 0 calc(var(--u) * 0.45) 0 rgba(255, 255, 255, 0.16),
+    0 calc(var(--u) * 0.5) 0 #000;
+}
+.w-somia-cam {
+  position: absolute;
+  top: calc(var(--u) * 0.95);
+  left: 50%;
+  width: calc(var(--u) * 0.8);
+  height: calc(var(--u) * 0.8);
+  margin-left: calc(var(--u) * -0.4);
+  border-radius: 50%;
+  background: #2b2b2b;
+  box-shadow: inset 0 0 0 calc(var(--u) * 0.15) #1a1a1a;
+}
+.w-somia-base {
+  position: relative;
+  height: calc(var(--u) * 3.6);
+  margin: 0 calc(var(--u) * -6);
+  border-radius: 0 0 calc(var(--u) * 5) calc(var(--u) * 5) / 0 0 calc(var(--u) * 3.6) calc(var(--u) * 3.6);
+  background: #d8d5ce;
+  box-shadow:
+    inset 0 calc(var(--u) * 0.4) 0 #ece9e3,
+    inset 0 calc(var(--u) * -0.55) 0 #aaa69e;
+}
+.w-somia-base::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 1.2);
+  margin-left: calc(var(--u) * -8);
+  border-radius: 0 0 calc(var(--u) * 1.2) calc(var(--u) * 1.2);
+  background: #b9b6af;
+}
+
+/* phone */
+.w-somia-phone {
+  position: relative;
+}
+.w-somia-phone__body {
+  position: relative;
+  padding: calc(var(--u) * 3);
+  border-radius: calc(var(--u) * 14);
+  background: #111;
+  box-shadow:
+    inset 0 0 0 calc(var(--u) * 0.7) #5a5752,
+    inset 0 0 0 calc(var(--u) * 1.1) #1d1d1d,
+    0 calc(var(--u) * 0.8) 0 #000;
+}
+.w-somia-phone__body::before,
+.w-somia-phone__body::after {
+  content: '';
+  position: absolute;
+  width: calc(var(--u) * 1.2);
+  border-radius: calc(var(--u) * 0.6);
+  background: #4a4743;
+}
+.w-somia-phone__body::before {
+  top: calc(var(--u) * 34);
+  left: calc(var(--u) * -1);
+  height: calc(var(--u) * 16);
+  box-shadow: 0 calc(var(--u) * 22) 0 #4a4743;
+}
+.w-somia-phone__body::after {
+  top: calc(var(--u) * 44);
+  right: calc(var(--u) * -1);
+  height: calc(var(--u) * 26);
+}
+.w-somia-island {
+  position: absolute;
+  top: calc(var(--u) * 5.6);
+  left: 50%;
+  z-index: 3;
+  width: calc(var(--u) * 24);
+  height: calc(var(--u) * 6.4);
+  margin-left: calc(var(--u) * -12);
+  border-radius: 999px;
+  background: #000;
+}
+
+/* screens */
+.w-somia-screen {
+  position: relative;
+  overflow: hidden;
+  background: var(--sm-white);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.w-somia-screen[data-grabbing='true'] {
+  cursor: grabbing;
+}
+.w-somia-screen[data-device='laptop'] {
+  aspect-ratio: 1440 / 900;
+  border-radius: calc(var(--u) * 0.5);
+}
+.w-somia-screen[data-device='phone'] {
+  aspect-ratio: 390 / 844;
+  border-radius: calc(var(--u) * 11);
+}
+@media (pointer: coarse) {
+  .w-somia-screen {
+    cursor: auto;
+  }
+}
+.w-somia-reel {
+  width: 100%;
+  background: var(--sm-paper);
+}
+.w-somia-slice {
+  width: 100%;
+  background: var(--sm-paper);
+}
+.w-somia-slice img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+/* the little card standing in front of each device */
+.w-somia-tent {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 4;
+  margin: calc(var(--u) * 1.2) 0 0;
+  padding: 3px 10px 3px;
+  border: 1px solid #dcd9d1;
+  border-radius: 1px;
+  background: var(--sm-white);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.18),
+    0 8px 8px -5px rgba(0, 0, 0, 0.4);
+  color: var(--sm-ink);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateX(-50%) rotate(-1.2deg);
+}
+.w-somia-tent span {
+  font-weight: 500;
+}
+.w-somia-dev--phone .w-somia-tent {
+  transform: translateX(-50%) rotate(1.4deg);
+}
+
+/* -- sill: the black frame under the glass carries the controls -- */
+.w-somia-sill {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px clamp(18px, 2.6cqw, 40px);
+  align-items: center;
+  margin: 12px -12px 0;
+  padding: 13px clamp(14px, 2cqw, 28px) 15px;
+  border-top: 3px solid #000;
+  border-radius: 0 0 3px 3px;
+  background-color: #141414;
+  background-image: var(--pm-grain);
+  color: var(--sm-paper);
+}
+.w-somia-board {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--sm-white);
+}
+.w-somia-board__title {
+  font-family: var(--head);
+  font-size: 1.3rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.w-somia-board__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.w-somia-speeds {
+  display: flex;
+  gap: 6px;
+}
+.w-somia-size {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 2px;
+  color: var(--sm-white);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.w-somia-size[data-on='true'] {
+  border-color: var(--sm-white);
+  background: var(--sm-white);
+  color: var(--sm-black);
+}
+@media (hover: hover) {
+  .w-somia-size:not([data-on='true']):hover {
+    border-color: var(--sm-white);
+  }
+}
+/* section steps: only when motion is paused or the sill is narrow */
+.w-somia-steps {
+  display: none;
+  gap: 8px;
+}
+.w-somia-sill[data-still='true'] .w-somia-steps {
+  display: flex;
+}
+.w-somia-sill__tape {
+  min-width: 0;
+}
+.w-somia-hint {
+  display: none;
+  grid-column: 1 / -1;
+  color: rgba(245, 244, 241, 0.92);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.w-somia-sill[data-still='true'] .w-somia-hint {
+  display: block;
+}
+
+/* ==========================================================================
+   TAPE: the tailor's tape that scrubs the window
+   ========================================================================== */
+.w-somia-tape {
+  --cap: 12px;
+  --pin: 18px;
+  position: relative;
+  padding-top: 8px;
+  container: somia-tape / inline-size;
+}
+.w-somia-tape__ribbon {
+  position: relative;
+  height: 40px;
+  border-radius: 2px;
+  background-color: #eee7d6;
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 3px 0 rgba(0, 0, 0, 0.32),
+    0 10px 10px -7px rgba(0, 0, 0, 0.5);
+}
+.w-somia-tape__cap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--cap);
+  background: #1f1f1f;
+}
+.w-somia-tape__cap--l {
+  left: 0;
+  border-radius: 2px 0 0 2px;
+}
+.w-somia-tape__cap--r {
+  right: 0;
+  border-radius: 0 2px 2px 0;
+}
+.w-somia-tape__scale {
+  position: absolute;
+  inset: 0 calc(var(--cap) + var(--pin) / 2);
+  background:
+    repeating-linear-gradient(90deg, #1c1c1c 0 1px, transparent 1px 10%) left bottom / 100% 17px no-repeat,
+    repeating-linear-gradient(90deg, #1c1c1c 0 1px, transparent 1px 5%) left bottom / 100% 12px no-repeat,
+    repeating-linear-gradient(90deg, #1c1c1c 0 1px, transparent 1px 1%) left bottom / 100% 7px no-repeat;
+}
+.w-somia-tape__scale::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  bottom: 0;
+  width: 1px;
+  height: 17px;
+  background: #1c1c1c;
+}
+.w-somia-tape__n {
+  position: absolute;
+  top: 3px;
+  color: var(--sm-ink);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 15px;
+  font-variant-numeric: tabular-nums;
+  transform: translateX(-50%);
+}
+.w-somia-tape__input {
+  touch-action: pan-y;
+  position: absolute;
+  top: 2px;
+  right: var(--cap);
+  left: var(--cap);
+  width: calc(100% - 2 * var(--cap));
+  height: 52px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  cursor: ew-resize;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.w-somia-tape__input::-webkit-slider-runnable-track {
+  height: 52px;
+  background: transparent;
+}
+.w-somia-tape__input::-moz-range-track {
+  height: 52px;
+  background: transparent;
+}
+.w-somia-tape__input::-webkit-slider-thumb {
+  width: var(--pin);
+  height: 52px;
+  border: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.w-somia-tape__input::-moz-range-thumb {
+  width: var(--pin);
+  height: 52px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+/* the pin: a sewing pin with a periwinkle head */
+.w-somia-tape__pin {
+  position: absolute;
+  top: 0;
+  left: var(--cap);
+  z-index: 2;
+  width: var(--pin);
+  height: 56px;
+  pointer-events: none;
+  will-change: transform;
+}
+.w-somia-tape__pin::before {
+  content: '';
+  position: absolute;
+  top: 11px;
+  bottom: 2px;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--sm-black);
+  box-shadow: 1.5px 0 0 rgba(0, 0, 0, 0.25);
+}
+.w-somia-tape__pin::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  background: var(--sm-peri);
+  box-shadow:
+    inset 0 0 0 2px var(--sm-black),
+    0 2px 0 rgba(0, 0, 0, 0.3);
+}
+.w-somia-tape__chapters {
+  position: relative;
+  height: 28px;
+  margin-top: 8px;
+}
+.w-somia-tape__chapter {
+  position: absolute;
+  top: 0;
+  left: calc(var(--cap) + var(--pin) / 2 + var(--m, 0) * (100% - 2 * var(--cap) - var(--pin)));
+  transform: translateX(-50%);
+}
+.w-somia-tape__chapter[data-fit='false'] {
+  display: none;
+}
+/* a tick under the ribbon where the section starts */
+.w-somia-tape__chapter::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 2px;
+  height: 9px;
+  background: var(--sm-paper);
+  opacity: 0.75;
+  transform: translateX(-50%);
+}
+.w-somia-tape__chapter button {
+  display: block;
+  min-height: 28px;
+  padding: 4px 3px 3px;
+  border-bottom: 2px solid transparent;
+  color: var(--sm-paper);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.07em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.w-somia-tape__chapter button[aria-current='true'] {
+  border-bottom-color: var(--sm-peri);
+  color: var(--sm-white);
+}
+@media (hover: hover) {
+  .w-somia-tape__chapter button:hover {
+    border-bottom-color: rgba(245, 244, 241, 0.6);
+  }
+}
+@container somia-tape (max-width: 420px) {
+  .w-somia-tape__n[data-odd='true'] {
+    display: none;
+  }
+}
+@media (pointer: coarse) {
+  .w-somia-tape__chapters {
+    height: 44px;
+  }
+  .w-somia-tape__chapter button {
+    min-height: 44px;
+  }
+}
+
+/* ==========================================================================
+   SUBTITLE: the translation card (lettered on the glass in a wide window, under the tape in a narrow one)
+   ========================================================================== */
+.w-somia-sub {
+  margin: 0;
+  color: var(--sm-white);
+}
+.w-somia-sub__line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  animation: w-somia-sub-in 0.45s var(--ease-out) both;
+}
+@keyframes w-somia-sub-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.w-somia-sub__label {
+  display: none;
+  margin-bottom: 2px;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+.w-somia-sub__en {
+  font-family: var(--head);
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+.w-somia-sub__es {
+  font-family: var(--head);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: var(--sm-peri);
+  text-wrap: balance;
+}
+/* on the glass: vinyl lettering between the tags and the navigation */
+.w-somia-sub[data-where='glass'] {
+  position: relative;
+  z-index: 4;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 34cqw;
+  margin-inline: auto;
+  padding-top: clamp(15px, 1.8cqw, 26px);
+  text-align: center;
+}
+.w-somia-sub[data-where='glass'] .w-somia-sub__en {
+  font-size: clamp(1.1rem, 1.9cqw, 1.5rem);
+}
+.w-somia-sub[data-where='glass'] .w-somia-sub__es {
+  font-size: clamp(0.95rem, 1.45cqw, 1.15rem);
+}
+/* under the tape: one tidy block, the section's own name above it when the chips are hidden */
+.w-somia-sub[data-where='sill'] {
+  margin-top: 10px;
+  min-height: 2.6em;
+  text-align: center;
+}
+.w-somia-sub[data-where='sill'] .w-somia-sub__en {
+  font-size: 1.28rem;
+}
+
+/* ==========================================================================
+   BRAND STRIP: one shelving unit, three bays
+   ========================================================================== */
+.w-somia-strip,
+.w-somia-gallery,
+.w-somia-counter {
+  max-width: calc(1480px * var(--zoom));
+  margin-inline: auto;
+  padding-inline: clamp(16px, 3.4vw, 64px);
+}
+.w-somia-strip {
+  padding-top: clamp(40px, 5vw, 84px);
+  padding-bottom: clamp(30px, 4vw, 64px);
+}
+.w-somia-strip__title,
+.w-somia-gallery__title {
+  font-size: clamp(2.6rem, 5vw, 5rem);
+  font-weight: 300;
+  line-height: 0.95;
+}
+.w-somia-strip__lede,
+.w-somia-gallery__lede {
+  max-width: 50ch;
+  font-size: clamp(1rem, 1.05vw, 1.15rem);
+  line-height: 1.6;
+}
+
+.w-somia-unit {
+  container: somia-unit / inline-size;
+  position: relative;
+  zoom: var(--zoom);
+  padding: 0 clamp(8px, 1.2vw, 18px);
+  border: 10px solid var(--sm-ink);
+  border-top-width: 0;
+  border-bottom-width: 0;
+  background-color: var(--sm-grey);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 0 0 2px #3a3a3a;
+}
+/* the unit's cornice: a black board with the title, flush with the uprights */
+.w-somia-unit__board {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px clamp(24px, 4vw, 72px);
+  margin: 0 calc(-1 * clamp(8px, 1.2vw, 18px) - 10px);
+  padding: clamp(22px, 3vw, 48px) clamp(22px, 3.4vw, 56px) clamp(22px, 3vw, 44px);
+  border-radius: 3px 3px 0 0;
+  background-color: var(--sm-ink);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 -3px 0 #000;
+  color: var(--sm-paper);
+}
+.w-somia-unit__title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.w-somia-unit__board .w-somia-strip__title {
+  color: var(--sm-white);
+}
+.w-somia-unit__board .w-somia-strip__lede {
+  max-width: 38ch;
+  color: rgba(245, 244, 241, 0.94);
+}
+/* the unit's foot: a black base across the uprights */
+.w-somia-unit::after {
+  content: '';
+  display: block;
+  height: 22px;
+  margin: 0 calc(-1 * clamp(8px, 1.2vw, 18px) - 10px);
+  background: var(--sm-ink);
+  box-shadow:
+    inset 0 3px 0 #444,
+    0 12px 14px -6px rgba(0, 0, 0, 0.4);
+}
+.w-somia-bay {
+  padding-top: 22px;
+}
+.w-somia-bay[data-labelled='true'] .w-somia-slot {
+  margin-bottom: 52px;
+}
+.w-somia-bay__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  padding: 0 clamp(6px, 1vw, 14px) 6px;
+}
+.w-somia-bay__note {
+  max-width: 62ch;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.w-somia-bay__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+.w-somia-slot {
+  position: relative;
+  display: flex;
+  flex: 1 1 var(--slot, 176px);
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 0;
+  padding: 26px 12px 28px;
+}
+.w-somia-bay[data-bay='logo'] .w-somia-slot {
+  --slot: 250px;
+}
+.w-somia-bay[data-bay='logo'] .w-somia-slot[data-wide='true'] {
+  --slot: 350px;
+}
+.w-somia-bay[data-bay='palette'] .w-somia-slot {
+  --slot: 134px;
+  padding-inline: 8px;
+}
+/* values: no planks, the tags hang from a rail (one length of rail per slot, so a wrapped row hangs from its own rail) */
+.w-somia-bay[data-bay='values'] .w-somia-bay__row {
+  align-items: flex-start;
+}
+.w-somia-bay[data-bay='values'] .w-somia-slot {
+  --slot: 170px;
+  align-items: flex-start;
+  padding: 14px 12px 42px;
+}
+.w-somia-bay[data-bay='values'] .w-somia-slot::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 0;
+  height: 14px;
+  background: var(--sm-ink);
+  box-shadow:
+    inset 0 2px 0 #444,
+    0 10px 14px -6px rgba(0, 0, 0, 0.4);
+}
+.w-somia-bay[data-bay='values'] .w-somia-slot::after {
+  display: none;
+}
+@container somia-unit (max-width: 900px) {
+  /* two by two */
+  .w-somia-bay[data-bay='values'] .w-somia-slot {
+    --slot: 42%;
+  }
+}
+/* the plank */
+.w-somia-slot::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  height: 14px;
+  background: var(--sm-ink);
+  box-shadow:
+    inset 0 2px 0 #444,
+    0 10px 14px -6px rgba(0, 0, 0, 0.4);
+}
+.w-somia-obj {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: -2px;
+}
+/* label hanging on the plank's front edge */
+.w-somia-tagline {
+  position: absolute;
+  top: calc(100% - 8px);
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  max-width: calc(100% - 16px);
+  padding: 6px 14px 6px;
+  border: 1px solid var(--sm-hair);
+  border-radius: 2px;
+  background: var(--sm-white);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.14),
+    0 8px 8px -5px rgba(0, 0, 0, 0.35);
+  line-height: 1.3;
+  text-align: center;
+  transform: translateX(-50%);
+}
+.w-somia-tagline b {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+.w-somia-tagline span {
+  font-size: 13px;
+  line-height: 1.3;
+}
+.w-somia-tagline i,
+.w-somia-chip__role i {
+  font-family: var(--head);
+  font-size: 1.12em;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* wordmark boxes */
+.w-somia-boxes {
+  position: relative;
+  width: 236px;
+  height: 196px;
+}
+.w-somia-box {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 188px;
+  height: 106px;
+  border-radius: 2px;
+  box-shadow:
+    0 4px 0 rgba(0, 0, 0, 0.3),
+    0 14px 14px -8px rgba(0, 0, 0, 0.4);
+}
+.w-somia-box img {
+  width: 128px;
+  height: auto;
+  margin-top: 10px;
+}
+.w-somia-box::before {
+  content: '';
+  position: absolute;
+  top: 18px;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.22;
+}
+.w-somia-box--black {
+  top: 0;
+  left: 0;
+  background: var(--sm-black);
+  color: var(--sm-white);
+  transform: rotate(-3deg);
+}
+.w-somia-box--paper {
+  right: 0;
+  bottom: 0;
+  border: 1px solid var(--sm-hair);
+  background: var(--sm-white);
+  color: var(--sm-black);
+  transform: rotate(2deg);
+}
+
+/* ring stamp + ribbon S */
+.w-somia-seal {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  background: var(--sm-white);
+  box-shadow:
+    0 4px 0 #d9d6ce,
+    0 16px 16px -9px rgba(0, 0, 0, 0.42);
+}
+.w-somia-seal img {
+  grid-area: 1 / 1;
+}
+.w-somia-ring {
+  width: 198px;
+  height: auto;
+  animation: w-somia-spin 70s linear infinite;
+}
+.w-somia-ribbon {
+  width: 66px;
+  height: auto;
+}
+@keyframes w-somia-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* favicon */
+.w-somia-fav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.w-somia-fav__tile {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  border-radius: 2px;
+  background: var(--sm-white);
+  box-shadow:
+    0 4px 0 #d9d6ce,
+    0 14px 14px -8px rgba(0, 0, 0, 0.4);
+}
+.w-somia-fav__tile img {
+  width: 68px;
+  height: 68px;
+}
+.w-somia-fav__tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 250px;
+  padding: 8px 12px 7px;
+  border-radius: 8px 8px 0 0;
+  background: var(--sm-white);
+  box-shadow: 0 -1px 0 var(--sm-hair);
+  font-size: 13px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.w-somia-fav__tab img {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+.w-somia-fav__tab span {
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, #000 74%, transparent);
+  mask-image: linear-gradient(90deg, #000 74%, transparent);
+}
+
+/* type card */
+.w-somia-type {
+  width: min(100%, 330px);
+  padding: 14px 16px 15px;
+  border-radius: 2px;
+  background: var(--sm-white);
+  box-shadow:
+    0 4px 0 #d9d6ce,
+    0 16px 16px -9px rgba(0, 0, 0, 0.4);
+  transform: rotate(0.8deg);
+}
+.w-somia-type__aa {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  line-height: 1;
+}
+.w-somia-type__head {
+  font-family: var(--head);
+  font-size: 92px;
+  font-weight: 300;
+  line-height: 0.85;
+  letter-spacing: 0;
+}
+.w-somia-type__text {
+  font-size: 54px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.w-somia-type__names {
+  margin-top: 10px;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+/* paint chips */
+.w-somia-chipwrap {
+  transform: rotate(var(--tilt, 0deg));
+  transform-origin: 50% 100%;
+}
+.w-somia-chip {
+  display: grid;
+  width: clamp(106px, 9.4vw, 134px);
+  padding: 8px 8px 11px;
+  border-radius: 2px;
+  background: var(--sm-white);
+  box-shadow:
+    0 4px 0 #d9d6ce,
+    0 16px 16px -9px rgba(0, 0, 0, 0.4);
+  text-align: left;
+  transition: transform 0.35s var(--ease-spring);
+}
+@media (hover: hover) {
+  .w-somia-chip:hover {
+    transform: translateY(-7px);
+    box-shadow:
+      0 4px 0 #d9d6ce,
+      0 24px 20px -10px rgba(0, 0, 0, 0.42);
+  }
+}
+.w-somia-chip:focus-visible {
+  transform: translateY(-7px);
+  box-shadow:
+    0 4px 0 #d9d6ce,
+    0 0 0 4px var(--focus-out);
+}
+.w-somia-chip__swatch {
+  position: relative;
+  display: block;
+  height: clamp(70px, 6.6vw, 96px);
+  border-radius: 1px;
+  background: var(--c);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
+}
+.w-somia-chip__hole {
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: var(--sm-white);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+.w-somia-chip__new {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  padding: 2px 7px 1px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.55);
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+}
+.w-somia-chip__name {
+  margin-top: 9px;
+  font-family: var(--head);
+  font-size: clamp(1.3rem, 1.6vw, 1.55rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.w-somia-chip__hex {
+  margin-top: 5px;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.w-somia-chip[data-copied='true'] .w-somia-chip__hex {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+.w-somia-chip__role {
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.3;
+  color: #3d3d3d;
+}
+
+/* swing tags on a rail (the four values) */
+.w-somia-swing {
+  position: relative;
+  width: clamp(150px, 15.2cqw, 224px);
+  margin-top: 40px;
+  transform: rotate(var(--tilt, 0deg));
+  transform-origin: 50% -40px;
+  filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.14)) drop-shadow(0 16px 12px rgba(0, 0, 0, 0.26));
+}
+@container somia-unit (max-width: 900px) {
+  .w-somia-swing {
+    width: clamp(150px, 30cqw, 220px);
+  }
+}
+.w-somia-swing[data-swing='on'] {
+  animation: w-somia-sway 2.1s cubic-bezier(0.3, 0.1, 0.3, 1) both;
+}
+@keyframes w-somia-sway {
+  0% {
+    transform: rotate(calc(var(--tilt, 0deg) + 7deg));
+  }
+  17% {
+    transform: rotate(calc(var(--tilt, 0deg) - 5.2deg));
+  }
+  34% {
+    transform: rotate(calc(var(--tilt, 0deg) + 3.4deg));
+  }
+  52% {
+    transform: rotate(calc(var(--tilt, 0deg) - 2.1deg));
+  }
+  72% {
+    transform: rotate(calc(var(--tilt, 0deg) + 0.9deg));
+  }
+  100% {
+    transform: rotate(var(--tilt, 0deg));
+  }
+}
+.w-somia-swing__cord {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  z-index: 0;
+  width: 1.5px;
+  height: 52px;
+  background: var(--sm-ink);
+  transform: translateX(-50%);
+}
+.w-somia-swing__card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 36px 15px 18px;
+  background-color: #fffefb;
+  background-image: var(--pm-grain);
+  clip-path: polygon(0 14px, 14px 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%);
+  text-align: center;
+}
+.w-somia-swing__card::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1px solid #d3cec2;
+  pointer-events: none;
+}
+.w-somia-swing__eyelet {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #cfcabd 0 3.2px, #8e897e 3.2px 6.4px, #cfcabd 6.4px);
+}
+.w-somia-swing img {
+  width: 74px;
+  height: 74px;
+}
+.w-somia-swing figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-top: 8px;
+}
+.w-somia-swing__es {
+  font-family: var(--head);
+  font-size: 1.4rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.w-somia-swing__en {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.w-somia-swing__note {
+  margin-top: 5px;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   GALLERY: eight framed screens and the lightbox
+   ========================================================================== */
+.w-somia-gallery {
+  padding-top: clamp(36px, 5vw, 80px);
+  padding-bottom: clamp(30px, 4vw, 64px);
+}
+.w-somia-gallery__wall {
+  zoom: var(--zoom);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(30px, 3.4vw, 56px) clamp(14px, 2.2vw, 36px);
+  align-items: start;
+}
+.w-somia-gallery__list {
+  display: contents;
+}
+/* the wall text: a small headline beside the first frames */
+.w-somia-gallery__head {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / span 4;
+  grid-row: 1;
+  align-items: flex-start;
+  align-self: start;
+  gap: 8px;
+  padding-top: clamp(0px, 1.5vw, 24px);
+}
+.w-somia-gallery__title {
+  /* two lines at every width: "eight screens," / "framed" */
+  max-width: 14ch;
+  font-size: clamp(2.6rem, 4.4vw, 4.6rem);
+}
+.w-somia-fr {
+  --fc: #151515;
+  --mc: var(--sm-white);
+  min-width: 0;
+}
+.w-somia-fr[data-frame='white'] {
+  --fc: #fdfdfb;
+  --mc: var(--sm-paper);
+}
+.w-somia-fr[data-frame='sage'] {
+  --fc: var(--sm-sage);
+  --mc: var(--sm-paper);
+}
+/* a salon hang: different sizes, bottoms or centres lined up, never three alike in a row */
+.w-somia-fr[data-id='hero'] {
+  grid-column: 5 / span 8;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+.w-somia-fr[data-id='product'] {
+  grid-column: 1 / span 3;
+  grid-row: 2;
+  align-self: end;
+}
+.w-somia-fr[data-id='menu'] {
+  grid-column: 1 / span 3;
+  grid-row: 3;
+  align-self: end;
+}
+.w-somia-fr[data-id='collection'] {
+  grid-column: 4 / span 5;
+  grid-row: 3;
+  align-self: end;
+}
+.w-somia-fr[data-id='materials'] {
+  grid-column: 9 / span 4;
+  grid-row: 3;
+  align-self: end;
+}
+.w-somia-fr[data-id='story'] {
+  grid-column: 1 / span 3;
+  grid-row: 4;
+  align-self: center;
+}
+.w-somia-fr[data-id='editorial'] {
+  grid-column: 4 / span 6;
+  grid-row: 4;
+  align-self: center;
+}
+.w-somia-fr[data-id='cart'] {
+  grid-column: 10 / span 3;
+  grid-row: 4;
+  align-self: end;
+  /* the caption of the editorial frame hangs lower than this one: bring the baselines together */
+  margin-bottom: 24px;
+}
+.w-somia-fr__btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  transition: transform 0.35s var(--ease-spring);
+}
+@media (hover: hover) {
+  .w-somia-fr__btn:hover {
+    transform: translateY(-5px) rotate(-0.4deg);
+  }
+}
+.w-somia-fr__frame,
+.w-somia-lb__frame {
+  display: block;
+  padding: clamp(6px, 0.8vw, 11px);
+  border-radius: 1px;
+  background: var(--fc);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 3px 0 rgba(0, 0, 0, 0.28),
+    0 22px 24px -14px var(--sm-edge);
+}
+.w-somia-fr[data-frame='white'] .w-somia-fr__frame {
+  box-shadow:
+    inset 0 0 0 1px #d6d3cb,
+    0 3px 0 rgba(0, 0, 0, 0.22),
+    0 22px 24px -14px var(--sm-edge);
+}
+.w-somia-fr__mat,
+.w-somia-lb__mat {
+  display: block;
+  padding: clamp(10px, 1.5vw, 22px);
+  background: var(--mc);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 2px 3px 7px rgba(0, 0, 0, 0.14);
+}
+.w-somia-fr__mat img {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+/* a museum label: a small paper placard hung under the frame */
+.w-somia-fr__cap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  width: max-content;
+  max-width: calc(100% - 20px);
+  margin: -12px 0 0 clamp(8px, 1vw, 16px);
+  padding: 7px 13px 8px;
+  border: 1px solid var(--sm-hair);
+  border-radius: 1px;
+  background: var(--sm-white);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.12),
+    0 10px 10px -6px rgba(0, 0, 0, 0.32);
+  font-size: 13.5px;
+  line-height: 1.35;
+}
+.w-somia-fr__cap b {
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+.w-somia-fr__cap i {
+  font-family: var(--head);
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: 0;
+  color: #3d3d3d;
+}
+
+/* lightbox (inside the folder body, under the tab strip) */
+.w-somia-lb {
+  --fc: #151515;
+  --mc: var(--sm-white);
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px clamp(12px, 3vw, 44px) clamp(12px, 2vw, 28px);
+  background: rgba(4, 4, 4, 0.985);
+  color: var(--sm-paper);
+  font-family: var(--text);
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  overscroll-behavior: contain;
+}
+.w-somia-lb__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+/* the bar and the stage lie over the backdrop but let clicks through where there is nothing to click */
+.w-somia-lb__bar,
+.w-somia-lb__stage {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+.w-somia-lb__bar > *,
+.w-somia-lb__nav,
+.w-somia-lb__frame,
+.w-somia-lb__cap {
+  pointer-events: auto;
+}
+.w-somia-lb[data-frame='white'] {
+  --fc: #fdfdfb;
+  --mc: var(--sm-paper);
+}
+.w-somia-lb[data-frame='sage'] {
+  --fc: #a9aa98;
+  --mc: var(--sm-paper);
+}
+.w-somia-lb__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.w-somia-lb__count {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+}
+.w-somia-lb__stage {
+  display: grid;
+  flex: 1 1 auto;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
+  gap: 12px;
+  align-items: center;
+  min-height: 0;
+}
+.w-somia-lb__fig {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  margin: 0;
+}
+.w-somia-lb__frame {
+  display: flex;
+  flex: 0 1 auto;
+  min-height: 0;
+  max-width: 100%;
+}
+.w-somia-lb__mat {
+  display: flex;
+  min-height: 0;
+  padding: clamp(8px, 1.3vw, 18px);
+}
+.w-somia-lb__mat img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: calc(100svh - 44px - 268px);
+  object-fit: contain;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+.w-somia-lb__cap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  max-width: 62ch;
+  text-align: center;
+}
+.w-somia-lb__title {
+  font-family: var(--head, 'Cormorant Variable', Georgia, serif);
+  font-size: clamp(1.7rem, 2.6vw, 2.4rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+}
+.w-somia-lb__es {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px 12px;
+  font-family: var(--head, 'Cormorant Variable', Georgia, serif);
+  font-size: 1.25rem;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+.w-somia-lb__es i {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--sm-peri);
+}
+.w-somia-lb__tr {
+  font-family: var(--text, 'Fira Sans', sans-serif);
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  opacity: 0.95;
+}
+.w-somia-lb__note {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.w-somia-lb__nav {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 1px solid rgba(245, 244, 241, 0.7);
+  border-radius: 2px;
+  color: var(--sm-paper);
+  font-size: 22px;
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .w-somia-lb__nav:hover {
+    background: var(--sm-paper);
+    color: var(--sm-black);
+  }
+}
+
+/* ==========================================================================
+   COUNTER: the cabinet's desk as a shop counter (receipt, facts, marquee on the front panel)
+   ========================================================================== */
+.w-somia-counter {
+  max-width: none;
+  margin-top: clamp(30px, 4vw, 64px);
+  padding: 0;
+}
+.w-somia-bench {
+  position: relative;
+  padding: clamp(40px, 4.6vw, 76px) clamp(16px, 3.4vw, 64px) calc(clamp(38px, 4vw, 64px) + 24px);
+  background-color: #222120;
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 5px 0 #3d3b38,
+    inset 0 7px 0 #0f0f0e;
+  color: var(--sm-paper);
+}
+.w-somia-bench__tab {
+  position: absolute;
+  right: clamp(16px, 3.4vw, 64px);
+  bottom: 0;
+  z-index: 2;
+}
+.w-somia-till {
+  zoom: var(--zoom);
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  gap: clamp(26px, 5vw, 90px);
+  align-items: center;
+  max-width: 1480px;
+  margin-inline: auto;
+}
+.w-somia-receipt-wrap {
+  filter: drop-shadow(0 3px 0 rgba(0, 0, 0, 0.5)) drop-shadow(0 20px 16px rgba(0, 0, 0, 0.55));
+  transform: rotate(-1.1deg);
+}
+.w-somia-receipt {
+  padding: 30px 24px 38px;
+  background: var(--sm-white);
+  color: #1c1c1c;
+  font-family: 'Courier Prime', 'Courier Prime Fallback', 'Courier New', monospace;
+  font-size: 14.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  -webkit-mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 16px 51% repeat-x,
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / 16px 51% repeat-x;
+  mask:
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 16px 51% repeat-x,
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / 16px 51% repeat-x;
+}
+.w-somia-receipt hr {
+  height: 0;
+  margin: 12px 0;
+  border: 0;
+  border-top: 2px dashed #1c1c1c;
+}
+.w-somia-receipt__shop {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  line-height: 1;
+  text-align: center;
+}
+.w-somia-receipt__sub {
+  margin-top: 6px;
+  text-align: center;
+}
+.w-somia-receipt dl > div {
+  display: flex;
+  gap: 14px;
+  padding: 2px 0;
+}
+.w-somia-receipt__items dt {
+  flex: none;
+  width: 1.5ch;
+  font-weight: 700;
+}
+.w-somia-receipt__facts dt {
+  flex: 1 1 auto;
+}
+.w-somia-receipt__facts dd {
+  font-weight: 700;
+  text-align: right;
+}
+.w-somia-receipt__fine {
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.w-somia-receipt__thanks {
+  margin-top: 14px;
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+/* the ring stamp, pressed over the corner of the receipt: multiply, so the paper shows through the ink */
+.w-somia-receipt {
+  position: relative;
+}
+.w-somia-receipt__seal {
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 132px;
+  margin: 16px auto 0;
+  mix-blend-mode: multiply;
+  transform: rotate(-9deg);
+}
+.w-somia-receipt__seal img {
+  grid-area: 1 / 1;
+  height: auto;
+}
+.w-somia-receipt__seal img:first-child {
+  width: 128px;
+}
+.w-somia-receipt__seal img:last-child {
+  width: 44px;
+}
+/* the receipt prints: a stepped reveal from the top, like a till (hidden state only under html.js) */
+html.js .w-somia-receipt-wrap[data-printed='false'] .w-somia-receipt {
+  clip-path: inset(0 0 100% 0);
+}
+html.js .w-somia-receipt-wrap[data-printed='true'] .w-somia-receipt {
+  animation: w-somia-print 1.9s steps(28, end) both;
+}
+@keyframes w-somia-print {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 -3px 0);
+  }
+}
+.w-somia-counter__facts {
+  --font-display: 'Fraunces Variable', 'Fraunces Fallback', Georgia, 'Times New Roman', serif;
+  --font-label: 'Courier Prime', 'Courier Prime Fallback', 'Courier New', Courier, monospace;
+  min-width: 0;
+  color: var(--sm-paper);
+  letter-spacing: 0;
+}
+/* the slate is the counter's second voice: on a desktop it grows a little so it stands up to the receipt */
+@media (min-width: 1101px) {
+  .w-somia-counter__facts {
+    zoom: 1.2;
+  }
+}
+/* the facts slate on the dark desk: its own shadow is a dark one, so lift it with a paper-coloured rim light */
+.w-somia-counter__facts .pm-slate {
+  filter: drop-shadow(0 14px 12px rgba(0, 0, 0, 0.55));
+}
+
+/* the front panel of the counter: slats, and the motto running along it */
+.w-somia-front-panel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(14px, 1.8vw, 26px) 0 calc(clamp(16px, 2vw, 30px) + env(safe-area-inset-bottom, 0px));
+  background-color: #141413;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 calc(20% - 2px), rgba(0, 0, 0, 0.7) calc(20% - 2px) 20%),
+    var(--pm-grain);
+  box-shadow: inset 0 3px 0 #000;
+}
+.w-somia-marquee {
+  overflow: hidden;
+  color: var(--sm-paper);
+}
+.w-somia-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: w-somia-marquee 80s linear infinite;
+}
+.w-somia-marquee__run {
+  display: flex;
+  flex: none;
+}
+.w-somia-marquee__item {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: clamp(18px, 2.4vw, 40px);
+  padding-right: clamp(18px, 2.4vw, 40px);
+  font-family: var(--head);
+  font-size: clamp(2.2rem, 5.2vw, 5.2rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+.w-somia-marquee__item img {
+  width: auto;
+  height: 0.8em;
+  filter: invert(1) brightness(1.6);
+  opacity: 0.9;
+}
+@keyframes w-somia-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+/* short, wide screens (a 1366 x 768 laptop): the notice keeps its headline and a one-line "what the shop is", the rest waits for the scroll */
+@media (max-height: 880px) and (min-width: 1001px) {
+  .w-somia-notice__what,
+  .w-somia-notice__more {
+    display: none;
+  }
+  .w-somia-notice__short {
+    display: inline;
+  }
+  .w-somia-sign {
+    min-height: 62px;
+  }
+}
+
+/* a short viewport makes a window under 780px wide, and its translation card moves from the glass to under the tape (about 52px
+   more): give those pixels back so the first screen still ends at the kerb */
+@media (max-height: 860px) and (min-width: 1001px) {
+  .w-somia-facade {
+    --fit: calc((100svh - 44px - 257px - 10.6cqw) / var(--sr));
+  }
+}
+
+/* medium: the wall column goes above the window */
+@container somia-front (max-width: 1000px) {
+  .w-somia-facade {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .w-somia-wall {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    grid-template-areas:
+      'sign panel'
+      'notice panel';
+    align-content: start;
+    align-items: start;
+    gap: 22px 22px;
+  }
+  .w-somia-facade {
+    --sr: 0.62;
+  }
+  .w-somia-sign {
+    grid-area: sign;
+  }
+  .w-somia-panel {
+    grid-area: panel;
+  }
+  .w-somia-notice {
+    grid-area: notice;
+  }
+}
+@container somia-front (max-width: 640px) {
+  .w-somia-notice__more,
+  .w-somia-notice__what {
+    display: none;
+  }
+  .w-somia-notice__short {
+    display: inline;
+  }
+  /* phone: the sign and the paper label stack on the left, the chalk panel stands beside them, the notice runs underneath */
+  .w-somia-wall {
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+    grid-template-areas:
+      'sign field'
+      'tag field'
+      'notice notice';
+    gap: 14px 14px;
+  }
+  .w-somia-panel {
+    display: contents;
+  }
+  .w-somia-panel__field {
+    grid-area: field;
+    align-self: stretch;
+  }
+  .w-somia-panel__tag {
+    grid-area: tag;
+    align-self: start;
+    width: 100%;
+    margin: 0;
+  }
+  .w-somia-panel__es {
+    font-size: 1.25rem;
+  }
+}
+@media (max-width: 1100px) {
+  .w-somia-till {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+  }
+  .w-somia-till .w-somia-counter__facts {
+    width: 100%;
+  }
+  /* the wall on a tablet: six columns, every row is filled (hero / three small / two mid / one wide + one small) */
+  .w-somia-gallery__wall {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .w-somia-gallery__head {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .w-somia-gallery__title {
+    max-width: none;
+  }
+  .w-somia-fr[data-id] {
+    align-self: end;
+  }
+  .w-somia-fr[data-id='hero'] {
+    grid-column: 1 / span 6;
+    grid-row: 2;
+    align-self: center;
+  }
+  .w-somia-fr[data-id='product'] {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+  }
+  .w-somia-fr[data-id='menu'] {
+    grid-column: 3 / span 2;
+    grid-row: 3;
+  }
+  .w-somia-fr[data-id='cart'] {
+    grid-column: 5 / span 2;
+    grid-row: 3;
+    margin-bottom: 0;
+  }
+  .w-somia-fr[data-id='collection'] {
+    grid-column: 1 / span 3;
+    grid-row: 4;
+  }
+  .w-somia-fr[data-id='materials'] {
+    grid-column: 4 / span 3;
+    grid-row: 4;
+  }
+  .w-somia-fr[data-id='editorial'] {
+    grid-column: 1 / span 4;
+    grid-row: 5;
+    align-self: center;
+  }
+  .w-somia-fr[data-id='story'] {
+    grid-column: 5 / span 2;
+    grid-row: 5;
+    align-self: center;
+  }
+}
+@media (max-width: 720px) {
+  /* a phone: two columns, full-width frames for the wide screens, the portrait crops and the small ones in pairs */
+  .w-somia-gallery__wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 26px 14px;
+  }
+  .w-somia-fr[data-id] {
+    grid-column: span 1;
+  }
+  .w-somia-fr[data-id='hero'],
+  .w-somia-fr[data-id='collection'],
+  .w-somia-fr[data-id='materials'],
+  .w-somia-fr[data-id='editorial'] {
+    grid-column: 1 / -1;
+  }
+  .w-somia-fr[data-id='hero'] {
+    grid-row: 2;
+  }
+  .w-somia-fr[data-id='product'] {
+    grid-row: 3;
+    grid-column: 1;
+  }
+  .w-somia-fr[data-id='story'] {
+    grid-row: 3;
+    grid-column: 2;
+    align-self: end;
+  }
+  .w-somia-fr[data-id='collection'] {
+    grid-row: 4;
+  }
+  .w-somia-fr[data-id='menu'] {
+    grid-row: 5;
+    grid-column: 1;
+  }
+  .w-somia-fr[data-id='cart'] {
+    grid-row: 5;
+    grid-column: 2;
+  }
+  .w-somia-fr[data-id='materials'] {
+    grid-row: 6;
+  }
+  .w-somia-fr[data-id='editorial'] {
+    grid-row: 7;
+    align-self: center;
+  }
+  .w-somia-fr__mat {
+    padding: 8px;
+  }
+  .w-somia-fr__cap i {
+    font-size: 1.02rem;
+  }
+  .w-somia-unit {
+    border-width: 7px;
+    border-bottom-width: 0;
+  }
+  .w-somia-lb__stage {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .w-somia-lb__fig {
+    grid-row: 1;
+  }
+  .w-somia-lb__nav {
+    position: absolute;
+    bottom: 14px;
+    z-index: 2;
+  }
+  .w-somia-lb__nav--prev {
+    left: 14px;
+  }
+  .w-somia-lb__nav--next {
+    right: 14px;
+  }
+  .w-somia-lb__mat img {
+    max-height: calc(100svh - 52px - 330px);
+  }
+}
+
+/* the window when it is narrow (under 560px: a phone, or a small window): one device at a time, the tags on top, the page
+   switcher on the plinth. Showcase.tsx measures the window and sets data-narrow (the same value hides 'Side by side'). */
+.w-somia-window[data-narrow='true'] .w-somia-glass {
+  --plinth: 46px;
+}
+.w-somia-window[data-narrow='true'] .w-somia-glass {
+  --hh: 82px;
+}
+.w-somia-window[data-narrow='true'] .w-somia-stage {
+  height: 104cqw;
+}
+.w-somia-window[data-narrow='true'][data-device='phone'] .w-somia-stage {
+  height: 140cqw;
+}
+.w-somia-window[data-narrow='true'] .w-somia-head {
+  /* static: the page switcher below is positioned against the glass (it stands on the plinth), not against the head */
+  position: static;
+  justify-content: center;
+  padding: 0 12px;
+}
+.w-somia-window[data-narrow='true'] .w-somia-tags {
+  position: relative;
+  z-index: 4;
+}
+.w-somia-window[data-narrow='true'] .w-somia-tag {
+  padding-top: 22px;
+}
+.w-somia-window[data-narrow='true'] .w-somia-tag__card {
+  min-width: 0;
+  height: 42px;
+  padding-inline: 12px;
+}
+.w-somia-window[data-narrow='true'] .w-somia-tag::before {
+  height: 44px;
+}
+.w-somia-window[data-narrow='true'] .w-somia-tag[data-only='wide'] {
+  display: none;
+}
+.w-somia-window[data-narrow='true'] .w-somia-url {
+  display: none;
+}
+.w-somia-window[data-narrow='true'] .w-somia-nav {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  align-items: center;
+  justify-content: center;
+  height: var(--plinth);
+  padding-top: 0;
+}
+.w-somia-window[data-narrow='true'] .w-somia-page {
+  padding: 12px 4px 8px;
+  /* the switcher stands on the concrete plinth: ink, not paper (4.7:1) */
+  color: var(--sm-black);
+}
+.w-somia-window[data-narrow='true'] .w-somia-page[data-on='true'] {
+  border-bottom-color: var(--sm-black);
+  color: var(--sm-black);
+}
+.w-somia-window[data-narrow='true'] .w-somia-dev--laptop {
+  --u: calc(96cqw / 100);
+  left: 2cqw;
+  width: 96cqw;
+}
+.w-somia-window[data-narrow='true'] .w-somia-dev--phone {
+  --u: calc(60cqw / 100);
+  left: 20cqw;
+  width: 60cqw;
+}
+.w-somia-window[data-narrow='true'][data-device] .w-somia-dev--laptop,
+.w-somia-window[data-narrow='true'][data-device] .w-somia-dev--phone {
+  transform: none;
+}
+.w-somia-window[data-narrow='true'] .w-somia-tent {
+  display: none;
+}
+@container somia-front (max-width: 760px) {
+  .w-somia-sill {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .w-somia-board__row {
+    justify-content: space-between;
+  }
+  .w-somia-tape__chapters {
+    display: none;
+  }
+  .w-somia-sub__label {
+    display: block;
+  }
+}
+
+/* ==========================================================================
+   STILL: reduced motion or "Pause motion": everything is simply there
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html.js .w-somia-awning[data-ready='false'] {
+    clip-path: none;
+  }
+  html.js .w-somia-awning[data-ready='true'] {
+    animation: none;
+  }
+  html.js .w-somia-chalk[data-ready] .w-somia-chalk__s {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+  html.js .w-somia-window[data-ready='false'] .w-somia-dev,
+  html.js .w-somia-window[data-ready='false'] .w-somia-tag {
+    opacity: 1;
+    translate: none;
+  }
+  html.js .w-somia-receipt-wrap[data-printed] .w-somia-receipt {
+    animation: none;
+    clip-path: none;
+  }
+  .w-somia-sub__line {
+    animation: none;
+  }
+  .w-somia-swing[data-swing='on'] {
+    animation: none;
+  }
+  .w-somia-dev,
+  .w-somia-tag,
+  .w-somia-tag__card,
+  .w-somia-fr__btn,
+  .w-somia-chip {
+    transition: none;
+  }
+  .w-somia-tag:hover,
+  .w-somia-tag:nth-of-type(even):hover,
+  .w-somia-fr__btn:hover,
+  .w-somia-chip:hover {
+    transform: none;
+  }
+}
+html[data-motion='paused'] .w-somia-awning[data-ready='false'] {
+  clip-path: none;
+}
+html[data-motion='paused'] .w-somia-awning[data-ready='true'] {
+  animation: none;
+}
+html[data-motion='paused'].js .w-somia-chalk[data-ready] .w-somia-chalk__s {
+  animation: none;
+  stroke-dashoffset: 0;
+}
+html[data-motion='paused'].js .w-somia-window[data-ready='false'] .w-somia-dev,
+html[data-motion='paused'].js .w-somia-window[data-ready='false'] .w-somia-tag {
+  opacity: 1;
+  translate: none;
+}
+html[data-motion='paused'].js .w-somia-receipt-wrap[data-printed] .w-somia-receipt {
+  animation: none;
+  clip-path: none;
+}
+html[data-motion='paused'] .w-somia-swing[data-swing='on'] {
+  animation: none;
+}
+html[data-motion='paused'] .w-somia-sub__line {
+  animation: none;
+}
+html[data-motion='paused'] .w-somia-dev,
+html[data-motion='paused'] .w-somia-tag,
+html[data-motion='paused'] .w-somia-tag__card,
+html[data-motion='paused'] .w-somia-fr__btn,
+html[data-motion='paused'] .w-somia-chip {
+  transition: none;
+}
+html[data-motion='paused'] .w-somia-tag:hover,
+html[data-motion='paused'] .w-somia-fr__btn:hover,
+html[data-motion='paused'] .w-somia-chip:hover {
+  transform: none;
+}

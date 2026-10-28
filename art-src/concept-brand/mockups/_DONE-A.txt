@@ -1,0 +1,7 @@
+m07-loyalty.svg
+m08-matchbooks.svg
+m10-tags.svg
+m12-caps.svg
+m13-business-cards.svg
+m14-coasters.svg
+m16-napkin.svg

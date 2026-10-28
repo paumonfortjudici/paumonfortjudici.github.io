@@ -1,0 +1,433 @@
+/* ==========================================================================
+   Spelled Guilty: "Case File" (world 4). Shared pieces: palette, the keyline title face, typed labels, the flashlight veil
+   and the lights rail. Prefix: w-sg-. Tokens from tokens.css / typography.css; the world's own palette lives below.
+
+   The room is dark oxblood and ink, the paper is cream, the string is red. The book keeps its own navy / cream / red as a
+   product shot. Archivo 800 at 85 % width, caps, white keyline = the real cover lettering.
+   ========================================================================== */
+
+.w-sg {
+  /* world palette (a world may define its own; nothing here leaks into the shell) */
+  --sg-wall: #1a0810;
+  --sg-wall-hi: #34101f;
+  --sg-desk: #150910;
+  --sg-leather: #231019;
+  --sg-leather-hi: #3a1a2c;
+  --sg-lamp: 255 212 150;
+  --sg-red: #e5342f;
+  --sg-red-ink: #ff5d50;
+  --sg-string: #ff4637;
+  --sg-navy: #1c3758;
+  --sg-book-cream: #f9eed6;
+  --sg-brass: #d9a53a;
+  --sg-paper: #fff6e2;
+  --sg-marker: #c4231e;
+  --sg-typed: #1c1516;
+  --sg-wall-deep: #1a0610;
+  --sg-cord: #0d0709;
+  --sg-pad: clamp(18px, 4.6vw, 76px);
+  /* a coarse leather / paper tooth for the desk surfaces (static; the site grain sits above everything) */
+  --sg-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.62' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .9 0 0 0 0 .8 0 0 0 .08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --sg-title: 'Archivo Variable', var(--font-body);
+  --sg-type: var(--font-label);
+  --sg-hand: var(--font-hand);
+
+  position: relative;
+  min-height: 100%;
+  isolation: isolate;
+  overflow-x: clip;
+  background: var(--sg-wall);
+  color: var(--cream);
+  font-family: var(--font-body);
+}
+
+/* ---- the keyline title face: Archivo 800, 85 % width, caps, white keyline outside the letters ------------------------- */
+.w-sg-key {
+  font-family: var(--sg-title);
+  font-weight: 800;
+  font-stretch: 85%;
+  font-variation-settings: normal;
+  font-optical-sizing: auto;
+  text-transform: uppercase;
+  letter-spacing: 0.012em;
+  line-height: 0.9;
+  -webkit-text-stroke: 0.085em #fff;
+  paint-order: stroke fill;
+  text-wrap: balance;
+  margin: 0;
+}
+
+/* a typed label (Courier Prime): tabs, tags, captions */
+.w-sg-type {
+  font-family: var(--sg-type);
+  font-weight: 700;
+  font-size: var(--fs-label);
+  line-height: 1.25;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-synthesis: none;
+  margin: 0;
+}
+
+/* an embossed label-maker strip: a black vinyl tape with raised white capitals (it holds a tagline) */
+.w-sg-strip {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0.62em 1.5em 0.6em 1.1em;
+  background:
+    linear-gradient(180deg, rgb(255 255 255 / 0.09), rgb(255 255 255 / 0) 42%, rgb(0 0 0 / 0.28)),
+    #0b0a0d;
+  color: #f6f2ea;
+  font-family: var(--sg-type);
+  font-weight: 700;
+  font-size: clamp(0.9rem, 0.8rem + 0.5vw, 1.2rem);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow:
+    0 1px 0 rgb(255 255 255 / 0.28),
+    0 -1px 0 rgb(0 0 0 / 0.9);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.09),
+    0 2px 0 rgb(0 0 0 / 0.55),
+    0 12px 18px -10px rgb(0 0 0 / 0.8);
+  clip-path: polygon(0 0, 100% 0, 98.6% 50%, 100% 100%, 0 100%, 1.2% 50%);
+}
+
+/* ---- flashlight veil + lights rail (sticky layer: it stays on the visible part of the scroller) -------------------------- */
+.w-sg-fixed {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  height: 0;
+  pointer-events: none;
+}
+
+.w-sg-veil {
+  --sg-beam: clamp(190px, 33vmin, 410px);
+  --bx: 50%;
+  --by: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--sg-vh, calc(100dvh - 56px));
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  /* the warm wash of the torch, then the dark with a soft round hole in it */
+  background:
+    radial-gradient(
+      circle calc(var(--sg-beam) * 0.96) at var(--bx) var(--by),
+      rgb(255 206 140 / 0.17) 0%,
+      rgb(255 206 140 / 0.09) 46%,
+      rgb(255 206 140 / 0) 100%
+    ),
+    radial-gradient(
+      circle var(--sg-beam) at var(--bx) var(--by),
+      rgb(6 2 4 / 0) 0%,
+      rgb(6 2 4 / 0) 26%,
+      rgb(6 2 4 / 0.34) 50%,
+      rgb(6 2 4 / 0.74) 76%,
+      rgb(6 2 4 / 0.95) 100%
+    );
+  transition: opacity 0.45s var(--ease-out);
+}
+
+.w-sg[data-lights='off'] .w-sg-veil {
+  opacity: 1;
+}
+
+/* the lamp does not come on in one clean step: it stutters */
+.w-sg[data-lights='off'][data-flicker] .w-sg-veil {
+  animation: w-sg-flicker 0.8s steps(1, end) 1;
+}
+
+@keyframes w-sg-flicker {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  18% { opacity: 0.25; }
+  30% { opacity: 1; }
+  42% { opacity: 0.55; }
+  56% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+.w-sg-hint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0;
+  color: #fff6de;
+  font-family: var(--sg-hand);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem);
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: 0 2px 0 rgb(0 0 0 / 0.65), 0 0 18px rgb(0 0 0 / 0.9);
+  transform: translate3d(50%, 40%, 0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.w-sg[data-lights='off'][data-hint] .w-sg-hint {
+  opacity: 1;
+  transition: opacity 0.4s var(--ease-out) 0.5s;
+}
+
+/* the lights rail: sticky (always reachable) by default. On small screens with the lights ON it scrolls away with the poster,
+   so it never covers the text; once the lights are off it sticks again, so the way back to the light is always there. */
+.w-sg-railwrap {
+  position: sticky;
+  top: 0;
+  z-index: 62;
+  height: 0;
+  pointer-events: none;
+}
+
+.w-sg[data-zoom] .w-sg-railwrap {
+  visibility: hidden;
+}
+
+@media (max-width: 900px) {
+  .w-sg[data-lights='on'] .w-sg-railwrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+}
+
+.w-sg-rail {
+  position: absolute;
+  top: 12px;
+  right: clamp(12px, 2vw, 28px);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.w-sg-rail > * {
+  pointer-events: auto;
+}
+
+.w-sg-lights {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.w-sg-aim-note {
+  max-width: 17rem;
+  margin: 0;
+  padding: 7px 10px 6px;
+  border-radius: 4px;
+  background: rgb(12 6 10 / 0.88);
+  color: var(--cream);
+  text-align: right;
+  box-shadow: inset 0 0 0 1px rgb(255 242 218 / 0.22);
+}
+
+/* ---- station scaffolding --------------------------------------------------------------------------------------------- */
+.w-sg-station {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(48px, 6vw, 96px) var(--sg-pad);
+}
+
+.w-sg-head {
+  position: relative;
+  display: grid;
+  gap: clamp(10px, 1.2vw, 18px);
+  justify-items: start;
+  max-width: 44rem;
+}
+
+/* title left, one honest paragraph right */
+.w-sg-head--split {
+  max-width: none;
+  grid-template-columns: auto minmax(0, 26rem);
+  justify-content: start;
+  align-items: start;
+  column-gap: clamp(24px, 4vw, 64px);
+}
+
+.w-sg-head--split .w-sg-sub {
+  align-self: end;
+}
+
+.w-sg-head--split .w-sg-tag {
+  grid-column: 1 / -1;
+}
+
+.w-sg-head--split .w-sg-h3 {
+  font-size: clamp(2.4rem, 1rem + 4.6vw, 5.6rem);
+}
+
+.w-sg-head--split .w-sg-sub {
+  padding-bottom: 0.6em;
+}
+
+@media (max-width: 1099px) {
+  .w-sg-head--split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* an evidence tag: manila paper with the two corners at the hole end cut off, a punched hole with its reinforcement ring.
+   The paper is a pseudo-element (it carries the clip) so the tag's drop shadow is not clipped with it. */
+.w-sg-tag {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  padding: 0.55em 1.05em 0.5em 2.3em;
+  color: var(--ink);
+  transform: rotate(-1.6deg);
+  filter: drop-shadow(0 2px 0 rgb(0 0 0 / 0.5)) drop-shadow(0 10px 9px rgb(0 0 0 / 0.5));
+}
+
+.w-sg-tag::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    var(--sg-noise),
+    var(--cream-2);
+  clip-path: polygon(0.95em 0, 100% 0, 100% 100%, 0.95em 100%, 0 calc(100% - 0.95em), 0 0.95em);
+}
+
+.w-sg-tag::after {
+  content: '';
+  position: absolute;
+  left: 0.8em;
+  top: 50%;
+  width: 0.6em;
+  height: 0.6em;
+  margin-top: -0.3em;
+  border-radius: 50%;
+  background: var(--sg-wall);
+  box-shadow:
+    0 0 0 0.2em var(--sg-paper),
+    0 0 0 0.25em rgb(23 16 27 / 0.28);
+}
+
+.w-sg-h3 {
+  font-size: clamp(2.6rem, 1.2rem + 5.2vw, 6.4rem);
+}
+
+.w-sg-sub {
+  margin: 0;
+  max-width: 38rem;
+  color: rgb(255 242 218 / 0.88);
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+}
+
+/* hand-written margin notes */
+.w-sg-hand {
+  font-family: var(--sg-hand);
+  line-height: 1.05;
+  margin: 0;
+}
+
+/* the keyboard hint for the board and the book: typed, small, never hidden from sight */
+.w-sg-keys {
+  margin: 0;
+  color: rgb(255 242 218 / 0.76);
+  font-family: var(--sg-type);
+  font-size: var(--fs-caption);
+  line-height: 1.45;
+}
+
+.w-sg-keys kbd {
+  display: inline-block;
+  min-width: 1.6em;
+  padding: 0 0.4em;
+  border: 1.5px solid currentColor;
+  border-radius: 5px;
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .w-sg-station {
+    padding-block: 52px;
+  }
+}
+
+/* ---- the page viewer (lives in the sticky layer: it covers exactly the visible part of the scroller) ------------------- */
+.w-sg-zoom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: 100%;
+  height: var(--sg-vh, calc(100dvh - 56px));
+  background:
+    radial-gradient(60% 60% at 50% 30%, rgb(var(--sg-lamp) / 0.1), transparent 75%),
+    rgb(9 3 6 / 0.97);
+  pointer-events: auto;
+  animation: w-sg-zoom-in 0.25s var(--ease-out) both;
+}
+
+@keyframes w-sg-zoom-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.w-sg-zoom__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  padding: 12px clamp(12px, 2vw, 28px) 8px;
+}
+
+.w-sg-zoom__cap {
+  min-width: 0;
+  color: var(--cream);
+  text-transform: none;
+  letter-spacing: 0.06em;
+}
+
+.w-sg-zoom__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.w-sg-zoom__scroll {
+  display: flex;
+  justify-content: safe center;
+  align-items: flex-start;
+  min-height: 0;
+  padding: 10px clamp(12px, 3vw, 40px) 48px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: rgb(255 242 218 / 0.5) transparent;
+}
+
+.w-sg-zoom__page {
+  flex: 0 0 auto;
+  /* real size on a laptop; on a phone it stays 640 px wide and scrolls sideways, so the small interior type can be read */
+  width: max(min(900px, 100%), min(900px, 640px));
+  height: auto;
+  background: #fff;
+  box-shadow:
+    0 2px 0 rgb(255 255 255 / 0.1),
+    0 40px 60px -24px rgb(0 0 0 / 0.9);
+}
+
+.w-sg-index__zoom {
+  margin-top: 6px;
+}

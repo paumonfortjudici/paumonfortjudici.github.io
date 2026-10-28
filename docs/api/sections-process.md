@@ -1,0 +1,62 @@
+# Section 05 Process: the darkroom bench (API note)
+
+Source: `src/components/sections/Process.tsx` + `process.css` + `src/components/sections/process/**`. Nothing else in the repo is touched.
+Default export `Process` (also a named export), mounted by `App` as the fifth sheet: `<Sheet id="process" tone="ultraviolet" page="Process" n={5}>`.
+Dev only (not part of the build, served by the Vite dev server of whoever runs it): `src/components/sections/process/_lab/section.html` renders this section alone (no other agent's code, so another agent's half-edited file cannot break it), `?paused=1` starts it with "Pause motion" on; `_lab/lab.html` shows the four scenes and the seven tokens side by side (`?only=1..4`).
+
+## What it is
+
+An ultraviolet sheet (cutting-mat grid in cream at 5-7 %) with the outline `PROCESS` (cream stroke, marigold misregistration, ghost `(05)`), the sub from `PROCESS.sub`, a hand note, and below it **the bench**:
+
+1. **The film**: a 35 mm strip (ink, `FilmPerforations` top and bottom, edge print `▶ 01 COLLECT` above each frame) running edge to edge of the sheet, with four frames, one per step: COLLECT (marigold), SKETCH (bubblegum), MAKE (tomato), DELIVER (lagoon). A frame = a hand-built SVG scene + the step number, title, paragraph, a hand note and the chips from `PROCESS` (`src/lib/copy.ts`). Frames outside the light are latent: dimmed, only a faint ghost of the line work. When a frame becomes the active one it is *developed* once: the colour rises from the bottom like developer in a tray, the objects of the scene land and draw themselves in turn (stroke-dash), the words arrive. A developed frame stays developed (it only settles again, without redrawing, when it comes back into the light). On sheets wider than about 1300px the leader and the tail of the roll carry a paper label held with tape (`Process`, `Delivered`). Once, 2.8 s after the first frame has developed, the film slides 64px and comes back, as if tugged (an invitation for visitors without a mouse; never in still motion, never after the film has been touched).
+2. **The ruler**: a cream ruler whose four segments are the tabs of a tablist (`01 COLLECT ... 04 DELIVER`). A *gate* (one block in the playing frame's colour) slides along it to the active tab; the top edge of each segment is the progress bar: one tick per frame, filled with the frame's colour once developed. Next to it two `TabButton`s: `Back` and `Next step` (both wrap round).
+3. **The shelf** (`On my desk`): the seven tools as seven different drawn objects standing on one plank, each leaning a little, with its name, one honest line and the steps where it is used.
+
+## Interaction contract
+
+| input | result |
+|---|---|
+| drag the strip (mouse, touch, pen; cursor label `Drag`) | follows the pointer with momentum and snaps to the nearest frame; the frame nearest to the middle is the active one while dragging. `touch-action: pan-y` and `overscroll-behavior-x: contain`, so the page still scrolls vertically on touch and a sideways swipe is not the browser's back gesture. Verified with real touch events on a 768px tablet |
+| a sideways swipe on a trackpad / tilt wheel over the strip | one frame per gesture (no wrap); a vertical wheel and a pinch scroll the page as usual |
+| click a neighbouring frame | goes to it (ignored right after a drag) |
+| ruler tab click, or `ArrowLeft` `ArrowRight` (wrapping), `Home`, `End` on the focused tab | roving tabindex; the strip springs to the frame, focus follows; cursor label `Flip` |
+| `Back` / `Next step` | previous / next frame, wrapping |
+| hover or focus a tool token | the object plays its own micro-animation (fan opens, pencil writes, tab slides out and the stroke is painted again, clay squashes, tag swings, pin is pressed, key is pressed), a flat marigold spot fills in behind it and a dashed ring appears; the ruler tabs and the frames of the steps that use it light up (marigold number chip + thicker marigold tick on the tab, dashed marigold marquee round the frame) |
+| click or tap a tool token | goes to the next step that uses it (wrapping between its steps); on phones a tap only plays the tool (the frames are a long way up the page). The lit state stays about 1.5 s |
+| the active step | the tokens used in it stand 12px higher with a dashed marigold ring (the same marquee the lit frames get) |
+| phones, `max-width: 720px` | **stack mode**: no strip, no ruler, no buttons; the film is vertical (perforations down both sides), every frame is shown and develops as it scrolls in, the frame crossing the middle of the screen is "active"; the shelf becomes a list |
+| reduced motion or "Pause motion" | every frame is developed and fully drawn from the first paint, no springs, no momentum (the strip still drags and moves, and snaps at once), no nudge, no ambient loops, tokens keep one still pose on hover |
+
+The margin notes say only what the layout really does: `drag the film` (mouse), `swipe the film` (touch, strip), `scroll to develop it` (phones, stack); at the shelf `hover a tool and its frames light up` (mouse), `tap a tool and it finds its frame` (touch, strip), `tap a tool and watch it move` (phones).
+
+Semantics: the frames are an ordered list (`ol` named "How I work, step by step"); in strip mode each frame is `role="tabpanel"` labelled by its tab and the ruler is a real `role="tablist"` (`aria-selected`, `aria-controls`, roving `tabindex`; the segments of the ruler are the tabs, clicking a frame selects it too); a visually hidden `role="status"` line announces "Step 2 of 4: SKETCH" when the step changes; each scene is `role="img"` with a real description (`STEP_STYLE[i].alt`); the tokens are real `<button>`s whose accessible name is the tool name + its line + "Used in step(s) ... Press to go to the frame."; the page's single `h1` stays in the Cover: this sheet owns an `h2` (the lettering), an `h3` per step and an `h3` "On my desk". Tab order inside the section: the three sheet-meta buttons, the selected ruler tab, Back, Next step, the seven tools.
+
+## Files
+
+| file | what |
+|---|---|
+| `Process.tsx` | the sheet, the header (ghost `(05)`, `StrokeWord` as `h2`, the sub, the hand note) and the **lazy** bench. The bench chunk loads when the sheet is 2200 px away (and is warmed on idle after 4-8 s, together with the hand font); until then a skeleton keeps the page height and draws the blank leader of the film (an ink band with sprocket holes, in the place and about the size the film will have). A failed chunk falls back to the four steps as plain text (`PlainSteps`: four coloured cards, tested by blocking the chunk), so the section can never take the page down |
+| `process.css` | the sheet (`.pm-proc`), header, skeleton, plain fallback: this part is in the main bundle, everything else is lazy |
+| `process/Bench.tsx` | the film, the ruler, the shelf and all behaviour (framer-motion drag + springs, an `IntersectionObserver` for "in the light", a `ResizeObserver` for the snap points, a non-passive `wheel` listener on the strip). Scenes and tokens are `memo`ised |
+| `process/scenes.tsx` | the four scenes `Collect Sketch Make Deliver` (`SCENES[i]`), 560 x 600 user units, every shape a `<path>` (pathLength 1 is set in a layout effect), 6.9 to 11.3 KB of markup each (limit 12 KB) |
+| `process/tokens.tsx` | the seven tool tokens (`TOKEN_ART[id]`), 150 x 150 units, 0.5 to 1.2 KB each: paint-chip fan (the Adobe suite), pencil stub on paper, index tab (Procreate), clay ball with loop tool (Nomad Sculpt), luggage tag (AI tools), push pin on a card (Pinterest), keyboard key with braces (VS Code). Names are written on the drawn objects in the label face: no logos, no app icons |
+| `process/data.ts` | step colours, scene alt texts, label-maker strips, hand notes, the tool list (`TOOLS`: `id name use steps`), the added UI strings (`PROCESS_UI`) and `stepBody` (keeps the section free of em dashes) |
+| `process/art.css` | **the graphic language** (`.pm-art`): 4 px ink outline (`.o`), thin detail 2.6 px (`.t`), heavy 5.6 px (`.x`), flat fills (`.to .mg .bg .lg .uv ...`), a hard offset shadow (`.sh`), the draw-on (`data-dev`), the ambient loops (`.lp-*`, all `pm-ambient`) |
+| `process/tokens.css` | the token micro-animations (keyed on `.pm-proc-tk[data-hot]`) |
+| `process/bench.css` | film, frames, ruler and gate, shelf, tablet and phone layouts, still paths |
+
+Production build (measured with `vite build`): the lazy bench is 40.3 KB JS (11.7 KB gzip) + 29.3 KB CSS (6.3 KB gzip); the main bundle only gets `Process.tsx` and `process.css`. DOM: about 850 nodes, 610 of them SVG. No images, no JSON. Layout shift while the bench arrives (deep link, or a fast scroll to the sheet): CLS 0.0003.
+
+Copy: step titles, paragraphs and chips and the tool names come from `PROCESS` in `src/lib/copy.ts` (the two em dashes of the doc text become a colon and a comma in `stepBody`, so this section has none; if `copy.ts` is ever edited to say that itself, `stepBody` simply does nothing). **Added copy** (not in COPY.md; all in `data.ts`, move it to `copy.ts` if the lead wants one source): the one-line use of each tool (from the step copy and Pau's brief), the four hand notes under the paragraphs (`until one line is left`, `dozens, then one`, `AI explores, I decide`, `done when you don't need me`), the scene alt texts, the label-maker strips inside the scenes (`Thumbnails`, `Procreate`, `Vectors`, `Layouts`, `Retouch`, `Variants`, `Sculpt`, `Print-ready`, `Brand manual`, `Responsive`), `Back to the previous step`, the shelf lead `What I reach for, and where it shows up.`, the margin notes listed above and the roll labels `Process` / `Delivered`. The scenes are vector drawings built in code in Pau's palette (they are not Pau's own pen work, and the page does not say they are).
+
+## Rules the section keeps
+
+- Tokens only (no raw hex in CSS; the scenes use `var(--tomato)` etc.). Animates `transform`, `opacity`, `clip-path` and, inside the SVG, stroke-dash and fill-opacity. No `transition: all`, no colour transitions.
+- Every animation has a still path for both `prefers-reduced-motion` and `html[data-motion='paused']` (checked: zero running animations in both); hidden / latent states only under `html.js`; ambient loops carry `pm-ambient` and run only while the bench is on screen and only on the active frame (at most two per scene).
+- Nothing under 13 px: measured over every visible text node at 1440, 1920, 768 and 390 (smallest 13px, aria-hidden decoration included); the names written on the tool drawings are 13 user units and the drawings are never rendered under 150px; in-scene strips hide below 270px of picture width (the paragraph says the same things).
+- Contrast (WCAG, computed from the tokens): ink on marigold 10.8, bubblegum 8.8, tomato 5.6, lagoon 5.5; cream on ultraviolet 5.5 (muted copy 4.9); marigold hand notes on ultraviolet 3.5 and the pink ones (`--proc-pink`, bubblegum tinted with cream) 3.7, all 24px or larger. The big step numerals are decorative (`aria-hidden`).
+- A shelf object is always at least 150px so its name stays readable; on touch devices every tap target in the section is 44px or more (the ruler tabs have a 44px minimum, the `TabButton`s grow to 44px on coarse pointers, the tools are whole 150px objects; the three sheet-meta buttons belong to the Sheet primitive).
+
+## How it was verified (re-runnable)
+
+Scratch scripts live outside the repo; the checks were: a 48-point regression (frame state after keys / buttons / drag / click / wheel, tablist semantics, tool hover and focus lighting the right frames, scene size budget, reduced and paused motion, phone stack, no console output) run against the production build served statically, a touch swipe on a 768px tablet with real touch events, drag under reduced motion, CLS on a deep link and on a fast scroll, a text-size scan, an ARIA snapshot and tab-order probe, a width sweep from 320 to 2300 for the skeleton height, and screenshots at 1440x900, 1920x1080, 768x1024, 390x844 (dpr 2) and reduced motion.

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>gotet - brand board (3000 x 4243)</title>
+<!--
+  GOTET brand board - composed from the finished pieces, nothing is redrawn here.
+  Concept project - art-directed by Pau, built with AI-assisted tools. All names, addresses and phones are fictional.
+  Render:  node tools/render-svg.mjs --in art-src/concept-brand/board.html --out board.png --selector "#board"
+  Layout:  brand guide section 9 (zones 9.1, top zone 9.2, grid 9.3, posters 9.4, footer 9.5).
+  Pieces:  logo/, mascots/, pattern/ = vector sources (self-contained SVG, used through <img>);
+           board/mockups/*.png = the 20 mockups rendered at 2x (drawn at cell size, so 1:1 crisp);
+           board/posters/*@2x.png = the 3 posters at 2x (drawn at 840 x 1190 inside a 14 px Rosat paper border).
+-->
+<style>
+@font-face{font-family:'BarlowSC';font-style:normal;font-weight:700;
+  src:url(mockups/fonts/barlow-semi-condensed-latin-700-normal.woff2) format('woff2'),
+      url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-700-normal.woff2) format('woff2');}
+html,body{margin:0;padding:0;background:#2340C0}
+#board{position:relative;width:3000px;height:4243px;overflow:hidden;background:#2340C0}
+#board>img,#board>svg,#board>div{position:absolute;display:block}
+.tile{}
+.tile.sh{filter:drop-shadow(3px 7px 6px rgba(33,23,54,.30))}
+.frame{width:868px;height:1218px;border-radius:18px;background:#F8D2D0;box-shadow:4px 10px 18px rgba(33,23,54,.30)}
+.poster{width:840px;height:1190px;border-radius:4px}
+</style>
+</head>
+<body>
+<div id="board">
+
+<!-- ============ ZONE 1 - TOP: Rosat ground, faint pattern, scalloped awning edge (guide 9.2) ============ -->
+<svg id="awning" width="3000" height="1640" viewBox="0 0 3000 1640" style="left:0;top:0">
+  <defs>
+    <pattern id="pat" width="1200" height="1200" patternUnits="userSpaceOnUse"><image href="pattern/pattern-faint-vermell-on-rosat.svg" x="0" y="0" width="1200" height="1200"/></pattern>
+    <clipPath id="zone"><path d="M0 0 H3000 V1500 A60 60 0 0 1 2880 1500 A60 60 0 0 1 2760 1500 A60 60 0 0 1 2640 1500 A60 60 0 0 1 2520 1500 A60 60 0 0 1 2400 1500 A60 60 0 0 1 2280 1500 A60 60 0 0 1 2160 1500 A60 60 0 0 1 2040 1500 A60 60 0 0 1 1920 1500 A60 60 0 0 1 1800 1500 A60 60 0 0 1 1680 1500 A60 60 0 0 1 1560 1500 A60 60 0 0 1 1440 1500 A60 60 0 0 1 1320 1500 A60 60 0 0 1 1200 1500 A60 60 0 0 1 1080 1500 A60 60 0 0 1 960 1500 A60 60 0 0 1 840 1500 A60 60 0 0 1 720 1500 A60 60 0 0 1 600 1500 A60 60 0 0 1 480 1500 A60 60 0 0 1 360 1500 A60 60 0 0 1 240 1500 A60 60 0 0 1 120 1500 A60 60 0 0 1 0 1500 Z"/></clipPath>
+    <filter id="awn-blur" filterUnits="userSpaceOnUse" x="-60" y="1400" width="3120" height="240"><feGaussianBlur stdDeviation="7"/></filter>
+  </defs>
+  <path d="M0 0 H3000 V1500 A60 60 0 0 1 2880 1500 A60 60 0 0 1 2760 1500 A60 60 0 0 1 2640 1500 A60 60 0 0 1 2520 1500 A60 60 0 0 1 2400 1500 A60 60 0 0 1 2280 1500 A60 60 0 0 1 2160 1500 A60 60 0 0 1 2040 1500 A60 60 0 0 1 1920 1500 A60 60 0 0 1 1800 1500 A60 60 0 0 1 1680 1500 A60 60 0 0 1 1560 1500 A60 60 0 0 1 1440 1500 A60 60 0 0 1 1320 1500 A60 60 0 0 1 1200 1500 A60 60 0 0 1 1080 1500 A60 60 0 0 1 960 1500 A60 60 0 0 1 840 1500 A60 60 0 0 1 720 1500 A60 60 0 0 1 600 1500 A60 60 0 0 1 480 1500 A60 60 0 0 1 360 1500 A60 60 0 0 1 240 1500 A60 60 0 0 1 120 1500 A60 60 0 0 1 0 1500 Z" transform="translate(5 12)" fill="#211736" opacity=".30" filter="url(#awn-blur)"/>
+  <g clip-path="url(#zone)"><rect width="3000" height="1560" fill="#F8D2D0"/><rect width="3000" height="1560" fill="url(#pat)"/></g>
+  <path d="M0 1500 A60 60 0 0 0 120 1500 A60 60 0 0 0 240 1500 A60 60 0 0 0 360 1500 A60 60 0 0 0 480 1500 A60 60 0 0 0 600 1500 A60 60 0 0 0 720 1500 A60 60 0 0 0 840 1500 A60 60 0 0 0 960 1500 A60 60 0 0 0 1080 1500 A60 60 0 0 0 1200 1500 A60 60 0 0 0 1320 1500 A60 60 0 0 0 1440 1500 A60 60 0 0 0 1560 1500 A60 60 0 0 0 1680 1500 A60 60 0 0 0 1800 1500 A60 60 0 0 0 1920 1500 A60 60 0 0 0 2040 1500 A60 60 0 0 0 2160 1500 A60 60 0 0 0 2280 1500 A60 60 0 0 0 2400 1500 A60 60 0 0 0 2520 1500 A60 60 0 0 0 2640 1500 A60 60 0 0 0 2760 1500 A60 60 0 0 0 2880 1500 A60 60 0 0 0 3000 1500" fill="none" stroke="#211736" stroke-width="12" stroke-linejoin="round"/>
+</svg>
+
+<!-- wordmark first, then the cast in front of its lower half, left to right (Xip's glove sits over Sifo's bubbles) -->
+<img id="wordmark" src="logo/wordmark.svg" alt="gotet wordmark" style="left:550px;top:60px;width:1900px;height:706.5px">
+<img id="gotet-a" src="mascots/gotet-a.svg" alt="gotet-a" style="left:21.0px;top:362.0px;width:950.0px;height:1045.0px">
+<img id="oliva-a" src="mascots/oliva-a.svg" alt="oliva-a" style="left:571.0px;top:362.0px;width:950.0px;height:1045.0px">
+<img id="sifo-a" src="mascots/sifo-a.svg" alt="sifo-a" style="left:1251.0px;top:362.0px;width:950.0px;height:1045.0px">
+<img id="xip-a" src="mascots/xip-a.svg" alt="xip-a" style="left:1911.0px;top:362.0px;width:950.0px;height:1045.0px">
+
+<!-- ============ ZONE 2 - PANEL (Blau) with the 8 x 6 bento grid of 20 mockups (guide 9.3) ============ -->
+<img id="m01" class="tile sh" src="board/mockups/m01-shopfront.png" alt="m01-shopfront" style="left:100px;top:1620px;width:1035px;height:392px">
+<img id="m02" class="tile sh" src="board/mockups/m02-social-greeting.png" alt="m02-social-greeting" style="left:1159px;top:1620px;width:329px;height:392px">
+<img id="m03" class="tile sh" src="board/mockups/m03-social-xips.png" alt="m03-social-xips" style="left:1512px;top:1620px;width:329px;height:392px">
+<img id="m04" class="tile sh" src="board/mockups/m04-social-raig.png" alt="m04-social-raig" style="left:1865px;top:1620px;width:329px;height:392px">
+<img id="m05" class="tile sh" src="board/mockups/m05-cups.png" alt="m05-cups" style="left:2218px;top:1620px;width:682px;height:392px">
+<img id="m06" class="tile sh" src="board/mockups/m06-menu.png" alt="m06-menu" style="left:100px;top:2036px;width:682px;height:600px">
+<img id="m07" class="tile sh" src="board/mockups/m07-loyalty.png" alt="m07-loyalty" style="left:100px;top:2660px;width:329px;height:184px">
+<img id="m08" class="tile sh" src="board/mockups/m08-matchbooks.png" alt="m08-matchbooks" style="left:453px;top:2660px;width:329px;height:184px">
+<img id="m09" class="tile sh" src="board/mockups/m09-bottle.png" alt="m09-bottle" style="left:806px;top:2036px;width:329px;height:600px">
+<img id="m10" class="tile sh" src="board/mockups/m10-tags.png" alt="m10-tags" style="left:806px;top:2660px;width:329px;height:184px">
+<img id="m11" class="tile sh" src="board/mockups/m11-siphon.png" alt="m11-siphon" style="left:1159px;top:2036px;width:329px;height:600px">
+<img id="m12" class="tile sh" src="board/mockups/m12-caps.png" alt="m12-caps" style="left:1159px;top:2660px;width:329px;height:184px">
+<img id="m13" class="tile sh" src="board/mockups/m13-business-cards.png" alt="m13-business-cards" style="left:1512px;top:2036px;width:329px;height:392px">
+<img id="m14" class="tile sh" src="board/mockups/m14-coasters.png" alt="m14-coasters" style="left:1512px;top:2452px;width:329px;height:392px">
+<img id="m15" class="tile sh" src="board/mockups/m15-glass.png" alt="m15-glass" style="left:1865px;top:2036px;width:329px;height:392px">
+<img id="m16" class="tile sh" src="board/mockups/m16-napkin.png" alt="m16-napkin" style="left:1865px;top:2452px;width:329px;height:392px">
+<img id="m17" class="tile sh" src="board/mockups/m17-tote.png" alt="m17-tote" style="left:2218px;top:2036px;width:329px;height:392px">
+<img id="m18" class="tile sh" src="board/mockups/m18-apron.png" alt="m18-apron" style="left:2218px;top:2452px;width:329px;height:392px">
+<img id="m19" class="tile sh" src="board/mockups/m19-flyer.png" alt="m19-flyer" style="left:2571px;top:2036px;width:329px;height:392px">
+<img id="m20" class="tile sh" src="board/mockups/m20-stickers.png" alt="m20-stickers" style="left:2571px;top:2452px;width:329px;height:392px">
+
+<!-- ============ ZONE 3 - POSTERS in Rosat paper frames (guide 9.4) ============ -->
+<div class="frame" id="frame1" style="left:100px;top:2925px"></div>
+<img id="p1" class="poster" src="board/posters/poster-1@2x.png" alt="poster 1" style="left:114px;top:2939px">
+<div class="frame" id="frame2" style="left:1066px;top:2925px"></div>
+<img id="p2" class="poster" src="board/posters/poster-2@2x.png" alt="poster 2" style="left:1080px;top:2939px">
+<div class="frame" id="frame3" style="left:2032px;top:2925px"></div>
+<img id="p3" class="poster" src="board/posters/poster-3@2x.png" alt="poster 3" style="left:2046px;top:2939px">
+
+<!-- ============ TYPE: top-zone labels and footer, live text in Barlow Semi Condensed 700 ============ -->
+<svg id="type" width="3000" height="4243" viewBox="0 0 3000 4243" style="left:0;top:0">
+  <g font-family="BarlowSC" font-weight="700">
+    <text x="100" y="1450" font-size="44" letter-spacing="6" fill="#D8283B">NEIGHBOURHOOD VERMUTERIA</text>
+    <text x="2906" y="1450" font-size="44" letter-spacing="6" fill="#D8283B" text-anchor="end">BRAND DESIGN</text>
+    <text x="100" y="4202" font-size="28" letter-spacing="5" fill="#F8D2D0">GOTET &#183; VERMUTERIA DE BARRI</text>
+    <text x="1502.5" y="4202" font-size="28" letter-spacing="5" fill="#F8D2D0" text-anchor="middle">SMALL GLASS. BIG SUNDAY.</text>
+    <text x="2905" y="4202" font-size="28" letter-spacing="5" fill="#F8D2D0" text-anchor="end">CARDEDEU &#183; 2026 &#183; CONCEPT PROJECT</text>
+  </g>
+</svg>
+
+</div>
+</body>
+</html>

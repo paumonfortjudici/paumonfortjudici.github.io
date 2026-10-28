@@ -1,0 +1,1243 @@
+/* ==========================================================================
+   04 Works: the cabinet of ten folders.  Prefix pm-wk-.  Tokens only (no raw hex); only transform, opacity and clip-path move.
+   Parts: head (word, sub, index card) / rail (label holder, divider tabs, bar) / grid (bento of folders) / card (folder internals)
+          / yours (the empty folder) / tablet + phone / still (reduced or paused motion).
+   Sizes inside a card are written in cqw (1 % of the card's own width), so a featured folder is the same object at twice the size.
+   ========================================================================== */
+
+.pm-wk {
+  --manila: color-mix(in srgb, var(--cream-2) 86%, var(--marigold));
+  --pencil: var(--ink-3);
+  --pencil-ink: var(--ink-2);
+  /* Gotet's own inks (docs/ART_DIRECTION.md section 10): used only to set the title of its folder like its wordmark (red, ink keyline, blue offset) */
+  --gotet-red: #d8283b;
+  --gotet-blue: #2340c0;
+  --gotet-ink: #211736;
+}
+.pm-wk-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ---- head: outline word + ghost count, the sub, the index card ------------------------------------------------------- */
+.pm-wk__head {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 34ch) minmax(0, 1fr) auto;
+  grid-template-areas: 'word word keys' 'sub ghost keys';
+  column-gap: clamp(20px, 3vw, 56px);
+  row-gap: clamp(8px, 1.2vw, 18px);
+  align-items: start;
+  margin-bottom: clamp(28px, 3vw, 48px);
+}
+.pm-wk__word {
+  grid-area: word;
+  min-width: 0;
+}
+.pm-wk__sub {
+  grid-area: sub;
+  margin: 0;
+}
+.pm-wk__ghost {
+  grid-area: ghost;
+  align-self: end;
+  justify-self: center;
+  pointer-events: none;
+}
+html.js .pm-wk__ghost {
+  animation: pm-wk-count 0.45s var(--ease-out) both;
+}
+@keyframes pm-wk-count {
+  from {
+    opacity: 0;
+    transform: translateY(14%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* the two keys named in the sub, drawn as small keycaps and never split across two lines */
+.pm-wk__hop {
+  white-space: nowrap;
+}
+.pm-wk-kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5em;
+  height: 1.5em;
+  margin: 0 0.1em;
+  padding: 0 0.3em;
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  background: var(--paper);
+  box-shadow: 0 2px 0 var(--ink);
+  font-family: var(--font-label);
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: 0.08em;
+  transform: translateY(-1px);
+}
+
+/* the index card: ruled, clipped to the sheet, tilted. Keys are drawn as keycaps. Only where there is a keyboard. */
+.pm-wk-keys {
+  grid-area: keys;
+  position: relative;
+  justify-self: end;
+  align-self: start;
+  width: clamp(15rem, 21vw, 19.5rem);
+  margin-top: 0.4rem;
+  padding: 1.9rem 1.2rem 1.15rem 2.9rem;
+  border-top: 4px solid var(--tomato);
+  border-radius: 4px 4px 6px 6px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 var(--edge-h) 0 color-mix(in srgb, var(--paper) 64%, var(--ink)),
+    0 22px 22px -16px color-mix(in srgb, var(--ink) 55%, transparent);
+  color: var(--ink);
+  transform: rotate(2.2deg);
+}
+.pm-wk-keys::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 2.05rem;
+  width: 1.5px;
+  background: color-mix(in srgb, var(--tomato) 55%, transparent);
+}
+.pm-wk-keys__clip {
+  position: absolute;
+  top: -1.55rem;
+  left: 1.2rem;
+  z-index: 2;
+}
+.pm-wk-keys__title {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  line-height: var(--lh-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.pm-wk-keys__list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pm-wk-keys__item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1.5px solid color-mix(in srgb, var(--lagoon) 42%, transparent);
+}
+.pm-wk-keys__item:first-child {
+  padding-top: 0.1rem;
+  border-top: 1.5px solid color-mix(in srgb, var(--lagoon) 42%, transparent);
+}
+.pm-wk-key {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  min-width: 2.6rem;
+  height: 2.6rem;
+  padding: 0 0.55rem;
+  border: 2px solid var(--ink);
+  border-radius: 9px;
+  background: var(--cream);
+  box-shadow: 0 4px 0 var(--ink);
+  font-family: var(--font-label);
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  transform: translateY(-2px);
+}
+.pm-wk-key:not(:only-child):is(:last-child) {
+  font-size: 1rem;
+}
+.pm-wk-keys__label {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+@media (hover: none), (pointer: coarse), (max-width: 899px) {
+  .pm-wk-keys {
+    display: none;
+  }
+  .pm-wk__head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: 'word word' 'sub ghost';
+  }
+}
+@media (max-width: 639px) {
+  .pm-wk__head {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'word' 'sub';
+  }
+  .pm-wk__head .pm-wk__ghost {
+    display: none;
+  }
+}
+
+/* ---- the drawer rail: label holder + divider tabs on a bar ------------------------------------------------------------- */
+.pm-wk-rail {
+  position: relative;
+  scroll-margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 16px;
+  margin-bottom: clamp(18px, 2.2vw, 30px);
+}
+@media (min-width: 1340px) {
+  .pm-wk-rail {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: clamp(18px, 2vw, 32px);
+  }
+}
+.pm-wk-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 16px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--ink) 24%, transparent);
+}
+.pm-wk-bar__c {
+  position: absolute;
+  inset: 0;
+  background-color: var(--c);
+  background-image: var(--pm-grain);
+  opacity: 0;
+  transition: opacity 0.28s var(--ease-out);
+}
+.pm-wk-bar__c[data-on='true'] {
+  opacity: 1;
+}
+/* the rail is a slotted metal bar: a row of slots, so it reads as hardware and not as a coloured stripe */
+.pm-wk-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(ellipse 7px 2.2px at 50% 50%, var(--slot, color-mix(in srgb, var(--ink) 38%, transparent)) 0 98%, transparent 100%);
+  background-size: 30px 100%;
+  background-position: 12px 0;
+}
+.pm-wk-rail[data-filter='all'] .pm-wk-bar {
+  --slot: color-mix(in srgb, var(--cream) 24%, transparent);
+}
+
+/* the brass holder: marigold sheet-metal, two screws, a recess with a typed card in it */
+.pm-wk-holder {
+  position: relative;
+  flex: none;
+  width: 15rem;
+  margin-bottom: var(--edge-h);
+  padding: 9px 15px 8px;
+  border-radius: 12px 12px 4px 4px;
+  background-color: var(--marigold);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 var(--edge-h) 0 color-mix(in srgb, var(--marigold) 56%, var(--ink));
+  color: var(--ink);
+}
+.pm-wk-holder__screw {
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--marigold) 42%, var(--ink));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--paper) 40%, transparent);
+}
+.pm-wk-holder__screw::after {
+  content: '';
+  position: absolute;
+  left: 1.5px;
+  right: 1.5px;
+  top: 4px;
+  height: 1.5px;
+  background: color-mix(in srgb, var(--ink) 80%, transparent);
+  transform: rotate(var(--turn, 30deg));
+}
+.pm-wk-holder__screw[data-at='l'] {
+  left: 3px;
+  --turn: 28deg;
+}
+.pm-wk-holder__screw[data-at='r'] {
+  right: 3px;
+  --turn: -52deg;
+}
+.pm-wk-holder__slot {
+  position: relative;
+  height: 3.35rem;
+  overflow: hidden;
+  padding: 3px 3px 0;
+  border-radius: 6px;
+  background: var(--ink-2);
+  box-shadow: inset 0 3px 6px color-mix(in srgb, var(--ink) 70%, transparent);
+}
+.pm-wk-holder__card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0 9px;
+  border-top: 4px solid var(--bar, var(--ink));
+  border-radius: 3px 3px 0 0;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  animation: pm-wk-slip 0.42s var(--ease-out) both;
+}
+.pm-wk-holder__name {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.pm-wk-holder__files {
+  font-family: var(--font-label);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+@keyframes pm-wk-slip {
+  from {
+    transform: translateY(-105%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* the divider tabs: the active one is taller and fused with the bar (no edge, no gap) */
+.pm-wk-tabs {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  min-width: 0;
+  max-width: 100%;
+}
+.pm-wk .pm-wk-tabs .pm-wk-tab {
+  --th: 44px;
+  white-space: nowrap;
+}
+.pm-wk .pm-wk-tabs .pm-wk-tab[aria-selected='true'] {
+  --th: 58px;
+}
+.pm-wk .pm-wk-tabs .pm-wk-tab[aria-selected='true']:hover {
+  transform: none;
+  --pm-lift: 0px;
+}
+.pm-wk .pm-wk-tabs .pm-wk-tab:not([aria-selected='true']) {
+  filter: none;
+}
+/* the holder sits beside the tabs from 1340px: on the narrowest of those screens (a 1366px laptop) the six tabs need a little less paper
+   each, or the last one would stick out past the end of the bar */
+@media (min-width: 1340px) and (max-width: 1459px) {
+  .pm-wk .pm-wk-tabs .pm-wk-tab {
+    padding-inline: 14px;
+  }
+}
+@media (max-width: 1339px) {
+  .pm-wk .pm-wk-tabs .pm-wk-tab {
+    padding-inline: 12px;
+  }
+  .pm-wk-tabs {
+    width: 100%;
+    overflow-x: auto;
+    padding: 8px 10px 0;
+    margin: -8px -10px 0;
+    max-width: calc(100% + 20px);
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, var(--ink) 12px, var(--ink) calc(100% - 28px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, var(--ink) 12px, var(--ink) calc(100% - 28px), transparent 100%);
+  }
+  .pm-wk-tabs::-webkit-scrollbar {
+    display: none;
+  }
+}
+@media (min-width: 1100px) and (max-width: 1339px) {
+  .pm-wk-tabs {
+    overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+  }
+}
+
+/* ---- the grid: a bento on 12 columns ---------------------------------------------------------------------------------- */
+.pm-wk-stage {
+  container: pm-wk-stage / inline-size;
+}
+.pm-wk-grid {
+  /* all in px of the stage: gap, one column, a small folder's width, the room a small folder reserves for its peek, the row height */
+  --g: clamp(14px, 1.7cqw, 28px);
+  --colw: calc((100cqw - 11 * var(--g)) / 12);
+  --ws: calc(3 * var(--colw) + 2 * var(--g));
+  --pad: 12px;
+  --tab: 32px;
+  --txt: 86px;
+  --pz: calc(var(--ws) * 0.3 - 20px);
+  --rowh: calc(var(--pz) + var(--tab) + 2 * var(--pad) + (var(--ws) - 2 * var(--pad)) * 1.25 + 10px + var(--txt));
+
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: var(--rowh);
+  gap: var(--g);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pm-wk-cell {
+  container: pm-wk-cell / inline-size;
+  --pv: 30;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  grid-column: var(--gc);
+  grid-row: var(--gr);
+}
+.pm-wk-cell[data-kind='f'] {
+  --pv: 22;
+  /* a featured folder has more paper round its print (the print is 4:5 of what is left, so the words gain the room) */
+  --pad: clamp(12px, 2.2cqw, 22px);
+}
+
+/* ---- the card: a folder in the project's colour ------------------------------------------------------------------------ */
+.pm-wk-card.pm-folder {
+  --fpad: var(--pad, 12px);
+  --th: 32px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: calc(var(--pv) * 1cqw - 20px);
+  transition: none; /* framer-motion drives every transform here; the primitive's CSS spring would fight it */
+  -webkit-user-drag: none;
+}
+.pm-wk-card .pm-folder__art {
+  filter: drop-shadow(0 1px 0 color-mix(in srgb, var(--ink) 18%, transparent)) drop-shadow(0 12px 12px color-mix(in srgb, var(--ink) 15%, transparent));
+}
+.pm-wk-card:hover .pm-folder__art,
+.pm-wk-card:focus-visible .pm-folder__art {
+  filter: var(--pm-float);
+}
+/* keyboard focus raises the folder in CSS (the pointer's lift is a framer-motion spring): translate composes with the tilt framer writes */
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion='paused']) .pm-wk-card:focus-visible {
+    translate: 0 -14px;
+    transition: translate 0.42s var(--ease-spring);
+  }
+}
+/* the body is not a stacking context here: the peek (z-index -1) then slides in BEHIND the folder's paper and the tab */
+.pm-wk-card .pm-folder__body {
+  z-index: auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 10px;
+  min-height: 0;
+}
+/* the cabinet is full: each folder rests on the next file, whose paper edge shows on the side opposite to its tilt. On hover the folder is
+   lifted out of the stack, so the file under it stays where it was (the lift is cancelled for this layer). The empty folder has no file under it. */
+.pm-wk-card:not(.pm-wk-yours) .pm-folder__body::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 18px;
+  background-color: color-mix(in srgb, var(--fc) 72%, var(--ink));
+  background-image: var(--pm-grain);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--fc) 46%, var(--ink));
+  transform: translate(0.9cqw, 1.2cqw) rotate(calc(var(--brs, 1) * 1.1deg));
+  transform-origin: 50% 100%;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion='paused']) .pm-wk-card:not(.pm-wk-yours):is(:hover, :focus-visible) .pm-folder__body::before {
+    transform: translate(0.9cqw, calc(1.2cqw + 14px)) rotate(calc(var(--brs, 1) * 1.1deg));
+    transition: transform 0.3s var(--ease-out);
+  }
+}
+.pm-wk-tabtext {
+  display: inline-block;
+  animation: pm-wk-tab 0.3s var(--ease-out) both;
+}
+@keyframes pm-wk-tab {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* the peek: a cut-out that sticks out from behind the folder; most of it hides behind the paper */
+.pm-wk-peek {
+  position: absolute;
+  z-index: -1;
+  top: calc(var(--pv) * -1cqw);
+  left: var(--px, 30%);
+  width: auto;
+  height: calc(58cqw * var(--pk, 1));
+  max-width: none;
+  transform: translateX(-50%) rotate(var(--pr, 0deg));
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 7px 6px color-mix(in srgb, var(--ink) 38%, transparent));
+  transition: transform 0.5s var(--ease-spring);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.pm-wk-card:hover .pm-wk-peek,
+.pm-wk-card:focus-visible .pm-wk-peek {
+  transform: translateX(-50%) translateY(-6cqw) rotate(calc(var(--pr, 0deg) * 1.7));
+}
+/* a flat rectangle (a slide) rather than a cut-out: it gets the same paper border as a print */
+.pm-wk-peek[data-paper] {
+  border: 0.9cqw solid var(--paper);
+  border-radius: 3px;
+  object-fit: cover;
+  background-color: var(--paper);
+}
+
+/* the print: the card art (4:5) on a cream-bordered sheet, a little crooked, taped on where it needs holding */
+.pm-wk-print {
+  position: relative;
+  display: block;
+  flex: none;
+  aspect-ratio: 4 / 5;
+  padding: 6px;
+  border-radius: 4px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 3px 0 color-mix(in srgb, var(--paper) 62%, var(--ink)),
+    0 16px 14px -12px color-mix(in srgb, var(--ink) 50%, transparent);
+  transform: rotate(var(--prot, 0deg));
+}
+.pm-wk-print > img {
+  position: absolute;
+  inset: 6px;
+  display: block;
+  width: calc(100% - 12px);
+  height: calc(100% - 12px);
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+/* desktop: a featured folder has a fixed height (two rows), so its print takes whatever the words leave (about 4:5, a hair shorter when
+   a longer blurb needs the room, object-fit: cover trims it) instead of overflowing; tablet and phone keep the 4:5 */
+@media (min-width: 1100px) {
+  .pm-wk-cell[data-kind='f'] .pm-wk-print {
+    flex: 1 1 0;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .pm-wk-cell[data-kind='f'] .pm-wk-text {
+    flex: none;
+  }
+}
+.pm-wk-print .pm-wk-tape {
+  --w: 30cqw;
+  --h: 6.6cqw;
+}
+.pm-wk-stamp {
+  position: absolute;
+  right: 5%;
+  bottom: 7%;
+  z-index: 3;
+  --size: clamp(0.95rem, 4.6cqw, 2rem);
+}
+.pm-wk-collage {
+  position: absolute;
+  inset: 6px;
+  display: block;
+  overflow: hidden;
+  background-color: var(--lilac);
+  background-image: var(--pm-grain);
+}
+.pm-wk-collage__piece {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: auto;
+  transform: rotate(var(--r));
+  filter: drop-shadow(0 3px 2px color-mix(in srgb, var(--ink) 30%, transparent));
+}
+
+/* text: title in the world's own face, kind, years; featured folders add the blurb, the roles and an open tab */
+.pm-wk-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 4px;
+  min-height: 0;
+  padding: 2px 2px 0;
+}
+.pm-wk-top {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pm-wk-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.pm-wk-title {
+  --tk: 1;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-size: calc(clamp(1.35rem, 9.2cqw, 5.4rem) * var(--tk));
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+.pm-wk-years {
+  flex: none;
+  margin-top: 0.15em;
+  padding: 2px 7px 1px;
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.pm-wk-kind {
+  font-family: var(--font-body);
+  font-size: clamp(0.875rem, 2.8cqw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--on2);
+}
+.pm-wk-blurb {
+  margin-top: 0.5em;
+  max-width: 66ch;
+  text-wrap: pretty;
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 2.7cqw, 1.45rem);
+  line-height: 1.5;
+}
+.pm-wk-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-top: auto;
+  padding-top: 8px;
+}
+.pm-wk-roles {
+  min-width: 0;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--on2);
+}
+.pm-wk-card .pm-wk-open {
+  --c: var(--fi);
+  --on: var(--fc);
+  flex: none;
+  margin-right: 0;
+  cursor: pointer;
+}
+
+/* the title waits for its face (html.js only): a card near the viewport loads it, loadWorldFonts() resolves within ~0.9 s even offline */
+html.js .pm-wk-card:not([data-face]) .pm-wk-title {
+  opacity: 0;
+}
+html.js .pm-wk-card[data-face] .pm-wk-title {
+  animation: pm-wk-show 0.3s ease both;
+}
+@keyframes pm-wk-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---- each folder's title in its own world's face (the faces load lazily: src/worlds/fonts.ts) -------------------------- */
+.pm-wk-card[data-slug='contract'] .pm-wk-title {
+  --tk: 0.88;
+  font-family: 'Bitter Variable', var(--font-body);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+.pm-wk-card[data-slug='plana'] .pm-wk-title {
+  --tk: 0.94;
+  font-family: 'Sora Variable', var(--font-body);
+  letter-spacing: -0.045em;
+  text-transform: lowercase;
+}
+.pm-wk-card[data-slug='plana'] .pm-wk-w1 {
+  font-weight: 800;
+}
+.pm-wk-card[data-slug='plana'] .pm-wk-w2 {
+  font-weight: 400;
+}
+.pm-wk-card[data-slug='fortyfour-lab'] .pm-wk-title {
+  --tk: 1.12;
+  font-family: 'Chango', var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+  -webkit-text-stroke: 0.11em var(--ink);
+  paint-order: stroke fill;
+  text-shadow: 0.07em 0.09em 0 var(--tomato);
+}
+.pm-wk-card[data-slug='spelled-guilty'] .pm-wk-title {
+  --tk: 0.94;
+  font-family: 'Archivo Variable', var(--font-body);
+  font-weight: 800;
+  font-stretch: 85%;
+  letter-spacing: 0.012em;
+  text-transform: uppercase;
+}
+.pm-wk-card[data-slug='space-monkey'] .pm-wk-title {
+  --tk: 0.66;
+  font-family: 'Orbitron Variable', var(--font-body);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pm-wk-card[data-slug='procreate'] .pm-wk-title {
+  --tk: 0.9;
+  font-family: 'Gloria Hallelujah', var(--font-hand);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.06;
+}
+.pm-wk-card[data-slug='somia'] .pm-wk-title {
+  --tk: 1.04;
+  font-family: 'Cormorant Variable', var(--font-display);
+  font-weight: 500;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+/* Gotet: the brand's own text face is Fraunces (already in the shell), set like its wordmark: lowercase, red, an ink keyline and a blue offset */
+.pm-wk-card[data-slug='concept-brand'] .pm-wk-title {
+  --tk: 1.36;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+  line-height: 1.12;
+  padding-bottom: 0.06em;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  color: var(--gotet-red);
+  -webkit-text-stroke: 0.1em var(--gotet-ink);
+  paint-order: stroke fill;
+  text-shadow: 0.055em 0.065em 0 var(--gotet-blue);
+}
+/* the wide Anybody face wraps this title onto two lines at every width, the fallback face onto one: reserve both so the card never changes height when the face arrives */
+.pm-wk-card[data-slug='concept-portfolio'] .pm-wk-title {
+  min-height: 2.04em;
+  --tk: 0.6;
+  font-family: 'Anybody Variable', var(--font-body);
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+}
+.pm-wk-card[data-slug='illustration'] .pm-wk-title {
+  --tk: 1;
+  font-family: 'Cherry Bomb One', var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  -webkit-text-stroke: 0.2em var(--paper);
+  paint-order: stroke fill;
+  filter: drop-shadow(2px 3px 0 color-mix(in srgb, var(--ink) 40%, transparent));
+}
+
+/* ---- yours: the empty folder -------------------------------------------------------------------------------------------- */
+.pm-wk-yours.pm-folder {
+  --fc: var(--manila);
+}
+.pm-wk-yours.pm-folder[data-dashed] .pm-folder__fill,
+.pm-wk-yours.pm-folder[data-dashed] .pm-folder__edge,
+.pm-wk-yours.pm-folder[data-dashed] .pm-folder__grain {
+  display: block;
+}
+.pm-wk-yours.pm-folder[data-dashed] .pm-folder__fill {
+  fill-opacity: 0.72;
+}
+.pm-wk-yours .pm-folder__dash {
+  stroke: var(--pencil);
+  stroke-width: 2.6px;
+  stroke-dasharray: 11 9;
+  filter: url(#pm-wk-pencil);
+}
+.pm-wk-yours .pm-folder__tab {
+  font-family: var(--font-hand-thin);
+  font-size: 1.95rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  padding-inline: 14px;
+  color: var(--pencil-ink);
+}
+.pm-wk-yours .pm-folder__tabtext {
+  filter: url(#pm-wk-graphite);
+  transform: translateY(1px);
+}
+/* main = the empty graphic frame (where a print would go: a pencil box with a cross through it) with the pencil words written over it and
+   the call to action under it. Wide (6 columns): the frame on the left, the words and the call to action on the right. */
+.pm-wk-yours__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.pm-wk-yours__side {
+  display: contents;
+}
+.pm-wk-yours__slot {
+  position: relative;
+  grid-area: 1 / 1;
+  aspect-ratio: 4 / 5;
+  color: var(--pencil-ink);
+}
+.pm-wk-yours__frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  overflow: visible;
+  stroke: var(--pencil);
+  stroke-width: 2.2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: url(#pm-wk-pencil);
+  pointer-events: none;
+}
+.pm-wk-yours__frame rect {
+  vector-effect: non-scaling-stroke;
+}
+.pm-wk-yours__frame path {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1.6px;
+  opacity: 0.42;
+}
+.pm-wk-yours__smile {
+  position: absolute;
+  right: 9%;
+  bottom: 7%;
+  width: 23cqw;
+  height: auto;
+  transform: rotate(9deg);
+  filter: url(#pm-wk-pencil);
+}
+.pm-wk-yours__words {
+  position: relative;
+  z-index: 1;
+  grid-area: 1 / 1;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 9% 10% 0;
+  color: var(--pencil-ink);
+}
+.pm-wk-yours__ask {
+  font-family: var(--font-hand-thin);
+  font-size: clamp(3.8rem, 27cqw, 9.5rem);
+  line-height: 0.82;
+  transform: rotate(-4deg);
+  transform-origin: 0 100%;
+  filter: url(#pm-wk-graphite);
+}
+.pm-wk-yours__text {
+  max-width: 12ch;
+  font-family: var(--font-hand-thin);
+  font-size: clamp(2rem, 12cqw, 3.8rem);
+  line-height: 0.96;
+  filter: url(#pm-wk-graphite);
+}
+.pm-wk-yours__foot {
+  grid-area: 2 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  min-height: 0;
+  padding: 2px 2px 0;
+}
+.pm-wk-yours__arrow {
+  flex: none;
+  transform: translateY(-4px) rotate(-6deg);
+}
+.pm-wk-card .pm-wk-yours__cta {
+  --c: var(--ink);
+  --on: var(--cream);
+  flex: none;
+  margin-right: 0;
+  cursor: pointer;
+}
+.pm-wk-ghostpeek {
+  position: absolute;
+  z-index: -1;
+  top: calc(var(--pv) * -1cqw);
+  left: 66%;
+  width: 34cqw;
+  height: 44cqw;
+  border: 2.6px dashed var(--pencil);
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  background: color-mix(in srgb, var(--manila) 55%, transparent);
+  transform: translateX(-50%) rotate(3deg);
+  transform-origin: 50% 100%;
+  filter: url(#pm-wk-pencil);
+  transition: transform 0.5s var(--ease-spring);
+}
+.pm-wk-ghostpeek__q {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  transform: translateX(-50%) rotate(-6deg);
+  font-family: var(--font-hand-thin);
+  font-size: clamp(2.4rem, 15cqw, 5rem);
+  line-height: 1;
+  color: var(--pencil-ink);
+}
+.pm-wk-card:hover .pm-wk-ghostpeek,
+.pm-wk-card:focus-visible .pm-wk-ghostpeek {
+  transform: translateX(-50%) translateY(-6cqw) rotate(6deg);
+}
+/* stretched to 6 columns: the frame on the left (full height), the words and the call to action on the right */
+@container pm-wk-cell (min-width: 540px) {
+  .pm-wk-yours__main {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: clamp(18px, 3cqw, 40px);
+  }
+  .pm-wk-yours__slot {
+    flex: none;
+    height: 100%;
+    width: auto;
+  }
+  .pm-wk-yours__side {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+    padding: 2px 0 0;
+  }
+  .pm-wk-yours__words {
+    align-self: stretch;
+    padding: 2% 0 0;
+    gap: 10px;
+  }
+  .pm-wk-yours__ask {
+    font-size: clamp(5rem, 15cqw, 10rem);
+  }
+  .pm-wk-yours__text {
+    max-width: 16ch;
+    font-size: clamp(2.4rem, 6cqw, 4rem);
+  }
+  .pm-wk-yours__smile {
+    width: 24%;
+  }
+  .pm-wk-yours__foot {
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 14px;
+    padding-bottom: 6px;
+  }
+  .pm-wk-yours__arrow {
+    margin-left: auto;
+    transform: translateY(-14px) rotate(24deg);
+  }
+}
+/* the same row layout on a narrow desktop (1100 to 1199px: the stretched folder is 495 to 539px wide), with smaller lettering. Only on the desktop
+   grid: on tablet a folder of this width can be a half column of a row with no fixed height, which keeps the stacked layout. */
+@media (min-width: 1100px) {
+  @container pm-wk-cell (min-width: 440px) and (max-width: 539px) {
+    .pm-wk-yours__main {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 16px;
+    }
+    .pm-wk-yours__slot {
+      flex: none;
+      height: 100%;
+      width: auto;
+    }
+    .pm-wk-yours__side {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+      padding: 2px 0 0;
+    }
+    .pm-wk-yours__words {
+      align-self: stretch;
+      padding: 2% 0 0;
+      gap: 8px;
+    }
+    .pm-wk-yours__ask {
+      font-size: clamp(3.6rem, 12cqw, 5rem);
+    }
+    .pm-wk-yours__text {
+      max-width: 14ch;
+      font-size: clamp(1.9rem, 5.4cqw, 2.6rem);
+    }
+    .pm-wk-yours__smile {
+      width: 24%;
+    }
+    .pm-wk-yours__foot {
+      justify-content: flex-start;
+      align-items: flex-end;
+      gap: 10px;
+      padding-bottom: 4px;
+    }
+    .pm-wk-yours__arrow {
+      margin-left: auto;
+      transform: translateY(-10px) rotate(24deg);
+    }
+  }
+}
+
+/* ---- the drawer note: a sticky note in the gap of a short drawer (desktop grid only; hidden on tablet and phone) ------------------------ */
+.pm-wk-notewrap {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: clamp(8px, 2cqw, 26px) clamp(4px, 2.4cqw, 28px) clamp(6px, 1.6cqw, 20px);
+}
+.pm-wk-notewrap .pm-wk-note.pm-note {
+  --w: 100%;
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
+}
+.pm-wk-note .pm-note__paper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(10px, 2.4cqw, 26px);
+  min-height: clamp(260px, 70cqw, 560px);
+  padding: clamp(26px, 6.4cqw, 66px) clamp(20px, 6.4cqw, 66px) clamp(40px, 8.6cqw, 88px);
+}
+.pm-wk-note__title {
+  margin: 0;
+  font-family: var(--font-hand);
+  font-size: clamp(2rem, 10.2cqw, 5.6rem);
+  line-height: 1;
+  text-wrap: balance;
+}
+.pm-wk-note__n {
+  position: relative;
+  display: inline-block;
+  padding: 0 0.16em;
+}
+.pm-wk-note__body {
+  margin: 0;
+  max-width: 24ch;
+  font-family: var(--font-hand);
+  font-size: clamp(1.4rem, 5cqw, 2.9rem);
+  line-height: 1.08;
+  color: var(--ink-2);
+  text-wrap: balance;
+}
+.pm-wk-note__btn {
+  margin-top: auto;
+}
+
+/* ---- tablet: 2 columns; the three featured folders run across both, the print beside the words, which spread top to bottom ------- */
+@media (max-width: 1099px) {
+  .pm-wk-grid {
+    --g: clamp(16px, 3vw, 28px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    grid-auto-flow: row dense;
+  }
+  .pm-wk-cell {
+    grid-column: span 1;
+    grid-row: auto;
+  }
+  /* the drawer note only fills a gap of the desktop grid */
+  .pm-wk-cell[data-kind='n'] {
+    display: none;
+  }
+  .pm-wk-cell[data-tw='2'] {
+    --pv: 17;
+    grid-column: span 2;
+  }
+  .pm-wk-cell:not([data-tw='2']) :is(.pm-wk-blurb, .pm-wk-foot) {
+    display: none;
+  }
+  .pm-wk-cell[data-tw='2'] .pm-folder__body {
+    display: grid;
+    grid-template-columns: minmax(0, 44%) minmax(0, 1fr);
+    align-items: stretch;
+    column-gap: clamp(18px, 3vw, 32px);
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-print {
+    align-self: start;
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-text {
+    justify-content: space-between;
+    gap: 14px;
+    padding: 6px 4px 4px 0;
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-title {
+    font-size: calc(clamp(1.9rem, 6.4cqw, 3.6rem) * var(--tk));
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-kind {
+    font-size: clamp(1rem, 2.2cqw, 1.3rem);
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-blurb {
+    margin-top: 0;
+    font-size: clamp(1rem, 2.3cqw, 1.3rem);
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-roles {
+    font-size: var(--fs-label);
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-peek {
+    height: calc(36cqw * var(--pk, 1));
+  }
+  .pm-wk-cell[data-slug='yours'] .pm-folder__body {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* ---- phone: one generous column; no tilt (JS), featured folders keep their blurb ------------------------------------------ */
+@media (max-width: 639px) {
+  .pm-wk-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .pm-wk-cell,
+  .pm-wk-cell[data-tw='2'] {
+    --pv: 30;
+    grid-column: span 1;
+  }
+  .pm-wk-cell[data-tw='2'] .pm-folder__body {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-print {
+    align-self: auto;
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-text {
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 6px 2px 0;
+  }
+  .pm-wk-cell[data-kind='f'] .pm-wk-blurb {
+    display: block;
+    margin-top: 0.4em;
+  }
+  .pm-wk-cell[data-kind='f'] .pm-wk-foot {
+    display: flex;
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-title {
+    font-size: calc(clamp(1.35rem, 9.2cqw, 4.2rem) * var(--tk));
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-kind {
+    font-size: clamp(0.95rem, 2.7cqw, 1.25rem);
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-blurb {
+    font-size: clamp(0.95rem, 2.5cqw, 1.2rem);
+  }
+  .pm-wk-cell[data-tw='2'] .pm-wk-peek {
+    height: calc(58cqw * var(--pk, 1));
+  }
+  .pm-wk-foot,
+  .pm-wk-cell[data-tw='2'] .pm-wk-foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .pm-wk-foot .pm-wk-open {
+    align-self: flex-end;
+  }
+}
+
+/* ---- still: reduced motion or "Pause motion": the peek stays put, the label does not slip, hover keeps its shadow ----------- */
+@media (prefers-reduced-motion: reduce) {
+  .pm-wk-peek,
+  .pm-wk-ghostpeek {
+    transition: none;
+  }
+  .pm-wk-card:hover .pm-wk-peek,
+  .pm-wk-card:focus-visible .pm-wk-peek {
+    transform: translateX(-50%) rotate(var(--pr, 0deg));
+  }
+  .pm-wk-card:hover .pm-wk-ghostpeek,
+  .pm-wk-card:focus-visible .pm-wk-ghostpeek {
+    transform: translateX(-50%) rotate(3deg);
+  }
+}
+html[data-motion='paused'] .pm-wk-peek,
+html[data-motion='paused'] .pm-wk-ghostpeek {
+  transition: none;
+}
+html[data-motion='paused'] .pm-wk-card:hover .pm-wk-peek,
+html[data-motion='paused'] .pm-wk-card:focus-visible .pm-wk-peek {
+  transform: translateX(-50%) rotate(var(--pr, 0deg));
+}
+html[data-motion='paused'] .pm-wk-card:hover .pm-wk-ghostpeek,
+html[data-motion='paused'] .pm-wk-card:focus-visible .pm-wk-ghostpeek {
+  transform: translateX(-50%) rotate(3deg);
+}

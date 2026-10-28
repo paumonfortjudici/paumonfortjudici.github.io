@@ -1,0 +1,1753 @@
+/* ==========================================================================
+   Contract world, "Press Proof": a prepress light table.
+   The whole world is a tomato cutting mat (faint grid), the book lies on it with crop marks, registration targets and a ruler
+   drawn to the scale of its pages; paper things (press notes, a marked-up print, six byline slips) are taped around it and a
+   strip of film with every spread runs underneath. Classes are w-contract-*; docs/api/world-contract.md.
+   Faces: Bitter 800 (headlines, standing in for the issue's Caecilia) + Overpass 800 caps (kickers, standing in for Interstate),
+   Karla for reading. Colour: the folder's tomato, ink and paper, the issue's own rust, one marker red.
+   ========================================================================== */
+
+.w-contract {
+  /* the world's own palette */
+  --c-rust: #b96027; /* the section-tab rust of the issue (#B96027): fills and big type only (4.0:1 on paper) */
+  --c-rust-ink: #8a4012; /* the same rust, deep enough for small type (6.9:1 on paper) */
+  --c-pencil: #e8341c; /* the marker: 3.3:1 on the masthead peach, 4.0:1 on paper */
+  --c-peach: #f3dfd0; /* the masthead box of page 4 (#F3DFD0 in the manifest) */
+  --c-glass-0: #ffefdd; /* the lit glass of the table: centre, middle, edge */
+  --c-glass-1: #ffd9b8;
+  --c-glass-2: #ffb48f;
+  --c-blush: #e6c9b4; /* secondary type on the espresso directory plate (9:1) */
+  --c-night: #120a0e; /* the room goes dark behind the reader */
+  --c-mat: color-mix(in srgb, var(--ink) 9%, transparent);
+  --c-mat-2: color-mix(in srgb, var(--ink) 17%, transparent);
+  --c-paper-edge: color-mix(in srgb, var(--paper) 58%, var(--ink));
+
+  /* world type: the shell's display and label faces become Bitter and Overpass for everything inside, primitives included */
+  --font-display: 'Bitter Variable', var(--font-body);
+  --font-label: 'Overpass Variable', var(--font-body);
+
+  --pad: clamp(14px, 1.9vw, 34px);
+  --col-l: clamp(240px, 19vw, 350px);
+  --col-r: clamp(290px, 21.5vw, 420px);
+  --gap: clamp(16px, 2vw, 34px);
+  /* the tallest the book may get: whatever is left of the screen after the slug line, the deck, the film strip and the foot */
+  --flip-max-h: clamp(300px, calc(100dvh - var(--w-strip, 44px) - 424px), 780px);
+
+  position: relative;
+  min-height: 100%;
+  padding: clamp(10px, 1vw, 16px) var(--pad) 0;
+  color: var(--ink);
+  background-color: var(--w-color);
+  /* the cutting mat: a hairline every 24px, a stronger one every 120px */
+  background-image:
+    linear-gradient(var(--c-mat-2) 1px, transparent 1px), linear-gradient(90deg, var(--c-mat-2) 1px, transparent 1px),
+    linear-gradient(var(--c-mat) 1px, transparent 1px), linear-gradient(90deg, var(--c-mat) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+  isolation: isolate;
+  overflow-x: clip;
+}
+
+.w-contract-wrap {
+  max-width: 1900px;
+  margin-inline: auto;
+}
+
+.w-contract h2,
+.w-contract h3 {
+  font-family: 'Bitter Variable', var(--font-body);
+  font-variation-settings: normal;
+  font-weight: 800;
+  letter-spacing: -0.012em;
+}
+
+/* ---- the three columns ---------------------------------------------------------------------------------------------- */
+.w-contract-table {
+  display: grid;
+  grid-template-columns: var(--col-l) minmax(0, 1fr) var(--col-r);
+  column-gap: var(--gap);
+  align-items: start;
+}
+
+/* ---- press notes (left) ----------------------------------------------------------------------------------------------- */
+.w-contract-notes {
+  position: relative;
+}
+
+.w-contract-sheet-paper {
+  position: relative;
+  padding-bottom: 22px;
+  border-radius: 6px 6px 3px 3px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 var(--edge-h) 0 var(--c-paper-edge),
+    0 22px 30px -18px color-mix(in srgb, var(--ink) 55%, transparent);
+  transform: rotate(-0.7deg);
+}
+
+.w-contract-clip {
+  position: absolute;
+  z-index: 2;
+  top: -1.5rem;
+  right: 1.1rem;
+}
+
+/* the title block is the rust box of the issue's own page 4 */
+.w-contract-tab {
+  margin: 0;
+  padding: 0.62em 0.7em 0.6em;
+  border-radius: 6px 6px 0 0;
+  background-color: var(--c-rust);
+  background-image: var(--pm-grain);
+  color: var(--cream);
+  font-size: clamp(1.7rem, 1.25rem + 1.3vw, 2.45rem);
+  line-height: 1;
+}
+
+.w-contract-prose {
+  padding: 16px clamp(16px, 1.4vw, 24px) 0;
+  font-size: clamp(1rem, 0.7rem + 0.333vw, 1.09rem);
+  line-height: 1.5;
+  hyphens: auto;
+}
+
+.w-contract-prose p {
+  margin: 0;
+}
+
+.w-contract-prose p + p {
+  margin-top: 0.8em;
+}
+
+/* the drop cap, in the issue's rust */
+.w-contract-drop::first-letter {
+  float: left;
+  margin: 0.04em 0.09em 0 -0.02em;
+  color: var(--c-rust);
+  font-family: 'Bitter Variable', var(--font-body);
+  font-size: 4.05em;
+  font-weight: 800;
+  line-height: 0.74;
+}
+
+/* ---- the swatch card (tall screens only: the left column has room under the notes) ---------------------------------------- */
+.w-contract-swatches-wrap {
+  display: none;
+  padding-top: 18px;
+}
+
+@media (min-height: 1040px) and (min-width: 1500px), (min-width: 760px) and (max-width: 1179px) {
+  .w-contract-swatches-wrap {
+    display: block;
+  }
+}
+
+.w-contract-swatches {
+  position: relative;
+  margin: 0;
+  padding: 17px 16px 10px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 var(--edge-h) 0 var(--c-paper-edge),
+    0 18px 24px -16px color-mix(in srgb, var(--ink) 55%, transparent);
+  transform: rotate(0.8deg);
+}
+
+.w-contract-swatches-title {
+  margin: 0 0 8px;
+  font-size: clamp(1.15rem, 0.9rem + 0.5vw, 1.45rem);
+}
+
+.w-contract-chips {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px 8px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+.w-contract-chip {
+  display: block;
+  height: 24px;
+  margin-bottom: 3px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px rgb(23 16 27 / 0.2);
+}
+
+.w-contract-chip-hex {
+  display: block;
+  font-family: 'Overpass Variable', var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  color: var(--ink-2);
+}
+
+/* ---- the stage (middle) ------------------------------------------------------------------------------------------------ */
+/* The light table itself: a black frame round a pane of lit glass, with the book on it. Everything that belongs to the proof (the
+   slug line, the book, its ruler, the caption and the pager) sits on the glass; the notes and the evidence lie on the mat around
+   it. The glass is the one gradient of the table, and it is light, not decoration: warm in the middle, falling off to the frame. */
+.w-contract-stage {
+  /* --sp: the margin of glass round the pages, where the registration targets and the trim marks are printed */
+  --sp: clamp(26px, 2.1vw, 36px);
+  position: relative;
+  min-width: 0;
+  isolation: isolate;
+  container-type: inline-size;
+  /* the black frame is drawn 7px outside the glass: drop the glass by that much so the top of the frame lines up with the top of
+     the notes and of the tab on the right */
+  margin-top: 7px;
+  padding: clamp(10px, 1vw, 16px) var(--sp) clamp(8px, 0.8vw, 12px);
+  border-radius: 12px;
+  background: radial-gradient(ellipse 72% 66% at 50% 42%, var(--c-glass-0) 0%, var(--c-glass-1) 46%, var(--c-glass-2) 100%);
+  box-shadow:
+    inset 0 0 0 2px rgb(23 16 27 / 0.9),
+    inset 0 0 26px 6px rgb(255 120 80 / 0.55),
+    0 0 0 7px var(--ink),
+    0 5px 0 7px var(--ink),
+    0 28px 34px -8px rgb(70 8 0 / 0.55);
+}
+
+/* the lamp under the glass comes on when the folder has opened: three flickers, like a tube starting, then steady */
+.w-contract-stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  background: var(--ink);
+  opacity: 0;
+  pointer-events: none;
+}
+
+html.js .w-contract-stage::after {
+  animation: w-contract-lamp 1.05s steps(1, end) 0.15s both;
+}
+
+@keyframes w-contract-lamp {
+  0% { opacity: 0.9; }
+  16% { opacity: 0.35; }
+  22% { opacity: 0.88; }
+  38% { opacity: 0.12; }
+  44% { opacity: 0.6; }
+  58% { opacity: 0.04; }
+  100% { opacity: 0; }
+}
+
+/* the head of the glass: the slug line and, at its right end, the "Read closer" tab (icon only) */
+.w-contract-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.w-contract-head .w-contract-read {
+  flex: none;
+  margin-top: -3px;
+  margin-bottom: 0;
+}
+
+.w-contract-head .w-contract-read .pm-tabbtn__icon {
+  width: 1.5em;
+  height: 1.5em;
+  margin-inline: -0.35em;
+}
+
+/* the label is the tab's name: always there for a screen reader, drawn beside the icon when the glass is wide enough to hold it */
+.w-contract-read-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@container (min-width: 800px) {
+  .w-contract-read-text {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+  }
+  .w-contract-head .w-contract-read .pm-tabbtn__icon {
+    width: 1.25em;
+    height: 1.25em;
+    margin-inline: -0.15em;
+  }
+}
+
+.w-contract-slug {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 0.45em;
+  min-width: 0;
+  margin: 0 0 2px;
+  font-family: 'Overpass Variable', var(--font-body);
+  /* one line wherever the glass is wide enough (the stage is a size container: 100cqw is its width) */
+  font-size: clamp(0.8125rem, 1.85cqw, 1rem);
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.w-contract-slug-seg {
+  white-space: nowrap;
+}
+
+.w-contract-slug i {
+  margin-left: 0.45em;
+  font-style: normal;
+  opacity: 0.6;
+}
+
+.w-contract-slug-live {
+  padding: 2px 0.6em 1px;
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--cream);
+  font-variant-numeric: tabular-nums;
+}
+
+.w-contract-book {
+  position: relative;
+  isolation: isolate;
+}
+
+.w-contract-book .pm-flip {
+  --book-paper: var(--paper);
+  --book-shadow: rgb(120 14 0 / 0.5);
+  --book-gutter: rgb(70 30 10 / 0.3);
+}
+
+/* leave the lifted corner and the table shadow room above, and the ruler room below (the FlipBook root does not clip) */
+.w-contract-book .pm-flip__inner {
+  padding-block: clamp(10px, 1.1vw, 16px) 38px;
+}
+
+/* ---- printer's marks ------------------------------------------------------------------------------------------------- */
+.w-contract-trim {
+  position: absolute;
+  top: var(--fy, 0px);
+  left: var(--fx, 0px);
+  width: var(--fw, 0px);
+  height: var(--fh, 0px);
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.w-contract-trim[data-kind='cover'] {
+  left: calc(var(--fx, 0px) + var(--fw, 0px) / 4);
+  width: calc(var(--fw, 0px) / 2);
+}
+
+.w-contract-trim[data-on] {
+  opacity: 0.85;
+}
+
+.w-contract-trim .w-contract-reg {
+  position: absolute;
+  top: 50%;
+  margin-top: -0.6rem;
+}
+
+/* centred in the margin of glass between the page and the frame */
+.w-contract-trim .w-contract-reg:nth-of-type(1) {
+  left: calc(var(--sp) * -0.5 - 0.6rem);
+}
+
+.w-contract-trim .w-contract-reg:nth-of-type(2) {
+  right: calc(var(--sp) * -0.5 - 0.6rem);
+}
+
+/* a rule under the book: 1 cm on it is 1 cm of the printed page (the frame is two pages, 418 mm) */
+.w-contract-ruler {
+  --mm: calc(var(--fw, 0px) / 418);
+  position: absolute;
+  top: calc(var(--fy, 0px) + var(--fh, 0px) + 9px);
+  left: var(--fx, 0px);
+  width: var(--fw, 0px);
+  height: 26px;
+  border-radius: 0 0 3px 3px;
+  background-color: rgb(255 248 234 / 0.9);
+  background-image:
+    repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px calc(var(--mm) * 10)),
+    repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px calc(var(--mm) * 5));
+  background-size: 100% 11px, 100% 6px;
+  background-repeat: no-repeat;
+  box-shadow: 0 3px 0 rgb(120 14 0 / 0.3);
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.w-contract-ruler[data-kind='cover'] {
+  left: calc(var(--fx, 0px) + var(--fw, 0px) / 4);
+  width: calc(var(--fw, 0px) / 2);
+}
+
+/* the single-page book: the frame is one page, 209 mm */
+.w-contract-ruler[data-kind='single'] {
+  --mm: calc(var(--fw, 0px) / 209);
+}
+
+.w-contract-ruler[data-on] {
+  opacity: 1;
+}
+
+.w-contract-ruler span {
+  position: absolute;
+  top: 11px;
+  font-family: 'Overpass Variable', var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.w-contract-ruler span {
+  left: calc(var(--mm) * 50 * var(--i, 0) + 3px);
+}
+
+/* the pen circle that lives on a page of the book: a box in percent of the page (inline), the loop fills it */
+.w-contract-ring {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+.w-contract .w-contract-ring .pm-sc[data-at='around'] {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* the loupe: a bar of glass laid on the page, showing the line enlarged. The leader joins it to the pen circle. */
+.w-contract-leader {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  overflow: visible;
+}
+
+.w-contract-lens-pos {
+  position: absolute;
+  width: calc(var(--lw, 50) * 1%);
+  transform: translate(-50%, -50%);
+}
+
+.w-contract-lens {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--wh, 2.9);
+  overflow: hidden;
+  border-radius: 7px;
+  background-color: var(--lens-bg, var(--paper));
+  /* the frame is drawn outside the box, so the box keeps its exact aspect and the picture inside can be placed by percentages */
+  box-shadow:
+    0 0 0 3px var(--ink),
+    0 0 0 5px var(--paper),
+    0 12px 16px -6px rgb(60 6 0 / 0.55);
+}
+
+/* the picture is drawn --zoom lens widths wide and slid so that the point (--cx, --cy) of it lies in the middle of the lens */
+.w-contract-lens img {
+  position: absolute;
+  display: block;
+  width: calc(var(--zoom) * 100%);
+  max-width: none;
+  height: auto;
+  left: calc(var(--ix) * 1%);
+  top: calc(var(--iy) * 1%);
+  clip-path: inset(0 calc(var(--cut, 0) * 1%) 0 0);
+}
+
+.w-contract-lens-ring {
+  position: absolute;
+}
+
+/* what the loupe does to the line: a small tag hung under the frame */
+.w-contract-lens-power {
+  position: absolute;
+  left: 12px;
+  top: 100%;
+  padding: 1px 7px 2px;
+  border-radius: 0 0 5px 5px;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: 'Overpass Variable', var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.w-contract .w-contract-lens-ring .pm-sc[data-at='around'] {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* a hard-edged glint across the glass, not a gradient */
+.w-contract-lens-glare {
+  position: absolute;
+  inset: 0;
+  background: rgb(255 255 255 / 0.18);
+  clip-path: polygon(0 0, 30% 0, 10% 100%, 0 100%);
+  pointer-events: none;
+}
+
+html.js .w-contract-leader {
+  animation: w-contract-appear 0.35s ease 0.3s both;
+}
+
+html.js .w-contract-lens-pos {
+  animation: w-contract-loupe 0.5s var(--ease-spring) 0.4s both;
+}
+
+@keyframes w-contract-appear {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes w-contract-loupe {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+}
+
+/* ---- the deck under the book ------------------------------------------------------------------------------------------ */
+.w-contract-deck {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'cap cap cap'
+    'prev range next';
+  align-items: center;
+  gap: 4px clamp(8px, 1.4vw, 20px);
+}
+
+.w-contract-captions {
+  grid-area: cap;
+  display: grid;
+}
+
+.w-contract-caption {
+  grid-area: 1 / 1;
+  align-self: start;
+  margin: 0;
+  font-size: clamp(0.98rem, 0.92rem + 0.22vw, 1.1rem);
+  font-weight: 500;
+  line-height: 1.35;
+  text-wrap: pretty;
+  visibility: hidden;
+}
+
+.w-contract-caption[data-on] {
+  visibility: visible;
+}
+
+html.js .w-contract-caption[data-on] {
+  animation: w-contract-caption 0.4s var(--ease-out) both;
+}
+
+@keyframes w-contract-caption {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.w-contract-deck-prev {
+  grid-area: prev;
+}
+
+.w-contract-deck-next {
+  grid-area: next;
+}
+
+/* the second "Find my name" tab: only on a phone, where it stands between Back and Next */
+.w-contract-deck-find {
+  display: none;
+  grid-area: find;
+}
+
+.w-contract-range {
+  grid-area: range;
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 60px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.w-contract-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--ink) var(--fill, 0%), rgb(23 16 27 / 0.28) var(--fill, 0%));
+}
+
+.w-contract-range::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--ink) var(--fill, 0%), rgb(23 16 27 / 0.28) var(--fill, 0%));
+}
+
+.w-contract-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 26px;
+  margin-top: -10px;
+  border: 2px solid var(--cream);
+  border-radius: 5px 5px 2px 2px;
+  background: var(--ink);
+}
+
+.w-contract-range::-moz-range-thumb {
+  width: 14px;
+  height: 22px;
+  border: 2px solid var(--cream);
+  border-radius: 5px 5px 2px 2px;
+  background: var(--ink);
+}
+
+/* ---- evidence (right) ------------------------------------------------------------------------------------------------- */
+.w-contract-evidence {
+  display: grid;
+  gap: clamp(8px, 0.7vw, 11px);
+  min-width: 0;
+}
+
+/* the three columns are as tall as the tallest: on a big screen the right one shares out its slack between its parts instead of
+   leaving it as a hole at the bottom */
+@media (min-width: 1500px) {
+  .w-contract-evidence {
+    align-self: stretch;
+    align-content: space-between;
+    row-gap: 8px;
+  }
+}
+
+.w-contract-find {
+  display: flex;
+  align-items: flex-end;
+  min-height: 2.2rem;
+}
+
+.w-contract-print-wrap {
+  padding-top: 8px;
+  container-type: inline-size;
+}
+
+/* both prints are exactly as tall as the taller of the two (the credit line, with its note band), so swapping one for the other
+   never moves what is under them. The terms: the crop's height follows the print's width, the rest is paper, tape and type. */
+.w-contract-print {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: max(calc(0.395 * (100cqw - 18px) + 40px), calc(0.2243 * (100cqw - 18px) + 100px));
+  margin: 0;
+  padding: 9px 9px 10px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 var(--edge-h) 0 var(--c-paper-edge),
+    0 20px 26px -16px color-mix(in srgb, var(--ink) 60%, transparent);
+  transform: rotate(1.1deg);
+}
+
+html.js .w-contract-print {
+  animation: w-contract-lay 0.55s var(--ease-spring) both;
+}
+
+@keyframes w-contract-lay {
+  from {
+    opacity: 0;
+    transform: translateY(-16px) rotate(-4deg);
+  }
+}
+
+.w-contract-print-img {
+  position: relative;
+  margin-block: auto;
+  background-color: var(--c-peach);
+}
+
+.w-contract-print-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.w-contract-print-ring {
+  position: absolute;
+}
+
+.w-contract .w-contract-print-ring .pm-sc[data-at='around'] {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.w-contract-print-note {
+  position: absolute;
+  top: 6%;
+  right: 6%;
+  margin: 0;
+  color: var(--c-pencil);
+  font-size: 1.7rem;
+  line-height: 1;
+  white-space: nowrap;
+  transform: rotate(-5deg);
+}
+
+.w-contract-print-arrow {
+  position: absolute;
+  right: 100%;
+  top: 38%;
+  margin-right: 0.15rem;
+  color: var(--c-pencil);
+}
+
+.w-contract-print-cap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 10px;
+  margin-top: 8px;
+  font-family: 'Overpass Variable', var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.w-contract-print-where {
+  color: var(--c-rust-ink);
+}
+
+/* the credit line of a feature, laid large: the crop is positioned so the end of the text sits at the right of its window */
+.w-contract-print-crop {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--ink-2);
+}
+
+/* the crop scales to its window: --span is the share of the strip's width on show, --left where that share starts */
+.w-contract-print-crop img,
+.w-contract-slip-crop img {
+  display: block;
+  width: calc(100% / var(--span, 1));
+  max-width: none;
+  height: auto;
+  margin-left: calc(-100% * var(--left, 0) / var(--span, 1));
+}
+
+.w-contract-print-crop .w-contract-print-ring {
+  top: 6%;
+  height: 88%;
+}
+
+/* on the credit-line print the note has a band of its own above the strip, and the arrow drops from it onto the circle */
+.w-contract-print-note--above {
+  position: relative;
+  top: auto;
+  right: auto;
+  height: 2.55rem;
+  margin: 0;
+  padding: 0.2rem 22% 0 0;
+  text-align: right;
+  transform: none;
+}
+
+.w-contract-print-note--above .w-contract-print-note-text {
+  display: inline-block;
+  transform: rotate(-4deg);
+}
+
+.w-contract-print-note--above .w-contract-print-arrow {
+  top: 1.2rem;
+  right: 8%;
+  left: auto;
+  margin: 0;
+}
+
+.w-contract-slips-head {
+  display: grid;
+  gap: 4px;
+  margin-top: 2px;
+  background-color: var(--w-color);
+  box-shadow: 0 0 0 5px var(--w-color);
+}
+
+.w-contract-h3 {
+  margin: 0;
+  font-family: 'Bitter Variable', var(--font-body);
+  font-size: clamp(1.3rem, 1.1rem + 0.6vw, 1.65rem);
+  font-weight: 800;
+  letter-spacing: -0.012em;
+  line-height: 1.05;
+}
+
+.w-contract-small {
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+.w-contract-slips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 14px;
+  padding-top: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-contract-slip {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 8px 8px 7px;
+  border-radius: 2px 2px 3px 3px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 3px 0 var(--c-paper-edge),
+    0 14px 16px -12px color-mix(in srgb, var(--ink) 60%, transparent);
+  color: var(--ink);
+  text-align: left;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.25s var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .w-contract-slip:hover {
+    transform: rotate(var(--tilt, 0deg)) translateY(-3px);
+  }
+}
+
+/* the book is showing this page: the slip stands up straight, a tick in its corner */
+.w-contract-slip[data-here] {
+  transform: rotate(0deg) translateY(-4px);
+}
+
+.w-contract .w-contract-slip-tick {
+  position: absolute;
+  top: -7px;
+  right: -6px;
+  z-index: 2;
+  filter: drop-shadow(0 0 1px rgb(255 242 218 / 0.95)) drop-shadow(0 0 2px rgb(255 242 218 / 0.7));
+}
+
+.w-contract-slip[aria-pressed='true'] {
+  box-shadow:
+    inset 0 -4px 0 var(--c-pencil),
+    0 3px 0 var(--c-paper-edge),
+    0 14px 16px -12px color-mix(in srgb, var(--ink) 60%, transparent);
+  transform: rotate(var(--tilt, 0deg)) translateY(-3px);
+}
+
+.w-contract-slip-crop {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background-color: var(--ink-2);
+  clip-path: polygon(0 4%, 5px 0, 9px 6%, 14px 1%, 100% 0, 100% 100%, 13px 99%, 8px 94%, 4px 100%, 0 96%);
+}
+
+.w-contract-slip-name {
+  display: block;
+  margin-top: 7px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.22;
+}
+
+/* the page number is written on the tape that holds the slip */
+.w-contract-slip .w-contract-slip-tape .pm-tape__in {
+  padding: 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+/* the two columns do not line up: the right-hand slips hang a little lower, like things pinned by hand */
+.w-contract-slip-item:nth-child(even) {
+  margin-top: 10px;
+}
+
+/* ---- the film (contact sheet) ------------------------------------------------------------------------------------------ */
+.w-contract-film {
+  margin-top: clamp(16px, 1.55vw, 26px);
+}
+
+html.js .w-contract-film {
+  animation: w-contract-pull 0.8s var(--ease-out) 0.2s both;
+}
+
+@keyframes w-contract-pull {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.w-contract-frames {
+  display: grid;
+  grid-template-columns: repeat(16, minmax(0, 1fr));
+  gap: 0 6px;
+  margin: 0;
+  padding: 4px clamp(10px, 1.2vw, 18px) 6px;
+  list-style: none;
+  background-color: var(--ink);
+  background-image: var(--pm-grain);
+}
+
+.w-contract-frames li {
+  min-width: 0;
+}
+
+.w-contract-frame {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 4px 3px 5px;
+  border-radius: 3px;
+  color: var(--cream);
+  cursor: pointer;
+}
+
+.w-contract-frame-pic {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border-radius: 2px;
+  background-color: var(--ink-2);
+  background-image: var(--atlas);
+  background-repeat: no-repeat;
+  background-size: 800% 200%;
+  background-position: calc(var(--col) / 7 * 100%) calc(var(--row) * 100%);
+  box-shadow: 0 0 0 1px rgb(255 242 218 / 0.16);
+  transition: transform 0.2s var(--ease-out);
+}
+
+@media (hover: hover) {
+  .w-contract-frame:hover .w-contract-frame-pic {
+    transform: translateY(-2px);
+  }
+}
+
+.w-contract-frame-no {
+  font-family: 'Overpass Variable', var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.w-contract-frame[aria-current='true'] .w-contract-frame-no {
+  color: var(--tomato);
+}
+
+/* the grease-pencil tick in the corner of a frame whose spread carries my name (a halo keeps it legible on dark photographs) */
+.w-contract .w-contract-frame-tick {
+  position: absolute;
+  top: -9px;
+  right: -6px;
+  filter: drop-shadow(0 0 1px rgb(255 242 218 / 0.95)) drop-shadow(0 0 2px rgb(255 242 218 / 0.7));
+}
+
+.w-contract .w-contract-frame-ring.pm-sc[data-at='around'] {
+  left: -5%;
+  top: -9%;
+  width: 110%;
+  height: 112%;
+}
+
+/* ---- foot, facts -------------------------------------------------------------------------------------------------------- */
+/* the trailing edge of the sheet: the credit line on the left, the colour control strip running out to the right */
+.w-contract-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 28px;
+  margin-top: 14px;
+}
+
+.w-contract-credit {
+  flex: 0 1 auto;
+  max-width: 72ch;
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* the key to the ticks on the film: a small paper slip (a red pencil mark would vanish on the tomato) */
+.w-contract-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  margin: 0;
+  padding: 4px 12px 5px 9px;
+  border-radius: 2px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 2px 0 var(--c-paper-edge);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  transform: rotate(-0.8deg);
+}
+
+.w-contract .w-contract-key-tick {
+  flex: none;
+}
+
+/* the control strip of a press sheet: the colour bars in the order of the SMPTE leader (white, yellow, cyan, green, magenta, red, blue)
+   are also the order of the process inks and their overprints, so here the bars are drawn in real CMYK inks, then a tone ladder of K */
+.w-contract-strip {
+  display: flex;
+  flex: 1 1 280px;
+  align-items: stretch;
+  gap: 6px;
+  max-width: 760px;
+  height: 1rem;
+  margin-left: auto;
+}
+
+.w-contract .w-contract-bars {
+  --cream: #fffdf6;
+  --marigold: #ffe600; /* process yellow */
+  --lagoon: #00aeef; /* process cyan */
+  --olive: #00a651; /* cyan over yellow */
+  --bubblegum: #ec008c; /* process magenta */
+  --tomato: #ed1c24; /* magenta over yellow */
+  --ultraviolet: #2e3192; /* cyan over magenta */
+  flex: 7 1 0;
+  width: auto;
+  height: 100%;
+  border-radius: 1px;
+  box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--ink) 80%, transparent);
+}
+
+.w-contract-ladder {
+  flex: 5 1 0;
+  border-radius: 1px;
+  background: linear-gradient(
+    90deg,
+    rgb(23 16 27 / 0.08) 0 12.5%, rgb(23 16 27 / 0.2) 0 25%, rgb(23 16 27 / 0.32) 0 37.5%, rgb(23 16 27 / 0.45) 0 50%,
+    rgb(23 16 27 / 0.58) 0 62.5%, rgb(23 16 27 / 0.72) 0 75%, rgb(23 16 27 / 0.86) 0 87.5%, rgb(23 16 27) 0
+  );
+  box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--ink) 80%, transparent);
+}
+
+/* the facts slate, the ticket and the type card: one row on a wide screen, stacked below */
+.w-contract-facts {
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(22px, 2.4vw, 34px) clamp(24px, 3vw, 56px);
+  margin-top: clamp(28px, 3.4vw, 56px);
+  padding-bottom: clamp(24px, 3vw, 52px);
+}
+
+.w-contract-facts .pm-wf__slate,
+.w-contract-facts .pm-wf__tix,
+.w-contract-facts .pm-wf__note {
+  grid-column: 1;
+}
+
+.w-contract-facts .pm-wf__note {
+  max-width: none;
+}
+
+/* the note slot of WorldFacts holds the directory and the type card: they become cells of the facts grid */
+.w-contract-facts .pm-wf__note {
+  display: contents;
+}
+
+/* a tablet: the slate with the ticket under it on the left, the directory on the right, the type card under them */
+@media (min-width: 760px) {
+  .w-contract-facts {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: stretch;
+  }
+  .w-contract-facts .pm-wf__slate {
+    grid-row: 1;
+  }
+  .w-contract-facts .pm-wf__tix {
+    grid-row: 2;
+    padding-top: 0;
+  }
+  .w-contract-facts .w-contract-dir {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  .w-contract-facts .w-contract-type {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    width: min(100%, 31rem);
+  }
+}
+
+/* a laptop and up: slate + ticket | directory | type card, three cells of one height */
+@media (min-width: 1180px) {
+  .w-contract-facts {
+    grid-template-columns: minmax(0, 27fr) minmax(0, 33fr) minmax(0, 25fr);
+  }
+  .w-contract-facts .w-contract-type {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    width: auto;
+  }
+}
+
+/* ---- the house directory: an engraved lobby sign, with the issue's own vertical rust tab -------------------------------- */
+.w-contract-dir {
+  --plate: #2b1810; /* the espresso of the cover photograph, a shade down */
+  --plate-edge: #170c07;
+  --brass: var(--marigold);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: stretch;
+  min-width: 0;
+  color: var(--cream);
+  filter: drop-shadow(0 16px 18px rgb(70 8 0 / 0.38));
+}
+
+.w-contract .w-contract-dir-tab {
+  margin: 0;
+  padding: 0.7rem 0.5rem;
+  border-radius: 6px 0 0 6px;
+  background-color: var(--c-rust);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl);
+  color: var(--cream);
+  font-size: clamp(1.45rem, 1.1rem + 0.8vw, 2rem);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: left;
+}
+
+.w-contract-dir-plate {
+  position: relative;
+  container-type: inline-size;
+  min-width: 0;
+  padding: 16px clamp(16px, 1.5vw, 24px) 12px;
+  border-radius: 0 6px 6px 0;
+  background-color: var(--plate);
+  background-image:
+    radial-gradient(circle at 10px 10px, rgb(255 242 218 / 0.42) 0 2.2px, transparent 2.8px),
+    radial-gradient(circle at calc(100% - 10px) 10px, rgb(255 242 218 / 0.42) 0 2.2px, transparent 2.8px),
+    radial-gradient(circle at 10px calc(100% - 10px), rgb(255 242 218 / 0.42) 0 2.2px, transparent 2.8px),
+    radial-gradient(circle at calc(100% - 10px) calc(100% - 10px), rgb(255 242 218 / 0.42) 0 2.2px, transparent 2.8px),
+    var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 rgb(255 242 218 / 0.14),
+    0 var(--edge-h) 0 var(--plate-edge);
+}
+
+.w-contract-dir-sub {
+  margin: 0 0 8px;
+  padding-inline: 12px;
+  color: var(--c-blush);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+
+.w-contract-dir-list {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-contract-dir-list li + li {
+  border-top: 1px dotted rgb(255 242 218 / 0.3);
+}
+
+.w-contract-room {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 0.7em;
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 12px 5px;
+  border-radius: 3px;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+@media (pointer: coarse) {
+  .w-contract-room {
+    min-height: 44px;
+    align-items: center;
+  }
+}
+
+@media (hover: hover) {
+  .w-contract-room:hover {
+    background-color: rgb(255 242 218 / 0.1);
+  }
+}
+
+.w-contract-room[aria-current='true'] {
+  background-color: rgb(255 242 218 / 0.1);
+  box-shadow: inset 3px 0 0 var(--brass);
+}
+
+.w-contract-room-name {
+  font-family: 'Overpass Variable', var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.w-contract-room[aria-current='true'] .w-contract-room-name {
+  color: var(--brass);
+}
+
+/* the gloss runs into a row of dots that leads the eye to the page number, as on every directory board */
+.w-contract-room-gloss {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  min-width: 0;
+  color: var(--c-blush);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.w-contract-room-gloss::after {
+  content: '';
+  flex: 1 1 12px;
+  min-width: 12px;
+  height: 0.7em;
+  margin-bottom: 0.05em;
+  background: radial-gradient(circle, rgb(255 242 218 / 0.45) 0 1px, transparent 1.4px) left bottom / 6px 4px repeat-x;
+}
+
+/* a narrow plate (a phone): the gloss goes under the name and the page number stands on the right, tall enough to tap */
+@container (max-width: 440px) {
+  .w-contract-room {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'name page'
+      'gloss page';
+    row-gap: 1px;
+    align-items: center;
+    padding-block: 7px 7px;
+  }
+  .w-contract-room-name {
+    grid-area: name;
+  }
+  .w-contract-room-gloss {
+    grid-area: gloss;
+  }
+  .w-contract-room-gloss::after {
+    display: none;
+  }
+  .w-contract-room-page {
+    grid-area: page;
+  }
+}
+
+.w-contract-room-page {
+  font-family: 'Bitter Variable', var(--font-body);
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* ---- the type card: the faces this table is set in, on a headline from the issue ----------------------------------------- */
+.w-contract-type {
+  position: relative;
+  align-self: end;
+  margin: 10px 0 0;
+  padding: 24px 18px 16px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 var(--edge-h) 0 var(--c-paper-edge),
+    0 18px 24px -16px color-mix(in srgb, var(--ink) 55%, transparent);
+  color: var(--ink);
+  transform: rotate(0.9deg);
+}
+
+.w-contract-type p {
+  margin: 0;
+}
+
+.w-contract-type-row + .w-contract-type-row {
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 2px dotted color-mix(in srgb, var(--ink) 34%, transparent);
+}
+
+.w-contract-type-slab {
+  font-family: 'Bitter Variable', var(--font-body);
+  font-size: clamp(1.75rem, 1.3rem + 1vw, 2.35rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+.w-contract-type-sans {
+  font-family: 'Overpass Variable', var(--font-body);
+  font-size: clamp(1.2rem, 1rem + 0.55vw, 1.55rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.w-contract-type p.w-contract-type-note {
+  margin-top: 6px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+/* the clapper waits closed, not wide open: wide open on a slate this big it would reach up into the film strip */
+html.js .w-contract-facts .pm-slate[data-clap]:not([data-in]) .pm-slate__stick {
+  transform: rotate(-2.5deg) translateY(-2px);
+}
+
+/* big screens: the foot of the sheet (credit line, key, colour strip) is part of the first look */
+@media (min-width: 1180px) and (min-height: 1000px) {
+  .w-contract {
+    --flip-max-h: clamp(300px, calc(100dvh - var(--w-strip, 44px) - 440px), 800px);
+  }
+}
+
+/* short laptop screens: the book first, the film strip may sit just below the fold */
+@media (min-width: 1180px) and (max-height: 840px) {
+  .w-contract {
+    --flip-max-h: clamp(300px, calc(100dvh - var(--w-strip, 44px) - 304px), 780px);
+  }
+}
+
+/* ---- tablet: the book on top over the full width, "Find my name" under it, the film strip, then notes and evidence ------------ */
+@media (max-width: 1179px) {
+  .w-contract {
+    --flip-max-h: clamp(300px, calc(100dvh - var(--w-strip, 44px) - 382px), 780px);
+  }
+  .w-contract-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--gap);
+    row-gap: clamp(18px, 2.6vw, 30px);
+  }
+  /* the table and the evidence column dissolve into the grid, so the tab can stand right under the book */
+  .w-contract-table,
+  .w-contract-evidence {
+    display: contents;
+  }
+  .w-contract-stage {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .w-contract-find {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: center;
+    min-height: 0;
+    margin-bottom: -8px;
+  }
+  .w-contract-film {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 0;
+  }
+  /* the credit line, the key to the ticks and the colour strip stay with the film: they are its edge print */
+  .w-contract-foot {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    margin-top: -12px;
+  }
+  .w-contract-notes {
+    grid-column: 1;
+    grid-row: 5 / span 3;
+  }
+  .w-contract-print-wrap {
+    grid-column: 2;
+    grid-row: 5;
+  }
+  .w-contract-slips-head {
+    grid-column: 2;
+    grid-row: 6;
+  }
+  .w-contract-slips {
+    grid-column: 2;
+    grid-row: 7;
+  }
+  .w-contract-facts {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+  .w-contract-frames {
+    grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+    row-gap: 8px;
+  }
+}
+
+/* ---- phone: one column, in the order of the story; no tilted paper (the tape stays) --------------------------------------- */
+@media (max-width: 759px) {
+  .w-contract {
+    --flip-max-h: min(64dvh, 640px);
+  }
+  .w-contract-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: clamp(18px, 5vw, 28px);
+  }
+  .w-contract-stage {
+    order: 1;
+  }
+  .w-contract-find {
+    order: 2;
+    justify-content: flex-start;
+    margin-bottom: -14px;
+  }
+  .w-contract-film {
+    order: 3;
+  }
+  .w-contract-print-wrap {
+    order: 4;
+  }
+  .w-contract-slips-head {
+    order: 5;
+    margin-bottom: -10px;
+  }
+  .w-contract-slips {
+    order: 6;
+  }
+  .w-contract-notes {
+    order: 7;
+  }
+  .w-contract-foot {
+    order: 3;
+    margin-top: -10px;
+  }
+  .w-contract-facts {
+    order: 9;
+  }
+  .w-contract-sheet-paper,
+  .w-contract-print,
+  .w-contract-swatches {
+    transform: none;
+  }
+  .w-contract-slip {
+    --tilt: 0deg;
+  }
+  .w-contract-slip-item:nth-child(even) {
+    margin-top: 0;
+  }
+  .w-contract-stage {
+    --sp: 10px;
+  }
+  /* the printed slug is shorter on a phone: the title and the proof number (the issue and the year are in the book's name) */
+  .w-contract-slug-seg:nth-child(3) i {
+    display: none;
+  }
+  .w-contract-slug-more {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  /* a phone has 10 px of glass either side: the trim marks shrink to fit it */
+  .w-contract-trim .pm-crop {
+    --gap: 2px !important;
+    --len: 7px !important;
+  }
+  /* the pager is one row of three tabs, like the shell's own strip: Back, Find my name, Next. The scrubber gets a full row under
+     it (a full-width slider is a slider, a 90 px stub between two tabs is not). */
+  .w-contract-deck {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'cap cap cap'
+      'prev find next'
+      'range range range';
+    gap: 4px clamp(2px, 1vw, 8px);
+  }
+  .w-contract-deck-find {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+  }
+  .w-contract-deck-find .pm-tabbtn {
+    padding-inline: 14px;
+  }
+  .w-contract-find {
+    display: none;
+  }
+  /* Back and Next keep only their arrows (the words stay for screen readers) */
+  .w-contract-deck-prev,
+  .w-contract-deck-next {
+    min-width: 44px;
+    padding-inline: 12px;
+  }
+  .w-contract-deck-prev .pm-tabbtn__label,
+  .w-contract-deck-next .pm-tabbtn__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .w-contract-deck-prev {
+    justify-self: start;
+  }
+  .w-contract-deck-next {
+    justify-self: end;
+  }
+  .w-contract-frames {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 84px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .w-contract-frames li {
+    scroll-snap-align: center;
+  }
+  .w-contract-trim .w-contract-reg {
+    display: none;
+  }
+}
+
+/* ---- "Read closer": the spread at print size, room dimmed ---------------------------------------------------------------- */
+/* portalled into the shell's folder body, outside .w-contract: it brings its own few colours */
+.w-contract-reader {
+  --c-pencil: #e8341c;
+  --c-night: #120a0e;
+  /* the reader lives outside .w-contract (it is portalled into the folder body): the tabs in it take the world's label face too */
+  --font-label: 'Overpass Variable', var(--font-body);
+  --font-display: 'Bitter Variable', var(--font-body);
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
+  color: var(--cream);
+  font-family: var(--font-body);
+  line-height: 1.4;
+}
+
+html.js .w-contract-reader {
+  animation: w-contract-reader-in 0.3s var(--ease-out) both;
+}
+
+@keyframes w-contract-reader-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.w-contract-reader-scrim {
+  position: absolute;
+  inset: 0;
+  background: var(--c-night);
+  cursor: zoom-out;
+}
+
+.w-contract-reader-head {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px 14px;
+  padding: 12px clamp(12px, 2vw, 28px) 4px;
+}
+
+.w-contract-reader-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  margin: 0;
+  font-family: 'Overpass Variable', var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.w-contract-reader-live {
+  padding: 2px 0.6em 1px;
+  border-radius: 3px;
+  background: var(--tomato);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.w-contract-reader-hint {
+  font-family: var(--font-body);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--cream-2);
+}
+
+.w-contract-reader-tabs {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.w-contract-reader-scroll {
+  position: relative;
+  display: flex;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 12px clamp(12px, 2vw, 28px) clamp(14px, 2vw, 24px);
+}
+
+/* fitted: the pages say "bigger"; full size: they can be held and moved */
+.w-contract-reader-scroll img {
+  cursor: zoom-in;
+}
+
+.w-contract-reader-scroll[data-full] img {
+  cursor: grab;
+}
+
+.w-contract-reader-scroll[data-drag] img {
+  cursor: grabbing;
+}
+
+.w-contract-reader-scroll[data-drag] {
+  user-select: none;
+}
+
+/* the spread lies on the dark like a lit print: a faint warm halo, the table's shadow */
+.w-contract-reader-spread {
+  position: relative;
+  display: flex;
+  flex: none;
+  margin: auto;
+  background: var(--paper);
+  box-shadow:
+    0 0 0 1px rgb(255 242 218 / 0.18),
+    0 0 90px 6px rgb(255 168 120 / 0.2),
+    0 34px 60px -22px rgb(0 0 0 / 0.9);
+}
+
+.w-contract-reader-spread img {
+  display: block;
+  flex: none;
+  width: var(--pw, 1000px);
+  max-width: none;
+  height: auto;
+}
+
+/* the fold: a soft shade down the middle of two pages */
+.w-contract-reader-spread[data-pages='2']::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 56px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgb(60 30 10 / 0.3) 50%, transparent);
+  pointer-events: none;
+}
+
+.w-contract-reader-short {
+  display: none;
+}
+
+/* a phone: the title and the four tabs get a row each, the tabs spread across it */
+@media (max-width: 759px) {
+  .w-contract-reader-head {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .w-contract-reader-hint {
+    display: none;
+  }
+  .w-contract-reader-tabs {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
+  .w-contract-reader-tabs .pm-tabbtn:nth-child(3) {
+    margin-left: auto;
+  }
+  /* the long name stays the tab's accessible name, only the short one is drawn */
+  .w-contract-reader-long {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .w-contract-reader-short {
+    display: inline;
+  }
+}

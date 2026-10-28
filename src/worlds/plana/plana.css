@@ -1,0 +1,469 @@
+/* ==========================================================================
+   Plana Digital world: "Brand Atlas".
+   The folder is pine; inside it lies one big paper sheet (Plana's Paper) printed with a graticule and seven numbered plates of
+   different sizes. Plana's own palette lives here as local variables; its finish is the brand's finish: a thick Night outline
+   and a solid, hard Night shadow. Classes: w-plana-*. Nothing here restyles the shell or the primitives.
+   ========================================================================== */
+
+.w-plana,
+.w-plana-viewer {
+  /* Plana Digital's palette (brand manual v2.0). The viewer is portalled out of the world's root, so it carries a copy. */
+  --paper: #f7f2e8;
+  --paper-2: #ede5d3;
+  --paper-3: #ddd2b8;
+  --holm: #1e4634;
+  --field: #2e6a4f;
+  --poppy: #e5502f;
+  --wheat: #f2cf6b;
+  --sunrise: #ec8f4d;
+  --night: #18181b;
+  --night-2: #3a3a3d;
+  --dot-off: #d8d0bf;
+
+  /* the brand's own faces (the shell loaded them with the chunk); Karla stays the fallback */
+  --font-display: 'Sora Variable', 'Figtree Variable', 'Karla Variable', 'Karla Fallback', Arial, sans-serif;
+  --font-body: 'Figtree Variable', 'Karla Variable', 'Karla Fallback', Arial, sans-serif;
+  --font-label: 'DM Mono', 'Courier Prime', 'Courier Prime Fallback', 'Courier New', monospace;
+
+  /* the finish */
+  --outline: 3px;
+  --shadow-x: clamp(4px, 0.5vw, 8px);
+  --shadow-y: clamp(5px, 0.6vw, 9px);
+  --plate-r: clamp(16px, 1.5vw, 22px);
+  --pad: clamp(8px, 1.4vw, 26px);
+  --gap: clamp(14px, 1.9vw, 30px);
+}
+
+.w-plana {
+  position: relative;
+  isolation: isolate; /* the plates' z-indexes (the fan) never compete with the viewer portalled next to the scroller */
+  min-height: 100%;
+  padding: var(--pad) var(--pad) calc(var(--pad) + env(safe-area-inset-bottom, 0px));
+  color: var(--night);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: 1.55;
+}
+
+.w-plana h2,
+.w-plana h3,
+.w-plana h4 {
+  font-family: var(--font-display);
+  font-variation-settings: normal;
+  font-weight: 800;
+}
+
+/* ---- the sheet ------------------------------------------------------------------------------------------------------- */
+.w-plana-sheet {
+  position: relative;
+  max-width: 1880px;
+  margin-inline: auto;
+  padding: clamp(14px, 2.2vw, 40px);
+  border-radius: clamp(18px, 2vw, 28px);
+  background-color: var(--paper);
+  /* a faint graticule: the sheet is drafting paper for a map of a brand */
+  background-image:
+    linear-gradient(to right, rgb(30 70 52 / 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(30 70 52 / 0.055) 1px, transparent 1px);
+  background-size: 56px 56px;
+  box-shadow:
+    0 3px 0 var(--paper-3),
+    0 22px 46px -26px rgb(0 0 0 / 0.7);
+}
+
+.w-plana-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-areas:
+    'p1 p1 p1 p1 p1 p1 p1 p1 intro intro intro intro'
+    'p1 p1 p1 p1 p1 p1 p1 p1 toc toc toc toc'
+    'p2 p2 p2 p2 p3 p3 p3 p3 p3 p3 p3 p3'
+    'p4 p4 p4 p4 p4 p4 p4 p5 p5 p5 p5 p5'
+    'p6 p6 p6 p6 p6 p7 p7 p7 p7 p7 p7 p7';
+  gap: clamp(30px, 3.6vw, 60px) var(--gap);
+}
+
+.w-plana-grid > .w-plana-plate--sunrise {
+  grid-area: p1;
+}
+.w-plana-grid > .w-plana-intro {
+  grid-area: intro;
+  align-self: start;
+}
+.w-plana-grid > .w-plana-contents {
+  grid-area: toc;
+  align-self: end;
+}
+.w-plana-grid > .w-plana-plate--lockups {
+  grid-area: p2;
+}
+.w-plana-grid > .w-plana-plate--colour {
+  grid-area: p3;
+}
+.w-plana-grid > .w-plana-plate--type {
+  grid-area: p4;
+}
+.w-plana-grid > .w-plana-plate--mockups {
+  grid-area: p5;
+}
+.w-plana-grid > .w-plana-plate--manual {
+  grid-area: p6;
+}
+.w-plana-grid > .w-plana-plate--website {
+  grid-area: p7;
+}
+
+/* a narrow desktop: the colour plate has only three chips to a row there, so it gives the lockups a column more (5 + 7) */
+@media (min-width: 1180px) and (max-width: 1379px) {
+  .w-plana-grid {
+    grid-template-areas:
+      'p1 p1 p1 p1 p1 p1 p1 p1 intro intro intro intro'
+      'p1 p1 p1 p1 p1 p1 p1 p1 toc toc toc toc'
+      'p2 p2 p2 p2 p2 p3 p3 p3 p3 p3 p3 p3'
+      'p4 p4 p4 p4 p4 p4 p4 p5 p5 p5 p5 p5'
+      'p6 p6 p6 p6 p6 p7 p7 p7 p7 p7 p7 p7';
+  }
+}
+
+/* narrower: one column, in reading order; the title block comes first */
+@media (max-width: 1179px) {
+  .w-plana-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'intro' 'p1' 'toc' 'p2' 'p3' 'p4' 'p5' 'p6' 'p7';
+  }
+  /* the title page comes first, the hero right under it (it is the poster), and the contents after the hero */
+  .w-plana-grid .w-plana-intro__title {
+    font-size: clamp(3rem, 11.5vw, 6.2rem);
+    line-height: 0.9;
+  }
+  .w-plana-grid .w-plana-intro__title > span {
+    display: inline;
+  }
+}
+
+/* a very wide screen: the hero stays a poster that fits one screen (7 columns), the title page gets the rest; the title block is held to
+   the hero's own height (the hero is as tall as the title block, so a bigger title would push the slider off the first screen) */
+@media (min-width: 1700px) {
+  .w-plana-grid {
+    grid-template-areas:
+      'p1 p1 p1 p1 p1 p1 p1 intro intro intro intro intro'
+      'p1 p1 p1 p1 p1 p1 p1 toc toc toc toc toc'
+      'p2 p2 p2 p2 p3 p3 p3 p3 p3 p3 p3 p3'
+      'p4 p4 p4 p4 p4 p4 p4 p5 p5 p5 p5 p5'
+      'p6 p6 p6 p6 p6 p7 p7 p7 p7 p7 p7 p7';
+  }
+
+}
+
+/* ---- the plate: header, frame, printed caption ---------------------------------------------------------------------------- */
+.w-plana-plate {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.w-plana-plate__head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.w-plana-plate__no {
+  flex: none;
+  color: var(--poppy);
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 3.1vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 0.82;
+}
+
+.w-plana-plate__title {
+  flex: none;
+  margin: 0;
+  color: var(--night);
+  font-size: clamp(1.3rem, 1.75vw, 1.7rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.w-plana-plate__rule {
+  flex: 1 1 1.5rem;
+  min-width: 1rem;
+  border-top: 2.5px solid var(--night);
+}
+
+.w-plana-plate__hint {
+  flex: 0 1 auto;
+  min-width: 0;
+  color: var(--holm);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+/* every plate's picture frame: Night outline, solid Night shadow */
+.w-plana-frame {
+  position: relative;
+  flex: 1 1 auto;
+  border: var(--outline) solid var(--night);
+  border-radius: var(--plate-r);
+  background: var(--paper);
+  box-shadow: var(--shadow-x) var(--shadow-y) 0 var(--night);
+  overflow: hidden;
+}
+
+.w-plana-plate__caption {
+  max-width: 64ch;
+  margin: calc(var(--shadow-y) + 0.9rem) 0 0;
+  color: var(--night-2);
+  font-size: 0.97rem;
+  line-height: 1.5;
+}
+
+/* ---- the title block (top right of the first row): a title page and a table of contents ----------------------------------- */
+.w-plana-intro {
+  display: grid;
+  min-width: 0;
+  gap: clamp(0.7rem, 1.1vw, 1rem);
+  align-content: start;
+  padding-top: 0.1rem;
+}
+
+.w-plana-intro__kicker span {
+  display: block;
+}
+
+.w-plana-intro__kicker {
+  margin: 0;
+  color: var(--holm);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+.w-plana-intro__title {
+  margin: 0;
+  color: var(--night);
+  font-size: clamp(3.4rem, 9.2vw, 11rem);
+  letter-spacing: -0.05em; /* the website's own display tracking (h1 97.6 px, -4.9 px): tighter and the r-a and t-l pairs fuse */
+  line-height: 0.84;
+}
+
+.w-plana-intro__title > span {
+  display: block;
+}
+
+
+.w-plana-intro__lede {
+  max-width: 40ch;
+  margin: 0;
+  font-size: clamp(1.02rem, 1.3vw, 1.6rem);
+  line-height: 1.5;
+}
+
+/* the table of contents: number, name, dotted leader, what you can do */
+.w-plana-toc {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2.5px solid var(--night);
+}
+
+.w-plana-toc li {
+  border-bottom: 1.5px solid var(--night);
+}
+
+.w-plana-toc button {
+  display: flex;
+  width: 100%;
+  min-height: clamp(2.7rem, 3.3vw, 4.4rem);
+  align-items: baseline;
+  gap: 0.7rem;
+  padding: 0.5rem 0.1rem 0.45rem;
+  color: var(--night);
+  text-align: left;
+}
+
+.w-plana-toc__n {
+  flex: none;
+  min-width: 1.1ch;
+  color: var(--poppy);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.9vw, 2.3rem);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+}
+
+.w-plana-toc__t {
+  flex: none;
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 1.55vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.w-plana-toc__leader {
+  flex: 1 1 1rem;
+  min-width: 0.8rem;
+  align-self: end;
+  margin-bottom: 0.28rem;
+  border-bottom: 2px dotted var(--night-2);
+}
+
+.w-plana-toc__h {
+  flex: 0 1 auto;
+  color: var(--holm);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+@media (hover: hover) {
+  .w-plana-toc button:hover .w-plana-toc__t {
+    text-decoration: underline;
+    text-decoration-color: var(--poppy);
+    text-decoration-thickness: 3px;
+    text-underline-offset: 0.22em;
+  }
+}
+
+@media (pointer: coarse) {
+  .w-plana-toc button {
+    min-height: 2.9rem;
+  }
+}
+
+/* very wide screens: the title block is held to the hero's height (the hero is as tall as the title block, so a bigger title would push the slider off the first screen) */
+@media (min-width: 1700px) {
+  .w-plana-intro__title {
+    font-size: min(9.2vw, 9.4rem);
+  }
+
+  .w-plana-intro__lede {
+    font-size: 1.32rem;
+  }
+
+  .w-plana-toc button {
+    min-height: 3.45rem;
+  }
+
+  .w-plana-toc__t {
+    font-size: 1.7rem;
+  }
+}
+
+/* ---- the foot: the facts slate, back on the pine folder ------------------------------------------------------------------ */
+.w-plana-foot {
+  max-width: 1880px;
+  margin: clamp(64px, 8.2vw, 130px) auto 0; /* the slate's clapper stick lies open (9 degrees) until it arrives: it must not touch the sheet above */
+  padding-inline: clamp(4px, 1vw, 16px);
+  color: var(--cream);
+}
+
+.w-plana-foot .pm-wf__note {
+  color: var(--cream);
+}
+
+/* the ground the atlas ends on: holm-oak field with the symbol's stripe, edge to edge, a poppy sun half risen on it */
+.w-plana-ground {
+  position: relative;
+  height: clamp(58px, 6.4vw, 104px);
+  margin: clamp(40px, 6vw, 96px) calc(var(--pad) * -1) calc((var(--pad) + env(safe-area-inset-bottom, 0px)) * -1);
+  background: linear-gradient(var(--holm) 0 36%, var(--field) 36% 62%, var(--holm) 62% 100%);
+}
+
+.w-plana-ground__sun {
+  position: absolute;
+  right: clamp(7%, 13vw, 21%);
+  bottom: 100%;
+  width: clamp(150px, 21vw, 380px);
+  aspect-ratio: 2 / 1;
+  border-radius: 999px 999px 0 0;
+  background: var(--poppy);
+}
+
+.w-plana-ground__sign {
+  position: absolute;
+  right: calc(clamp(7%, 13vw, 21%) + clamp(150px, 21vw, 380px) + 1.2rem);
+  bottom: calc(100% + 0.5rem);
+  margin: 0;
+  color: var(--cream);
+  font-family: var(--font-hand);
+  font-size: clamp(1.7rem, 2.5vw, 2.8rem);
+  line-height: 1;
+  rotate: -3deg;
+  white-space: nowrap;
+}
+
+@media (max-width: 759px) {
+  .w-plana-ground {
+    margin-top: calc(28vw + 1.2rem); /* room for the sun above the ground, so it never sits on the note */
+  }
+  .w-plana-ground__sign {
+    right: auto;
+    left: 1.1rem;
+    bottom: calc(100% + 0.7rem);
+    max-width: 44vw;
+    font-size: 1.8rem;
+    line-height: 1.02;
+    white-space: normal;
+  }
+  .w-plana-ground__sun {
+    right: 6%;
+    width: 46vw;
+  }
+}
+
+/* ---- phones ----------------------------------------------------------------------------------------------------------------- */
+@media (max-width: 759px) {
+  .w-plana {
+    --shadow-x: 4px;
+    --shadow-y: 5px;
+    --outline: 2.5px;
+  }
+
+  .w-plana-plate__head {
+    gap: 0.55rem;
+  }
+
+  /* the contents: the number, then the plate's name over what you can do with it (no leader: there is no room for one) */
+  .w-plana-toc button {
+    display: grid;
+    grid-template-columns: 1.6rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0 0.7rem;
+    min-height: 3.5rem;
+    padding: 0.4rem 0.1rem 0.4rem;
+  }
+
+  .w-plana-toc__n {
+    grid-row: 1 / span 2;
+    font-size: 1.9rem;
+  }
+
+  .w-plana-toc__t {
+    font-size: 1.3rem;
+  }
+
+  .w-plana-toc__leader {
+    display: none;
+  }
+
+  .w-plana-toc__h {
+    max-width: none;
+    font-size: 0.8125rem;
+    line-height: 1.2;
+    text-align: left;
+  }
+}

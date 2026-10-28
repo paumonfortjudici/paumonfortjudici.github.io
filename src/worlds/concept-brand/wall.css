@@ -1,0 +1,717 @@
+/* ==========================================================================
+   Gotet world: the wall, the board, the live top zone, the mascots, the marker and the controls.
+   Prefix w-concept-brand-. The interior is Gotet's own brand (guide section 2): six colours, two faces. Board coordinates are CSS px
+   inside the zooming stage; the stage sets --z (the zoom) on the board so marks that must stay the same size on screen divide by it.
+   ========================================================================== */
+
+.w-concept-brand {
+  --cb-blau: #2340c0;
+  --cb-vermell: #d8283b;
+  --cb-oliva: #86a22f;
+  --cb-mantega: #ffd34e;
+  --cb-rosat: #f8d2d0;
+  --cb-tinta: #211736;
+  --cb-display: 'Fraunces Variable', 'Fraunces Fallback', Georgia, serif;
+  --cb-utility: 'Barlow Semi Condensed', 'Karla Variable', 'Karla Fallback', Arial, sans-serif;
+  --cb-panel-w: clamp(340px, 29vw, 470px);
+  --cb-hard: rgba(8, 4, 18, 0.5);
+
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  background: var(--cb-tinta);
+  color: var(--cb-rosat);
+  font-family: var(--cb-utility);
+  font-weight: 500;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.w-concept-brand[data-view='board'] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--cb-panel-w);
+  overflow: hidden;
+}
+
+.w-concept-brand-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- the stage and the wall behind the board ---------------------------------------------------------------------------------- */
+.w-concept-brand-stage {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--cb-tinta);
+  contain: layout paint;
+}
+
+.w-concept-brand-stage[data-booting='true'] > .w-concept-brand-canvas {
+  visibility: hidden;
+}
+
+/* the wall: a Tinta field with the faint pattern on a sliding layer (below) */
+.w-concept-brand-wallbg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--cb-tinta);
+}
+
+/* the wall paper is one oversized layer that only ever moves by transform: no repaint, no re-rasterising of the tile */
+.w-concept-brand-wallpaper {
+  position: absolute;
+  /* one tile of overhang on the top and left is enough: the layer only ever slides right and down by less than a tile */
+  inset: calc(var(--cb-tile) * -1) 0 0 calc(var(--cb-tile) * -1);
+  background-color: var(--cb-tinta); /* opaque: the compositor never has to blend the wall with anything */
+  background-image: var(--cb-wall);
+  background-repeat: repeat;
+  background-size: var(--cb-tile) var(--cb-tile);
+  will-change: transform;
+}
+
+.w-concept-brand-canvas {
+  cursor: grab;
+  outline: none;
+}
+
+.w-concept-brand-canvas:active {
+  cursor: grabbing;
+}
+
+.w-concept-brand-canvas:focus-visible {
+  outline: 3px solid var(--cb-mantega);
+  outline-offset: -7px;
+  box-shadow: none;
+}
+
+.w-concept-brand-content {
+  position: relative;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ---- the board -------------------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-board {
+  --z: 0.18;
+  position: absolute;
+}
+
+.w-concept-brand-sheet {
+  position: absolute;
+  inset: 0;
+  background: var(--cb-blau);
+  box-shadow: 34px 40px 0 var(--cb-hard);
+}
+
+.w-concept-brand-panel-bg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  background: var(--cb-blau);
+}
+
+.w-concept-brand-lower {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  max-width: none;
+  pointer-events: none;
+}
+
+.w-concept-brand-lower[data-ready] {
+  animation: cb-fade 0.5s ease-out both;
+}
+
+.w-concept-brand-lower:not([data-ready]) {
+  opacity: 0;
+}
+
+.w-concept-brand-detail {
+  position: absolute;
+  z-index: 2;
+  max-width: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease-out;
+}
+
+.w-concept-brand-detail[data-ready='true'] {
+  opacity: 1;
+}
+
+/* ---- the live top zone --------------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-top {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.w-concept-brand-ground,
+.w-concept-brand-ground-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.w-concept-brand-ground-layer {
+  background-size: 1200px 1200px;
+  background-position: 0 0;
+  background-repeat: repeat;
+}
+
+.w-concept-brand-ground-layer[data-new='true'] {
+  animation: cb-fade 0.55s ease-out both;
+}
+
+.w-concept-brand-top-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+}
+
+.w-concept-brand-fade {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.w-concept-brand-fade[data-faded='true'] {
+  opacity: 0.12;
+}
+
+.w-concept-brand-wordmark {
+  position: absolute;
+  max-width: none;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.w-concept-brand-wordmark[data-on='true'] {
+  opacity: 1;
+}
+
+.w-concept-brand-caption {
+  fill: var(--cb-label, var(--cb-vermell));
+  font-family: var(--cb-utility);
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  text-rendering: geometricPrecision;
+}
+
+/* ---- the cast: alive ----------------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-mascot {
+  position: absolute;
+  pointer-events: none;
+}
+
+.w-concept-brand-bob,
+.w-concept-brand-hop {
+  position: absolute;
+  inset: 0;
+}
+
+/* the idle bob only exists as an ambient loop: pm-ambient is removed while motion is paused and base.css stops it for the OS setting */
+.w-concept-brand-bob.pm-ambient {
+  animation: cb-bob var(--cb-bob, 3.4s) ease-in-out var(--cb-bob-delay, 0s) infinite;
+}
+
+.w-concept-brand-board[data-bob='off'] .w-concept-brand-bob.pm-ambient {
+  animation-play-state: paused;
+}
+
+.w-concept-brand-mascot[data-chosen='true'] .w-concept-brand-bob.pm-ambient {
+  animation-duration: calc(var(--cb-bob, 3.4s) * 0.82);
+}
+
+.w-concept-brand-hop {
+  transform-origin: 50% 96%;
+}
+
+.w-concept-brand-hop[data-hop='a'] {
+  animation: cb-hop-a 0.74s cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+
+.w-concept-brand-hop[data-hop='b'] {
+  animation: cb-hop-b 0.74s cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+
+.w-concept-brand-pose {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
+.w-concept-brand-pose[data-pose='b'] {
+  visibility: hidden;
+}
+
+.w-concept-brand-mascot[data-active='true'] .w-concept-brand-pose[data-pose='a'] {
+  visibility: hidden;
+}
+
+.w-concept-brand-mascot[data-active='true'] .w-concept-brand-pose[data-pose='b'] {
+  visibility: visible;
+}
+
+@keyframes cb-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(-0.35deg);
+  }
+}
+
+@keyframes cb-hop-a {
+  0% {
+    transform: translateY(0) scale(1, 1);
+  }
+  14% {
+    transform: translateY(0) scale(1.05, 0.93);
+  }
+  42% {
+    transform: translateY(-96px) scale(0.96, 1.05);
+  }
+  72% {
+    transform: translateY(0) scale(1.04, 0.95);
+  }
+  86% {
+    transform: translateY(-14px) scale(0.99, 1.01);
+  }
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+}
+
+@keyframes cb-hop-b {
+  0% {
+    transform: translateY(0) scale(1, 1);
+  }
+  14% {
+    transform: translateY(0) scale(1.05, 0.93);
+  }
+  42% {
+    transform: translateY(-96px) scale(0.96, 1.05);
+  }
+  72% {
+    transform: translateY(0) scale(1.04, 0.95);
+  }
+  86% {
+    transform: translateY(-14px) scale(0.99, 1.01);
+  }
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+}
+
+@keyframes cb-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* speech bubble: sized in screen px (it divides by the zoom), tail on the character */
+.w-concept-brand-bubble {
+  position: absolute;
+  z-index: 8;
+  pointer-events: none;
+  transform-origin: 50% 100%;
+  transform: translate(-50%, calc(-100% - 10px)) scale(var(--bz, 1));
+}
+
+.w-concept-brand-bubble-in {
+  position: relative;
+  display: block;
+  padding: 9px 16px 11px;
+  border: 3px solid var(--cb-tinta);
+  border-radius: 20px 20px 20px 7px;
+  background: var(--cb-rosat);
+  box-shadow: 4px 5px 0 var(--cb-blau);
+  color: var(--cb-tinta);
+  font-family: var(--cb-display);
+  font-size: 25px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 72;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+  transform-origin: 50% 100%;
+  animation: cb-pop 0.3s cubic-bezier(0.3, 1.5, 0.5, 1) both;
+}
+
+.w-concept-brand-bubble-in::before,
+.w-concept-brand-bubble-in::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  border-style: solid;
+  border-color: var(--cb-tinta) transparent transparent;
+}
+
+.w-concept-brand-bubble-in::before {
+  bottom: -17px;
+  margin-left: -11px;
+  border-width: 14px 11px 0;
+}
+
+.w-concept-brand-bubble-in::after {
+  bottom: -11px;
+  margin-left: -8px;
+  border-width: 11px 8px 0;
+  border-color: var(--cb-rosat) transparent transparent;
+}
+
+@keyframes cb-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.55) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ---- tape (the primitive at its natural size, scaled up to board size) ------------------------------------------------------------- */
+.w-concept-brand-tape-anchor {
+  position: absolute;
+  z-index: 10;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  transform: scale(3.1);
+  transform-origin: 0 0;
+}
+
+.w-concept-brand-tape-anchor[data-at='tl'] {
+  left: 30px;
+  top: 24px;
+}
+
+.w-concept-brand-tape-anchor[data-at='tr'] {
+  right: 30px;
+  top: 24px;
+}
+
+.w-concept-brand-tape-anchor[data-at='bl'] {
+  left: 4px;
+  bottom: 4px;
+}
+
+.w-concept-brand-tape-anchor[data-at='br'] {
+  right: 4px;
+  bottom: 4px;
+}
+
+/* ---- the dim and the hand marker ------------------------------------------------------------------------------------------------------ */
+.w-concept-brand-hl {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 6;
+  overflow: visible;
+  pointer-events: none;
+  animation: cb-fade 0.35s ease-out both;
+}
+
+.w-concept-brand-dim {
+  fill: var(--cb-tinta);
+  fill-opacity: 0.68;
+}
+
+.w-concept-brand-marker,
+.w-concept-brand-marker-shade {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: cb-draw 0.85s cubic-bezier(0.4, 0, 0.2, 1) calc(0.12s + var(--cb-i, 0) * 0.08s) forwards;
+}
+
+.w-concept-brand-marker {
+  stroke: var(--cb-mantega);
+  stroke-width: calc(6px / var(--z, 1));
+}
+
+.w-concept-brand-marker-shade {
+  stroke: var(--cb-tinta);
+  stroke-width: calc(11px / var(--z, 1));
+  transform: translate(calc(2px / var(--z, 1)), calc(3px / var(--z, 1)));
+}
+
+@keyframes cb-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---- the real buttons over the board ------------------------------------------------------------------------------------------------------ */
+.w-concept-brand-hot {
+  position: absolute;
+  z-index: 7;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 28px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.w-concept-brand-hot[data-kind='zone'],
+.w-concept-brand-hot[data-kind='patch'] {
+  border-radius: 0;
+}
+
+.w-concept-brand-hot[data-kind='mascot'] {
+  border-radius: 60px;
+}
+
+.w-concept-brand-hot[data-kind='poster'] {
+  border-radius: 18px;
+}
+
+.w-concept-brand-hot[data-kind='mockup']:hover,
+.w-concept-brand-hot[data-kind='poster']:hover {
+  box-shadow: inset 0 0 0 calc(4px / var(--z, 1)) rgba(255, 211, 78, 0.9);
+}
+
+.w-concept-brand-hot:focus-visible {
+  outline: calc(3px / var(--z, 1)) solid var(--focus-in, var(--cb-tinta));
+  outline-offset: calc(3px / var(--z, 1));
+  box-shadow: 0 0 0 calc(8px / var(--z, 1)) var(--focus-out, var(--cb-rosat));
+}
+
+/* ---- zoom controls: a crown cap and two coasters -------------------------------------------------------------------------------------------- */
+.w-concept-brand-controls {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+}
+
+.w-concept-brand-controls button {
+  position: relative;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(3px 4px 0 var(--cb-hard));
+  transition:
+    transform 0.2s cubic-bezier(0.3, 1.4, 0.5, 1),
+    filter 0.15s ease-out;
+}
+
+.w-concept-brand-controls svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.w-concept-brand-coaster {
+  width: 52px;
+  height: 52px;
+}
+
+.w-concept-brand-coaster[data-kind='out'] {
+  margin-right: -8px;
+  transform: rotate(-9deg);
+}
+
+.w-concept-brand-coaster[data-kind='in'] {
+  margin-left: -8px;
+  transform: rotate(8deg);
+}
+
+.w-concept-brand-cap {
+  z-index: 1;
+  width: 84px;
+  height: 84px;
+}
+
+.w-concept-brand-controls button:hover {
+  filter: drop-shadow(2px 6px 0 var(--cb-hard));
+}
+
+.w-concept-brand-coaster[data-kind='out']:hover {
+  transform: rotate(-14deg) translateY(-3px);
+}
+
+.w-concept-brand-coaster[data-kind='in']:hover {
+  transform: rotate(13deg) translateY(-3px);
+}
+
+.w-concept-brand-controls button:active {
+  transform: translateY(2px) scale(0.97);
+  filter: drop-shadow(1px 1px 0 var(--cb-hard));
+}
+
+.w-concept-brand-coaster-body {
+  fill: var(--cb-mantega);
+  stroke: var(--cb-tinta);
+  stroke-width: 2.6;
+}
+
+.w-concept-brand-coaster[data-kind='out'] .w-concept-brand-coaster-body {
+  fill: var(--cb-rosat);
+}
+
+.w-concept-brand-coaster-ring {
+  fill: none;
+  stroke: var(--cb-blau);
+  stroke-width: 2;
+  stroke-dasharray: 2 5;
+  stroke-linecap: round;
+}
+
+.w-concept-brand-coaster-sign {
+  fill: none;
+  stroke: var(--cb-blau);
+  stroke-width: 4.4;
+  stroke-linecap: round;
+}
+
+.w-concept-brand-cap-teeth {
+  fill: var(--cb-vermell);
+  stroke: var(--cb-tinta);
+  stroke-width: 2.6;
+  stroke-linejoin: round;
+}
+
+.w-concept-brand-cap-rim {
+  transition: transform 0.35s cubic-bezier(0.3, 1.3, 0.5, 1);
+}
+
+.w-concept-brand-cap-face {
+  fill: var(--cb-rosat);
+  stroke: var(--cb-tinta);
+  stroke-width: 2.4;
+}
+
+.w-concept-brand-cap-shine {
+  fill: none;
+  stroke: var(--cb-mantega);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.w-concept-brand-cap-text {
+  fill: var(--cb-tinta);
+  font-family: var(--cb-utility);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.w-concept-brand-controls button:focus-visible {
+  outline: 2px solid var(--focus-in, var(--cb-tinta));
+  outline-offset: 3px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px var(--focus-out, var(--cb-rosat));
+  filter: none;
+}
+
+/* ---- still motion: no idle bob, no hop, no draw-on ----------------------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .w-concept-brand-marker,
+  .w-concept-brand-marker-shade {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
+
+html[data-motion='paused'] .w-concept-brand-marker,
+html[data-motion='paused'] .w-concept-brand-marker-shade {
+  stroke-dashoffset: 0;
+  animation: none;
+}
+
+/* bottom sheet: the controls ride above it */
+.w-concept-brand[data-sheet='true'] .w-concept-brand-controls {
+  right: 12px;
+  bottom: 92px;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.w-concept-brand[data-sheet='true'][data-sheet-open='true'] .w-concept-brand-controls {
+  transform: translateY(calc(-56vh + 76px));
+}
+
+@media (max-width: 899px) {
+  .w-concept-brand-cap {
+    width: 68px;
+    height: 68px;
+  }
+  .w-concept-brand-coaster {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* a skip link inside the stage: visible only when it has focus */
+.w-concept-brand-skiplink {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 12;
+  padding: 10px 16px 9px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 12px 12px 4px 4px;
+  background: var(--cb-mantega);
+  box-shadow: 3px 4px 0 var(--cb-hard);
+  color: var(--cb-tinta);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transform: translateY(-160%);
+}
+
+.w-concept-brand-skiplink:focus-visible {
+  transform: none;
+}
+
+/* the rail layout: the zoom controls stand in a column on the right edge of the wall, clear of the board */
+.w-concept-brand[data-rail='true'] .w-concept-brand-controls {
+  flex-direction: column;
+  right: 14px;
+  bottom: 18px;
+}
+
+.w-concept-brand[data-rail='true'] .w-concept-brand-coaster[data-kind='out'] {
+  margin: -8px 0 0;
+  transform: rotate(-9deg);
+  order: 3;
+}
+
+.w-concept-brand[data-rail='true'] .w-concept-brand-coaster[data-kind='in'] {
+  margin: 0 0 -8px;
+  transform: rotate(8deg);
+  order: 1;
+}
+
+.w-concept-brand[data-rail='true'] .w-concept-brand-cap {
+  order: 2;
+}

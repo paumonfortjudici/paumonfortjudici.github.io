@@ -1,3 +1,5 @@
+// SUPERSEDED by kit/gen-titles-optical.mjs (optical letter spacing, same ids / widths / font sizes). Do NOT re-run this file for the final slides:
+// it would overwrite kit/titles.svg with the flat-tracking spacing in which "ERIENCE", "NIN", "ANKS" and "RIB" touch. Kept for the ad-hoc lockup mode (--text ...).
 // Generates kit/titles.svg : pre-measured DISPLAY lockups (Anybody 600, a different width axis value per letter).
 // Each lockup is a <g id="t-..."> whose baseline is y=0, whose INK left edge is x=0 and whose INK right edge is x=936 (nominal).
 // Use:   <use href="#t-foley" x="72" y="BASELINE_Y" fill="#FDEFAF"/>                         -> 936 wide, aligned to the 72 px margin

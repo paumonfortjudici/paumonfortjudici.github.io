@@ -1,0 +1,135 @@
+{
+  "sheet": "sheet.webp",
+  "w": 2400,
+  "h": 3200,
+  "alt": "A sheet of nine die-cut doodle stickers on cream paper, each on its own white backing with a soft shadow: a skater with a boombox, a reader with a cat on a tower of books, a designer hugging a giant coffee, a gardener carrying a huge monstera, a film director with a megaphone, a detective with a magnifying glass, a rug maker with a tufting gun, an astronaut monkey and a dancer in headphones; one corner is peeling up.",
+  "note": "x/y/w/h are percentages of the sheet; px = [x0, y0, x1, y1] of the white backing sheet; rotate = degrees clockwise",
+  "stickers": [
+    {
+      "n": 1,
+      "rotate": -5.0,
+      "x": 4.96,
+      "y": 3.94,
+      "w": 29.71,
+      "h": 30.66,
+      "px": [
+        119,
+        126,
+        832,
+        1107
+      ]
+    },
+    {
+      "n": 2,
+      "rotate": 3.5,
+      "x": 36.5,
+      "y": 3.94,
+      "w": 26.46,
+      "h": 29.62,
+      "px": [
+        876,
+        126,
+        1511,
+        1074
+      ]
+    },
+    {
+      "n": 3,
+      "rotate": -3.0,
+      "x": 67.75,
+      "y": 3.12,
+      "w": 26.33,
+      "h": 29.66,
+      "px": [
+        1626,
+        100,
+        2258,
+        1049
+      ]
+    },
+    {
+      "n": 4,
+      "rotate": 5.5,
+      "x": 5.29,
+      "y": 35.94,
+      "w": 28.79,
+      "h": 29.16,
+      "px": [
+        127,
+        1150,
+        818,
+        2083
+      ]
+    },
+    {
+      "n": 5,
+      "rotate": -3.5,
+      "x": 33.71,
+      "y": 34.91,
+      "w": 29.54,
+      "h": 29.34,
+      "px": [
+        809,
+        1117,
+        1518,
+        2056
+      ]
+    },
+    {
+      "n": 6,
+      "rotate": 4.0,
+      "x": 65.92,
+      "y": 34.16,
+      "w": 29.38,
+      "h": 30.56,
+      "px": [
+        1582,
+        1093,
+        2287,
+        2071
+      ]
+    },
+    {
+      "n": 7,
+      "rotate": -4.0,
+      "x": 4.33,
+      "y": 69.16,
+      "w": 28.75,
+      "h": 27.28,
+      "px": [
+        104,
+        2213,
+        794,
+        3086
+      ]
+    },
+    {
+      "n": 8,
+      "rotate": 5.5,
+      "x": 32.83,
+      "y": 65.91,
+      "w": 30.17,
+      "h": 29.34,
+      "px": [
+        788,
+        2109,
+        1512,
+        3048
+      ]
+    },
+    {
+      "n": 9,
+      "rotate": -5.0,
+      "x": 65.12,
+      "y": 65.81,
+      "w": 31.04,
+      "h": 31.09,
+      "px": [
+        1563,
+        2106,
+        2308,
+        3101
+      ]
+    }
+  ]
+}

@@ -1,13 +1,13 @@
-// leaf.mjs - a procedural monstera leaf for the doodle stickers (used by sticker-04).
+// sticker-04.leaf.mjs - a procedural monstera leaf for sticker-04 (kept next to the sticker, the shared kit/ folder is untouched).
 //
-//   import { monstera } from './kit/leaf.mjs'
+//   import { monstera } from './sticker-04.leaf.mjs'
 //   const lf = monstera({ L: 420, W: 400, seed: 3 })      // leaf in its own frame: petiole point at (0,0), tip at (0,-L)
 //   lf.outline  -> closed path (heart base, plump rounded lobes, deep slits with round ends)   lf.rib -> midrib   lf.veins -> side veins
 //   lf.holes    -> [{cx,cy,rx,ry,rot}] fenestrations between midrib and slits           lf.env(t) -> half width at t (0 base .. 1 tip)
 //
 // The lobes are hand-placed key points fed to smooth(); every slit is a straight-sided cut with a rounded end, which is what makes
 // the monstera read at thumbnail size. The slits run from the margin towards the base of the midrib, so the lobes fan out like fingers.
-import { smooth, rng, fmt } from './pen.mjs'
+import { smooth, rng, fmt } from './kit/pen.mjs'
 
 const unit = (v) => { const l = Math.hypot(v[0], v[1]) || 1; return [v[0] / l, v[1] / l] }
 const P = (p) => `${fmt(p[0])} ${fmt(p[1])}`
@@ -20,7 +20,7 @@ const cont = (d) => d.slice(d.indexOf('C'))
  * @param {number} depth slit depth as a fraction of the local half width, slitW opening width in px at the margin
  * @param {number} curl bends the midrib: the tip moves sideways by curl * L
  */
-export function monstera({ L = 420, W = 400, slits = [0.3, 0.5, 0.7], depth = 0.58, slitW = 40, seed = 1, jitter = 0.03, holes = 2, curl = 0, slant = 0.55, veins: veinMode = 'all', veinReach = 0.66 } = {}) {
+export function monstera({ L = 420, W = 400, slits = [0.3, 0.5, 0.7], depth = 0.58, slitW = 40, seed = 1, jitter = 0.03, holes = 2, curl = 0, slant = 0.55, veins: veinMode = 'all', veinReach = 0.66, ribEnd = 0.84 } = {}) {
   const R = rng(seed)
   const hw = W / 2
   // ovate heart envelope: rounded shoulders at ~40 % of the length, a taper to a pointed tip
@@ -89,7 +89,7 @@ export function monstera({ L = 420, W = 400, slits = [0.3, 0.5, 0.7], depth = 0.
   d += 'Z'
   const outline = d
 
-  const rib = smooth([[0, 0], [mid(0.3), -L * 0.3], [mid(0.6), -L * 0.6], [mid(0.84), -L * 0.84]])
+  const rib = smooth([[0, 0], [mid(ribEnd * 0.36), -L * ribEnd * 0.36], [mid(ribEnd * 0.72), -L * ribEnd * 0.72], [mid(ribEnd), -L * ribEnd]])
   // side veins: one per lobe, running parallel to the slits (so each stays centred in its lobe): from the midrib to ~70 % of the way to the margin
   const lobeTs = slits.length
     ? [(0.16 + slits[0]) / 2, ...slits.slice(1).map((s, i) => (slits[i] + s) / 2), (slits[slits.length - 1] + 0.88) / 2]

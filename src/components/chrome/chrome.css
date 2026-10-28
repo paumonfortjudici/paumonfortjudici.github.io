@@ -1,0 +1,1214 @@
+/* ==========================================================================
+   chrome.css  -  the frame around every sheet: desk, mast, index tabs, footer, intro, toast, cursor.
+   Prefixes: pm-desk* pm-ruler* pm-mtape* | pm-mast* | pm-nav* pm-mt* | pm-foot* pm-keys pm-key | pm-intro* | pm-toast* | pm-cursor*.
+   Tokens only (tokens.css / typography.css). Animate transform, opacity and clip-path only. Every loop carries pm-ambient;
+   hidden initial states are keyframe `from` states or sit under html.js; base.css shortens every animation under reduced / paused motion.
+   ========================================================================== */
+
+/* ---- 0. page-level custom properties --------------------------------------------------------------------------------------
+   --sec / --sec-ink  the accent of the sheet being read and the ink that sits on it (sectionState.ts writes them from the sheet's
+                      own --accent / --accent-ink; this map is the fallback, and matches Sheet's default accents)
+   --sec-lit          the same accent drawn ON THE DARK DESK (brace, stamp, nav monogram): the accent when it has 4.5:1 against the
+                      desk, cream-2 for oxblood and pine, which sink into it
+   --pm-nav-h         the nav's own height; --nav-h (base.css, scroll-padding-top) is measured from it by PillNav                  */
+:root {
+  --sec: var(--tomato);
+  --sec-ink: var(--ink);
+  --sec-lit: var(--tomato);
+}
+html[data-section='cover'] { --sec: var(--tomato); --sec-ink: var(--ink); --sec-lit: var(--tomato); }
+html[data-section='catalog'] { --sec: var(--marigold); --sec-ink: var(--ink); --sec-lit: var(--marigold); }
+html[data-section='about'] { --sec: var(--oxblood); --sec-ink: var(--cream); --sec-lit: var(--cream-2); }
+html[data-section='works'] { --sec: var(--lagoon); --sec-ink: var(--ink); --sec-lit: var(--lagoon); }
+html[data-section='process'] { --sec: var(--bubblegum); --sec-ink: var(--ink); --sec-lit: var(--bubblegum); }
+html[data-section='contact'] { --sec: var(--pine); --sec-ink: var(--cream); --sec-lit: var(--cream-2); }
+
+html:root {
+  --pm-nav-h: 70px;
+  --nav-h: var(--pm-nav-h);
+  /* the page's scroll bar belongs to the desk and says where you are: its thumb takes the accent of the sheet you are on */
+  scrollbar-color: var(--sec-lit) var(--desk);
+}
+@media (max-width: 720px) {
+  html:root { --pm-nav-h: 58px; }
+}
+/* a sheet that took focus from a nav link (focusSection in sectionState.ts) is not a control: no ring around the whole sheet */
+section[id][tabindex='-1']:focus,
+section[id][tabindex='-1']:focus-visible { outline: none; }
+
+/* ==========================================================================
+   1. DESK
+   ========================================================================== */
+.pm-desk { overflow: hidden; }
+/* a hidden tab: every ambient loop on the site (not only the desk's) stands still until the visitor comes back */
+html[data-hidden] .pm-ambient { animation-play-state: paused !important; }
+/* the page behind an open world is covered and inert: its ambient loops (desk leaks, reels, spinning stamps) stand still too */
+html[data-world-open] #app-root .pm-ambient { animation-play-state: paused !important; }
+.pm-desk__probe { position: absolute; left: 0; top: 0; width: var(--wrap); height: 0; visibility: hidden; }
+
+/* a cutting mat: a fine grid (4 %) and an inch line every fifth (7 %) */
+.pm-desk__mat {
+  position: absolute;
+  inset: 0 0 -140px; /* one inch taller than the window: Desk.tsx slides it up by less than 140px with the scroll */
+  will-change: transform;
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--cream) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--cream) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(to right, color-mix(in srgb, var(--cream) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--cream) 4%, transparent) 1px, transparent 1px);
+  background-size: 140px 140px, 140px 140px, 28px 28px, 28px 28px;
+  background-position: -1px -1px, -1px -1px, -1px -1px, -1px -1px;
+}
+
+/* warm light leaks: tomato and marigold lead, one small ultraviolet. Plain alpha (a blend mode or a mask would force an offscreen
+   pass on every scrolled frame: measured), no blur filter (radial gradients are already soft) */
+.pm-desk__leaks { position: absolute; inset: 0; overflow: hidden; }
+.pm-desk__leak {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--leak) 0%, color-mix(in srgb, var(--leak) 46%, transparent) 42%, transparent 100%);
+}
+.pm-desk__leak[data-leak='a'] {
+  --leak: color-mix(in srgb, var(--tomato) 46%, transparent);
+  width: 82vmax; height: 70vmax; left: -34vmax; top: -34vmax;
+  animation: pm-leak-a 57s ease-in-out infinite alternate;
+}
+.pm-desk__leak[data-leak='b'] {
+  --leak: color-mix(in srgb, var(--marigold) 40%, transparent);
+  width: 74vmax; height: 58vmax; right: -40vmax; top: 22vh;
+  animation: pm-leak-b 73s ease-in-out infinite alternate;
+}
+.pm-desk__leak[data-leak='c'] {
+  --leak: color-mix(in srgb, var(--tomato) 36%, transparent);
+  width: 68vmax; height: 52vmax; left: 6vw; bottom: -40vmax;
+  animation: pm-leak-c 64s ease-in-out infinite alternate;
+}
+.pm-desk__leak[data-leak='d'] {
+  --leak: color-mix(in srgb, var(--ultraviolet) 38%, transparent);
+  width: 32vmax; height: 32vmax; left: -12vmax; bottom: 8vh;
+  animation: pm-leak-d 49s ease-in-out infinite alternate;
+}
+@keyframes pm-leak-a { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(8vw, 10vh, 0) scale(1.16); } }
+@keyframes pm-leak-b { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(-9vw, -8vh, 0) scale(1.12); } }
+@keyframes pm-leak-c { from { transform: translate3d(0, 0, 0) scale(1.05); } to { transform: translate3d(12vw, -6vh, 0) scale(0.92); } }
+@keyframes pm-leak-d { from { transform: translate3d(0, 0, 0) scale(1); } to { transform: translate3d(7vw, -12vh, 0) scale(1.2); } }
+
+/* the projector beam: a cone from the top-right corner, swaying a few degrees over about a minute */
+.pm-desk__beam {
+  position: absolute;
+  right: -3vw;
+  top: -5vh;
+  width: 135vmax;
+  height: 135vmax;
+  transform-origin: 100% 0;
+  background: conic-gradient(
+    from 196deg at 100% 0%,
+    transparent 0deg,
+    color-mix(in srgb, var(--marigold) 21%, transparent) 14deg,
+    color-mix(in srgb, var(--cream) 28%, transparent) 24deg,
+    color-mix(in srgb, var(--marigold) 21%, transparent) 34deg,
+    transparent 50deg,
+    transparent 360deg
+  );
+  animation: pm-beam 47s ease-in-out infinite alternate;
+}
+@keyframes pm-beam {
+  from { transform: rotate(-2.6deg); opacity: 0.85; }
+  to { transform: rotate(2.8deg); opacity: 1; }
+}
+/* dust in the beam (Desk.tsx places the specks in the beam's own frame, so they sway with it). Each one fades in, drifts up a few
+   dozen pixels while it hangs there, and fades out; paused or reduced motion leaves them invisible (the base state is opacity 0) */
+.pm-desk__mote {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--s);
+  height: var(--s);
+  border-radius: 50%;
+  background: var(--cream);
+  box-shadow: 0 0 5px color-mix(in srgb, var(--cream) 55%, transparent);
+  opacity: 0;
+  animation: pm-mote var(--d) ease-in-out var(--delay) infinite;
+}
+@keyframes pm-mote {
+  0% { opacity: 0; transform: translate3d(0, 0, 0); }
+  20% { opacity: var(--o); }
+  80% { opacity: var(--o); }
+  100% { opacity: 0; transform: translate3d(var(--dx), var(--dy), 0); }
+}
+/* a phone has the battery to think of and almost none of the cone on screen: no dust there */
+@media (max-width: 720px) {
+  .pm-desk__mote { display: none; }
+}
+
+/* ---- the ruler (right margin, wide screens): six inches, one per sheet, and a paper clip that is where you are --------- */
+.pm-ruler {
+  --rw: clamp(12px, calc(var(--pm-m) - 6px), 54px);
+  --tick: color-mix(in srgb, var(--ink) 82%, transparent);
+  --t1: 3px; --t2: 4.5px; --t3: 6.5px; --t4: 9px;
+  position: absolute;
+  right: calc((var(--pm-m) - var(--rw)) / 2);
+  top: clamp(112px, 15vh, 190px);
+  bottom: clamp(64px, 9vh, 120px);
+  width: var(--rw);
+}
+.pm-ruler[data-room='wide'] { --t1: 5px; --t2: 8px; --t3: 12px; --t4: 18px; }
+.pm-ruler__body {
+  position: absolute;
+  inset: 0;
+  border-radius: 3px;
+  background-color: var(--cream-2);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 color-mix(in srgb, var(--cream-2) 58%, var(--ink)), 0 14px 18px -10px color-mix(in srgb, var(--desk) 90%, transparent);
+}
+.pm-ruler__hi {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100% / 6);
+  background: color-mix(in srgb, var(--sec) 40%, transparent);
+  will-change: transform;
+}
+.pm-ruler__ticks {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(to bottom, var(--tick) 0 1px, transparent 1px calc(100% / 48)) 0 0 / var(--t1) 100% no-repeat,
+    repeating-linear-gradient(to bottom, var(--tick) 0 1px, transparent 1px calc(100% / 24)) 0 0 / var(--t2) 100% no-repeat,
+    repeating-linear-gradient(to bottom, var(--tick) 0 1.2px, transparent 1.2px calc(100% / 12)) 0 0 / var(--t3) 100% no-repeat,
+    repeating-linear-gradient(to bottom, var(--tick) 0 2px, transparent 2px calc(100% / 6)) 0 0 / var(--t4) 100% no-repeat;
+}
+.pm-ruler__name {
+  position: absolute;
+  z-index: 2; /* the names stay readable where the clip passes over them (the clip is a thin wire: it goes behind the ink) */
+  left: calc(var(--t4) - 2px);
+  top: calc(var(--i) * 100% / 6 + 9px);
+  display: none;
+  writing-mode: vertical-rl;
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-synthesis: none;
+}
+.pm-ruler[data-room='roomy'] .pm-ruler__name,
+.pm-ruler[data-room='wide'] .pm-ruler__name { display: block; }
+.pm-ruler[data-room='wide'] .pm-ruler__name { left: calc(var(--t4) + 5px); }
+.pm-ruler__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100% / 6);
+  will-change: transform;
+  pointer-events: none;
+}
+.pm-ruler__clip { position: absolute; left: 50%; top: -1.1rem; margin-left: -0.45rem; filter: drop-shadow(0 2px 2px color-mix(in srgb, var(--desk) 55%, transparent)); }
+
+/* ---- the measuring tape (left margin): the page's length in centimetres, running past as you scroll ------------------ */
+.pm-mtape {
+  --tw: clamp(14px, calc(var(--pm-m) - 8px), 40px);
+  --cm: 37.795px;
+  --tape: color-mix(in srgb, var(--butter) 94%, var(--marigold));
+  position: absolute;
+  left: calc((var(--pm-m) - var(--tw)) / 2);
+  top: 0;
+  bottom: 0;
+  width: var(--tw);
+}
+.pm-mtape__strip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--tape);
+  background-image: var(--pm-grain);
+  box-shadow: inset -2px 0 0 color-mix(in srgb, var(--tape) 62%, var(--ink)), 0 0 0 1px color-mix(in srgb, var(--ink) 22%, transparent), 4px 0 12px -4px color-mix(in srgb, var(--desk) 80%, transparent);
+}
+.pm-mtape__layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  will-change: transform;
+  background:
+    repeating-linear-gradient(to bottom, var(--ink) 0 1px, transparent 1px calc(var(--cm) / 2)) right 0 / 5px 100% no-repeat,
+    repeating-linear-gradient(to bottom, var(--ink) 0 1.4px, transparent 1.4px var(--cm)) right 0 / 9px 100% no-repeat,
+    repeating-linear-gradient(to bottom, var(--ink) 0 2.2px, transparent 2.2px calc(var(--cm) * 10)) right 0 / 15px 100% no-repeat;
+}
+.pm-mtape__n {
+  position: absolute;
+  left: 2px;
+  margin-top: 5px;
+  writing-mode: vertical-rl;
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+}
+.pm-mtape__index {
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: var(--tomato);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 50%, transparent);
+}
+.pm-mtape__washi { position: absolute; left: 50%; margin-left: -1.7rem; line-height: 0; pointer-events: none; }
+.pm-mtape__washi--a { top: 21%; }
+.pm-mtape__washi--b { top: 79%; }
+
+/* ==========================================================================
+   2. MAST
+   ========================================================================== */
+.pm-mast {
+  --sec-edge: color-mix(in srgb, var(--sec) 66%, var(--ink));
+  --fil: clamp(22px, 2.4vw, 34px);
+  --mast-edge: max(0px, calc((100cqw - var(--wrap)) / 2));
+  container-type: inline-size;
+  position: relative;
+  margin-bottom: clamp(16px, 2.2vw, 30px);
+}
+.pm-mast__strip {
+  height: clamp(10px, 1.1vw, 16px);
+  background-color: var(--sec);
+  background-image: var(--pm-grain);
+}
+.pm-mast__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: stretch;
+  column-gap: clamp(26px, 3.6vw, 64px);
+  padding-right: var(--mast-edge);
+}
+
+/* the hanging tab: it starts at the window's edge, rounds off at the bottom right and joins the strip with a concave fillet */
+.pm-mast__tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: -1px;
+  padding:
+    clamp(14px, 1.5vw, 24px)
+    clamp(58px, 4.8vw, 86px)
+    clamp(16px, 1.7vw, 26px)
+    calc(var(--mast-edge) + clamp(18px, 1.9vw, 32px));
+  border-radius: 0 0 clamp(28px, 2.8vw, 44px) 0;
+  background-color: var(--sec);
+  background-image: var(--pm-grain);
+  box-shadow: 0 3px 0 var(--sec-edge);
+  color: var(--sec-ink);
+}
+.pm-mast__tab::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 0;
+  width: var(--fil);
+  height: var(--fil);
+  background-color: var(--sec);
+  background-image: var(--pm-grain);
+  -webkit-mask: radial-gradient(circle at 100% 100%, transparent calc(var(--fil) - 0.5px), var(--ink) var(--fil));
+  mask: radial-gradient(circle at 100% 100%, transparent calc(var(--fil) - 0.5px), var(--ink) var(--fil));
+}
+.pm-mast__tab .pm-sw { flex: none; }
+.pm-mast__mark {
+  position: absolute;
+  right: clamp(22px, 2.2vw, 38px);
+  top: clamp(12px, 1.3vw, 22px);
+  width: clamp(26px, 2.5vw, 40px);
+  height: auto;
+  color: var(--sec-ink);
+}
+html.js .pm-mast__mark {
+  animation: pm-mark-in 0.7s cubic-bezier(0.2, 1.5, 0.4, 1) both;
+  animation-delay: calc(var(--pm-name-delay, 0ms) + 1.05s);
+}
+@keyframes pm-mark-in {
+  from { opacity: 0; transform: rotate(-120deg) scale(0.2); }
+  to { opacity: 1; transform: none; }
+}
+
+/* the notes, on the desk */
+.pm-mast__notes {
+  container-type: inline-size;
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1vw, 16px);
+  min-width: 0;
+  padding-top: clamp(4px, 0.6vw, 10px);
+  color: var(--cream);
+}
+/* the notes are sized to the column they stand in (cqw of .pm-mast__notes): the longer note, set on one line, takes about nine
+   tenths of it, whatever the window. That is as generous as the room allows, and it can never overflow. */
+.pm-mast__brace,
+.pm-mast__text { --nfs: clamp(1.2rem, 4.95cqw, 3.2rem); }
+.pm-mast__brace {
+  flex: none;
+  width: auto;
+  height: calc(var(--nfs) * 2.7);
+  margin-right: calc(var(--nfs) * 0.1);
+  color: var(--sec-lit);
+}
+.pm-mast__brace path { stroke-dasharray: 1 2; }
+html.js .pm-mast__brace path {
+  animation: pm-brace-draw 0.9s cubic-bezier(0.65, 0, 0.25, 1) both;
+  animation-delay: calc(var(--pm-name-delay, 0ms) + 1.15s);
+}
+@keyframes pm-brace-draw { from { stroke-dashoffset: 1.1; } to { stroke-dashoffset: 0; } }
+.pm-mast__text {
+  display: grid;
+  gap: 0.14em;
+  min-width: 0;
+  font-size: var(--nfs);
+}
+html.js .pm-mast__text {
+  animation: pm-fade-in 0.6s ease both;
+  animation-delay: calc(var(--pm-name-delay, 0ms) + 0.85s);
+}
+@keyframes pm-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.pm-mast__note {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 560;
+  font-variation-settings: 'SOFT' var(--soft), 'WONK' var(--wonk);
+  font-size: 1em;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.pm-mast__note--second { font-weight: 330; color: var(--cream-2); }
+/* where the notes column is wide enough, a note breaks only after its comma; narrower, it simply wraps */
+@container (min-width: 600px) {
+  .pm-mast__chunk { display: inline-block; white-space: nowrap; }
+}
+.pm-mast__stamp {
+  display: none;
+  flex: none;
+  margin-left: auto;
+  padding: 0 0.2em 0 0.4em;
+  font-size: 1rem;
+}
+html.js .pm-mast__stamp {
+  animation: pm-stamp-land 0.5s cubic-bezier(0.2, 1.5, 0.4, 1) both;
+  animation-delay: calc(var(--pm-name-delay, 0ms) + 1.5s);
+}
+@keyframes pm-stamp-land {
+  from { opacity: 0; transform: scale(1.55) rotate(5deg); }
+  to { opacity: 1; transform: none; }
+}
+/* the stamp only shows when the notes column is wide enough to hold it without squeezing the notes into four lines */
+@container (min-width: 690px) {
+  .pm-mast__stamp { display: block; }
+}
+
+/* phone: the name tab (stacked) and the first note */
+@media (max-width: 720px) {
+  .pm-mast__row { grid-template-columns: minmax(0, 1fr); padding-right: 0; }
+  .pm-mast__tab {
+    justify-self: start;
+    max-width: calc(100% - 14px);
+    padding-right: clamp(54px, 15vw, 72px);
+  }
+  .pm-mast__mark { width: 26px; right: 18px; top: 14px; }
+  .pm-mast__notes { padding: 14px 18px 0 calc(var(--mast-edge) + 14px); }
+  .pm-mast__brace,
+  .pm-mast__note--second { display: none; }
+}
+
+/* ==========================================================================
+   3. INDEX TABS (the sticky nav)
+   Geometry: [10px headroom][28px of tab above the rail][20px rail][6px]. Each tab is a card standing BEHIND the rail (14px of it
+   is hidden), so pulling one up is just a translateY: no seam ever opens between the tab and the rail.
+   ========================================================================== */
+.pm-nav {
+  --rail-h: 22px;
+  --tab-vis: 32px;
+  --tab-hide: 14px;
+  --pad-b: 6px;
+  --raise: 8px;
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  height: var(--pm-nav-h);
+  margin-bottom: clamp(14px, 1.6vw, 22px);
+}
+/* the opaque band that shows once the nav is pinned: nothing scrolls through the gaps between the tabs */
+.pm-nav::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 -1px;
+  background: var(--desk);
+  box-shadow: 0 14px 22px -14px color-mix(in srgb, var(--desk) 92%, transparent), 0 1px 0 color-mix(in srgb, var(--cream) 7%, transparent);
+  opacity: 0;
+  transition: opacity 0.2s linear;
+}
+.pm-nav[data-stuck='true']::before { opacity: 1; }
+.pm-nav__inner { container-type: inline-size; position: relative; width: var(--wrap); height: 100%; margin: 0 auto; }
+
+.pm-nav__rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--pad-b);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  height: var(--rail-h);
+  padding: 0 14px;
+  border-radius: 9px;
+  background-color: var(--cream);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 color-mix(in srgb, var(--cream) 58%, var(--ink));
+  color: var(--ink);
+  pointer-events: none;
+}
+.pm-nav__count {
+  display: inline-flex;
+  overflow: hidden; /* the digits roll in from below the line */
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+}
+.pm-nav__count > span { white-space: pre; } /* a flex item would swallow the space between the number and the total */
+.pm-nav__digits { display: inline-block; animation: pm-count-roll 0.34s var(--ease-out) both; }
+@keyframes pm-count-roll {
+  from { transform: translateY(100%); }
+  to { transform: none; }
+}
+/* reading progress as a seam: pencilled stitches along the rail, sewn over in tomato as you scroll. On wide screens the desk
+   ruler in the margin says the same thing by section; the seam says it by page, and keeps the long rail from being bare. */
+.pm-nav__seam {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 2px;
+  height: 2px;
+  background: repeating-linear-gradient(90deg, color-mix(in srgb, var(--ink) 30%, transparent) 0 6px, transparent 6px 11px);
+}
+.pm-nav__stitch {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, var(--tomato) 0 6px, transparent 6px 11px);
+  clip-path: inset(0 100% 0 0);
+}
+
+.pm-nav__tabs {
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--pad-b) + var(--rail-h) - var(--tab-hide));
+  z-index: 1;
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transform: translateX(-50%);
+}
+.pm-nav__item { display: block; }
+.pm-nav__tab {
+  --tab-c: var(--tomato);
+  --tab-on: var(--ink);
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  box-sizing: border-box;
+  height: calc(var(--tab-vis) + var(--tab-hide));
+  padding: calc((var(--tab-vis) - 1em) / 2 + 2px) 1.5em 0;
+  border-radius: 12px 12px 0 0;
+  background-color: var(--cream-2);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 5px 0 var(--tab-c), inset 0 6px 0 color-mix(in srgb, var(--ink) 16%, transparent);
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: clamp(0.875rem, 0.8rem + 0.16vw, 1rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  font-synthesis: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.46s cubic-bezier(0.3, 1.55, 0.5, 1);
+}
+.pm-nav__tab[data-sec='cover'] { --tab-c: var(--tomato); --tab-on: var(--ink); }
+.pm-nav__tab[data-sec='catalog'] { --tab-c: var(--marigold); --tab-on: var(--ink); }
+.pm-nav__tab[data-sec='about'] { --tab-c: var(--oxblood); --tab-on: var(--cream); }
+.pm-nav__tab[data-sec='works'] { --tab-c: var(--lagoon); --tab-on: var(--ink); }
+.pm-nav__tab[data-sec='process'] { --tab-c: var(--bubblegum); --tab-on: var(--ink); }
+.pm-nav__tab[data-sec='contact'] { --tab-c: var(--pine); --tab-on: var(--cream); }
+
+@media (hover: hover) {
+  .pm-nav__tab:hover { transform: translateY(-3px); background-color: var(--cream); }
+}
+.pm-nav__tab[data-active='true'] {
+  transform: translateY(calc(var(--raise) * -1));
+  background-color: var(--tab-c);
+  box-shadow: inset 0 1px 0 var(--pm-hl);
+  color: var(--tab-on);
+}
+.pm-nav__tab:focus { outline: none; }
+.pm-nav__tab:focus-visible {
+  outline: 2px solid var(--focus-in);
+  box-shadow: 0 0 0 4px var(--focus-out);
+  z-index: 3;
+}
+
+/* the "Pause motion" tab stands on the right end of the rail, the "PM" monogram on the left end */
+.pm-nav__inner > .pm-mt {
+  position: absolute;
+  right: 10px;
+  bottom: calc(var(--pad-b) + var(--rail-h));
+  z-index: 3;
+}
+.pm-nav__home {
+  --c: var(--sec);
+  --on: var(--sec-ink);
+  position: absolute;
+  left: 10px;
+  bottom: calc(var(--pad-b) + var(--rail-h));
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 13px 0 14px;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--c);
+  background-image: var(--pm-grain);
+  /* the rim: --sec-lit is the accent itself when it can be seen on the desk (so the rim vanishes into the fill) and cream-2 for oxblood
+     and pine, which sink into it: those two tabs get the 2px cream-2 rim the folders get */
+  box-shadow: inset 0 1px 0 var(--pm-hl), inset 0 0 0 2px var(--sec-lit);
+  color: var(--on);
+  font-family: var(--font-label);
+  font-size: clamp(0.875rem, 0.8rem + 0.16vw, 1rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-synthesis: none;
+  -webkit-tap-highlight-color: transparent;
+  /* it stands up out of the rail when the nav is pinned (the name has left the window with the mast): a physical, springy object */
+  transition: transform 0.46s cubic-bezier(0.3, 1.55, 0.5, 1), opacity 0.14s linear, visibility 0s;
+}
+.pm-nav__home-mark { flex: none; width: 15px; height: 15px; color: var(--on); }
+.pm-nav__home-name { display: none; }
+/* at the top of the page the mast above it already says the name: the tab waits behind the rail until the nav is pinned */
+.pm-nav[data-stuck='false'] .pm-nav__home {
+  opacity: 0;
+  visibility: hidden; /* out of the tab order too */
+  transform: translateY(10px);
+  transition: transform 0.2s var(--ease-out), opacity 0.12s linear, visibility 0s linear 0.2s;
+}
+@media (hover: hover) {
+  .pm-nav__home:hover { transform: translateY(-2px); }
+}
+.pm-nav__home:active { transform: translateY(1px); transition-duration: 0.06s; }
+.pm-nav__home:focus { outline: none; }
+.pm-nav__home:focus-visible { outline: 2px solid var(--focus-in); box-shadow: 0 0 0 4px var(--focus-out); }
+/* it needs room beside the six tabs: where the nav is at least 1100px wide it spells the name, below that it is the monogram,
+   and phones and narrow windows go without it */
+@container (min-width: 1100px) {
+  .pm-nav__home-pm { display: none; }
+  .pm-nav__home-name { display: inline; }
+}
+@container (max-width: 900px) {
+  .pm-nav__home { display: none; }
+}
+@media (max-width: 720px) {
+  .pm-nav__home { display: none; }
+}
+
+/* phone: one snap row; the counter makes room for the tabs; the pause tab collapses to its reel */
+@media (max-width: 720px) {
+  .pm-nav { --rail-h: 14px; --tab-vis: 32px; --tab-hide: 12px; --pad-b: 4px; --raise: 6px; }
+  .pm-nav__count { display: none; }
+  .pm-nav__rail { padding: 0; border-radius: 7px; }
+  .pm-nav__tabs {
+    left: 0;
+    right: 52px;
+    gap: 5px;
+    padding: 8px 14px 0 4px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    transform: none;
+  }
+  .pm-nav__tabs::-webkit-scrollbar { display: none; }
+  .pm-nav__item { flex: none; scroll-snap-align: center; }
+  .pm-nav__tab { padding-inline: 1.15em; min-width: 44px; }
+  .pm-nav__inner > .pm-mt { right: 0; }
+}
+
+/* ---- the pause-motion tab (rail and footer) ------------------------------------------------------------------------------ */
+.pm-mt {
+  --c: var(--ink-2);
+  --on: var(--cream);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  box-sizing: border-box;
+  height: 32px;
+  padding: 0 14px 0 10px;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--c);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--cream-2) 50%, transparent), inset 0 1px 0 var(--pm-hl);
+  color: var(--on);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-synthesis: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.16s var(--ease-out);
+}
+.pm-mt__reel { flex: none; width: 21px; height: 21px; animation: pm-reel 7s linear infinite; }
+@keyframes pm-reel { to { transform: rotate(360deg); } }
+@media (hover: hover) {
+  .pm-mt:not(:disabled):hover { transform: translateY(-2px); }
+}
+.pm-mt:not(:disabled):active { transform: translateY(1px); transition-duration: 0.06s; }
+/* paused: the tab is pressed in (cream), the reel stands still */
+.pm-mt[aria-pressed='true'] { --c: var(--cream); --on: var(--ink); box-shadow: inset 0 1px 0 var(--pm-hl), inset 0 -2px 0 color-mix(in srgb, var(--cream) 60%, var(--ink)); }
+.pm-mt:focus { outline: none; }
+.pm-mt:focus-visible { outline: 2px solid var(--focus-in); box-shadow: 0 0 0 4px var(--focus-out); }
+.pm-mt:disabled { cursor: not-allowed; }
+/* disabled by the OS: the tab says why, in plain words. In the rail it stays 32px tall (two lines of 13px); the footer has room for
+   the sentence on one line (it wraps on a phone) */
+.pm-mt[data-off='true'] .pm-mt__label { white-space: normal; text-wrap: balance; text-align: left; }
+.pm-mt[data-variant='rail'][data-off='true'] { height: 38px; padding: 0 13px 0 10px; }
+.pm-mt[data-variant='rail'][data-off='true'] .pm-mt__label { max-width: 14.8em; line-height: 1.12; }
+.pm-mt[data-variant='foot'] { border-radius: 11px 11px 0 0; height: 40px; padding: 0 16px 0 12px; }
+.pm-mt[data-variant='foot'][data-off='true'] { height: auto; min-height: 40px; padding-block: 8px; }
+.pm-mt[data-variant='foot'][data-off='true'] .pm-mt__label { line-height: 1.15; max-width: 26em; }
+@media (min-width: 721px) {
+  .pm-mt[data-variant='foot'][data-off='true'] .pm-mt__label { white-space: nowrap; max-width: none; }
+}
+@media (pointer: coarse) {
+  .pm-mt[data-variant='foot'] { min-height: 44px; }
+  /* the two little tabs that stand on the rail are 32px tall to the eye; the touch target grows 12px down into the rail (which takes
+     no pointer events), 44px in all, the way the six index tabs have their hidden 14px */
+  .pm-mt[data-variant='rail']::after,
+  .pm-nav__home::after { content: ''; position: absolute; left: 0; right: 0; top: 0; bottom: -12px; }
+}
+/* in the rail the tab keeps its words only where the six tabs leave room for them (the nav's width, not the window's) */
+@container (max-width: 1250px) {
+  .pm-mt[data-variant='rail'][data-off='true'] { height: 32px; padding: 0 10px; }
+  .pm-mt[data-variant='rail'][data-off='true'] .pm-mt__label {
+    position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+}
+@container (max-width: 1040px) {
+  .pm-mt[data-variant='rail'] { width: 44px; padding: 0; justify-content: center; }
+  .pm-mt[data-variant='rail'] .pm-mt__label {
+    position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+}
+@media (max-width: 720px) {
+  .pm-mt[data-variant='rail'] { width: 48px; height: 44px; padding: 0; justify-content: center; }
+  .pm-mt[data-variant='rail'] .pm-mt__label {
+    position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+}
+
+/* ==========================================================================
+   4. FOOTER: the last frame of the film
+   ========================================================================== */
+.pm-foot {
+  position: relative;
+  width: var(--wrap);
+  margin: clamp(26px, 3.4vw, 52px) auto 0;
+  padding-bottom: clamp(20px, 3vw, 44px);
+  color: var(--cream);
+}
+.pm-foot__film { border-radius: 14px; overflow: hidden; background: var(--desk); box-shadow: var(--shadow-sheet); }
+.pm-foot__perf { margin: 0; }
+.pm-foot__frame {
+  display: grid;
+  gap: clamp(14px, 2vw, 28px);
+  padding: clamp(18px, 2.6vw, 44px) clamp(18px, 2.6vw, 44px) clamp(18px, 2.4vw, 36px);
+  background-color: var(--ink);
+  background-image: var(--pm-grain);
+}
+.pm-foot__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 36px;
+}
+.pm-foot__rights {
+  margin: 0;
+  color: var(--cream-2);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  font-synthesis: none;
+}
+.pm-foot__clocks { display: flex; flex-wrap: wrap; gap: 8px 34px; }
+.pm-foot__clock {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--font-label);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+}
+.pm-foot__lamp {
+  align-self: center;
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--cream) 42%, transparent);
+}
+.pm-foot__clock[data-day='true'] .pm-foot__lamp {
+  border-color: var(--marigold);
+  background: var(--marigold);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--marigold) 28%, transparent);
+}
+.pm-foot__city {
+  color: var(--cream-2);
+  font-size: var(--fs-label);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+.pm-foot__time { color: var(--cream); font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.7rem); letter-spacing: 0.02em; line-height: 1; }
+
+.pm-foot__mark { line-height: 0; }
+.pm-foot__mark .pm-sw { width: 100%; }
+
+.pm-foot__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 22px 36px;
+}
+/* the end titles: three columns across the frame (two, then one, as it narrows), role above name, each under a thin cut line */
+.pm-foot__credits {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px clamp(20px, 3vw, 56px);
+  margin: 0;
+  font-family: var(--font-label);
+  font-synthesis: none;
+}
+@media (min-width: 721px) {
+  .pm-foot__credits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pm-foot__crow:last-child { grid-column: 1 / -1; }
+}
+@media (min-width: 1040px) {
+  .pm-foot__credits { grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.95fr) minmax(0, 1.35fr); }
+  .pm-foot__crow:last-child { grid-column: auto; }
+}
+.pm-foot__crow {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 2px solid color-mix(in srgb, var(--cream) 24%, transparent);
+}
+.pm-foot__crow dt,
+.pm-foot__crow dd { margin: 0; }
+/* the end titles roll up into place, one column after the other, once, when the footer comes into view (html.js only) */
+html.js .pm-foot__credits:not([data-in]) :is(dt, dd) { opacity: 0; transform: translateY(34px); }
+html.js .pm-foot__credits[data-in] :is(dt, dd) {
+  animation: pm-roll 0.95s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--r, 0) * 170ms + 250ms);
+}
+@keyframes pm-roll {
+  from { opacity: 0; transform: translateY(34px); }
+  to { opacity: 1; transform: none; }
+}
+.pm-foot__crow dt {
+  color: var(--cream-2);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+}
+/* end titles are read from a distance: the names are set bigger than the roles (a name is the thing you look for) */
+.pm-foot__crow dd {
+  max-width: 40rem;
+  color: var(--cream);
+  font-size: clamp(1rem, 0.78rem + 0.62vw, 1.55rem);
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: 0.02em;
+  text-wrap: balance;
+}
+.pm-foot__ctrl { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: flex-end; gap: 12px 18px; }
+/* a margin note in the marker face, the way the sheets have them ("pick a folder"): the last thing written on the last frame */
+.pm-foot__wrap {
+  flex: 0 0 100%;
+  margin: 0 0 0.35rem;
+  padding-right: 0.6rem;
+  text-align: right;
+  color: var(--marigold);
+  font-family: var(--font-hand);
+  font-size: clamp(1.6rem, 1.25rem + 1.1vw, 2.35rem);
+  line-height: 1;
+  transform: rotate(-3deg);
+  transform-origin: 100% 100%;
+}
+.pm-foot__wrap-text { position: relative; display: inline-block; padding-bottom: 0.18em; }
+
+.pm-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--cream-2);
+  font-size: var(--fs-caption);
+  line-height: 1.2;
+}
+.pm-keys__item { display: inline-flex; align-items: center; gap: 6px; }
+.pm-key {
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: 27px;
+  height: 27px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background-color: var(--cream);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 3px 0 color-mix(in srgb, var(--cream) 56%, var(--ink));
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1;
+  font-synthesis: none;
+}
+.pm-key svg { width: 15px; height: 15px; }
+@media (pointer: coarse) {
+  .pm-keys { display: none; }
+}
+@media (max-width: 720px) {
+  .pm-foot__ctrl { flex-direction: column; align-items: flex-start; justify-content: flex-start; }
+  .pm-foot__wrap { flex: none; padding: 0 0 0 0.3rem; text-align: left; transform-origin: 0 100%; }
+  .pm-mt[data-variant='foot'] { margin-left: 11px; }
+  .pm-foot__credits { row-gap: 16px; }
+  .pm-foot__clocks { gap: 8px 22px; }
+}
+
+/* ==========================================================================
+   5. INTRO: colour bars on an already painted page
+   ========================================================================== */
+.pm-intro { position: fixed; inset: 0; z-index: var(--z-intro); overflow: hidden; }
+.pm-intro[data-skip] { opacity: 0; transition: opacity 0.16s linear; }
+.pm-intro__bars { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.pm-intro__bar {
+  display: grid;
+  grid-template-rows: 66fr 8fr 26fr;
+  animation: pm-intro-wipe var(--wipe, 380ms) cubic-bezier(0.7, 0, 0.25, 1) both;
+  animation-delay: calc(var(--hold, 380ms) + var(--i) * var(--stagger, 62ms));
+}
+@keyframes pm-intro-wipe {
+  from { clip-path: inset(0 0 0 0); }
+  to { clip-path: inset(100% 0 0 0); }
+}
+.pm-intro__bar > i { display: block; }
+.pm-intro__bar:nth-child(1) .pm-intro__top { background: var(--cream); }
+.pm-intro__bar:nth-child(2) .pm-intro__top { background: var(--marigold); }
+.pm-intro__bar:nth-child(3) .pm-intro__top { background: var(--lagoon); }
+.pm-intro__bar:nth-child(4) .pm-intro__top { background: var(--olive); }
+.pm-intro__bar:nth-child(5) .pm-intro__top { background: var(--bubblegum); }
+.pm-intro__bar:nth-child(6) .pm-intro__top { background: var(--tomato); }
+.pm-intro__bar:nth-child(7) .pm-intro__top { background: var(--ultraviolet); }
+.pm-intro__bar:nth-child(1) .pm-intro__mid { background: var(--ultraviolet); }
+.pm-intro__bar:nth-child(2) .pm-intro__mid { background: var(--ink); }
+.pm-intro__bar:nth-child(3) .pm-intro__mid { background: var(--bubblegum); }
+.pm-intro__bar:nth-child(4) .pm-intro__mid { background: var(--ink); }
+.pm-intro__bar:nth-child(5) .pm-intro__mid { background: var(--lagoon); }
+.pm-intro__bar:nth-child(6) .pm-intro__mid { background: var(--ink); }
+.pm-intro__bar:nth-child(7) .pm-intro__mid { background: var(--cream); }
+.pm-intro__bar:nth-child(1) .pm-intro__low { background: var(--pine); }
+.pm-intro__bar:nth-child(2) .pm-intro__low { background: var(--cream); }
+.pm-intro__bar:nth-child(3) .pm-intro__low { background: color-mix(in srgb, var(--ultraviolet) 70%, var(--ink)); }
+.pm-intro__bar:nth-child(4) .pm-intro__low { background: var(--ink); }
+.pm-intro__bar:nth-child(5) .pm-intro__low { background: var(--ink-2); }
+.pm-intro__bar:nth-child(6) .pm-intro__low { background: var(--ink); }
+.pm-intro__bar:nth-child(7) .pm-intro__low { background: var(--ink-3); }
+
+.pm-intro__slate {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  display: grid;
+  gap: 6px;
+  min-width: min(78vw, 20rem);
+  padding: 16px 26px 15px;
+  border: 2px solid var(--cream);
+  background: var(--ink);
+  color: var(--cream);
+  text-align: center;
+  font-family: var(--font-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+  animation: pm-intro-jolt 0.1s linear 0.25s both, pm-fade-out 0.16s linear both;
+  animation-delay: 0.25s, calc(var(--hold, 380ms) - 40ms);
+}
+@keyframes pm-fade-out { from { opacity: 1; } to { opacity: 0; } }
+/* the clapper stick: it is up when the bars appear, snaps shut at about a quarter of a second (the slate jumps a hair), and then the bars
+   start to wipe: action. The stripes are the usual black and white. */
+.pm-intro__stick {
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: calc(100% + 2px);
+  height: 22px;
+  border: 2px solid var(--cream);
+  background: repeating-linear-gradient(-58deg, var(--cream) 0 13px, var(--ink) 13px 26px);
+  transform-origin: 0 100%;
+  animation: pm-intro-clap 0.085s cubic-bezier(0.55, 0, 0.9, 0.6) 0.17s both;
+}
+@keyframes pm-intro-clap { from { transform: rotate(-19deg); } to { transform: rotate(0deg); } }
+@keyframes pm-intro-jolt {
+  from, to { transform: translate(-50%, -50%); }
+  50% { transform: translate(-50%, calc(-50% + 3px)); }
+}
+.pm-intro__name { font-size: clamp(1.15rem, 1rem + 0.8vw, 1.6rem); letter-spacing: 0.16em; }
+.pm-intro__line { color: var(--cream-2); font-size: var(--fs-label); letter-spacing: var(--ls-label); }
+.pm-intro__tc { font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.55rem); letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
+
+/* ==========================================================================
+   6. TOAST: a luggage tag from the bottom edge
+   ========================================================================== */
+.pm-toast {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  z-index: var(--z-toast);
+  display: flex;
+  justify-content: center;
+  padding: 0 16px 0 48px;
+  pointer-events: none;
+}
+.pm-toast__tag {
+  --c: var(--butter);
+  --on: var(--ink);
+  position: relative;
+  max-width: min(100%, 30rem);
+  filter: drop-shadow(0 3px 0 color-mix(in srgb, var(--c) 58%, var(--ink))) drop-shadow(0 14px 12px color-mix(in srgb, var(--desk) 55%, transparent));
+  transform-origin: 14% 0;
+  animation: pm-tag-in 0.52s cubic-bezier(0.2, 1.45, 0.4, 1) both;
+}
+.pm-toast__tag[data-leaving='true'] { animation: pm-tag-out 0.32s cubic-bezier(0.5, 0, 0.9, 0.4) both; }
+@keyframes pm-tag-in {
+  from { opacity: 0; transform: translateY(170%) rotate(7deg); }
+  to { opacity: 1; transform: rotate(-1.4deg); }
+}
+@keyframes pm-tag-out {
+  from { opacity: 1; transform: rotate(-1.4deg); }
+  to { opacity: 0; transform: translateY(150%) rotate(5deg); }
+}
+.pm-toast__paper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  min-height: 56px;
+  padding: 11px 24px 11px 50px;
+  background-color: var(--c);
+  background-image: var(--pm-grain);
+  color: var(--on);
+  clip-path: polygon(24px 0, 100% 0, 100% 100%, 24px 100%, 0 calc(100% - 24px), 0 24px);
+  -webkit-mask: radial-gradient(circle at 25px 50%, transparent 6.5px, var(--ink) 7px);
+  mask: radial-gradient(circle at 25px 50%, transparent 6.5px, var(--ink) 7px);
+}
+/* the reinforcement ring round the eyelet */
+.pm-toast__paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 25px 50%, transparent 6.5px, color-mix(in srgb, var(--ink) 30%, transparent) 6.5px 7.6px, color-mix(in srgb, var(--c) 78%, var(--ink)) 7.6px 13px, transparent 13.6px);
+  pointer-events: none;
+}
+.pm-toast__string {
+  position: absolute;
+  left: -36px;
+  top: -3px;
+  width: 60px;
+  height: 34px;
+  overflow: visible;
+  color: var(--cream);
+}
+.pm-toast__string .pm-toast__rope { fill: none; stroke: var(--ink); stroke-width: 4px; stroke-linecap: round; }
+.pm-toast__string .pm-toast__core { fill: none; stroke: var(--cream); stroke-width: 1.7px; stroke-linecap: round; }
+.pm-toast__swatch {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ink) 55%, transparent);
+}
+.pm-toast__text { display: grid; gap: 2px; min-width: 0; }
+.pm-toast__label {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  font-synthesis: none;
+}
+.pm-toast__msg { font-family: var(--font-hand); font-size: clamp(1.3rem, 1.15rem + 0.5vw, 1.65rem); line-height: 1.08; overflow-wrap: anywhere; }
+
+/* ==========================================================================
+   7. CURSOR: dot + ring (difference) and a labelled disc
+   ========================================================================== */
+html.pm-cursor-on,
+html.pm-cursor-on * { cursor: none !important; }
+html.pm-cursor-on :is(input:not([type='range'], [type='checkbox'], [type='radio'], [type='button'], [type='submit'], [type='reset']), textarea, select, [contenteditable=''], [contenteditable='true'], [data-cursor='native'], [data-cursor='native'] *) {
+  cursor: auto !important;
+}
+.pm-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+  transition: opacity 0.18s linear;
+}
+.pm-cursor[data-visible='true'] { opacity: 1; }
+.pm-cursor--ring, .pm-cursor--dot { z-index: var(--z-cursor); mix-blend-mode: difference; }
+.pm-cursor--tag { z-index: calc(var(--z-cursor) + 1); }
+.pm-cursor__ring {
+  position: absolute;
+  left: -17px;
+  top: -17px;
+  width: 34px;
+  height: 34px;
+  box-sizing: border-box;
+  border: 1.5px solid var(--cream);
+  border-radius: 50%;
+  transition: transform 0.3s var(--ease-out), opacity 0.16s linear;
+}
+.pm-cursor--ring[data-hot='true'] .pm-cursor__ring { transform: scale(1.55); }
+.pm-cursor--ring[data-down='true'] .pm-cursor__ring { transform: scale(0.8); }
+.pm-cursor--ring[data-hot='true'][data-down='true'] .pm-cursor__ring { transform: scale(1.3); }
+.pm-cursor--ring[data-labelled='true'] .pm-cursor__ring { opacity: 0; }
+.pm-cursor--ring[data-still='true'] { display: none; } /* reduced / paused motion: a dot, no trailing ring */
+.pm-cursor__dot {
+  position: absolute;
+  left: -3.5px;
+  top: -3.5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cream);
+  transition: opacity 0.12s linear;
+}
+.pm-cursor--dot[data-labelled='true'] .pm-cursor__dot { opacity: 0; }
+.pm-cursor__disc {
+  position: absolute;
+  left: -38px;
+  top: -38px;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--cursor-c, var(--ink));
+  box-shadow: 0 0 0 2px var(--cursor-rim, var(--cream)), 0 10px 16px -8px color-mix(in srgb, var(--desk) 80%, transparent);
+  color: var(--cursor-on, var(--cream));
+  opacity: 0;
+  transform: scale(0.3);
+  transition: transform 0.26s var(--ease-out), opacity 0.14s linear;
+}
+.pm-cursor--tag[data-labelled='true'] .pm-cursor__disc { opacity: 1; transform: scale(1); }
+.pm-cursor--tag[data-labelled='true'][data-down='true'] .pm-cursor__disc { transform: scale(0.9); }
+.pm-cursor__label {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-synthesis: none;
+}
+
+@media (forced-colors: active) {
+  .pm-cursor { display: none; }
+  html.pm-cursor-on,
+  html.pm-cursor-on * { cursor: auto !important; }
+}
+
+/* ==========================================================================
+   8. STILL: the page-level switches (reduced motion, "Pause motion") do the rest (base.css). What must still communicate:
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .pm-nav__tab { transition: none; }
+  .pm-nav__tab:hover { transform: none; }
+}
+html[data-motion='paused'] .pm-nav__tab { transition: none; }
+html[data-motion='paused'] .pm-nav__tab:hover { transform: none; }
+html[data-motion='paused'] .pm-nav__home { transition: none; }
+
+/* ==========================================================================
+   9. Windows high contrast and print
+   ========================================================================== */
+/* forced colours remove every background and shadow: the tabs get a drawn edge, and the sheet you are on is marked by a heavier edge
+   and an underline as well (never by colour alone) */
+@media (forced-colors: active) {
+  .pm-desk { display: none; }
+  .pm-nav__rail,
+  .pm-nav__tab,
+  .pm-nav__home,
+  .pm-mt,
+  .pm-key,
+  .pm-toast__paper,
+  .pm-foot__film { border: 1px solid CanvasText; }
+  .pm-nav__tab[aria-current='true'] { border-width: 3px; text-decoration: underline; text-underline-offset: 3px; }
+}
+
+/* on paper: no desk, no nav, no cursor, no intro, no toast, no controls; the mast, the sheets and the end titles stay */
+@media print {
+  .pm-desk,
+  .pm-nav,
+  .pm-intro,
+  .pm-toast,
+  .pm-cursor,
+  .pm-foot__ctrl,
+  .pm-foot__keys { display: none !important; }
+  .pm-mast { break-after: avoid; }
+}

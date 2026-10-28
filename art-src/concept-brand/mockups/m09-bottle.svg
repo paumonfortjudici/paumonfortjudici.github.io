@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 329 600" width="329" height="600">
+<title>M09 House vermut bottle - gotet</title>
+<style>
+@font-face{font-family:'FrauncesV';font-style:normal;font-weight:100 900;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2) format('woff2-variations'),url(fonts/fraunces-latin-full-normal.woff2) format('woff2-variations');}
+@font-face{font-family:'FrauncesV';font-style:italic;font-weight:100 900;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-italic.woff2) format('woff2-variations'),url(fonts/fraunces-latin-full-italic.woff2) format('woff2-variations');}
+@font-face{font-family:'BarlowSC';font-style:normal;font-weight:500;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-500-normal.woff2) format('woff2'),url(fonts/barlow-semi-condensed-latin-500-normal.woff2) format('woff2');}
+@font-face{font-family:'BarlowSC';font-style:italic;font-weight:500;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-500-italic.woff2) format('woff2'),url(fonts/barlow-semi-condensed-latin-500-italic.woff2) format('woff2');}
+@font-face{font-family:'BarlowSC';font-style:normal;font-weight:600;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-600-normal.woff2) format('woff2'),url(fonts/barlow-semi-condensed-latin-600-normal.woff2) format('woff2');}
+@font-face{font-family:'BarlowSC';font-style:normal;font-weight:700;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-700-normal.woff2) format('woff2'),url(fonts/barlow-semi-condensed-latin-700-normal.woff2) format('woff2');}
+@font-face{font-family:'BarlowSC';font-style:normal;font-weight:800;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-800-normal.woff2) format('woff2'),url(fonts/barlow-semi-condensed-latin-800-normal.woff2) format('woff2');}
+.fr{font-family:'FrauncesV',serif;font-variation-settings:'SOFT' 100,'WONK' 1,'opsz' 144;}
+.bs{font-family:'BarlowSC',sans-serif;}
+</style>
+<defs>
+<filter id="soft-shadow" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="3" dy="8" stdDeviation="7" flood-color="#211736" flood-opacity="0.22"/></filter>
+<filter id="soft-shadow-m" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="2.5" dy="6" stdDeviation="5.5" flood-color="#211736" flood-opacity="0.24"/></filter>
+<filter id="soft-shadow-s" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="2" dy="4" stdDeviation="3.5" flood-color="#211736" flood-opacity="0.26"/></filter>
+<filter id="soft-shadow-xs" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="1.5" dy="2.5" stdDeviation="2" flood-color="#211736" flood-opacity="0.28"/></filter>
+<filter id="grain" filterUnits="userSpaceOnUse" x="0" y="0" width="329" height="600" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="4" result="t"/><feColorMatrix in="t" type="matrix" values="0 0 0 0 0.129  0 0 0 0 0.090  0 0 0 0 0.208  0 0 0 -8 3.0" result="speck"/><feComposite in="speck" in2="SourceAlpha" operator="in"/></filter>
+<pattern id="pat-faint" width="372" height="372" x="-30" y="-40" patternUnits="userSpaceOnUse"><image href="../pattern/pattern-faint-vermell-on-rosat.svg" x="0" y="0" width="372" height="372"/></pattern>
+<clipPath id="glass-clip"><path d="M141 56 L141 166 C141 210 92 214 92 272 L92 548 Q92 570 114 570 L214 570 Q236 570 236 548 L236 272 C236 214 187 210 187 166 L187 56 Z"/></clipPath>
+</defs>
+<g id="tile"><rect width="329" height="600" rx="28" fill="#F8D2D0"/><rect width="329" height="600" rx="28" fill="url(#pat-faint)"/><rect width="329" height="600" rx="28" fill="#000" filter="url(#grain)" opacity="0.16"/></g>
+<g id="bottle">
+<g filter="url(#soft-shadow)"><path d="M141 56 L141 166 C141 210 92 214 92 272 L92 548 Q92 570 114 570 L214 570 Q236 570 236 548 L236 272 C236 214 187 210 187 166 L187 56 Z" fill="#211736"/></g>
+<path d="M100 520 L100 312" fill="none" stroke="#F8D2D0" stroke-width="7" stroke-linecap="round"/>
+<circle cx="100" cy="540" r="3.6" fill="#F8D2D0"/>
+<path d="M110 246 C118 232 128 222 140 214" fill="none" stroke="#F8D2D0" stroke-width="5" stroke-linecap="round"/>
+<path d="M151 78 L151 150" fill="none" stroke="#F8D2D0" stroke-width="6" stroke-linecap="round"/>
+<rect x="136" y="52" width="56" height="12" rx="4" fill="#211736"/>
+<rect x="136" y="12" width="56" height="42" rx="7" fill="#D8283B"/>
+<path d="M144 21 H166" stroke="#F8D2D0" stroke-width="3" stroke-linecap="round"/>
+<g stroke="#211736" stroke-width="1.8" stroke-linecap="round"><path d="M146 31 V45"/><path d="M154 31 V45"/><path d="M162 31 V45"/><path d="M170 31 V45"/><path d="M178 31 V45"/><path d="M186 31 V45"/></g>
+<path d="M134 45 H194 V59 H134 Z" fill="#FFD34E"/>
+<rect id="neck-label" x="140" y="98" width="48" height="30" rx="3" fill="#2340C0"/>
+<image href="../logo/icon-olive.svg" x="149" y="98" width="30" height="30"/>
+<rect id="label" x="108" y="300" width="112" height="196" rx="6" fill="#F8D2D0"/>
+<rect id="label-in" x="114" y="306" width="100" height="184" rx="4" fill="none" stroke="#2340C0" stroke-width="3"/>
+<image href="../logo/wordmark.svg" x="125" y="313.5" width="78" height="29"/>
+<image href="../mascots/heads/gotet-head-1.svg" x="130" y="344" width="68" height="68"/>
+<text class="bs" x="164" y="428" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="1.6" fill="#2340C0">VERMUT</text>
+<text class="bs" x="164" y="441" font-size="11" font-weight="800" text-anchor="middle" letter-spacing="1.6" fill="#2340C0">DE LA CASA</text>
+<text class="fr" x="164" y="458" font-size="11" font-weight="600" text-anchor="middle" font-style="italic" fill="#211736">Receptari del barri</text>
+<text class="bs" x="164" y="471" font-size="9" font-weight="700" text-anchor="middle" fill="#211736">75 cl · 15 % vol.</text>
+<text class="bs" x="164" y="482" font-size="7" font-weight="600" text-anchor="middle" fill="#211736">Gaudeix-ne amb seny.</text>
+</g>
+<g id="sparkles"><path d="M0 -22 C2 -6 6 -2 22 0 C6 2 2 6 0 22 C-2 6 -6 2 -22 0 C-6 -2 -2 -6 0 -22 Z" transform="translate(52 150) rotate(8) scale(0.7)" fill="#FFD34E" stroke="#211736" stroke-width="5" stroke-linejoin="round"/><path d="M0 -22 C2 -6 6 -2 22 0 C6 2 2 6 0 22 C-2 6 -6 2 -22 0 C-6 -2 -2 -6 0 -22 Z" transform="translate(282 232) rotate(0) scale(0.5)" fill="#2340C0" stroke="#211736" stroke-width="5" stroke-linejoin="round"/><path d="M0 -22 C2 -6 6 -2 22 0 C6 2 2 6 0 22 C-2 6 -6 2 -22 0 C-6 -2 -2 -6 0 -22 Z" transform="translate(274 468) rotate(-8) scale(0.62)" fill="#D8283B" stroke="#211736" stroke-width="5" stroke-linejoin="round"/><path d="M0 -22 C2 -6 6 -2 22 0 C6 2 2 6 0 22 C-2 6 -6 2 -22 0 C-6 -2 -2 -6 0 -22 Z" transform="translate(46 410) rotate(0) scale(0.42)" fill="#2340C0" stroke="#211736" stroke-width="5" stroke-linejoin="round"/></g>
+</svg>

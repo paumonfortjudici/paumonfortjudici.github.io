@@ -1,6 +1,58 @@
-// PLACEHOLDER world (foundation phase). Replace this file; keep the file name and `export default`.
-import PlaceholderWorld from './PlaceholderWorld'
+// World 3: 44 Lab, "Workshop Wall". A tufted rug hung from a marigold rail: the hero (wordmark, profile label, intro), then all thirteen
+// Instagram posts as hang tags on one vertical thread, in date order, under huge month banners. A hand-drawn devil walks the thread as
+// you scroll. Carousels are rings of tags you flip; four posts carry clips that play muted while they are on screen; six reels are stills.
+// Docs: docs/api/world-fortyfour-lab.md
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useMediaQuery } from '../lib/hooks'
+import { loadHandFonts } from '../styles/fonts'
+import './fortyfour-lab/fortyfour-lab.css'
+import Feed from './fortyfour-lab/Feed'
+import Footer from './fortyfour-lab/Footer'
+import Hero from './fortyfour-lab/Hero'
+import Thread from './fortyfour-lab/Thread'
+import { FUZZ_PILE, WALL_PILE, pileUrl } from './fortyfour-lab/pile'
+
+// start the pile tiles and the hand-writing face as soon as the chunk is evaluated (the folder is still opening); the tiles are made in a worker
+void pileUrl(WALL_PILE)
+void pileUrl(FUZZ_PILE)
+void loadHandFonts()
 
 export default function FortyFourLabWorld() {
-  return <PlaceholderWorld />
+  const wallRef = useRef<HTMLDivElement>(null)
+  const wide = useMediaQuery('(min-width: 1000px)')
+  const [tiles, setTiles] = useState({ wall: '', fuzz: '' })
+
+  useEffect(() => {
+    let alive = true
+    void Promise.all([pileUrl(WALL_PILE), pileUrl(FUZZ_PILE)]).then(([wall, fuzz]) => {
+      if (alive) setTiles({ wall, fuzz })
+    })
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  const vars = {
+    '--ffl-pile': tiles.wall ? `url(${tiles.wall})` : 'none',
+    '--ffl-fuzz': tiles.fuzz ? `url(${tiles.fuzz})` : 'none',
+  } as CSSProperties
+
+  return (
+    <div className="w-fortyfour-lab" style={vars} data-pile={tiles.wall ? '' : undefined}>
+      <div className="w-fortyfour-lab-rail" aria-hidden="true">
+        <span className="w-fortyfour-lab-loops" />
+      </div>
+
+      <div ref={wallRef} className="w-fortyfour-lab-wall">
+        <span className="w-fortyfour-lab-border" data-side="left" aria-hidden="true" />
+        <span className="w-fortyfour-lab-border" data-side="right" aria-hidden="true" />
+
+        <Hero />
+        <Feed wide={wide} />
+        <Thread wallRef={wallRef} />
+      </div>
+
+      <Footer />
+    </div>
+  )
 }

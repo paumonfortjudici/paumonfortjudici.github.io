@@ -4,17 +4,20 @@
 //   FX=0 node art-src/illustration/sticker-04.build.mjs x.svg -> fast draft without filters
 //   BG=1 ...                                                  -> paper-coloured backdrop (previews only)
 //
-// Built like the pilot: kit/sticker-lib.mjs (frame) + kit/pen.mjs (geometry) + kit/blocks.mjs (head blocks) + kit/leaf.mjs (monstera leaves).
-// Pose: walking to the right, leaning back under the load, knees bent; the pot is held at belly height by two gloved hands gripping its
-// lower sides, the torso hides behind it; the head peeks out to the left of the stems at the pot's top-left, a young leaf draped over
-// the bandana; a snail rides the upper-right leaf.
-// Order (back to front): stems + leaves -> snail -> legs + boots -> torso -> far forearm -> pot -> near arm + gloves -> head -> draped leaf -> extras.
+// Built like the pilot: kit/sticker-lib.mjs (frame) + kit/pen.mjs (geometry) + kit/blocks.mjs (head blocks) + sticker-04.leaf.mjs (monstera leaves).
+// Pose: walking to the right under the load, knees bent, one boot pushing off on its heel; the pot is held at belly height by two paper
+// garden gloves gripping its lower sides (the near hand in front, only the far hand's fingers show round the right edge), the gardener
+// hides behind it: the head peeks out to the left of the stems at the pot's top-left with a young leaf draped over the bandana,
+// eyes up at the load, a sweat drop on the temple. A snail crawls up the midrib of the right-hand leaf (head poking past the tip).
+// Order (back to front): stems + leaves -> snail -> legs + boots -> seat + shirt (+ pocket with a trowel) -> pot -> near arm + glove ->
+// far fingers -> head (hair lock, face, bandana, sweat) -> draped leaf -> sparkles.
+// Halo-only fillers (shape() without a paint call): 'crownFill', 'bayFill' (pinholes between leaves), 'legGap' (between the legs), snailAnt.
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createSticker } from './kit/sticker-lib.mjs'
 import { smooth, limb, limbOutline, capsule, tube, blob, blobPts, rotPts, trPts, scPts, fmt, rrect, lerp, rng } from './kit/pen.mjs'
 import { headFrame, face, ear } from './kit/blocks.mjs'
-import { monstera } from './kit/leaf.mjs'
+import { monstera } from './sticker-04.leaf.mjs'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
 const OUT = process.argv[2] || path.join(here, 'sticker-04.svg')
@@ -24,9 +27,12 @@ const st = createSticker({
   desc: 'A small gardener in overalls and a polka-dot bandana staggers along carrying a pot with a monstera three times their height; a snail rides one of the leaves. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
   accent: '#8EEBC3',
   seed: 17,
-  root: 'translate(15,16) scale(.975)',
+  root: 'translate(28,14) scale(.99)',
 })
-const { shape, use, line, fillp, raw, clip, group, S } = st
+const { shape, use, line, fillp, raw, clip, group, S, defs, sil } = st
+/** an OPEN path (steam, zzz, antennae...) registered for the die-cut with ROUND caps: the lib's halo stroke has butt caps, so a plain shape()
+ *  leaves the die-cut hugging the ends of an open polyline (ink 2-7 px from the edge). Paint it afterwards with use(id, 'k2'). */
+const shapeOpen = (id, d, tf = '') => { defs.push(`<path id="${id}" d="${d}" stroke-linecap="round"${tf ? ` transform="${tf}"` : ''}/>`); sil.push(id) }
 const PAPER = st.cfg.paper, INK = st.cfg.ink, ACC = st.cfg.accent
 
 const P2 = (p) => `${fmt(p[0])} ${fmt(p[1])}`
@@ -76,11 +82,12 @@ group('stems', () => {
 })
 group('crown-fill', () => {                                    // halo-only: closes the pinholes between the stems and leaves
   shape('crownFill', S([[470, 520, 'c'], [800, 520, 'c'], [800, 890, 'c'], [470, 890, 'c']], { closed: true }))
+  shape('bayFill', S([[868, 380, 'c'], [936, 380, 'c'], [936, 458, 'c'], [868, 458, 'c']], { closed: true }))     // the little bay between leaf A, the sparkle and the snail would otherwise be an enclosed hole in the die-cut
 })
 group('leaves', () => {
-  leaf('leafA', [624, 520], 4, 410, 390, { seed: 1, slits: [0.3, 0.5, 0.7], slitW: 50, holes: 0, veins: 'few' })
-  leaf('leafB', [452, 724], -52, 350, 335, { seed: 2, slits: [0.36, 0.62], slitW: 54, holes: 0, veins: 'few' })
-  leaf('leafC', [800, 740], 48, 330, 320, { seed: 3, slits: [0.36, 0.62], slitW: 54, holes: 0, veins: 'few' })
+  leaf('leafA', [624, 520], 4, 410, 390, { seed: 1, slits: [0.3, 0.5, 0.7], slitW: 38, depth: 0.52, holes: 0, veins: 'few' })
+  leaf('leafB', [452, 724], -52, 350, 335, { seed: 2, slits: [0.34, 0.6], slitW: 42, depth: 0.54, holes: 0, veins: 'few' })
+  leaf('leafC', [800, 740], 48, 330, 320, { seed: 3, slits: [0.34, 0.6], slitW: 42, depth: 0.54, holes: 0, veins: 'few' })
 })
 // a young leaf, still rolled up like a cigar, in front of the stems
 group('young-leaf', () => {
@@ -89,32 +96,36 @@ group('young-leaf', () => {
   use('youngLeaf')
   raw(`<g transform="${tf}"><path class="k3" d="M-18 -30Q4 -80 -14 -130Q-24 -170 4 -222"/><path class="k3" d="M12 -64Q30 -110 20 -160"/></g>`)
 })
-// ------------------------------------------------------------ the snail on the upper-right leaf
+// ------------------------------------------------------------ the snail, crawling up the midrib of the right-hand leaf towards the tip
 group('snail', () => {
-  const tf = 'translate(1004 596) rotate(-24)'
-  shape('snailBody', S([[-100, 0, 'c'], [-66, -20], [-12, -26], [42, -44], [74, -70], [98, -66], [108, -38], [98, -8], [74, 0, 'c']], { closed: true }), { tf })
+  const SN = [974, 584, -42]
+  const tf = `translate(${SN[0]} ${SN[1]}) rotate(${SN[2]})`
+  // plump foot: pointed tail on the ground at the left, raised neck + head at the right
+  shape('snailBody', S([[-108, 0, 'c'], [-80, -24], [-36, -34], [24, -40], [58, -58], [76, -92], [98, -106], [118, -90], [114, -58], [102, -28], [88, -6, 'c'], [30, 6], [-40, 8], [-90, 6]], { closed: true }), { tf })
   use('snailBody', 'fi')
-  shape('snailShell', blob(-24, -56, 54, 54, { seed: 21, wob: 0.03 }), { tf })
+  shape('snailShell', blob(-30, -68, 58, 58, { seed: 21, wob: 0.03 }), { tf })
   use('snailShell')
   raw(`<g transform="${tf}">`)
-  raw('<path class="k3" d="M-24 -56Q-8 -56 -8 -70Q-8 -92 -32 -92Q-62 -92 -64 -60Q-64 -28 -30 -22"/>')
-  raw('<path class="k3" d="M84 -70Q82 -108 94 -122M100 -64Q118 -100 134 -108"/>')
-  raw(`<path class="fi" d="${blob(94, -124, 8, 8, { seed: 3 })}"/><path class="fi" d="${blob(135, -110, 8, 8, { seed: 4 })}"/>`)
+  raw('<path class="k3" d="M-30 -68Q-12 -68 -12 -84Q-12 -108 -38 -108Q-72 -108 -74 -72Q-74 -34 -36 -28"/>')
+  raw('<path class="k3" d="M86 -100Q84 -128 94 -144M106 -100Q122 -126 140 -136"/>')
+  raw(`<path class="fi" d="${blob(94, -146, 9, 9, { seed: 3 })}"/><path class="fi" d="${blob(141, -137, 9, 9, { seed: 4 })}"/>`)
+  raw('<path class="pp" d="M104 -78Q112 -70 108 -58"/>')
   raw('</g>')
+  shapeOpen('snailAnt', 'M92 -112L94 -146M112 -108L141 -137', tf)     // halo-only (round caps): keeps the antenna balls inside the die-cut
 })
 
 // ============================================================ 2. THE GARDENER (peeking round the pot): legs + boots, torso, tools
 const fr = headFrame({ center: [334, 884], tilt: -9, scale: 0.92 })
 const { H: HF, hp } = fr
 
-// boots: the kit boot outline with a short shaft (top at y -70): ink, accent band, paper sole + line, paper highlight; toe to +x, sole at y 128
+// boots: the kit boot outline with a short shaft (top at y -70): ink, paper rubber-boot stripe, paper sole + line, paper highlight; toe to +x, sole at y 128
 const BOOT = 'M-54 -70C-18 -70 18 -70 54 -70C55 -40 50 -10 58 34C61.6 49.1 86.2 46.9 100 54C117.5 63 136.8 69.5 152 82C159.6 88.2 164.7 98.2 166 108C166.9 115.1 160.7 121.3 158 128C84 128 10 128 -64 128C-64.7 114.7 -66.5 101.3 -66 88C-65.2 66.6 -61.1 45.4 -60 24C-58 -10 -56 -40 -54 -70Z'
 function boot(id, tf) {
   shape(id, BOOT, { tf })
   clip(id + 'Clip', BOOT)
   use(id, 'fi')
   raw(`<g transform="${tf}">`)
-  raw(`<g clip-path="url(#${id}Clip)"><path class="fa" d="M-42 -50H42V-18H-42Z"/><path class="fp" d="M-80 106L180 102V150H-80Z"/><path class="k3" d="M-80 106L180 102"/></g>`)
+  raw(`<g clip-path="url(#${id}Clip)"><path class="fp" d="M-80 -46H80V-26H-80Z"/><path class="fp" d="M-80 106L180 102V150H-80Z"/><path class="k3" d="M-80 106L180 102"/></g>`)
   raw('<path class="pp" d="M-24 16Q-30 40 -22 62"/>')
   raw('</g>')
 }
@@ -142,12 +153,12 @@ group('torso', () => {
   shape('torso', S([[300, 996, 'c'], [380, 976], [470, 984, 'c'], [530, 1090], [524, 1160, 'c'], [320, 1168, 'c'], [292, 1090]], { closed: true }))
   use('torso')
   line('M326 1160Q420 1176 520 1158', 'k3')
-  // patch pocket on the seat with a trowel and secateurs sticking out of it, leaning outwards
-  raw('<g transform="translate(334 1194) rotate(6)">')
-  // trowel: paper blade (pointing up and out) on an ink neck, handle hidden in the pocket
-  raw('<g transform="rotate(-30 -28 -20)"><path class="fi" d="M-38 -20L-36 -52L-20 -52L-18 -20Z"/><path class="fp k" d="M-40 -48Q-60 -78 -28 -128Q4 -78 -16 -48Z"/><path class="k3" d="M-28 -60V-104"/></g>')
-  // secateurs: two ink handles with accent grips, crossed
-  raw('<g transform="rotate(10 30 -20)"><path class="fi" d="M14 -20L10 -80Q9 -92 20 -92Q30 -92 31 -80L34 -20Z"/><path class="fi" d="M34 -20L52 -76Q56 -88 66 -84Q76 -80 72 -68L54 -20Z"/><path class="fa k3f" d="M11 -66L33 -66L32 -80L12 -80Z"/><path class="fa k3f" d="M55 -58L74 -66L70 -78L52 -70Z"/></g>')
+  // patch pocket on the seat with a trowel sticking out of it, leaning outwards
+  raw('<g transform="translate(330 1198) rotate(5)">')
+  // trowel: ink handle with a paper ferrule, leaning out to the left (the blade is inside the pocket); its handle is also registered for the die-cut
+  shape('pocketHalo', rrect(-62, -34, 124, 78, 14), { tf: 'translate(330 1198) rotate(5)' })     // the patch pocket sits on the left edge of the body: register it for the die-cut too
+  shape('trowelHalo', 'M-53 -20V-90Q-53 -106 -40 -106Q-27 -106 -27 -90V-20Z', { tf: 'translate(330 1198) rotate(5) rotate(-38 -40 -20)' })
+  raw('<g transform="rotate(-38 -40 -20)"><path class="fi" d="M-53 -20V-90Q-53 -106 -40 -106Q-27 -106 -27 -90V-20Z"/><path class="fp k3f" d="M-56 -64H-24V-44H-56Z"/></g>')
   raw(`<path class="fa k" d="${rrect(-62, -34, 124, 78, 14)}"/>`)
   raw(`<path class="st" d="${rrect(-50, -22, 100, 54, 8)}"/>`)
   raw('</g>')
@@ -220,7 +231,7 @@ group('head', () => {
   fillp(blob(m[0], m[1], 17 * sc, 23 * sc, { seed: 9, wob: 0.03, rot: fr.tilt }), 'fi k3f')
   const t = hp([4, 104])
   fillp(blob(t[0], t[1], 9 * sc, 7 * sc, { seed: 10 }), 'fa')
-  line(`M${P2(hp([-92, 36]))}L${P2(hp([-84, 54]))}M${P2(hp([-72, 32]))}L${P2(hp([-64, 50]))}`, 'k3')
+  line(`M${P2(hp([-78, 48]))}L${P2(hp([-70, 66]))}M${P2(hp([-56, 44]))}L${P2(hp([-48, 62]))}`, 'k3')
   // polka-dot bandana (arch over the brows) with a knot and two tails flying back
   shape('bandTail1', S(capsule(HF([[-122, -92], [-170, -70], [-206, -30]]), [16, 15, 10].map((w) => w * sc)), { closed: true })); use('bandTail1')
   shape('bandTail2', S(capsule(HF([[-124, -100], [-184, -116], [-232, -104]]), [15, 14, 9].map((w) => w * sc)), { closed: true })); use('bandTail2')

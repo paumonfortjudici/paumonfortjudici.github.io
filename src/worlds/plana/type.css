@@ -1,0 +1,245 @@
+/* ==========================================================================
+   plate 4 "Type": holm-oak ground, three specimens of the typed text, fixed row heights (typing never moves the page).
+   ========================================================================== */
+
+.w-plana-type {
+  container: w-plana-type / inline-size;
+  display: grid;
+  align-content: start;
+  gap: 0;
+  padding: clamp(0.9rem, 2.2cqw, 1.7rem);
+  background: var(--holm);
+  color: var(--paper);
+}
+
+.w-plana-type__field {
+  display: grid;
+  gap: 0.4rem;
+  padding-bottom: clamp(0.9rem, 2cqw, 1.3rem);
+}
+
+.w-plana-type__label {
+  color: var(--wheat);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.w-plana-type__input {
+  width: 100%;
+  min-height: 3.2rem;
+  padding: 0.55rem 1rem;
+  border: var(--outline) solid var(--night);
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 4px 5px 0 var(--night);
+  color: var(--night);
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.w-plana-type__input:focus-visible {
+  /* the solid shadow stays; a cream ring goes round it (the field sits on the dark holm-oak ground) */
+  outline: 2px solid var(--night);
+  outline-offset: 0;
+  box-shadow:
+    4px 5px 0 var(--night),
+    0 0 0 5px var(--paper);
+}
+
+.w-plana-type__input::placeholder {
+  color: var(--night-2);
+  opacity: 0.8;
+}
+
+.w-plana-type__row {
+  display: grid;
+  gap: 0.5rem;
+  padding: clamp(0.8rem, 1.7cqw, 1.2rem) 0;
+  border-top: 2px solid rgb(247 242 232 / 0.3);
+}
+
+.w-plana-type__spec {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+}
+
+.w-plana-type__spec p {
+  display: grid;
+  gap: 0.1rem;
+  margin: 0;
+  min-width: 0;
+}
+
+.w-plana-type__spec strong {
+  color: var(--wheat);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.w-plana-type__spec p span {
+  color: color-mix(in srgb, var(--paper) 88%, var(--holm));
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+.w-plana-type__range {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--wheat);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.w-plana-type__range input {
+  width: clamp(7rem, 16cqw, 11rem);
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: grab;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.w-plana-type__range input::-webkit-slider-runnable-track {
+  height: 8px;
+  border: 2px solid var(--night);
+  border-radius: 6px;
+  background: var(--wheat);
+}
+
+.w-plana-type__range input::-moz-range-track {
+  height: 8px;
+  border: 2px solid var(--night);
+  border-radius: 6px;
+  background: var(--wheat);
+}
+
+.w-plana-type__range input::-webkit-slider-thumb {
+  width: 24px;
+  height: 24px;
+  margin-top: -10px;
+  border: 2.5px solid var(--night);
+  border-radius: 50%;
+  background: var(--poppy);
+  box-shadow: 2px 3px 0 var(--night);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.w-plana-type__range input::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid var(--night);
+  border-radius: 50%;
+  background: var(--poppy);
+  box-shadow: 2px 3px 0 var(--night);
+}
+
+.w-plana-type__range input:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+.w-plana-type__weights {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.2rem;
+  padding-top: 0.3rem;
+}
+
+/* the samples: row heights are fixed to a number of lines, so a long or short text never shifts what is below */
+.w-plana-type__sample {
+  margin: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.w-plana-type__sample--sora {
+  --s: 60px;
+  --fs: min(var(--s), 12.5cqw);
+
+  height: calc(var(--fs) * 1.9);
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: var(--fs);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.w-plana-type__sample--figtree {
+  --w: 500;
+
+  height: 2.1em;
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 22px;
+  font-weight: var(--w);
+  line-height: 1.45;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.w-plana-type__sample--mono {
+  height: 1.5em;
+  color: var(--wheat);
+  font-family: var(--font-label);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.w-plana-type__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 2rem;
+  padding-top: clamp(0.8rem, 1.7cqw, 1.2rem);
+  border-top: 2px solid rgb(247 242 232 / 0.3);
+}
+
+.w-plana-type__logotype {
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.2cqw, 3.2rem);
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.w-plana-type__logotype span:first-child {
+  font-weight: 800;
+}
+
+.w-plana-type__logotype span:last-child {
+  font-weight: 400;
+}
+
+.w-plana-type__glyphs {
+  margin: 0;
+  color: var(--wheat);
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2.2cqw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  word-spacing: 0.4em;
+}

@@ -1,0 +1,324 @@
+/* ==========================================================================
+   About / the portrait folder
+   An ink folder holding a film-strip slide mount (cream paper, sprocket holes cut out of its left edge) with the scrubbable
+   portrait in its aperture, a perforated strip of the 12 thumbnails under it (a real <input type="range"> rides on top) and a
+   handwritten hint. Classes: pm-ab-portrait, pm-ab-folder, pm-ab-mount, pm-ab-frame, pm-ab-slate, pm-ab-strip, pm-ab-hint.
+   Variables: --p on .pm-ab-portrait (0..1, written by script every frame, read by the strip's oval and the playhead on the frame),
+   --tw (thumb width) and --ow (oval / range thumb width) on .pm-ab-strip.
+   ========================================================================== */
+
+.pm-ab-portrait {
+  --p: 0;
+  position: relative;
+  width: 100%;
+}
+.pm-ab-folder { width: 100%; --fpad: clamp(14px, 1.3vw, 20px); }
+.pm-ab-folder__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ---- the slide mount: [film edge with holes | paper card with the aperture] ------------------------------------------ */
+.pm-ab-mount {
+  --ab-edge: color-mix(in srgb, var(--paper) 58%, var(--ink));
+  /* only the hole is in the tile (the paper is a separate solid layer, subtracted by mask-composite), so a tile seam can never nick the paper */
+  --ab-hole: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 30'%3E%3Cpath d='M13.5 7H20.5A2.5 2.5 0 0 1 23 9.5V20.5A2.5 2.5 0 0 1 20.5 23H13.5A2.5 2.5 0 0 1 11 20.5V9.5A2.5 2.5 0 0 1 13.5 7Z'/%3E%3C/svg%3E");
+  display: flex;
+  align-items: stretch;
+  /* the 3px paper thickness follows the holes because the filter sees the masked result */
+  filter: drop-shadow(0 3px 0 var(--ab-edge)) drop-shadow(0 12px 10px color-mix(in srgb, var(--ink) 55%, transparent));
+}
+.pm-ab-mount__film {
+  flex: none;
+  width: 34px;
+  border-radius: 9px 0 0 9px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  -webkit-mask-image: linear-gradient(black, black), var(--ab-hole);
+  mask-image: linear-gradient(black, black), var(--ab-hole);
+  -webkit-mask-size: 100% 100%, 100% 30px;
+  mask-size: 100% 100%, 100% 30px;
+  -webkit-mask-repeat: no-repeat, no-repeat round;
+  mask-repeat: no-repeat, no-repeat round;
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+.pm-ab-mount__card {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 13px 13px 6px 3px; /* the 13px mat above the frame keeps the hair off the edge of the paper */
+  border-radius: 0 9px 9px 0;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl);
+  color: var(--ink);
+}
+.pm-ab-mount__print {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 7px 2px 3px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  font-synthesis: none;
+}
+.pm-ab-mount__year {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+  font-size: clamp(1.6rem, 1.4rem + 0.7vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--ink);
+}
+
+/* ---- the aperture: poster, interim thumbnail, loop video, scrub video, then the burnt-in details -------------------------- */
+.pm-ab-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--ink-2);
+  box-shadow: 0 0 0 2px var(--ink);
+  color: var(--cream);
+  text-align: left;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+button.pm-ab-frame { cursor: pointer; }
+.pm-ab-frame > img,
+.pm-ab-frame > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* the hair touches the top edge of the clip: never anchor above 0% */
+  object-position: 48% 0%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.pm-ab-frame__video,
+.pm-ab-frame__loop { opacity: 0; transition: opacity 0.25s ease; }
+.pm-ab-frame[data-layer='loop'] .pm-ab-frame__loop,
+.pm-ab-frame[data-layer='scrub'] .pm-ab-frame__video { opacity: 1; }
+
+/* a small slate tag stuck on the frame */
+.pm-ab-slate {
+  position: absolute;
+  z-index: 3;
+  left: 12px;
+  top: 14px;
+  display: block;
+  width: max-content;
+  transform: rotate(-4deg);
+  transform-origin: 0 100%;
+  filter: drop-shadow(0 3px 4px color-mix(in srgb, var(--ink) 55%, transparent));
+  pointer-events: none;
+}
+.pm-ab-slate__stick {
+  display: block;
+  height: 0.6rem;
+  border: 1.5px solid var(--cream);
+  border-radius: 3px 3px 0 0;
+  background: repeating-linear-gradient(-58deg, var(--cream) 0 0.38rem, var(--ink) 0.38rem 0.76rem);
+}
+.pm-ab-slate__row {
+  display: block;
+  padding: 3px 7px 2px;
+  border: 1.5px solid var(--cream);
+  border-top: 0;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-synthesis: none;
+}
+.pm-ab-slate__row + .pm-ab-slate__row { border-top: 1.5px solid color-mix(in srgb, var(--cream) 55%, transparent); }
+
+/* burnt-in timecode, label font, on a typed label so it reads on any frame */
+.pm-ab-frame__tc {
+  position: absolute;
+  z-index: 3;
+  left: 12px;
+  bottom: 12px;
+  padding: 4px 8px 3px;
+  border-radius: 3px;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+  pointer-events: none;
+}
+/* the playhead: a hairline that follows the (smoothed) pointer across the frame, so the mapping from x to time can be seen */
+.pm-ab-playhead {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  opacity: 0;
+  transform: translateX(calc((var(--p) - 1) * 100%));
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  will-change: transform;
+}
+.pm-ab-playhead::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -1px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--cream);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 60%, transparent);
+}
+.pm-ab-playhead::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -7px;
+  border: 7px solid transparent;
+  border-top: 9px solid var(--cream);
+  border-bottom: 0;
+  filter: drop-shadow(0 1px 0 color-mix(in srgb, var(--ink) 70%, transparent));
+}
+.pm-ab-frame[data-layer='scrub']:hover .pm-ab-playhead,
+.pm-ab-frame[data-layer='loop'] .pm-ab-playhead { opacity: 0.9; }
+.pm-ab-frame__dev {
+  position: absolute;
+  z-index: 3;
+  right: 12px;
+  top: 14px;
+  padding: 4px 8px 3px;
+  border-radius: 3px;
+  background: var(--marigold);
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+  pointer-events: none;
+}
+
+/* ---- the strip: 12 thumbnails between two rows of perforations, a range on top, a grease-pencil oval riding along -------- */
+.pm-ab-strip {
+  --tw: 28px;
+  --ow: 40px;
+  position: relative;
+  margin-top: 2px;
+  filter: drop-shadow(0 3px 0 color-mix(in srgb, var(--paper) 58%, var(--ink)));
+}
+.pm-ab-strip .pm-perf { --perf: var(--paper); }
+.pm-ab-strip__frames {
+  position: relative;
+  height: 56px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  container-type: inline-size;
+}
+.pm-ab-strip__f {
+  position: absolute;
+  top: 5px;
+  width: var(--tw);
+  height: calc(100% - 10px);
+  left: calc(var(--ow) / 2 + var(--i) * (100% - var(--ow)) / 11 - var(--tw) / 2);
+  object-fit: cover;
+  box-shadow: 0 0 0 1.5px var(--ink);
+  user-select: none;
+}
+.pm-ab-strip__mark {
+  position: absolute;
+  z-index: 2;
+  top: 1px;
+  bottom: 1px;
+  left: 0;
+  width: var(--ow);
+  transform: translateX(calc(var(--p) * (100cqw - var(--ow))));
+  pointer-events: none;
+  color: var(--tomato);
+  will-change: transform;
+}
+.pm-ab-strip__range {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.pm-ab-strip__range::-webkit-slider-runnable-track { height: 100%; background: transparent; border: 0; }
+.pm-ab-strip__range::-moz-range-track { height: 100%; background: transparent; border: 0; }
+.pm-ab-strip__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: var(--ow);
+  height: 56px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.pm-ab-strip__range::-moz-range-thumb { width: var(--ow); height: 56px; border: 0; border-radius: 0; background: transparent; }
+
+/* ---- hint + caption ----------------------------------------------------------------------------------------------------- */
+.pm-ab-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin: 8px 0 0 6px;
+  color: var(--cream);
+  font-family: var(--font-hand);
+  font-size: clamp(1.5rem, 1.25rem + 0.7vw, 1.95rem);
+  line-height: 1.02;
+  transform: rotate(-1.5deg);
+  transform-origin: 0 50%;
+}
+.pm-ab-hint__arrow { flex: none; margin-top: -0.35rem; }
+/* always two lines (one span each, no wrapping): the hand face arrives late and must not move what is below it */
+.pm-ab-hint__text { min-width: 0; }
+.pm-ab-hint__text > span { display: block; white-space: nowrap; }
+.pm-ab-caption {
+  margin: 0;
+  padding-top: 2px;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: color-mix(in srgb, var(--cream) 80%, transparent);
+}
+
+@media (max-width: 520px) {
+  .pm-ab-mount__film { width: 28px; }
+  .pm-ab-mount__card { padding: 11px 11px 5px 2px; }
+  .pm-ab-strip { --tw: 24px; --ow: 34px; }
+}

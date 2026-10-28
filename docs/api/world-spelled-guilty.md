@@ -1,0 +1,63 @@
+# World 4: Spelled Guilty, "Case File" (API / behaviour note)
+
+Slug `spelled-guilty` · folder colour oxblood `#8A1B3D` (cream text) · test port used while building: 5213.
+Open it at `#/work/spelled-guilty` (deep link) or from the Works / Catalog / Cover cards. Nothing outside `src/worlds/SpelledGuiltyWorld.tsx` and `src/worlds/spelled-guilty/**` belongs to this world (plus this note). It needs no shared change.
+
+## 1. What it is
+
+A noir detective's room in six stations (a vertical scroll inside the shell's `.pm-world-scroll`), tied together by one flashlight. Every station is a different physical object; none is "hero + gallery".
+
+| Station | Files | What it is |
+|---|---|---|
+| A. The poster | `Poster.tsx`, `Book3D.tsx`, `sg-room.css` | A giant keyline title (Archivo 800, 85 % width, caps, white keyline: the real cover lettering), a label-maker strip ("Four suspects. One killer."), one honest line, the paperback as a CSS-3D object standing on the desk lip, the tab "Open the case" and the Front / Spine / Back pose tabs lying on the desk. Wall and desk are two rows of one grid, so nothing straddles the desk edge. |
+| B. The case file | `Reader.tsx`, `Zoom.tsx`, `sg-reader.css` | The in-house `FlipBook` with the sample pages (front cover, title page + how to solve, scorecard, six case spreads 01 / 07 / 45 / 59 / 67 / 75, back cover) on a stitched blotter, a typed index card that says what is open, "Find a case" tabs (colour = level) and "Zoom in" (a page viewer with every page at 900 px). |
+| C. The suspects | `Board.tsx`, `boardLayout.ts`, `sg-board.css` | A dark-cork evidence board: 16 die-cut suspects in two year-ordered rows on red string, 6 line-ups pinned on the right; clicking a line-up ties its own string to its suspect and types its case title, setting, year and level on an index card. Below 1024 px it becomes two swipe rows (line-ups, then the suspects on one thread) with the same card. |
+| D. Synopsis + scorecard | `Typewriter.tsx`, `Keys.tsx`, `Scorecard.tsx`, `sg-typewriter.css`, `sg-score.css` | The whole book on one case-file sheet that types itself (platen, bail, a keyboard tray whose keys go down as it types) beside the detective's scorecard: 80 squares, colour = level, a red marker circle round the six that are in the sample pages, a typed slip with the title, place and year of the square you hover, tap or arrow to. |
+| E. How a case works | `Prints.tsx`, `Directions.tsx`, `sg-prints.css` | The three step cards of the book's own marketing as prints pegged on a darkroom line under a red safelight, then a film strip with three frames (easy / medium / hard), each a compass rosette whose lit arrows are the directions a word may run in that level. |
+| F. Who made it | `Closed.tsx`, `sg-closed.css` | The credit in plain words on a manila folder, the book's own copyright-page line on a taped slip, a sticky note, the `CASE CLOSED` stamp, the facts slate (`WorldFacts`: Role / Year / Tools) and the Amazon ticket stub. |
+
+Other files: `data.ts` (generated from `public/works/spelled-guilty/manifest.json`: every file name, size, case title / setting / year / level; no solutions), `copy.ts` (every visible string, exported as `SG`), `useBeam.ts` (the flashlight), `sg-base.css` (palette, keyline title face, typed labels, evidence tag, veil, lights rail, page viewer).
+
+## 2. The flashlight (signature interaction)
+
+* Default: **lights off for a fine pointer with motion allowed**, **lights on for touch, reduced and paused motion**; the visitor's choice is remembered for the visit in `sessionStorage['pm-sg-lights']` (try/catch).
+* The room is dark; a sticky full-viewport veil (`.w-sg-veil`, inside the scroller so it never covers the shell's tab strip) has a soft round hole (a radial gradient) whose centre is two CSS variables `--bx`, `--by`, written by `useBeam` once per frame (rAF, exponential lerp of about 85 ms, no React state per frame). The loop sleeps when the beam has arrived, when the lights are on and while the tab is hidden. Lights-off flicker: a stepped opacity animation (removed by base.css under still motion).
+* On opening, the beam searches the room (wall, desk) for about 2.8 s and parks on the book, with a hand-written note "move the light" riding on it. Any real pointer move (more than 10 px), touch, key or focus change takes the light over.
+* **Alternatives (all verified):** the two tabs `Lights on` / `Lights off` (always on screen, top right, `aria-pressed`); keyboard focus moves the beam to the focused element (nobody tabs into the dark); the tab `Aim the beam` (only while the lights are off) moves the beam with the arrow keys (Shift = bigger steps; Enter or click sends it back to the book) and shows its keys note while focused; with the room itself focused, Left / Right (and Shift + Up / Down) aim the beam too, except while the sample book is on screen (then the arrows belong to the book); touch drags move the beam.
+* Reduced / paused motion: lights on by default; if the visitor switches the lights off the beam follows the pointer without smoothing and does not search by itself.
+
+## 3. Station behaviours and keys
+
+**A. The book.** `role="group"`, focusable. The pointer over the poster tilts it a few degrees around its resting pose; dragging turns it to any angle (back cover included); `Front / Spine / Back` go to a pose by the shortest way round; with focus on the book, Left / Right turn it (Shift = bigger), `Home` = front, `Enter` / `Space` or a click without drag = open the case. Nothing loops (it only moves when somebody moves it). Reduced motion: no swing-in, no tilt, no spring.
+
+**B. The sample book.** `FlipBook` with `keys="window"` only while the table is on screen. The cover opens by itself the first time the table is well on screen (page curl; dissolve under reduced motion), then the corner of the next page lifts once. `Open the case` (poster) and the "Read it in the book" tabs (board card, scorecard) scroll here and turn to the case. `Find a case` jumps to a spread (`aria-current`). `Zoom in` opens a page viewer: dialog, focus trap, the room behind is `inert` and scroll-locked, Left / Right turn pages, `Escape` closes it through `useWorldEscape` (the world stays open), focus returns to the tab that opened it; labels shorten to Prev / Next / Close on phones.
+
+**C. The board.** Suspects: drag with the pointer; or Tab to one (roving tabindex: one tab stop; arrows / Home / End move between suspects), `Space` / `Enter` picks it up, arrow keys move it (Shift = 64 px steps), `Space` drops it, `Escape` puts it back (before it would close the world). `Tidy up` returns everyone to their pin. A polite live region says what was picked up / dropped / tidied. Line-ups are real buttons (`aria-pressed`); only the pulled one is tied to its suspect (the string draws itself on); its typed card has "Read it in the book" for the three that are sample pages (07, 45, 75). The text on the cork cannot be selected (a drag surface); the card text can.
+
+**D. Typewriter and scorecard.** The full text is in the DOM from the first paint (the untyped part is only transparent). It starts when the sheet is well on screen, runs only while on screen and while the tab is visible, pauses at commas and full stops, and can be finished with the tab `Type it all` on the sheet's top edge (or a click on the sheet). Each keystroke presses the matching key of the tray (Web Animations, aria-hidden). Reduced / paused motion: the sheet is complete at once, no caret, no key presses. Scorecard: roving tabindex grid (`aria-label` = case number, title, place and level; Arrow keys, Home / End, PageUp / PageDown, Ctrl + Home / End); focusing or tapping a square selects it; hover previews it on the slip; the six sample squares offer "Read it in the book".
+
+**E / F.** Prints drop onto the line when they arrive (`Reveal kind="drop"`, instant when still); the Amazon ticket stub comes from `work.links` through `WorldFacts`.
+
+## 4. Honesty and copy decisions (do not change without Pau)
+
+* Credit, verbatim in spirit (and in `SG.credit.leadIn + name + rest`): *Written, art-directed and published by Pau Monfort. Illustrations generated with AI image tools under my direction; puzzles and layout built with a custom book engine.* Plus the book's own copyright-page line, quoted, and the sticky note "The pictures are AI. The directing is mine." Never "hand-drawn", "drawn by me", "illustrated by Pau".
+* No spoilers: no hints, no solutions, no solved hidden-message boxes, nobody is named innocent or guilty. The how-to page of the book (shown as it is printed) carries the book's own generic worked example. The case-80 line-up is deliberately not used; the manifest alt texts that quote the clue of the cover note are not reused (my alts say "a few circled letters").
+* No price, ISBN, publication date, ratings or Kindle. Facts used are the safe bullets of `notes/book-facts.md`: 214 pages, 6 × 9 in, black and white inside, 80 cases set between 1874 and 2026, a case file with four illustrated suspects facing a 13 × 13 word search, easy / medium / hard (cases 1-25 / 26-55 / 56-80), directions per level (from the book's how-to page), a detective's scorecard.
+* The pages shown are "a selection of the 214"; the page numbers jump on purpose. The scorecard lists case titles, places and years only (from the manifest).
+* Typography: no-break spaces in "6 × 9 in" and "13 × 13"; an invisible word joiner keeps "line-up" on one line.
+
+## 5. Accessibility summary
+
+One `h2` for the poster title, `h3` per station, `h4` inside stations (the page's single `h1` is the Cover's). Landmarks: each station is a `section` with `aria-labelledby`; the case-file tabs are a `nav`. Every control has a name (audited: no unnamed buttons, no duplicate ids, 0 images without alt or size, 30 decorative images with `alt=""`). Tap targets are at least 44 px on touch (TabButtons, scorecard squares 6 across on phones). Nothing under 13 px (audited by script). Focus ring: the global two-tone ring everywhere (suspects and squares included). Live regions: the sample book ("Sample pages 8 and 9 of 214"), the board (picked up / dropped / tidied), the typed index card (`role="status"`).
+
+## 6. Tuning knobs
+
+`--sg-beam` (beam radius, `sg-base.css`), `SWEEP_MS` (`useBeam.ts`), `SPEED` (`Typewriter.tsx`, characters per second), the board layout in `boardLayout.ts` (units are percent of the board's width; `BOARD_H`, `PRINT_W`, `CARD`), the `POSE` angles in `Book3D.tsx`, the palette variables at the top of `sg-base.css` (`--sg-*`).
+
+## 7. Final state and how it was verified
+
+* **Size:** world chunk 69 KB raw / 21.4 KB gzip JS and 44 KB raw / 10.7 KB gzip CSS (budget 120 KB gzip); the shared FlipBook chunk adds 11.5 KB JS + 2.5 KB CSS gzip. Archivo (the world face) is loaded by the shell with the chunk. No new dependency.
+* **Viewports looked at (Read of full-resolution screenshots):** 1440 x 900, 1920 x 1080, 1280 x 720, 1024 x 768, 768 x 1024, 390 x 844 (mobile emulation, dpr 2), plus reduced motion at 1440 and paused motion; lights on and off; every station at each size. No horizontal scroll at any width (`scrollWidth` equals `clientWidth`). Console and network clean in every run (404s: none).
+* **Interactions run:** beam sweep, pointer, Aim tab keys, room-level keys, Lights on / off tabs, session memory; book drag, pose tabs, arrow keys, Home, click-to-open; the case opens and turns (arrows, tabs, scorecard / board buttons), the page viewer opens, turns, closes on Escape and gives focus back; board drag, keyboard pick-up / move / drop, Escape put-back (the world stays open), Tidy up, line-up pull for all six at five laptop widths (the typed card always fits inside the cork); typewriter types, key presses fire, "Type it all" finishes it; scorecard keys; Tab walk through the whole world (every control reachable, sensible order); `Escape`, `[` and `]` still reach the shell; frame pacing while the beam moves (average 9 ms, p95 14 ms at 1440 on the dev laptop).
+* **Not tested:** Firefox and Safari (only Chromium); real touch hardware (emulated touch only); a screen reader.
+* **Dev-only leftovers:** none (the test harness that mounted this world without the cabinet was deleted).

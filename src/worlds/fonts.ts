@@ -26,13 +26,13 @@ export const loadWorld: Record<string, CssLoader> = {
       import('@fontsource/fira-sans/latin-500.css'),
       import('@fontsource/fira-sans/latin-600.css'),
     ]),
+  // The brand's own faces: Fraunces (already in the shell) + Barlow Semi Condensed (brand guide section 3).
   'concept-brand': () =>
     Promise.all([
-      import('@fontsource/shrikhand/latin-400.css'),
-      import('@fontsource/barlow-semi-condensed/latin-400.css'),
       import('@fontsource/barlow-semi-condensed/latin-500.css'),
       import('@fontsource/barlow-semi-condensed/latin-600.css'),
       import('@fontsource/barlow-semi-condensed/latin-700.css'),
+      import('@fontsource/barlow-semi-condensed/latin-800.css'),
     ]),
   'concept-portfolio': () => import('@fontsource-variable/anybody/wdth.css'),
   illustration: () => import('@fontsource/cherry-bomb-one/latin-400.css'),
@@ -47,7 +47,7 @@ const headline: Record<string, string[]> = {
   'space-monkey': ['700 1em "Orbitron Variable"'],
   procreate: ['400 1em "Gloria Hallelujah"'],
   somia: ['300 1em "Cormorant Variable"', '400 1em "Fira Sans"'],
-  'concept-brand': ['400 1em "Shrikhand"', '600 1em "Barlow Semi Condensed"'],
+  'concept-brand': ['700 1em "Barlow Semi Condensed"'],
   'concept-portfolio': ['900 1em "Anybody Variable"'],
   illustration: ['400 1em "Cherry Bomb One"'],
 }

@@ -24,7 +24,16 @@ const st = createSticker({
   seed: 13,
   root: 'translate(-90,-19)',
 })
-const { shape, use, line, fillp, raw, clip, group, S } = st
+const { shape, use, line, fillp, raw, clip, group, S, defs, sil } = st
+/** an OPEN path (steam, zzz, antennae...) registered for the die-cut with ROUND caps: the lib's halo stroke has butt caps, so a plain shape()
+ *  leaves the die-cut hugging the ends of an open polyline (ink 2-7 px from the edge). Paint it afterwards with use(id, 'k2'). */
+const shapeOpen = (id, d, tf = '') => { defs.push(`<path id="${id}" d="${d}" stroke-linecap="round"${tf ? ` transform="${tf}"` : ''}/>`); sil.push(id) }
+/** the kit's ear() paints with fillp() and is NOT registered for the halo: when the ear sticks out of the hair it sits on the die-cut edge. This one is registered. */
+function earShape(id, fr, withHoop = false) {
+  shape(id, S(fr.H([[-98, -8, 'c'], [-126, -14], [-146, 10], [-144, 40], [-124, 62], [-100, 54, 'c']]), { closed: true })); use(id)
+  line(S(fr.H([[-116, 8], [-128, 22], [-120, 38]])), 'k3')
+  if (withHoop) { const e = fr.hp([-128, 82]); line(blob(e[0], e[1], 11 * fr.scale, 12 * fr.scale, { seed: 6 }), 'pp') }
+}
 const PAPER = st.cfg.paper, INK = st.cfg.ink, ACC = st.cfg.accent
 
 const P2 = (p) => `${fmt(p[0])} ${fmt(p[1])}`
@@ -114,10 +123,8 @@ group('lid', () => {
   raw(`<g transform="${CUPTF}"><path class="fi" d="${blob(CX + 128, 446, 36, 9, { seed: 42, wob: 0.03, rot: -3 })}"/><path class="k3" d="M${CX - 10} 450Q${CX + 50} 438 ${CX + 76} 444"/></g>`)
 })
 group('steam', () => {
-  shape('steamA', `M${CX + 118} 396C${CX + 82} 346 ${CX + 152} 312 ${CX + 118} 258C${CX + 86} 214 ${CX + 148} 190 ${CX + 122} 138`, { tf: CUPTF }); use('steamA', 'k2')
-  shape('steamAext', `M${CX + 122} 138L${CX + 110} 106`, { tf: CUPTF })
-  shape('steamB', `M${CX + 184} 392C${CX + 154} 354 ${CX + 214} 324 ${CX + 188} 280C${CX + 162} 244 ${CX + 210} 226 ${CX + 194} 196`, { tf: CUPTF }); use('steamB', 'k2')
-  shape('steamBext', `M${CX + 194} 196L${CX + 184} 164`, { tf: CUPTF })
+  shapeOpen('steamA', `M${CX + 118} 396C${CX + 82} 346 ${CX + 152} 312 ${CX + 118} 258C${CX + 86} 214 ${CX + 148} 190 ${CX + 122} 138`, CUPTF); use('steamA', 'k2')
+  shapeOpen('steamB', `M${CX + 184} 392C${CX + 154} 354 ${CX + 214} 324 ${CX + 188} 280C${CX + 162} 244 ${CX + 210} 226 ${CX + 194} 196`, CUPTF); use('steamB', 'k2')
 })
 
 // ============================================================ 2. THE DESIGNER: far sleeve, neck, tee, dungarees, sneakers
@@ -231,7 +238,7 @@ group('head', () => {
   raw(`<g transform="${stf}">`)
   raw(`<path class="fa k3f" d="M34 -12H${fmt(sL - 10)}V12H34Z"/><path class="fp k3f" d="M0 0L34 -12V12Z"/><path class="fi" d="M0 0L14 -5V5Z"/>`)
   raw('</g>')
-  ear(st, fr, { hoop: true })
+  earShape('earL', fr, true)
   face(st, fr)
   for (const [ex, ey] of [[-54, -10], [40, -16]]) line(`M${P2(hp([ex - 24, ey - 2]))}Q${P2(hp([ex, ey + 26]))} ${P2(hp([ex + 24, ey - 2]))}`, 'k2')
   line(S(HF([[-10, 26], [0, 36], [10, 26]])), 'k2')

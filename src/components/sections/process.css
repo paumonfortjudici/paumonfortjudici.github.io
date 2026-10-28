@@ -1,0 +1,130 @@
+/* ==========================================================================
+   05 Process: the sheet (ultraviolet, a cutting mat), its header and the placeholder shown until the bench chunk is in.
+   Everything inside the bench lives in process/bench.css, process/art.css and process/tokens.css (a lazy chunk).
+   ========================================================================== */
+
+/* the whole sheet is the bench: a cutting mat grid in cream over the flat ultraviolet field (hard lines, no gradients) */
+.pm-sheet.pm-proc {
+  /* the pink of the margin notes at the shelf: bubblegum itself is 2.9:1 on the ultraviolet, this tint is 3.7:1 (24px+ hand notes need 3:1) */
+  --proc-pink: color-mix(in srgb, var(--bubblegum) 62%, var(--cream));
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--cream) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--cream) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--cream) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--cream) 5%, transparent) 1px, transparent 1px),
+    var(--pm-grain);
+  background-size: 160px 160px, 160px 160px, 32px 32px, 32px 32px, auto;
+  background-position: var(--sheet-pad, 28px) var(--meta-h, 48px), var(--sheet-pad, 28px) var(--meta-h, 48px), var(--sheet-pad, 28px) var(--meta-h, 48px), var(--sheet-pad, 28px) var(--meta-h, 48px), 0 0;
+}
+
+.pm-proc-head {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  align-items: end;
+  gap: 0 clamp(20px, 3vw, 56px);
+  padding-top: clamp(28px, 3.8vw, 60px);
+}
+.pm-proc-head > .pm-sw:not(.pm-proc-ghost) { position: relative; z-index: 1; }
+.pm-proc-ghost {
+  position: absolute;
+  left: 0;
+  top: clamp(-6px, -0.4vw, 0px);
+  z-index: 0;
+  pointer-events: none;
+}
+.pm-proc-intro {
+  position: relative;
+  z-index: 1;
+  justify-self: end;
+  max-width: 30rem;
+  padding-bottom: clamp(6px, 1.4vw, 20px);
+}
+.pm-proc-sub {
+  margin: 0;
+  font-size: var(--fs-lead);
+  line-height: var(--lh-lead);
+  font-weight: 500;
+  color: var(--on-sheet);
+  text-wrap: balance;
+}
+.pm-proc-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  height: 4.4rem; /* fixed: the marker face arrives late and must not move anything */
+  white-space: nowrap;
+  margin: 1.7rem 0 0; /* clear of the sub: the arrow's tip must never touch the sentence above it */
+  color: var(--marigold);
+  transform: rotate(-3deg);
+  transform-origin: 0 50%;
+}
+
+@media (max-width: 900px) {
+  .pm-proc-head { grid-template-columns: minmax(0, 1fr); gap: 16px 0; }
+  .pm-proc-intro { justify-self: start; max-width: 34rem; padding-bottom: 0; }
+  .pm-proc-ghost { top: 0; }
+}
+
+/* flow-root: the film's top margin stays inside the holder, so swapping the placeholder for the bench moves nothing */
+.pm-proc-holder { position: relative; display: flow-root; }
+
+/* placeholder with the bench's footprint (film + controls + shelf), so the sheet does not jump when the chunk arrives.
+   Measured at 30 widths from 320 to 2300: desktop 1292 to 1521, tablet 1480 to 1580, a wide phone / small tablet (640 to 720: two
+   columns in the frames) 3540 to 3650, phones 4700 to 5100 (the film is a vertical stack there). Within about 100px everywhere. */
+.pm-proc-skel { position: relative; min-height: calc(960px + 27vw); }
+@media (max-width: 1180px) { .pm-proc-skel { min-height: 1520px; } }
+@media (max-width: 720px) { .pm-proc-skel { min-height: 3600px; } }
+@media (max-width: 639px) { .pm-proc-skel { min-height: calc(4560px + 60vw); } }
+
+/* what stands in for the bench while its chunk is on the way: the blank leader of the film, an ink band with its sprocket holes, the size
+   the film will be (about half of the bench on a desktop, 0.4 on a tablet, 0.7 on a phone), so that the film arrives where it already is */
+.pm-proc-skel::before {
+  content: '';
+  position: absolute;
+  top: clamp(14px, 2vw, 30px);
+  left: calc(var(--sheet-pad, 28px) * -1);
+  right: calc(var(--sheet-pad, 28px) * -1);
+  height: 52%;
+  background-color: var(--ink);
+  background-image:
+    repeating-linear-gradient(90deg, var(--ultraviolet) 0 18px, transparent 18px 38px),
+    repeating-linear-gradient(90deg, var(--ultraviolet) 0 18px, transparent 18px 38px),
+    var(--pm-grain);
+  background-size: 100% 14px, 100% 14px, auto;
+  background-position: 0 7px, 0 calc(100% - 7px), 0 0;
+  background-repeat: repeat-x, repeat-x, repeat;
+}
+@media (max-width: 1180px) { .pm-proc-skel::before { height: 40%; } }
+@media (max-width: 720px) {
+  .pm-proc-skel::before {
+    height: 66%;
+    background-image:
+      repeating-linear-gradient(180deg, var(--ultraviolet) 0 14px, transparent 14px 32px),
+      repeating-linear-gradient(180deg, var(--ultraviolet) 0 14px, transparent 14px 32px),
+      var(--pm-grain);
+    background-size: 14px 100%, 14px 100%, auto;
+    background-position: 3px 0, calc(100% - 3px) 0, 0 0;
+    background-repeat: repeat-y, repeat-y, repeat;
+  }
+}
+
+/* ---- the plain version of the steps (only when the bench chunk could not be fetched) ---------------------------------------- */
+.pm-proc-plain {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
+  margin: clamp(18px, 2.4vw, 36px) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pm-proc-plain__step {
+  padding: clamp(16px, 1.8vw, 26px);
+  border-radius: 14px;
+  background-color: var(--c);
+  background-image: var(--pm-grain);
+  color: var(--ink);
+}
+.pm-proc-plain__name { margin: 0; font-size: var(--fs-h4); font-weight: 900; line-height: 1; }
+.pm-proc-plain__body { margin: 0.7rem 0 0; font-weight: 500; }
+.pm-proc-plain__chips { margin: 0.9rem 0 0; font-family: var(--font-label); font-size: var(--fs-label); font-weight: 700; letter-spacing: var(--ls-label); text-transform: uppercase; font-synthesis: none; }

@@ -1,0 +1,600 @@
+/* ==========================================================================
+   01 Cover (cv-*). Docs: docs/api/sections-cover.md
+   .cv is a size container: every size below is in cqw (1cqw = 1% of the cover's content width), so the lettering, the title
+   and the deck scale together from 390 to 1920. Tokens only (var(--...)); the layout switches through [data-layout] on .cv
+   and on the deck, which Cover.tsx sets from the measured width (wide >= 860px, duo >= 600px, solo below).
+   Hidden / initial states exist only under html.js and are cancelled for reduced and paused motion at the end of the file.
+   ========================================================================== */
+
+.cv {
+  container: cv / inline-size;
+  position: relative;
+  display: flow-root;
+}
+
+/* ---- the aperture ------------------------------------------------------------------------------------------------- */
+.cv__decor {
+  position: absolute;
+  z-index: 0;
+  inset: calc(var(--sheet-pad) * -1);
+  overflow: clip;
+  border-radius: 0 0 var(--sheet-radius) var(--sheet-radius);
+  pointer-events: none;
+}
+.cv-iris {
+  position: absolute;
+  right: -17cqw;
+  top: -35cqw;
+  width: 88cqw;
+  height: 88cqw;
+  max-width: none;
+  color: color-mix(in srgb, var(--ink) 11%, transparent);
+  --iris-blade: color-mix(in srgb, var(--ink) 4.5%, transparent);
+  --iris-open: color-mix(in srgb, var(--tomato) 7%, transparent);
+  transition:
+    transform 2.1s var(--ease-out),
+    opacity 0.9s ease;
+}
+.cv-iris__blade { fill: var(--iris-blade); }
+.cv-iris__open { fill: var(--iris-open); }
+.cv[data-layout='solo'] .cv-iris { width: 150cqw; height: 150cqw; right: -62cqw; top: -52cqw; }
+.cv[data-layout='duo'] .cv-iris { width: 112cqw; height: 112cqw; right: -34cqw; top: -42cqw; }
+
+/* ---- the lettering ------------------------------------------------------------------------------------------------ */
+.cv__top {
+  /* --gw: width of the year tag as a share of the cover (the tag's height is 0.2245 of its width). The tag sits ON the line
+     above the lettering (never tangled in it): the band above the word is as tall as the tag, its gaps and the sheet padding. */
+  --gw: 19.5;
+  position: relative;
+  z-index: 1;
+  margin-top: max(0.6cqw, calc(var(--gw) * 0.2245cqw + 1.05cqw - var(--sheet-pad)));
+}
+.cv__ghost {
+  position: absolute;
+  left: max(0px, calc(31px - var(--sheet-pad))); /* clear of the sheet's '+' crop mark (it spans 12 to 26px from the sheet's edge) */
+  bottom: calc(100% + 0.1cqw);
+  width: calc(var(--gw) * 1%);
+  color: color-mix(in srgb, var(--ultraviolet) 56%, transparent);
+  pointer-events: none;
+}
+.cv__ghost .pm-sw { display: block; }
+.cv__word {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0;
+  font: inherit;
+  line-height: 0;
+}
+.cv__ink {
+  position: relative;
+  display: block;
+  isolation: isolate;
+}
+.cv-plate { display: block; font-size: 0; line-height: 0; }
+.cv-plate .pm-sw { display: block; }
+.cv-plate--tomato { color: var(--tomato); }
+.cv-plate--tomato .pm-sw[data-fill='tint'] { --fill-a: 0.3; } /* the tint is the first drum's flat ink: strong enough to read as a print, light enough to stay an outline */
+/* the second ink: the same outline a hair off register, multiplied, so overlaps go dark like two riso drums */
+.cv-plate--violet {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  color: var(--ultraviolet);
+  mix-blend-mode: multiply;
+  transform: translate(0.27cqw, 0.23cqw);
+  pointer-events: none;
+}
+.cv[data-layout='solo'] .cv__top { --gw: 52; }
+.cv[data-layout='duo'] .cv__top { --gw: 21; }
+.cv[data-layout='solo'] .cv-plate--violet { transform: translate(1.1cqw, 0.9cqw); }
+.cv[data-layout='duo'] .cv-plate--violet { transform: translate(0.4cqw, 0.34cqw); }
+
+/* hover: the letters hop in a ripple (mouse only); the second plate follows a beat late, like a loose registration */
+@media (hover: hover) and (pointer: fine) {
+  .cv__word:hover .pm-sw__gl {
+    animation: pm-sw-wave 0.7s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+    animation-delay: calc(var(--i, 0) * 35ms);
+  }
+  .cv__word:hover .cv-plate--violet .pm-sw__gl { animation-delay: calc(var(--i, 0) * 35ms + 70ms); }
+}
+
+/* ---- title + side ------------------------------------------------------------------------------------------------- */
+.cv__row {
+  --stamp: clamp(10rem, 11.6cqw, 14.5rem); /* the rotating stamp's width */
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 1.6rem;
+  margin-top: 1.6rem;
+}
+.cv[data-layout='wide'] .cv__row {
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  column-gap: 3.6cqw;
+  margin-top: 1.6cqw;
+  align-items: stretch; /* the left column is as tall as the right one: the note ends it, right above the deck it points at */
+}
+
+.cv__lead { min-width: 0; }
+.cv[data-layout='wide'] .cv__lead { display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 2.3cqw; }
+.cv:not([data-layout='wide']) .cv__lead { display: contents; }
+
+.cv__title {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2.7rem, 7cqw, 9.6rem);
+  line-height: 0.97;
+  letter-spacing: -0.034em;
+  font-weight: 900;
+}
+.cv:not([data-layout='wide']) .cv__title { font-size: clamp(2.7rem, 10.4cqw, 5.4rem); }
+.cv__line { display: block; }
+.cv__accent {
+  position: relative;
+  display: inline-block;
+  color: var(--ultraviolet);
+}
+.cv__accent em { font-weight: 360; }
+
+.cv__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(0.8rem, 1.25cqw, 1.5rem);
+  min-width: 0;
+}
+.cv__chip { align-self: flex-start; }
+/* the chip never runs under the stamp: its label wraps instead */
+.cv[data-layout='wide'] .cv__chip { max-width: calc(100% - var(--stamp) - 1.6rem); }
+/* the label is two pieces so that it breaks where a person would break it: on one line "Pau Monfort · Graphic designer"; where
+   the column is too narrow, name over role (the dot goes) instead of a dot dangling at the end of the first line */
+.cv__chip-name,
+.cv__chip-role { white-space: nowrap; }
+@container cv (max-width: 599px) {
+  .cv__chip-sep { display: none; }
+  .cv__chip-role { display: block; }
+  .cv__chip .pm-tabbtn__label { text-align: left; }
+}
+@container cv (min-width: 860px) and (max-width: 1259px) {
+  .cv__chip-sep { display: none; }
+  .cv__chip-role { display: block; }
+  .cv__chip .pm-tabbtn__label { text-align: left; }
+}
+/* the narrowest wide cover: the column beside the stamp is about 230px, so the chip trims its padding and its label never
+   shrinks below its text (the arrow would run over it) */
+@container cv (min-width: 860px) and (max-width: 1049px) {
+  .cv__chip { padding-inline: 16px; }
+  .cv__chip .pm-tabbtn__label { min-width: max-content; }
+  .cv__quick .pm-tabbtn { padding-inline: 10px; }
+}
+/* the right-hand column is narrow here: the three quick tabs keep to one row by leaving their folder counts to the label
+   (the count is still in the accessible name, and the Works filter shows it) */
+@container cv (min-width: 860px) and (max-width: 1169px) {
+  .cv__quick .pm-chip { display: none; }
+}
+.cv__quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 0; /* the tabs' own shoulders are the space between them */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cv__blurb {
+  max-width: 34em;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.0625rem, 1.5cqw, 1.5rem);
+  line-height: 1.5;
+}
+.cv[data-layout='wide'] .cv__blurb { font-size: clamp(1.0625rem, 1.55cqw, 1.5rem); }
+
+/* the stamp lands on the lettering, half on the word, half on the page (wide); on narrow screens it sits beside the note */
+.cv__stamp {
+  position: absolute;
+  z-index: 3;
+  right: 0.4cqw;
+  top: -9.4cqw;
+  pointer-events: none;
+}
+
+/* the hand-written pointer: its arrow ends on the first folder */
+.cv__note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  color: var(--ink);
+  pointer-events: none;
+}
+.cv__note-text {
+  display: block;
+  transform: rotate(-5deg);
+  transform-origin: 0 100%;
+  white-space: nowrap;
+  /* written left to right along its own baseline (the clip is applied before the rotation) */
+  clip-path: inset(-0.4em -0.4em -0.4em -0.2em);
+  transition: clip-path 0.9s cubic-bezier(0.5, 0, 0.2, 1);
+}
+/* hidden until the marker face has loaded, so no system handwriting face ever shows (html.js only; a timeout in the hook guarantees it appears) */
+html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -0.4em -0.2em); }
+.cv__arrow { display: block; flex: none; }
+.cv[data-layout='wide'] .cv__note { margin-left: 0.5cqw; }
+.cv[data-layout='wide'] .cv__note-text { font-size: clamp(1.7rem, 2.6cqw, 3rem); }
+
+.cv:not([data-layout='wide']) .cv__row { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+.cv:not([data-layout='wide']) :is(.cv__title, .cv__side) { grid-column: 1 / -1; }
+.cv:not([data-layout='wide']) .cv__note { grid-column: 1; grid-row: 3; flex-direction: column; align-items: flex-start; gap: 0; }
+.cv:not([data-layout='wide']) .cv__arrow { margin-left: 2.4rem; }
+.cv:not([data-layout='wide']) .cv__stamp { position: relative; grid-column: 2; grid-row: 3; right: auto; top: auto; margin-right: 0.3rem; }
+/* tablet: the stamp sits beside the title, near the end of the word, like on the wide cover */
+.cv[data-layout='duo'] .cv__stamp { position: absolute; grid-column: auto; grid-row: auto; right: 0.2cqw; top: -2.6rem; margin: 0; }
+
+/* ==========================================================================
+   The deck
+   wide: two overlapping tiers of five (back row 0 + front row 1), tabs staggered along the top edges
+   duo : two cascades of five (columns), solo: one cascade of ten. Folders are complete objects (nothing is clipped).
+   ========================================================================== */
+/* Springs. Each is the step response of a damped spring sampled into linear() (lift: zeta .55, 13% overshoot; peek: .58, 11%;
+   drop-in: .42, 23%, the only big one). Browsers without linear() keep the single-overshoot cubic-bezier next to it. */
+.cv-deck {
+  --spring-lift: cubic-bezier(0.3, 1.55, 0.5, 1);
+  --spring-peek: cubic-bezier(0.3, 1.45, 0.5, 1);
+  --spring-drop: cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+@supports (transition-timing-function: linear(0, 1)) {
+  .cv-deck {
+    --spring-lift: linear(0, 0.076 3.8%, 0.254 7.7%, 0.471 11.5%, 0.682 15.4%, 0.859 19.2%, 0.99 23.1%, 1.074 26.9%, 1.116 30.8%, 1.126 34.6%, 1.115 38.5%, 1.091 42.3%, 1.064 46.2%, 1.038 50%, 1.016 53.8%, 1 57.7%, 0.99 61.5%, 0.985 65.4%, 0.984 69.2%, 0.986 73.1%, 0.989 76.9%, 0.992 80.8%, 0.996 84.6%, 0.998 88.5%, 1 92.3%, 1.001 96.2%, 1);
+    --spring-peek: linear(0, 0.062 3.8%, 0.211 7.7%, 0.398 11.5%, 0.588 15.4%, 0.757 19.2%, 0.895 23.1%, 0.995 26.9%, 1.06 30.8%, 1.095 34.6%, 1.107 38.5%, 1.102 42.3%, 1.087 46.2%, 1.067 50%, 1.047 53.8%, 1.028 57.7%, 1.013 61.5%, 1.002 65.4%, 0.994 69.2%, 0.99 73.1%, 0.989 76.9%, 0.989 80.8%, 0.991 84.6%, 0.993 88.5%, 0.995 92.3%, 0.997 96.2%, 1);
+    --spring-drop: linear(0, 0.071 3.3%, 0.246 6.7%, 0.472 10%, 0.705 13.3%, 0.911 16.7%, 1.07 20%, 1.174 23.3%, 1.225 26.7%, 1.232 30%, 1.205 33.3%, 1.159 36.7%, 1.104 40%, 1.051 43.3%, 1.007 46.7%, 0.974 50%, 0.954 53.3%, 0.946 56.7%, 0.947 60%, 0.955 63.3%, 0.967 66.7%, 0.98 70%, 0.992 73.3%, 1.001 76.7%, 1.008 80%, 1.012 83.3%, 1.013 86.7%, 1.012 90%, 1.01 93.3%, 1.007 96.7%, 1);
+  }
+}
+
+.cv-deck {
+  --m: 1%; /* gap to the deck edge */
+  --fw: 24%; /* folder width, of the deck */
+  --ov: 23%; /* share of a folder's width that the next one covers: (fw - step) / fw, step = (100% - fw - 2m) / 4 */
+  --tier: max(13cqw, 10.6rem); /* how far below the back row the front row starts (never less than the back row text needs) */
+  --front: max(calc(var(--tab-h) + 15.6cqw), 13.6rem); /* front folder: tab + body (room for a two-line title, the kind line and the stamp or label) */
+  --back: calc(var(--tier) + 7cqw); /* back folder: tab + body, its lower part hides behind the front row */
+  --lift: 1.25cqw;
+  --fpad: clamp(10px, 0.95cqw, 15px) clamp(14px, 1.35cqw, 22px);
+
+  position: relative;
+  z-index: 2;
+  height: calc(var(--tier) + var(--front) + 1.5cqw);
+  margin: clamp(2.4rem, 4.6cqw, 6rem) calc(14px - var(--sheet-pad)) calc(14px - var(--sheet-pad));
+  padding: 0;
+  list-style: none;
+}
+
+.cv-slot {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  left: calc(var(--m) + var(--col) * (100% - var(--fw) - 2 * var(--m)) / 4 + var(--jx) * 0.1cqw);
+  top: calc(var(--row) * var(--tier) + var(--jy) * 0.1cqw);
+  width: var(--fw);
+  height: calc(var(--back) + var(--row) * (var(--front) - var(--back)));
+  z-index: calc(var(--row) * 20 + var(--col) + 1);
+  transition:
+    transform 0.9s var(--spring-drop) calc(var(--i) * 50ms),
+    opacity 0.28s ease calc(var(--i) * 50ms);
+}
+.cv-slot[data-edge] { --ov: 0%; }
+/* the hovered or focused folder comes forward of its right-hand neighbour, never of the other tier */
+@media (hover: hover) {
+  .cv-slot:hover { z-index: calc(var(--row) * 20 + var(--col) + 6); }
+}
+.cv-slot:has(.cv-folder:focus-visible) { z-index: calc(var(--row) * 20 + var(--col) + 6); }
+
+.cv-lift {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: transform 0.5s var(--spring-lift);
+}
+.cv-folder.pm-folder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* the layout (shared-element) animation owns this element's transform: no CSS transition on it */
+  transition: none;
+}
+.cv-folder .cv-face { height: 100%; }
+/* depth where papers overlap: a faint contact shadow round every folder falls on the one behind it */
+.cv-folder > .pm-folder__art { filter: drop-shadow(0 0 4px color-mix(in srgb, var(--ink) 30%, transparent)); }
+.cv-folder__arrow {
+  display: inline-block;
+  flex: none;
+  margin-left: 0.45em;
+  vertical-align: -0.2em;
+  transition: transform 0.3s var(--ease-spring);
+}
+
+/* ---- what a folder says ----------------------------------------------------------------------------------------- */
+.cv-face {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'n years'
+    'title title'
+    'kind kind';
+  align-content: start;
+  padding: var(--fpad);
+  padding-right: calc(var(--ov) + clamp(10px, 1cqw, 16px));
+  overflow-wrap: break-word;
+}
+.cv-face__n {
+  grid-area: n;
+  font-size: clamp(2.1rem, 4cqw, 5.6rem);
+  line-height: 0.86;
+  font-weight: 900;
+  letter-spacing: -0.045em;
+}
+.cv-face__years {
+  grid-area: years;
+  align-self: start;
+  padding-top: 0.3em;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--on2);
+}
+.cv-face__title {
+  grid-area: title;
+  margin-top: 0.3em;
+  font-size: clamp(1.05rem, 1.8cqw, 2.2rem);
+  line-height: 1.04;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+/* a typed label stuck on the folder's lower edge: the kinds of work, like a file label */
+.cv-face__tag {
+  position: absolute;
+  left: clamp(14px, 1.35cqw, 22px);
+  bottom: clamp(12px, 1.2cqw, 18px);
+  padding: 5px 10px 4px;
+  border-radius: 3px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl), 0 2px 0 color-mix(in srgb, var(--paper) 58%, var(--ink));
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: rotate(-1.4deg);
+  transform-origin: 0 100%;
+}
+.cv-face { position: relative; }
+
+/* concept work: where the others carry a paper label, it carries the rubber stamp it wears in its own world */
+.cv-face__concept {
+  --cstamp: clamp(1rem, 1.5cqw, 1.9rem);
+  position: absolute;
+  left: clamp(10px, 1.05cqw, 18px);
+  bottom: clamp(9px, 1.05cqw, 17px);
+  pointer-events: none;
+}
+.cv-face__concept .pm-stamp { display: block; }
+/* pressed on once the folders have landed (html.js only; the still paths are at the end of the file) */
+html.js .cv-deck[data-in] .cv-face__concept {
+  animation: cv-press 0.46s cubic-bezier(0.2, 1.55, 0.4, 1) backwards;
+  animation-delay: calc(0.95s + (var(--i) - 7) * 110ms);
+}
+@keyframes cv-press {
+  from { opacity: 0; transform: scale(1.55); }
+}
+
+.cv-face__kind {
+  grid-area: kind;
+  margin-top: 0.3em;
+  font-family: var(--font-body);
+  font-size: clamp(0.8125rem, 1.05cqw, 1.1rem);
+  line-height: 1.28;
+  font-weight: 500;
+  color: var(--on2);
+}
+
+/* ---- lift + peek -------------------------------------------------------------------------------------------------- */
+.cv-peek {
+  --rise: 0.64; /* how much of the cut-out stands above the folder on hover / focus (share of its height) */
+  --ph: clamp(8rem, 14.6cqw, 20rem);
+  --pw: calc(var(--ph) * var(--ar, 0.75));
+  --tabw: 9rem;
+  position: absolute;
+  z-index: 0;
+  left: clamp(calc(var(--pw) / 2 + 6px), calc(30px + var(--t) * (100% - 60px - var(--tabw)) + var(--tabw) / 2), calc(100% - var(--pw) / 2 - 6px));
+  top: calc(var(--tab-h) + 8px);
+  width: auto;
+  height: var(--ph);
+  max-width: none;
+  opacity: 0;
+  transform: translate(-50%, 0) rotate(0deg);
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 2px 0 color-mix(in srgb, var(--ink) 26%, transparent)) drop-shadow(0 12px 10px color-mix(in srgb, var(--ink) 30%, transparent));
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition:
+    transform 0.55s var(--spring-peek),
+    opacity 0.16s ease;
+}
+
+/* front row (wide): its cut-out comes up in front of the back row's text, so it rises a little less than the back row's does */
+.cv-slot:not([data-rest]) .cv-peek { --rise: 0.54; }
+
+/* back row (wide): the cut-out already stands part-way out of its folder; after the folders land it slides up out of the folder */
+.cv-slot[data-rest] .cv-peek {
+  opacity: 1;
+  transform: translate(-50%, calc(-1 * (var(--tab-h) + 8px + var(--ph) * 0.27))) rotate(calc(var(--tilt) * 0.55));
+}
+.cv-deck[data-in] .cv-slot[data-rest] .cv-peek {
+  animation: cv-peek-in 0.7s var(--spring-peek) backwards;
+  animation-delay: calc(0.5s + var(--i) * 70ms);
+}
+@keyframes cv-peek-in {
+  from { opacity: 0; transform: translate(-50%, 0) rotate(0deg); }
+}
+
+@media (hover: hover) {
+  .cv-slot:hover .cv-lift { transform: translateY(calc(var(--lift) * -1)) rotate(calc(var(--tilt) * 0.12)); }
+  .cv-slot:hover .pm-folder__art { filter: var(--pm-float); }
+  .cv-slot:hover .cv-folder__arrow { transform: translateX(3px); }
+  .cv-slot:hover .cv-peek {
+    opacity: 1;
+    transform: translate(-50%, calc(-1 * (var(--tab-h) + 8px + var(--ph) * var(--rise)))) rotate(var(--tilt));
+  }
+}
+.cv-slot:has(.cv-folder:focus-visible) .cv-lift { transform: translateY(calc(var(--lift) * -1)) rotate(calc(var(--tilt) * 0.12)); }
+.cv-slot:has(.cv-folder:focus-visible) .pm-folder__art { filter: var(--pm-float); }
+.cv-slot:has(.cv-folder:focus-visible) .cv-peek {
+  opacity: 1;
+  transform: translate(-50%, calc(-1 * (var(--tab-h) + 8px + var(--ph) * var(--rise)))) rotate(var(--tilt));
+}
+
+/* a quick tab previews its folders (mouse hover or keyboard focus on the tab, see Cover.tsx): the ones filed under that kind of
+   work step forward and float. The shadow is the still-motion version of the same answer. */
+.cv[data-hint='branding'] .cv-slot[data-cat~='branding'] .cv-lift,
+.cv[data-hint='editorial'] .cv-slot[data-cat~='editorial'] .cv-lift,
+.cv[data-hint='illustration'] .cv-slot[data-cat~='illustration'] .cv-lift { transform: translateY(calc(var(--lift) * -0.8)); }
+.cv[data-hint='branding'] .cv-slot[data-cat~='branding'] .pm-folder__art,
+.cv[data-hint='editorial'] .cv-slot[data-cat~='editorial'] .pm-folder__art,
+.cv[data-hint='illustration'] .cv-slot[data-cat~='illustration'] .pm-folder__art { filter: var(--pm-float); }
+
+/* ==========================================================================
+   Duo (tablet): two cascades of five folders. Solo (phone): one cascade of ten.
+   Each folder's tab sits above its body and pokes into the previous folder, so every tab and every title stays visible.
+   ========================================================================== */
+.cv-deck:not([data-layout='wide']) {
+  /* how much of each folder shows above the next one's tab; grows when the column is narrow, because titles then wrap */
+  --step: clamp(7.6rem, 20rem - 30cqw, 10.2rem);
+  --fh: 9.6rem; /* a folder's height: tab + body (the last one of a cascade shows all of it) */
+  --lift: 0.5rem;
+  --fpad: 0.7rem 1rem 0.6rem;
+  --ov: 0%;
+  height: calc(4 * var(--step) + var(--fh) + 4rem);
+  margin-top: 1.4rem;
+}
+.cv-deck:not([data-layout='wide']) .cv-slot {
+  left: calc(var(--c2) * 51%);
+  top: calc(var(--r2) * var(--step) + var(--c2) * 3.6rem);
+  width: 49%;
+  height: var(--fh);
+  z-index: calc(var(--i) + 1);
+}
+.cv-deck:not([data-layout='wide']) .cv-slot:hover,
+.cv-deck:not([data-layout='wide']) .cv-slot:has(.cv-folder:focus-visible) { z-index: calc(var(--i) + 1); }
+.cv-deck:not([data-layout='wide']) .cv-face {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'n title years'
+    'n kind kind';
+  column-gap: 0.75rem;
+  align-items: start;
+}
+.cv-deck:not([data-layout='wide']) .cv-face__n { align-self: center; font-size: 2.7rem; }
+.cv-deck:not([data-layout='wide']) .cv-face__title { margin-top: 0.15em; font-size: 1.2rem; }
+.cv-deck:not([data-layout='wide']) .cv-face__kind { margin-top: 0.15em; font-size: 0.875rem; }
+.cv-deck:not([data-layout='wide']) .cv-face__years { padding-top: 0.2em; }
+
+.cv-deck[data-layout='solo'] {
+  --step: clamp(7rem, calc(7rem + (334px - 100cqw) * 0.7), 10.5rem);
+  --fh: 8.8rem;
+  height: calc(9 * var(--step) + var(--fh) + 2.4rem);
+}
+.cv-deck[data-layout='solo'] .cv-slot {
+  left: 0;
+  top: calc(var(--i) * var(--step));
+  width: 100%;
+}
+.cv-deck[data-layout='solo'] .cv-face__n { font-size: 2.5rem; }
+.cv-deck[data-layout='solo'] .cv-face__title { font-size: 1.15rem; }
+
+/* The cut-outs in a cascade: each one stands behind its folder's top edge, at the right, over the blank lower corner of the folder
+   above (the hook of every cut-out is in its top 40 %, and that is the part that shows). They are always out: a phone has no hover.
+   On a pointer device, hover and keyboard focus raise the cut-out a little further. */
+.cv-deck:not([data-layout='wide']) .cv-peek {
+  --ph: 6.9rem;
+  left: auto;
+  right: 6%;
+  top: -1.05rem;
+  opacity: 1;
+  transform: rotate(var(--tilt));
+}
+@media (hover: hover) {
+  .cv-deck:not([data-layout='wide']) .cv-slot:hover .cv-peek { transform: translateY(-1.5rem) rotate(var(--tilt)); }
+}
+.cv-deck:not([data-layout='wide']) .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: translateY(-1.5rem) rotate(var(--tilt)); }
+
+/* ==========================================================================
+   Entrance and the wait for the intro (html.js only), then the still (reduced / paused) overrides
+   ========================================================================== */
+/* each paper drops from above, tilted the way its cut-out leans, and settles with the one overshoot of the page */
+html.js .cv-deck:not([data-in]) .cv-slot { opacity: 0; transform: translateY(max(-9cqw, -5.2rem)) rotate(calc(var(--tilt) * 0.55)); }
+html.js .cv:not([data-ready]) .cv-iris { opacity: 0; transform: rotate(-30deg) scale(0.88); }
+/* the lettering, the scribbles and the stamp are held at their first frame until the intro is over */
+html.js .cv:not([data-ready]) :is(.pm-sw__s, .pm-sc__p, .pm-stamp) { animation-play-state: paused !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .cv-deck:not([data-in]) .cv-slot { opacity: 1; transform: none; }
+  html.js .cv:not([data-ready]) .cv-iris { opacity: 1; transform: none; }
+  .cv-slot,
+  .cv-lift,
+  .cv-peek,
+  .cv-iris,
+  .cv-folder__arrow { transition: none; }
+  .cv-slot:hover .cv-lift,
+  .cv-slot:has(.cv-folder:focus-visible) .cv-lift,
+  .cv[data-hint='branding'] .cv-slot[data-cat~='branding'] .cv-lift,
+  .cv[data-hint='editorial'] .cv-slot[data-cat~='editorial'] .cv-lift,
+  .cv[data-hint='illustration'] .cv-slot[data-cat~='illustration'] .cv-lift { transform: none; }
+  .cv-slot:hover .cv-folder__arrow { transform: none; }
+  .cv-deck:not([data-layout='wide']) .cv-slot:hover .cv-peek,
+  .cv-deck:not([data-layout='wide']) .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: rotate(var(--tilt)); }
+  /* no travel: the cut-out simply appears where it would have ended */
+  .cv-slot:hover .cv-peek,
+  .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: translate(-50%, calc(-1 * (var(--tab-h) + 8px + var(--ph) * var(--rise)))) rotate(var(--tilt)); }
+  .cv__word:hover .pm-sw__gl { animation: none; }
+  .cv-deck[data-in] .cv-slot[data-rest] .cv-peek { animation: none; }
+  html.js .cv-deck[data-in] .cv-face__concept { animation: none; }
+  .cv__note-text { transition: none; }
+}
+html[data-motion='paused'].js .cv-deck:not([data-in]) .cv-slot { opacity: 1; transform: none; }
+html[data-motion='paused'].js .cv:not([data-ready]) .cv-iris { opacity: 1; transform: none; }
+html[data-motion='paused'] .cv-slot,
+html[data-motion='paused'] .cv-lift,
+html[data-motion='paused'] .cv-peek,
+html[data-motion='paused'] .cv-iris,
+html[data-motion='paused'] .cv-folder__arrow { transition: none; }
+html[data-motion='paused'] .cv-slot:hover .cv-lift,
+html[data-motion='paused'] .cv-slot:has(.cv-folder:focus-visible) .cv-lift,
+html[data-motion='paused'] .cv[data-hint='branding'] .cv-slot[data-cat~='branding'] .cv-lift,
+html[data-motion='paused'] .cv[data-hint='editorial'] .cv-slot[data-cat~='editorial'] .cv-lift,
+html[data-motion='paused'] .cv[data-hint='illustration'] .cv-slot[data-cat~='illustration'] .cv-lift { transform: none; }
+html[data-motion='paused'] .cv-slot:hover .cv-folder__arrow { transform: none; }
+html[data-motion='paused'] .cv-deck:not([data-layout='wide']) .cv-slot:hover .cv-peek,
+html[data-motion='paused'] .cv-deck:not([data-layout='wide']) .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: rotate(var(--tilt)); }
+html[data-motion='paused'] .cv-slot:hover .cv-peek,
+html[data-motion='paused'] .cv-slot:has(.cv-folder:focus-visible) .cv-peek { transform: translate(-50%, calc(-1 * (var(--tab-h) + 8px + var(--ph) * var(--rise)))) rotate(var(--tilt)); }
+html[data-motion='paused'] .cv__word:hover .pm-sw__gl { animation: none; }
+html[data-motion='paused'] .cv-deck[data-in] .cv-slot[data-rest] .cv-peek { animation: none; }
+html[data-motion='paused'].js .cv-deck[data-in] .cv-face__concept { animation: none; }
+html[data-motion='paused'] .cv__note-text { transition: none; }
+
+/* printing: nothing waits for a scroll or an intro */
+@media print {
+  .cv-slot,
+  html.js .cv-deck:not([data-in]) .cv-slot { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .cv-peek { display: none; }
+}

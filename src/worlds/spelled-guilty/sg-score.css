@@ -1,0 +1,232 @@
+/* ==========================================================================
+   Exhibit D, second half: the detective's scorecard. A paper sheet with one square per case (80 of them), colour-coded by
+   level, a red marker circle round the six that are in the sample pages, and a typed slip that says what a square is.
+   ========================================================================== */
+
+.w-sg-scorewrap {
+  display: grid;
+  gap: 14px;
+  width: min(100%, 30rem);
+  margin-top: clamp(24px, 2.6vw, 40px);
+}
+
+/* wide screens: the scorecard stays in view beside the long machine (the keyboard is a screen below the sheet) */
+@media (min-width: 1100px) {
+  .w-sg-scorewrap {
+    position: sticky;
+    top: clamp(64px, 9vh, 96px);
+  }
+}
+
+.w-sg-score {
+  position: relative;
+  padding: 2.1rem 1.1rem 0.9rem;
+  background:
+    var(--sg-noise),
+    var(--sg-paper);
+  color: var(--ink);
+  transform: rotate(-1deg);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.7) inset,
+    0 3px 0 rgb(0 0 0 / 0.22),
+    0 28px 34px -18px rgb(0 0 0 / 0.85);
+}
+
+.w-sg-score__title {
+  margin: 0;
+  color: var(--sg-marker);
+}
+
+.w-sg-score__sub {
+  margin: 0.45rem 0 0;
+  font-family: var(--sg-type);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.w-sg-score__grid {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 0.95rem;
+}
+
+/* ---- one square per case ---------------------------------------------------------------------------------------------------- */
+.w-sg-sq {
+  --tick: var(--olive);
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0 0 4px;
+  border: 1.5px solid rgb(23 16 27 / 0.3);
+  border-radius: 3px;
+  background: rgb(23 16 27 / 0.035);
+  color: var(--ink);
+  font-family: var(--sg-type);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.14s var(--ease-out);
+}
+
+.w-sg-sq[data-l='medium'] {
+  --tick: var(--marigold);
+}
+
+.w-sg-sq[data-l='hard'] {
+  --tick: var(--tomato);
+}
+
+/* the level, as a bar along the foot of the square */
+.w-sg-sq::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  height: 5px;
+  border-radius: 1px;
+  background: var(--tick);
+  box-shadow: 0 0 0 1px rgb(23 16 27 / 0.22);
+}
+
+/* in the sample pages: circled in red marker, never quite round */
+.w-sg-sq[data-sample]::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 2.5px solid var(--sg-marker);
+  border-radius: 54% 46% 52% 48% / 46% 56% 44% 54%;
+  transform: rotate(-9deg);
+  pointer-events: none;
+}
+
+.w-sg-sq:hover,
+.w-sg-sq:focus-visible {
+  z-index: 2;
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.w-sg-sq[aria-pressed='true'] {
+  z-index: 2;
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
+  transform: scale(1.08);
+}
+
+.w-sg-sq[aria-pressed='true']:hover {
+  background: var(--ink);
+}
+
+.w-sg-score__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0.9rem 0 0;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  font-weight: 400;
+}
+
+.w-sg-score__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  --tick: var(--olive);
+}
+
+.w-sg-score__legend span[data-l='medium'] {
+  --tick: var(--marigold);
+}
+
+.w-sg-score__legend span[data-l='hard'] {
+  --tick: var(--tomato);
+}
+
+.w-sg-score__legend span::before {
+  content: '';
+  width: 0.95rem;
+  height: 0.5rem;
+  border-radius: 1px;
+  background: var(--tick);
+  box-shadow: 0 0 0 1px rgb(23 16 27 / 0.3);
+}
+
+/* ---- the slip: typed under the grid ---------------------------------------------------------------------------------------- */
+.w-sg-slip {
+  min-height: 5.9rem;
+  margin-top: 0.85rem;
+  padding: 0.8rem 0.1rem 0;
+  border-top: 2px dashed rgb(23 16 27 / 0.34);
+  font-family: var(--sg-type);
+}
+
+.w-sg-slip__kicker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--sg-marker);
+}
+
+.w-sg-slip__title {
+  margin: 0.35rem 0 0;
+  font-weight: 700;
+  font-size: 1.12rem;
+  line-height: 1.2;
+}
+
+.w-sg-slip__title--empty {
+  margin-top: 0.5rem;
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: rgb(23 16 27 / 0.72);
+}
+
+.w-sg-slip__line {
+  margin: 0.3rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.w-sg-score__act {
+  display: flex;
+  min-height: 2.5rem;
+  padding-bottom: 0.4rem;
+}
+
+.w-sg-scorewrap .w-sg-keys {
+  margin: 0;
+}
+
+/* ---- narrower: the scorecard sits under the title, so the squares re-flow into rows that fit a finger ------------------------- */
+@media (max-width: 1099px) {
+  .w-sg-scorewrap {
+    width: min(100%, 44rem);
+  }
+}
+
+@media (max-width: 560px) {
+  .w-sg-score__grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 7px;
+  }
+  .w-sg-sq {
+    font-size: 0.95rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .w-sg-sq {
+    transition: none;
+  }
+}
+
+html[data-motion='paused'] .w-sg-sq {
+  transition: none;
+}

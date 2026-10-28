@@ -1,0 +1,132 @@
+/* ==========================================================================
+   Exhibit F: who made it. A manila folder on the desk: the credit line, the book's own credit, a sticky note, the CASE CLOSED
+   stamp and the facts slate with the Amazon ticket.
+   ========================================================================== */
+
+.w-sg-closed {
+  background:
+    radial-gradient(58% 60% at 50% 38%, rgb(var(--sg-lamp) / 0.16), transparent 74%),
+    var(--sg-noise),
+    linear-gradient(180deg, var(--sg-wall-deep), var(--sg-leather) 30%, var(--sg-desk));
+  padding-bottom: clamp(72px, 9vw, 150px);
+}
+
+.w-sg-folder {
+  width: min(100%, clamp(1180px, 64vw, 1520px));
+  margin-inline: auto;
+  --fpad: clamp(22px, 3.4vw, 56px);
+}
+
+.w-sg-folder__body {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+  padding: clamp(28px, 3.6vw, 60px);
+}
+
+/* the title on manila: ink letters with a red offset (a white keyline would vanish on cream) */
+.w-sg-key--ink {
+  color: var(--ink);
+  -webkit-text-stroke: 0;
+  text-shadow: 0.05em 0.06em 0 var(--sg-red);
+  font-size: clamp(2.6rem, 1rem + 4.6vw, 5.6rem);
+}
+
+.w-sg-credit {
+  position: relative;
+  display: grid;
+  gap: clamp(16px, 2vw, 26px);
+  min-width: 0;
+}
+
+.w-sg-credit__line {
+  margin: 0;
+  max-width: 38rem;
+  font-size: clamp(1.3rem, 1.05rem + 0.9vw, 2.1rem);
+  line-height: 1.32;
+  font-weight: 500;
+}
+
+.w-sg-credit__line strong {
+  font-weight: 800;
+}
+
+.w-sg-credit__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1.2rem clamp(14px, 2vw, 28px);
+}
+
+.w-sg-credit__book {
+  position: relative;
+  flex: 1 1 18rem;
+  max-width: 30rem;
+  padding: 1.5rem 1.3rem 1.2rem;
+  background:
+    var(--sg-noise),
+    #fffaf0;
+  color: var(--ink);
+  transform: rotate(-0.8deg);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.9) inset,
+    0 2px 0 rgb(0 0 0 / 0.16),
+    0 16px 22px -14px rgb(0 0 0 / 0.55);
+}
+
+.w-sg-credit__lead {
+  margin-bottom: 0.5rem;
+  color: var(--sg-marker);
+}
+
+.w-sg-credit__quote {
+  margin: 0;
+  font-family: var(--sg-type);
+  font-size: max(14px, 0.98rem);
+  line-height: 1.5;
+}
+
+.w-sg-credit__note {
+  flex: 0 0 auto;
+  margin: 1.1rem 0 0 0;
+}
+
+.w-sg-closed__side {
+  display: grid;
+  gap: clamp(20px, 2.6vw, 36px);
+  justify-items: start;
+  min-width: 0;
+}
+
+/* the last thing on the folder: the stamp, slammed on the empty corner under the facts */
+.w-sg-closed__stamp {
+  justify-self: center;
+  padding: 1rem 0.6rem 0.4rem;
+  pointer-events: none;
+}
+
+/* the facts slate: one column here (the slate on top, the ticket under it) */
+.w-sg-closed__side .pm-wf {
+  grid-template-columns: minmax(0, 1fr);
+  padding-top: 0;
+}
+
+.w-sg-closed__side .pm-wf__slate,
+.w-sg-closed__side .pm-wf__tix {
+  grid-column: 1;
+}
+
+.w-sg-closed__side .pm-wf__tix {
+  padding-top: 0.4rem;
+}
+
+@media (max-width: 960px) {
+  .w-sg-folder__body {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .w-sg-closed__stamp {
+    justify-self: start;
+  }
+}

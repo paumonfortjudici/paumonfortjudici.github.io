@@ -1,0 +1,213 @@
+/* ==========================================================================
+   World 10: the control row (tab buttons standing on a ledge) and the Gravity lever.
+   ========================================================================== */
+
+.w-illustration-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px clamp(6px, 0.8vw, 14px);
+  margin-top: 6px;
+  padding: 0 4px;
+  border-bottom: 6px solid var(--ink);
+}
+
+.w-illustration-controls .pm-tabbtn {
+  white-space: nowrap;
+}
+
+.w-illustration-controls .pm-tabbtn[data-size='sm'] {
+  padding-inline: 13px;
+}
+
+.w-illustration-controls .pm-tabbtn svg {
+  font-size: 1.15em;
+}
+
+/* ---- the lever: a strip of tape with a stick that flips between OFF and ON ---------------------------------------------------- */
+.w-illustration-lever {
+  position: relative;
+  flex: none;
+  margin: 0 6px 9px;
+}
+
+.w-illustration-lever .pm-tape__in {
+  padding: 0 0.9rem 0 1rem;
+}
+
+.w-illustration-lever-face {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  height: 100%;
+}
+
+.w-illustration-lever-word {
+  font-family: 'Cherry Bomb One', var(--font-body);
+  font-size: 1.4rem;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+}
+
+/* the dial: OFF at the left foot, ON at the right foot, the stick pivots on a brass brad between them */
+.w-illustration-lever-dial {
+  position: relative;
+  flex: none;
+  width: 5.6rem;
+  height: 3.4rem;
+}
+
+.w-illustration-lever-off,
+.w-illustration-lever-on {
+  position: absolute;
+  bottom: 0;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 66%, transparent);
+}
+
+.w-illustration-lever-off {
+  left: 0;
+}
+
+.w-illustration-lever-on {
+  right: 0;
+}
+
+.w-illustration-lever[data-on='false'] .w-illustration-lever-off,
+.w-illustration-lever[data-on='true'] .w-illustration-lever-on {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.w-illustration-lever-stick {
+  position: absolute;
+  left: 50%;
+  bottom: 0.7rem;
+  width: 5px;
+  height: 2.05rem;
+  margin-left: -2.5px;
+  border-radius: 3px;
+  background: var(--ink);
+  transform-origin: 50% 100%;
+  transform: rotate(-44deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1.7, 0.5, 1);
+}
+
+/* the brass brad at the stick's foot */
+.w-illustration-lever-stick::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 13px;
+  height: 13px;
+  margin-left: -6.5px;
+  border-radius: 50%;
+  background: var(--wi-brass);
+  box-shadow: 0 0 0 1.5px var(--ink);
+}
+
+.w-illustration-lever[data-on='true'] .w-illustration-lever-stick {
+  transform: rotate(44deg);
+}
+
+.w-illustration-lever-knob {
+  position: absolute;
+  left: 50%;
+  top: -10px;
+  width: 20px;
+  height: 20px;
+  margin-left: -10px;
+  border-radius: 50%;
+  background: var(--tomato);
+  box-shadow: inset -2px -3px 0 color-mix(in srgb, var(--ink) 26%, transparent), inset 2px 2px 0 color-mix(in srgb, var(--wi-white) 35%, transparent), 0 0 0 2.5px var(--ink);
+}
+
+.w-illustration-lever[data-on='true'] .w-illustration-lever-knob {
+  background: var(--wi-lime);
+}
+
+/* while matter-js loads for the first time the stick wobbles between the two stops */
+.w-illustration-lever[data-busy='true'] .w-illustration-lever-stick {
+  animation: w-illustration-wobble 0.45s ease-in-out infinite alternate;
+}
+
+@keyframes w-illustration-wobble {
+  from {
+    transform: rotate(-34deg);
+  }
+  to {
+    transform: rotate(-4deg);
+  }
+}
+
+.w-illustration-lever-hit {
+  position: absolute;
+  inset: -4px;
+  z-index: 3;
+  border-radius: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.w-illustration-lever-hit:disabled {
+  cursor: progress;
+}
+
+@media (pointer: coarse) {
+  .w-illustration-lever {
+    margin-bottom: 10px;
+  }
+}
+
+/* a narrow desktop column (about 1000 px wide window): the lever's tape is a little shorter so the whole row still fits */
+@media (min-width: 900px) and (max-width: 1100px) {
+  .w-illustration-lever .pm-tape {
+    --w: 11.4rem !important;
+  }
+
+  .w-illustration-lever-dial {
+    width: 4.8rem;
+  }
+
+  .w-illustration-lever-face {
+    gap: 0.5rem;
+  }
+
+  .w-illustration-lever .pm-tape__in {
+    padding: 0 0.7rem 0 0.8rem;
+  }
+}
+
+/* a phone: the three tabs share one row, the lever gets the next */
+@media (max-width: 520px) {
+  .w-illustration-lever .pm-tape {
+    --w: 11.2rem !important;
+  }
+
+  .w-illustration-lever-word {
+    font-size: 1.15rem;
+  }
+
+  .w-illustration-lever-dial {
+    width: 4.2rem;
+  }
+
+  .w-illustration-lever .pm-tape__in {
+    padding: 0 0.75rem 0 0.8rem;
+  }
+
+  .w-illustration-lever-face {
+    gap: 0.45rem;
+  }
+}

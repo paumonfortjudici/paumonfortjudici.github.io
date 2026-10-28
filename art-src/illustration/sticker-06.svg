@@ -2,17 +2,17 @@
 <title>Case of the missing sock - doodle sticker 06</title>
 <desc>A trench-coated detective in a fedora creeps forward, one eye hugely magnified by an oversized lens, pinching a single striped sock. Concept illustration, art-directed by Pau, built with AI-assisted tools.</desc>
 <style>
-/* palette: ink #0C0A10 / accent #FA6A57 / paper #FFEFDF  (recolour = replace the accent hex everywhere) */
-.fa{fill:#FA6A57} .fi{fill:#0C0A10} .fp{fill:#FFEFDF}
+/* palette: ink #0C0A10 / accent #FE7D6C / paper #FFEFDF  (recolour = replace the accent hex everywhere) */
+.fa{fill:#FE7D6C} .fi{fill:#0C0A10} .fp{fill:#FFEFDF}
 .k{stroke:#0C0A10;stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
 .k2{fill:none;stroke:#0C0A10;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
 .k3{fill:none;stroke:#0C0A10;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
 .k3f{stroke:#0C0A10;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
 .st{fill:none;stroke:#0C0A10;stroke-width:6;stroke-linecap:round;stroke-dasharray:1 14}
-.sh{fill:none;stroke:#FA6A57;stroke-width:7;stroke-linecap:round}
+.sh{fill:none;stroke:#FE7D6C;stroke-width:7;stroke-linecap:round}
 .pp{fill:none;stroke:#FFEFDF;stroke-width:7;stroke-linecap:round}
 .tube-k{fill:none;stroke:#0C0A10;stroke-width:28;stroke-linecap:round;stroke-linejoin:round}
-.tube-a{fill:none;stroke:#FA6A57;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+.tube-a{fill:none;stroke:#FE7D6C;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
 </style>
 <defs>
 <path id="legB" d="M352.6 1076.2C325.8 1121.9 299.1 1167.6 272.3 1213.3C272.1 1213.7 271.8 1214.2 271.6 1214.6C271.3 1215 271.1 1215.5 270.8 1215.9C258 1243.9 245.2 1271.8 232.4 1299.8C256.1 1311.9 279.9 1324.1 303.6 1336.2C318.6 1310 333.5 1283.7 348.5 1257.4C376.1 1212.9 403.8 1168.3 431.4 1123.8C405.1 1107.9 378.9 1092.1 352.6 1076.2Z"/>
@@ -80,7 +80,7 @@
 </mask>
 </defs>
 <g transform="translate(-1,-114) scale(1.045)">
-<g id="halo" filter="url(#halo-smooth)"><g fill="#FA6A57" stroke="#FA6A57" stroke-width="76" stroke-linejoin="round"><use href="#legB" xlink:href="#legB"/><use href="#cuffB" xlink:href="#cuffB"/><use href="#ankleB" xlink:href="#ankleB"/><use href="#shoeB" xlink:href="#shoeB"/><use href="#shoeF" xlink:href="#shoeF"/><use href="#sockF" xlink:href="#sockF"/><use href="#legF" xlink:href="#legF"/><use href="#cuffF" xlink:href="#cuffF"/><use href="#coat" xlink:href="#coat"/><use href="#pocket" xlink:href="#pocket"/><use href="#belt" xlink:href="#belt"/><use href="#beltTail" xlink:href="#beltTail"/><use href="#sockHeld" xlink:href="#sockHeld"/><use href="#slvL" xlink:href="#slvL"/><use href="#cuffL" xlink:href="#cuffL"/><use href="#lhPalm" xlink:href="#lhPalm"/><use href="#lhC0" xlink:href="#lhC0"/><use href="#lhC1" xlink:href="#lhC1"/><use href="#lhC2" xlink:href="#lhC2"/><use href="#lhIdx" xlink:href="#lhIdx"/><use href="#lhThb" xlink:href="#lhThb"/><use href="#neck" xlink:href="#neck"/><use href="#collarBand" xlink:href="#collarBand"/><use href="#face" xlink:href="#face"/><use href="#earHalo" xlink:href="#earHalo"/><use href="#fedoraCrown" xlink:href="#fedoraCrown"/><use href="#fedoraBrim" xlink:href="#fedoraBrim"/><use href="#fedoraBand" xlink:href="#fedoraBand"/><use href="#lensHandle" xlink:href="#lensHandle"/><use href="#lensRing" xlink:href="#lensRing"/><use href="#wristR" xlink:href="#wristR"/><use href="#slvR" xlink:href="#slvR"/><use href="#cuffR" xlink:href="#cuffR"/><use href="#rfBack" xlink:href="#rfBack"/><use href="#rfB0" xlink:href="#rfB0"/><use href="#rfB1" xlink:href="#rfB1"/><use href="#rfB2" xlink:href="#rfB2"/><use href="#rfB3" xlink:href="#rfB3"/><use href="#rfThumb" xlink:href="#rfThumb"/><use href="#qHook" xlink:href="#qHook"/><use href="#qDot" xlink:href="#qDot"/><use href="#haloFix" xlink:href="#haloFix"/></g></g>
+<g id="halo" filter="url(#halo-smooth)"><g fill="#FE7D6C" stroke="#FE7D6C" stroke-width="76" stroke-linejoin="round"><use href="#legB" xlink:href="#legB"/><use href="#cuffB" xlink:href="#cuffB"/><use href="#ankleB" xlink:href="#ankleB"/><use href="#shoeB" xlink:href="#shoeB"/><use href="#shoeF" xlink:href="#shoeF"/><use href="#sockF" xlink:href="#sockF"/><use href="#legF" xlink:href="#legF"/><use href="#cuffF" xlink:href="#cuffF"/><use href="#coat" xlink:href="#coat"/><use href="#pocket" xlink:href="#pocket"/><use href="#belt" xlink:href="#belt"/><use href="#beltTail" xlink:href="#beltTail"/><use href="#sockHeld" xlink:href="#sockHeld"/><use href="#slvL" xlink:href="#slvL"/><use href="#cuffL" xlink:href="#cuffL"/><use href="#lhPalm" xlink:href="#lhPalm"/><use href="#lhC0" xlink:href="#lhC0"/><use href="#lhC1" xlink:href="#lhC1"/><use href="#lhC2" xlink:href="#lhC2"/><use href="#lhIdx" xlink:href="#lhIdx"/><use href="#lhThb" xlink:href="#lhThb"/><use href="#neck" xlink:href="#neck"/><use href="#collarBand" xlink:href="#collarBand"/><use href="#face" xlink:href="#face"/><use href="#earHalo" xlink:href="#earHalo"/><use href="#fedoraCrown" xlink:href="#fedoraCrown"/><use href="#fedoraBrim" xlink:href="#fedoraBrim"/><use href="#fedoraBand" xlink:href="#fedoraBand"/><use href="#lensHandle" xlink:href="#lensHandle"/><use href="#lensRing" xlink:href="#lensRing"/><use href="#wristR" xlink:href="#wristR"/><use href="#slvR" xlink:href="#slvR"/><use href="#cuffR" xlink:href="#cuffR"/><use href="#rfBack" xlink:href="#rfBack"/><use href="#rfB0" xlink:href="#rfB0"/><use href="#rfB1" xlink:href="#rfB1"/><use href="#rfB2" xlink:href="#rfB2"/><use href="#rfB3" xlink:href="#rfB3"/><use href="#rfThumb" xlink:href="#rfThumb"/><use href="#qHook" xlink:href="#qHook"/><use href="#qDot" xlink:href="#qDot"/><use href="#haloFix" xlink:href="#haloFix"/></g></g>
 <g id="art" filter="url(#wobble)">
 <g id="g-leg-back">
 <use href="#legB" xlink:href="#legB" class="fa k"/>

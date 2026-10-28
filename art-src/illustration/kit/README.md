@@ -48,10 +48,10 @@ Accent per sticker (one hue each, same lightness/chroma family as lilac in OKLCH
 | 03 | sky | `#85CEF9` |
 | 04 | mint | `#8EEBC3` |
 | 05 | butter | `#FCE67A` |
-| 06 | tomato | `#FA6A57` |
+| 06 | tomato | `#FE7D6C` |
 | 07 | pink | `#FF9FC5` |
 | 08 | teal | `#66CBC7` |
-| 09 | lime | `#C2ED6B` |
+| 09 | lime | `#C5EB7C` |
 
 Rules for the three colours:
 * **accent** fills everything that is body, cloth or prop (skin included) *and* the halo. Parts are told apart by ink lines only.

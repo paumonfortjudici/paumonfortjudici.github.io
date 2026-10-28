@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 329 392" width="329" height="392">
+<title>M18 Apron - gotet</title>
+<style>
+@font-face{font-family:'FrauncesV';font-style:normal;font-weight:100 900;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2) format('woff2-variations'),url(fonts/fraunces-latin-full-normal.woff2) format('woff2-variations');}
+@font-face{font-family:'FrauncesV';font-style:italic;font-weight:100 900;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-italic.woff2) format('woff2-variations'),url(fonts/fraunces-latin-full-italic.woff2) format('woff2-variations');}
+@font-face{font-family:'BarlowSC';font-style:normal;font-weight:500;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-500-normal.woff2) format('woff2'),url(fonts/barlow-semi-condensed-latin-500-normal.woff2) format('woff2');}
+@font-face{font-family:'BarlowSC';font-style:italic;font-weight:500;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-500-italic.woff2) format('woff2'),url(fonts/barlow-semi-condensed-latin-500-italic.woff2) format('woff2');}
+@font-face{font-family:'BarlowSC';font-style:normal;font-weight:600;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-600-normal.woff2) format('woff2'),url(fonts/barlow-semi-condensed-latin-600-normal.woff2) format('woff2');}
+@font-face{font-family:'BarlowSC';font-style:normal;font-weight:700;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-700-normal.woff2) format('woff2'),url(fonts/barlow-semi-condensed-latin-700-normal.woff2) format('woff2');}
+@font-face{font-family:'BarlowSC';font-style:normal;font-weight:800;src:url(file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/brand/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-800-normal.woff2) format('woff2'),url(fonts/barlow-semi-condensed-latin-800-normal.woff2) format('woff2');}
+.fr{font-family:'FrauncesV',serif;font-variation-settings:'SOFT' 100,'WONK' 1,'opsz' 144;}
+.bs{font-family:'BarlowSC',sans-serif;}
+</style>
+<defs>
+<filter id="soft-shadow" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="3" dy="8" stdDeviation="7" flood-color="#211736" flood-opacity="0.22"/></filter>
+<filter id="soft-shadow-m" x="-25%" y="-25%" width="150%" height="160%"><feDropShadow dx="2.5" dy="6" stdDeviation="5.5" flood-color="#211736" flood-opacity="0.24"/></filter>
+<filter id="soft-shadow-s" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="2" dy="4" stdDeviation="3.5" flood-color="#211736" flood-opacity="0.26"/></filter>
+<filter id="soft-shadow-xs" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="1.5" dy="2.5" stdDeviation="2" flood-color="#211736" flood-opacity="0.28"/></filter>
+<filter id="grain" filterUnits="userSpaceOnUse" x="0" y="0" width="329" height="392" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="4" result="t"/><feColorMatrix in="t" type="matrix" values="0 0 0 0 0.129  0 0 0 0 0.090  0 0 0 0 0.208  0 0 0 -8 3.0" result="speck"/><feComposite in="speck" in2="SourceAlpha" operator="in"/></filter>
+<clipPath id="apron-clip"><path d="M96 78 H232 C232 120 286 130 290 198 L292 360 Q292 376 276 376 H52 Q36 376 36 360 L38 198 C42 130 96 120 96 78 Z"/></clipPath>
+</defs>
+<g id="tile"><rect width="329" height="392" rx="28" fill="#F8D2D0"/><rect width="329" height="392" rx="28" fill="#000" filter="url(#grain)" opacity="0.16"/></g>
+<g id="apron">
+<path d="M42 214 C22 224 14 250 18 278 C19 292 17 304 12 316" fill="none" stroke="#2340C0" stroke-width="11" stroke-linecap="butt"/>
+<path d="M42 214 C22 224 14 250 18 278 C19 292 17 304 12 316" fill="none" stroke="#211736" stroke-width="2" stroke-dasharray="4 3.5" stroke-linecap="round"/>
+<path d="M42 218 C32 236 32 262 38 290" fill="none" stroke="#2340C0" stroke-width="10" stroke-linecap="butt"/>
+<path d="M42 218 C32 236 32 262 38 290" fill="none" stroke="#211736" stroke-width="2" stroke-dasharray="4 3.5" stroke-linecap="round"/>
+<circle cx="40" cy="216" r="9" fill="#2340C0"/>
+<path d="M42 214 C22 224 14 250 18 278 C19 292 17 304 12 316" fill="none" stroke="#2340C0" stroke-width="11" stroke-linecap="butt" transform="translate(329 0) scale(-1 1)"/>
+<path d="M42 214 C22 224 14 250 18 278 C19 292 17 304 12 316" fill="none" stroke="#211736" stroke-width="2" stroke-dasharray="4 3.5" stroke-linecap="round" transform="translate(329 0) scale(-1 1)"/>
+<path d="M42 218 C32 236 32 262 38 290" fill="none" stroke="#2340C0" stroke-width="10" stroke-linecap="butt" transform="translate(329 0) scale(-1 1)"/>
+<path d="M42 218 C32 236 32 262 38 290" fill="none" stroke="#211736" stroke-width="2" stroke-dasharray="4 3.5" stroke-linecap="round" transform="translate(329 0) scale(-1 1)"/>
+<circle cx="289" cy="216" r="9" fill="#2340C0"/>
+<path d="M106 84 C100 22 228 22 222 84" fill="none" stroke="#2340C0" stroke-width="14" stroke-linecap="round"/>
+<path d="M106 80 C102 30 226 30 222 80" fill="none" stroke="#211736" stroke-width="2" stroke-dasharray="4 3.5" stroke-linecap="round"/>
+<g filter="url(#soft-shadow)"><path d="M96 78 H232 C232 120 286 130 290 198 L292 360 Q292 376 276 376 H52 Q36 376 36 360 L38 198 C42 130 96 120 96 78 Z" fill="#2340C0"/></g>
+<path d="M96 78 H232 C232 120 286 130 290 198 L292 360 Q292 376 276 376 H52 Q36 376 36 360 L38 198 C42 130 96 120 96 78 Z" fill="none" stroke="#211736" stroke-width="2" stroke-dasharray="4 3.5" stroke-linecap="round" transform="translate(164 228) scale(0.955) translate(-164 -228)"/>
+<path d="M40 204 C120 211 210 211 288 204" fill="none" stroke="#211736" stroke-width="2" stroke-dasharray="4 3.5" stroke-linecap="round"/>
+<image href="../logo/wordmark-reverse.svg" x="79" y="134.39" width="170" height="63.21"/>
+<rect id="nametag" x="94" y="96" width="70" height="33" rx="6" fill="#F8D2D0"/>
+<circle cx="103" cy="105" r="2.4" fill="#211736"/>
+<text class="fr" x="129" y="114" font-size="14" font-weight="900" text-anchor="middle" fill="#2340C0">Ona</text>
+<text class="bs" x="129" y="123" font-size="6.5" font-weight="800" text-anchor="middle" letter-spacing="1.2" fill="#211736">CAP DE SIFÓ</text>
+<g filter="url(#soft-shadow-xs)"><path d="M107 248 H221 Q230 248 230 257 V321 Q230 330 221 330 H107 Q98 330 98 321 V257 Q98 248 107 248 Z" fill="#FFD34E"/></g>
+<path d="M109 253 H219 Q225 253 225 259 V319 Q225 325 219 325 H109 Q103 325 103 319 V259 Q103 253 109 253 Z" fill="none" stroke="#211736" stroke-width="2" stroke-dasharray="4 3.5" stroke-linecap="round"/>
+<circle cx="164" cy="294" r="29" fill="none" stroke="#211736" stroke-width="2" stroke-dasharray="3.5 3.5" stroke-linecap="round"/>
+<image href="../mascots/heads/oliva-head-1.svg" x="133" y="264" width="62" height="62"/>
+</g>
+<g id="sparkles"><path d="M0 -22 C2 -6 6 -2 22 0 C6 2 2 6 0 22 C-2 6 -6 2 -22 0 C-6 -2 -2 -6 0 -22 Z" transform="translate(296 52) rotate(8) scale(0.62)" fill="#FFD34E" stroke="#211736" stroke-width="5" stroke-linejoin="round"/><path d="M0 -22 C2 -6 6 -2 22 0 C6 2 2 6 0 22 C-2 6 -6 2 -22 0 C-6 -2 -2 -6 0 -22 Z" transform="translate(34 70) rotate(0) scale(0.42)" fill="#2340C0" stroke="#211736" stroke-width="5" stroke-linejoin="round"/></g>
+</svg>

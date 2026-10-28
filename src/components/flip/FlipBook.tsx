@@ -830,6 +830,7 @@ export const FlipBook = forwardRef<FlipBookHandle, FlipBookProps>(function FlipB
       const t = e.target as HTMLElement | null
       if (t && isTyping(t)) return
       if (rootRef.current && t && rootRef.current.contains(t)) return // the book's own handler has it
+      if (e.key === 'Home' || e.key === 'End') return // out in the page these scroll the world, as the browser does
       innerRef.current?.handleKey(e)
     }
     document.addEventListener('keydown', onKey)

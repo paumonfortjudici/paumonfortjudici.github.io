@@ -1,0 +1,244 @@
+{
+ "canvas": {
+  "w": 3000,
+  "h": 4243
+ },
+ "zones": {
+  "top": {
+   "x": 0,
+   "y": 0,
+   "w": 3000,
+   "h": 1560
+  },
+  "mockups": {
+   "x": 100,
+   "y": 1620,
+   "w": 2800,
+   "h": 1224
+  },
+  "posters": {
+   "x": 100,
+   "y": 2925,
+   "w": 2800,
+   "h": 1218
+  }
+ },
+ "hotspots": [
+  {
+   "id": "wordmark",
+   "title": "Wordmark and cast",
+   "zone": "top",
+   "x": 0,
+   "y": 0,
+   "w": 3000,
+   "h": 1500
+  },
+  {
+   "id": "m01",
+   "title": "Shopfront",
+   "zone": "mockups",
+   "x": 100,
+   "y": 1620,
+   "w": 1035,
+   "h": 392
+  },
+  {
+   "id": "m02",
+   "title": "Social tile 1 - greeting",
+   "zone": "mockups",
+   "x": 1159,
+   "y": 1620,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "m03",
+   "title": "Social tile 2 - crisps",
+   "zone": "mockups",
+   "x": 1512,
+   "y": 1620,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "m04",
+   "title": "Social tile 3 - splash",
+   "zone": "mockups",
+   "x": 1865,
+   "y": 1620,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "m05",
+   "title": "Takeaway cups",
+   "zone": "mockups",
+   "x": 2218,
+   "y": 1620,
+   "w": 682,
+   "h": 392
+  },
+  {
+   "id": "m06",
+   "title": "Menu card",
+   "zone": "mockups",
+   "x": 100,
+   "y": 2036,
+   "w": 682,
+   "h": 600
+  },
+  {
+   "id": "m07",
+   "title": "Loyalty card",
+   "zone": "mockups",
+   "x": 100,
+   "y": 2660,
+   "w": 329,
+   "h": 184
+  },
+  {
+   "id": "m08",
+   "title": "Matchbooks",
+   "zone": "mockups",
+   "x": 453,
+   "y": 2660,
+   "w": 329,
+   "h": 184
+  },
+  {
+   "id": "m09",
+   "title": "House vermut bottle",
+   "zone": "mockups",
+   "x": 806,
+   "y": 2036,
+   "w": 329,
+   "h": 600
+  },
+  {
+   "id": "m10",
+   "title": "Price tags",
+   "zone": "mockups",
+   "x": 806,
+   "y": 2660,
+   "w": 329,
+   "h": 184
+  },
+  {
+   "id": "m11",
+   "title": "House siphon",
+   "zone": "mockups",
+   "x": 1159,
+   "y": 2036,
+   "w": 329,
+   "h": 600
+  },
+  {
+   "id": "m12",
+   "title": "Crown caps",
+   "zone": "mockups",
+   "x": 1159,
+   "y": 2660,
+   "w": 329,
+   "h": 184
+  },
+  {
+   "id": "m13",
+   "title": "Business cards",
+   "zone": "mockups",
+   "x": 1512,
+   "y": 2036,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "m14",
+   "title": "Coasters",
+   "zone": "mockups",
+   "x": 1512,
+   "y": 2452,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "m15",
+   "title": "Vermut glass",
+   "zone": "mockups",
+   "x": 1865,
+   "y": 2036,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "m16",
+   "title": "Paper napkin",
+   "zone": "mockups",
+   "x": 1865,
+   "y": 2452,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "m17",
+   "title": "Tote bag",
+   "zone": "mockups",
+   "x": 2218,
+   "y": 2036,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "m18",
+   "title": "Apron",
+   "zone": "mockups",
+   "x": 2218,
+   "y": 2452,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "m19",
+   "title": "Flyer",
+   "zone": "mockups",
+   "x": 2571,
+   "y": 2036,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "m20",
+   "title": "Sticker set",
+   "zone": "mockups",
+   "x": 2571,
+   "y": 2452,
+   "w": 329,
+   "h": 392
+  },
+  {
+   "id": "p1",
+   "title": "Poster 1 - Un raig de diumenge",
+   "zone": "posters",
+   "x": 100,
+   "y": 2925,
+   "w": 868,
+   "h": 1218
+  },
+  {
+   "id": "p2",
+   "title": "Poster 2 - A les dotze, vermut",
+   "zone": "posters",
+   "x": 1066,
+   "y": 2925,
+   "w": 868,
+   "h": 1218
+  },
+  {
+   "id": "p3",
+   "title": "Poster 3 - Fem-ne un?",
+   "zone": "posters",
+   "x": 2032,
+   "y": 2925,
+   "w": 868,
+   "h": 1218
+  }
+ ]
+}

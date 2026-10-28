@@ -2,12 +2,17 @@
 //   #app-root   the page (skip link, desk, mast, nav, the six sheets, footer). It becomes `inert` while a world is open.
 //   WorldHost   sits next to it, never inside: the open project world (overlay) mounts there.
 //   .pm-grain   one static film-grain overlay above everything.
-// Chrome agent: Mast, PillNav and Footer are placeholders to replace; add Desk, Toast, Intro and CustomCursor here.
+// Chrome (src/components/chrome, docs/api/chrome.md): the Desk, Mast, PillNav (index tabs) and Footer live inside #app-root;
+// Toast, Intro and CustomCursor sit next to it, outside, so they stay visible (and are not inert) above an open world.
 import { useEffect } from 'react'
 import { LayoutGroup, MotionConfig } from 'framer-motion'
+import CustomCursor from './components/chrome/CustomCursor'
+import Desk from './components/chrome/Desk'
 import Footer from './components/chrome/Footer'
+import Intro from './components/chrome/Intro'
 import Mast from './components/chrome/Mast'
 import PillNav from './components/chrome/PillNav'
+import Toast from './components/chrome/ToastLayer' // (not Toast.tsx: on Windows './Toast' would resolve to toast.ts, the store)
 import About from './components/sections/About'
 import Catalog from './components/sections/Catalog'
 import Contact from './components/sections/Contact'
@@ -44,7 +49,7 @@ export default function App() {
           <a className="pm-skip" href="#main">
             {UI.skipLink}
           </a>
-          <div className="pm-desk" aria-hidden="true" />
+          <Desk />
           <Mast />
           <PillNav />
           <main id="main" tabIndex={-1}>
@@ -58,7 +63,10 @@ export default function App() {
           <Footer />
         </div>
         <WorldHost />
+        <Toast />
         <div className="pm-grain" aria-hidden="true" />
+        <Intro />
+        <CustomCursor />
       </LayoutGroup>
     </MotionConfig>
   )

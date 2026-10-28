@@ -1,0 +1,744 @@
+/* ==========================================================================
+   Gotet world: the objects around the board. The chips (menu-card tabs), the tabs at the bottom of the wall, the tour slip, the brand kit
+   drawer, the concept stamp. Prefix w-concept-brand-. Palette variables live at the top of wall.css.
+   ========================================================================== */
+
+.w-concept-brand-main:focus,
+.w-concept-brand-main:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.w-concept-brand-main {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--cb-tinta);
+}
+
+.w-concept-brand .w-concept-brand-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.w-concept-brand-hanging {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: 0;
+  color: var(--cb-rosat);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transform: translate(-50%, -50%);
+}
+
+/* ---- chips: menu-card tabs, then a chalkboard tab for the chosen one ----------------------------------------------------------------- */
+.w-concept-brand-top-ui {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 5;
+  padding: 14px 16px 0;
+  pointer-events: none;
+}
+
+.w-concept-brand-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 8px;
+  pointer-events: none;
+}
+
+.w-concept-brand-chip {
+  --paper: var(--cb-rosat);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  margin: 0;
+  padding: 6px 16px 5px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 13px 13px 4px 4px;
+  background: var(--paper);
+  box-shadow: 3px 4px 0 var(--cb-hard);
+  color: var(--cb-tinta);
+  font-family: var(--cb-utility);
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    transform 0.2s cubic-bezier(0.3, 1.4, 0.5, 1),
+    box-shadow 0.15s ease-out;
+}
+
+.w-concept-brand-chip[data-paper='mantega'] {
+  --paper: var(--cb-mantega);
+}
+
+.w-concept-brand-chip[data-paper='oliva'] {
+  --paper: var(--cb-oliva);
+}
+
+@media (hover: hover) {
+  .w-concept-brand-chip:hover {
+    transform: translateY(-3px) rotate(-1deg);
+    box-shadow: 3px 7px 0 var(--cb-hard);
+  }
+}
+
+.w-concept-brand-chip:active {
+  transform: translateY(1px);
+  box-shadow: 1px 1px 0 var(--cb-hard);
+}
+
+.w-concept-brand-chip {
+  gap: 9px;
+}
+
+/* the count: knocked-out numerals in a small Tinta chip, like the count chips on the cabinet's tabs */
+.w-concept-brand-chip-n {
+  padding: 3px 5px 2px;
+  border-radius: 5px;
+  background: var(--cb-tinta);
+  color: var(--cb-rosat);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.w-concept-brand-chip[aria-pressed='true'] .w-concept-brand-chip-n {
+  background: var(--cb-mantega);
+  color: var(--cb-tinta);
+}
+
+.w-concept-brand-chip[aria-pressed='true'] {
+  border-color: var(--cb-mantega);
+  background: var(--cb-tinta);
+  box-shadow: 4px 5px 0 var(--cb-vermell);
+  color: var(--cb-mantega);
+  transform: translateY(-4px);
+}
+
+.w-concept-brand-chip:focus-visible {
+  outline: 2px solid var(--focus-in, var(--cb-tinta));
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 5px var(--focus-out, var(--cb-rosat)),
+    3px 4px 0 5px var(--cb-hard);
+}
+
+@media (max-width: 899px) {
+  .w-concept-brand-top-ui {
+    padding: 10px 12px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    pointer-events: auto;
+  }
+  .w-concept-brand-chips {
+    flex-wrap: nowrap;
+    width: max-content;
+    padding: 0 4px 8px;
+  }
+  .w-concept-brand-chip {
+    min-height: 44px;
+  }
+}
+
+/* ---- the tabs that stand on the bottom edge of the wall -------------------------------------------------------------------------------- */
+.w-concept-brand-tabs {
+  position: absolute;
+  left: 10px;
+  bottom: 4px;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0 6px;
+  max-width: calc(100% - 200px);
+}
+
+/* narrow screens: the tabs stand in a row above the chips */
+.w-concept-brand[data-sheet='true'] .w-concept-brand-tabs {
+  top: 8px;
+  bottom: auto;
+  left: 10px;
+  max-width: calc(100% - 20px);
+  z-index: 6;
+}
+
+.w-concept-brand[data-sheet='true'] .w-concept-brand-top-ui {
+  padding-top: 58px;
+}
+
+.w-concept-brand[data-sheet='true'][data-touring='true'] .w-concept-brand-top-ui {
+  padding-top: 10px;
+}
+
+.w-concept-brand-tabs .pm-tabbtn {
+  white-space: nowrap;
+}
+
+/* ---- the concept stamp, on the empty wall beside the board ------------------------------------------------------------------------------ */
+.w-concept-brand-stampwrap {
+  position: absolute;
+  left: clamp(14px, 2.4vw, 40px);
+  top: 46%;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease-out;
+}
+
+.w-concept-brand-stampwrap[data-on='true'] {
+  opacity: 1;
+}
+
+@media (max-width: 1099px) {
+  .w-concept-brand-stampwrap {
+    display: none;
+  }
+}
+
+/* ---- the tour: an order docket pinned along the bottom of the wall ------------------------------------------------------------------------- */
+.w-concept-brand-tour {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  z-index: 6;
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  gap: 6px 22px;
+  width: min(calc(100% - 252px), 780px);
+  padding: 32px 26px 14px 24px;
+  color: var(--cb-tinta);
+  filter: drop-shadow(5px 6px 0 var(--cb-hard));
+  transform: rotate(-0.7deg);
+  animation: cb-slip-in 0.42s cubic-bezier(0.3, 1.3, 0.5, 1) both;
+}
+
+.w-concept-brand-tour::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--cb-rosat);
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 18px 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 18px 100%;
+}
+
+@keyframes cb-slip-in {
+  from {
+    opacity: 0;
+    transform: translateY(26px) rotate(1.6deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-0.7deg);
+  }
+}
+
+.w-concept-brand-pin {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 50%;
+  background: var(--cb-vermell);
+  box-shadow: 2px 3px 0 var(--cb-hard);
+}
+
+.w-concept-brand-pin::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  width: 6px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--cb-rosat);
+}
+
+.w-concept-brand-tour-side {
+  align-self: start;
+}
+
+.w-concept-brand-tour-count {
+  display: grid;
+  gap: 2px;
+  margin: 0 0 10px;
+  color: var(--cb-blau);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-tour-count b {
+  color: var(--cb-vermell);
+  font-family: var(--cb-display);
+  font-size: 44px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.w-concept-brand-tour-count i {
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.w-concept-brand-dots {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-concept-brand-dots li {
+  flex: 1;
+  height: 7px;
+  border: 1.5px solid var(--cb-tinta);
+  border-radius: 3px;
+}
+
+.w-concept-brand-dots li[data-done='true'] {
+  background: var(--cb-blau);
+}
+
+.w-concept-brand-dots li[data-on='true'] {
+  background: var(--cb-vermell);
+}
+
+.w-concept-brand-tour-main {
+  min-width: 0;
+}
+
+.w-concept-brand-tour-title {
+  margin: 0 0 4px;
+  font-family: var(--cb-display);
+  font-size: 28px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 900;
+  line-height: 1.02;
+}
+
+.w-concept-brand-tour-note {
+  margin: 0 0 8px;
+  font-size: 16.5px;
+  line-height: 1.42;
+}
+
+.w-concept-brand-tour-actions {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0 4px;
+  margin-left: -6px;
+}
+
+.w-concept-brand-skip {
+  margin-left: auto;
+  padding: 10px 6px;
+  color: var(--cb-blau);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.w-concept-brand[data-touring='true'] .w-concept-brand-tabs {
+  display: none;
+}
+
+@media (max-width: 1099px) {
+  .w-concept-brand-tour {
+    grid-template-columns: minmax(0, 1fr);
+    width: min(calc(100% - 36px), 640px);
+  }
+  .w-concept-brand-tour-side {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .w-concept-brand-tour-count {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 0;
+  }
+  .w-concept-brand-tour-count b {
+    font-size: 30px;
+  }
+  .w-concept-brand-dots {
+    flex: 1;
+  }
+}
+
+.w-concept-brand[data-sheet='true'] .w-concept-brand-tour {
+  left: 12px;
+  right: 12px;
+  bottom: 88px;
+  width: auto;
+  padding: 28px 18px 10px;
+}
+
+/* ---- brand kit drawer -------------------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-kit {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 9;
+  display: flex;
+  flex-direction: column;
+  width: min(660px, 100%);
+  background: var(--cb-rosat);
+  box-shadow: 8px 0 0 var(--cb-hard);
+  color: var(--cb-tinta);
+  animation: cb-drawer-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.w-concept-brand-kit::after {
+  content: '';
+  position: absolute;
+  inset: 8px 8px 8px 8px;
+  border: 3px solid var(--cb-blau);
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+@keyframes cb-drawer-in {
+  from {
+    transform: translateX(-102%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.w-concept-brand-kit-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 26px 26px 6px;
+}
+
+.w-concept-brand-kit-scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 0 28px 34px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--cb-blau) transparent;
+  scrollbar-width: thin;
+}
+
+.w-concept-brand-kit-scroll:focus-visible {
+  outline: 3px solid var(--cb-blau);
+  outline-offset: -10px;
+  box-shadow: none;
+}
+
+.w-concept-brand-roles {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15.5px;
+  line-height: 1.4;
+}
+
+.w-concept-brand-roles b {
+  font-weight: 800;
+}
+
+.w-concept-brand-ratio {
+  display: flex;
+  height: 34px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.w-concept-brand-ratio span + span {
+  border-left: 2px solid var(--cb-tinta);
+}
+
+.w-concept-brand-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+.w-concept-brand-legend b {
+  font-variant-numeric: tabular-nums;
+}
+
+.w-concept-brand-dot {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  margin-right: 6px;
+  border: 2px solid var(--cb-tinta);
+  border-radius: 50%;
+  vertical-align: -1px;
+}
+
+.w-concept-brand-contrast {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 3px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.w-concept-brand-contrast caption {
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.w-concept-brand-contrast th {
+  padding: 4px 2px;
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: left;
+}
+
+.w-concept-brand-contrast thead th {
+  text-align: center;
+}
+
+.w-concept-brand-contrast thead .w-concept-brand-dot {
+  display: block;
+  margin: 0 auto 3px;
+}
+
+.w-concept-brand-contrast td {
+  min-width: 38px;
+  height: 34px;
+  border-radius: 6px;
+  font-weight: 800;
+}
+
+.w-concept-brand-contrast td[data-level='ok'],
+.w-concept-brand-key li[data-level='ok'] {
+  background: var(--cb-oliva);
+}
+
+.w-concept-brand-contrast td[data-level='large'],
+.w-concept-brand-key li[data-level='large'] {
+  background: var(--cb-mantega);
+}
+
+.w-concept-brand-contrast td[data-level='no'],
+.w-concept-brand-key li[data-level='no'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--cb-tinta);
+  color: var(--cb-tinta);
+  text-decoration: line-through;
+}
+
+.w-concept-brand-contrast td[data-level='same'] {
+  background: repeating-linear-gradient(135deg, var(--cb-tinta) 0 2px, transparent 2px 7px);
+  opacity: 0.35;
+}
+
+.w-concept-brand-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.w-concept-brand-key li {
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+
+.w-concept-brand-specimens {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.w-concept-brand-specimen {
+  padding: 16px 16px 14px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 12px;
+  background: var(--cb-mantega);
+}
+
+.w-concept-brand-specimen[data-utility='true'] {
+  background: var(--cb-blau);
+  color: var(--cb-rosat);
+}
+
+.w-concept-brand-specimen-big {
+  margin: 0;
+  font-size: 76px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 900;
+  line-height: 0.9;
+}
+
+.w-concept-brand-specimen-name {
+  margin: 8px 0 2px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-specimen-line {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 72;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  line-height: 1.1;
+}
+
+.w-concept-brand-specimen-line em {
+  font-style: italic;
+  font-weight: 600;
+}
+
+.w-concept-brand-specimen-meta {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.w-concept-brand-family {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: 14px 12px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.w-concept-brand-family li {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  font-size: 13.5px;
+  line-height: 1.3;
+}
+
+.w-concept-brand-family b {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.w-concept-brand-family-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 108px;
+  padding: 10px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.w-concept-brand-family-tile img {
+  display: block;
+  max-width: 100%;
+  max-height: 84px;
+  width: auto;
+  height: auto;
+}
+
+@media (max-width: 899px) {
+  .w-concept-brand-kit {
+    width: 100%;
+  }
+}
+
+/* ---- the rail: from 1100 px wide and 700 px tall the chips stand in a column on the left edge, like labels on a menu board ------------------ */
+.w-concept-brand[data-rail='true'] .w-concept-brand-top-ui {
+  top: 0;
+  bottom: 0;
+  right: auto;
+  padding: 16px 0 0 0;
+}
+
+.w-concept-brand[data-rail='true'] .w-concept-brand-chips {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.w-concept-brand[data-rail='true'] .w-concept-brand-chip {
+  min-height: 40px;
+  padding: 6px 18px 5px 14px;
+  border-radius: 4px 14px 14px 4px;
+  margin-left: 0;
+}
+
+.w-concept-brand[data-rail='true'] .w-concept-brand-chip:nth-child(odd) {
+  margin-left: 6px;
+}
+
+@media (hover: hover) {
+  .w-concept-brand[data-rail='true'] .w-concept-brand-chip:hover {
+    transform: translateX(6px) rotate(-0.8deg);
+    box-shadow: 6px 4px 0 var(--cb-hard);
+  }
+}
+
+.w-concept-brand[data-rail='true'] .w-concept-brand-chip[aria-pressed='true'] {
+  transform: translateX(10px);
+  box-shadow: 5px 5px 0 var(--cb-vermell);
+}
+
+.w-concept-brand[data-rail='true'] .w-concept-brand-stampwrap {
+  top: auto;
+  bottom: 118px;
+  left: 22px;
+}
+
+@media (pointer: coarse) {
+  .w-concept-brand-skip {
+    min-height: 44px;
+  }
+  .w-concept-brand-chip {
+    min-height: 44px;
+  }
+}

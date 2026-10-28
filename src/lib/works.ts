@@ -119,7 +119,7 @@ export const WORKS: WorkMeta[] = [
     roles: ['Author', 'Art direction', 'Publishing'],
     tools: ['AI image tools', 'Custom book engine'],
     blurb:
-      'A murder-mystery word-search book I wrote, art-directed and published myself: 80 cases, 214 pages, available on Amazon.',
+      'A murder-mystery word-search book: written with AI help, art-directed and published by me. 80 cases, 214 pages, on Amazon.',
     color: '#8A1B3D',
     ink: '#FFF2DA',
     thumb: '/works/spelled-guilty/thumb.webp',
@@ -211,7 +211,7 @@ export const WORKS: WorkMeta[] = [
     categories: ['editorial', 'illustration'],
     roles: ['Art direction', 'Presentation design', 'Illustration'],
     tools: ['AI-assisted'],
-    blurb: "A fictional client's portfolio deck in five slides: hand-drawn, warm and easy to say yes to.",
+    blurb: 'A fictional client’s portfolio deck in five slides: hand-drawn, warm and easy to say yes to.',
     color: '#FBE79A',
     ink: '#17101B',
     thumb: '/works/concept-portfolio/thumb.webp',

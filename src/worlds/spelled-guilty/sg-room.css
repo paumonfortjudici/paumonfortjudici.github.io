@@ -1,0 +1,380 @@
+/* ==========================================================================
+   Exhibit A: the room. A dark oxblood wall with blind-slat light, a desk lip, a giant keyline title, and the paperback
+   standing on the desk as a CSS-3D object. The flashlight (sg-base.css) reveals all of it; with the lights on this is the
+   lit scene.
+   ========================================================================== */
+
+.w-sg-room {
+  /* two bands: the wall (the title and the one honest line) and the desk (the tab that opens the case, the paperback's feet) */
+  --desk-h: clamp(108px, 14vh, 150px);
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(0, 0.82fr);
+  grid-template-rows: minmax(0, 1fr) var(--desk-h);
+  min-height: var(--sg-vh, calc(100dvh - 56px));
+  padding: clamp(64px, 8vh, 96px) var(--sg-pad) 0;
+  overflow: clip;
+  /* the wall: oxblood-black, a lamp on the right, the corners sinking away */
+  background:
+    radial-gradient(70% 80% at 76% 44%, rgb(var(--sg-lamp) / 0.2), rgb(var(--sg-lamp) / 0.05) 52%, transparent 74%),
+    radial-gradient(120% 90% at 50% 0%, var(--sg-wall-hi), var(--sg-wall) 62%);
+}
+
+/* light through venetian blinds: warm slats at a slant, fading towards the desk */
+.w-sg-blinds {
+  position: absolute;
+  inset: -10% -10% 18% -10%;
+  z-index: -1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    -14deg,
+    rgb(var(--sg-lamp) / 0) 0,
+    rgb(var(--sg-lamp) / 0.13) 10px,
+    rgb(var(--sg-lamp) / 0.13) 30px,
+    rgb(var(--sg-lamp) / 0) 40px,
+    transparent 74px
+  );
+  -webkit-mask-image: linear-gradient(90deg, transparent 6%, #000 44%, #000 100%), linear-gradient(180deg, #000 55%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 6%, #000 44%, #000 100%), linear-gradient(180deg, #000 55%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* the front edge of the desk: leather, a lit top lip, the book stands on it */
+.w-sg-deskline {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: -1;
+  height: var(--desk-h);
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgb(var(--sg-lamp) / 0.2), transparent 3px),
+    radial-gradient(60% 140% at 76% 0%, rgb(var(--sg-lamp) / 0.16), transparent 70%),
+    linear-gradient(180deg, var(--sg-leather-hi), var(--sg-desk) 70%);
+  box-shadow: 0 -22px 40px -14px rgb(0 0 0 / 0.55);
+}
+
+/* ---- the poster copy ------------------------------------------------------------------------------------------------- */
+.w-sg-poster {
+  position: relative;
+  z-index: 1;
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: grid;
+  gap: clamp(14px, 1.8vh, 24px);
+  justify-items: start;
+  align-content: end;
+  align-self: stretch;
+  padding-bottom: clamp(16px, 2.6vh, 30px);
+  pointer-events: none;
+}
+
+.w-sg-poster > * {
+  pointer-events: auto;
+}
+
+/* the strip and the line under it travel together */
+.w-sg-copy {
+  display: grid;
+  gap: clamp(14px, 1.8vh, 24px);
+  justify-items: start;
+}
+
+/* the desk: the tab that opens the case lies on its front edge, level with the book's pose tabs */
+.w-sg-deskbar {
+  position: relative;
+  z-index: 3;
+  grid-column: 1;
+  grid-row: 2;
+  align-self: end;
+  padding-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 14px;
+}
+
+.w-sg-title {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  font-size: clamp(4.4rem, 1rem + 11.6vw, 15.5rem);
+  line-height: 0.84;
+  pointer-events: none;
+  /* the title is a plain heading to assistive tech; the two words are one visual lockup */
+  text-shadow: 0.035em 0.05em 0 rgb(8 2 5 / 0.7);
+}
+
+.w-sg-title__a {
+  color: var(--sg-book-cream);
+}
+
+.w-sg-title__b {
+  color: var(--sg-red);
+  margin-top: -0.02em;
+}
+
+.w-sg-blurb {
+  max-width: 30rem;
+  margin: 0;
+  color: rgb(255 242 218 / 0.9);
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+  text-shadow: 0 2px 14px rgb(0 0 0 / 0.7);
+}
+
+/* ---- the book on the desk -------------------------------------------------------------------------------------------- */
+.w-sg-book-wrap {
+  position: relative;
+  z-index: 2;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: grid;
+  /* the stage is wider than its column (room to turn in): centre it on the column instead of letting it spill to the right */
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  align-content: end;
+  align-self: end;
+  gap: 12px;
+  padding-bottom: 20px;
+  padding-left: clamp(0px, 4vw - 28px, 40px);
+  pointer-events: none;
+}
+
+.w-sg-book-wrap > * {
+  pointer-events: auto;
+}
+
+.w-sg-stage {
+  --bw: clamp(210px, min(29vw, 46vh), 500px);
+  --bh: calc(var(--bw) * 1.5005);
+  --bt: calc(var(--bw) * 0.0803);
+  position: relative;
+  width: calc(var(--bw) * 1.5);
+  height: calc(var(--bh) * 1.06);
+  perspective: calc(var(--bw) * 4.2);
+  perspective-origin: 50% 42%;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  border-radius: 6px;
+}
+
+.w-sg-stage[data-dragging] {
+  cursor: grabbing;
+}
+
+.w-sg-ground {
+  position: absolute;
+  left: 50%;
+  bottom: 1%;
+  width: calc(var(--bw) * 1.12);
+  height: calc(var(--bw) * 0.17);
+  margin-left: calc(var(--bw) * -0.56);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.95), rgb(0 0 0 / 0.55) 58%, transparent);
+  filter: blur(7px);
+  pointer-events: none;
+}
+
+.w-sg-orbit {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+
+.w-sg-book {
+  position: absolute;
+  left: 50%;
+  top: 47%;
+  width: var(--bw);
+  height: var(--bh);
+  margin-left: calc(var(--bw) / -2);
+  margin-top: calc(var(--bh) / -2);
+  transform-style: preserve-3d;
+}
+
+.w-sg-face {
+  position: absolute;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.w-sg-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  pointer-events: none;
+}
+
+.w-sg-face--front {
+  inset: 0;
+  transform: translateZ(calc(var(--bt) / 2));
+  border-radius: 1px 3px 3px 1px;
+}
+
+.w-sg-face--back {
+  inset: 0;
+  transform: rotateY(180deg) translateZ(calc(var(--bt) / 2));
+  border-radius: 3px 1px 1px 3px;
+}
+
+.w-sg-face--spine {
+  top: 0;
+  left: calc((var(--bw) - var(--bt)) / 2);
+  width: var(--bt);
+  height: 100%;
+  transform: rotateY(-90deg) translateZ(calc(var(--bw) / 2));
+}
+
+/* the paper edges: hundreds of pages, a hair inside the boards */
+.w-sg-face--edge,
+.w-sg-face--top,
+.w-sg-face--bottom {
+  background-color: #efe5cb;
+}
+
+.w-sg-face--edge {
+  top: 0.5%;
+  left: calc((var(--bw) - var(--bt)) / 2 + 2px);
+  width: calc(var(--bt) - 4px);
+  height: 99%;
+  transform: rotateY(90deg) translateZ(calc(var(--bw) / 2 - 3px));
+  background-image:
+    linear-gradient(90deg, rgb(0 0 0 / 0.28), transparent 26%, transparent 74%, rgb(0 0 0 / 0.3)),
+    repeating-linear-gradient(90deg, #f6eed7 0 1px, #cfc29b 1px 2px);
+}
+
+.w-sg-face--top,
+.w-sg-face--bottom {
+  left: 0.6%;
+  width: 98.8%;
+  height: calc(var(--bt) - 4px);
+  top: calc((var(--bh) - var(--bt)) / 2 + 2px);
+  background-image:
+    linear-gradient(180deg, rgb(0 0 0 / 0.3), transparent 26%, transparent 74%, rgb(0 0 0 / 0.32)),
+    repeating-linear-gradient(180deg, #f6eed7 0 1px, #cfc29b 1px 2px);
+}
+
+.w-sg-face--top {
+  transform: rotateX(90deg) translateZ(calc(var(--bh) / 2 - 3px));
+}
+
+.w-sg-face--bottom {
+  transform: rotateX(-90deg) translateZ(calc(var(--bh) / 2 - 3px));
+}
+
+/* matte cover: a soft slow sheen that slides across the front when the book turns */
+.w-sg-sheen {
+  position: absolute;
+  inset: 0 -60%;
+  pointer-events: none;
+  background: linear-gradient(104deg, transparent 38%, rgb(255 255 255 / 0.12) 48%, rgb(255 255 255 / 0.04) 56%, transparent 66%);
+  mix-blend-mode: soft-light;
+}
+
+.w-sg-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #000, rgb(0 0 0 / 0.15) 40%, rgb(0 0 0 / 0.4));
+}
+
+.w-sg-poses {
+  display: flex;
+  gap: 8px;
+}
+
+/* ---- tablet: the title across the top, then the words on the left and the book on the right ------------------------- */
+@media (max-width: 900px) {
+  .w-sg-room {
+    --desk-h: 112px;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    grid-template-rows: auto auto minmax(0, 1fr) var(--desk-h);
+    gap: 10px clamp(12px, 3vw, 28px);
+    padding-top: 76px;
+  }
+  .w-sg-poster {
+    display: contents;
+  }
+  .w-sg-poster .w-sg-tag {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+  .w-sg-title {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    font-size: clamp(3.4rem, 0.5rem + 19.4vw, 10.5rem);
+  }
+  /* the words sit level with the middle of the book, not at the top of a void */
+  .w-sg-copy {
+    grid-column: 1;
+    grid-row: 3;
+    align-self: center;
+  }
+  .w-sg-deskbar {
+    grid-column: 1;
+    grid-row: 4;
+  }
+  .w-sg-book-wrap {
+    grid-column: 2;
+    grid-row: 3 / span 2;
+    align-self: end;
+  }
+  .w-sg-stage {
+    --bw: clamp(160px, min(42vw, 38vh), 350px);
+  }
+}
+
+/* ---- phone: one column, the book right under the title so the first screen shows the product ------------------------------ */
+@media (max-width: 600px) {
+  .w-sg-room {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-rows: auto;
+    gap: 10px;
+    padding-bottom: 34px;
+  }
+  .w-sg-poster .w-sg-tag,
+  .w-sg-title,
+  .w-sg-deskbar {
+    grid-column: 1;
+  }
+  .w-sg-title {
+    font-size: clamp(3.4rem, 0.5rem + 17.6vw, 9rem);
+  }
+  .w-sg-copy {
+    display: contents;
+  }
+  .w-sg-copy .w-sg-strip {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .w-sg-book-wrap {
+    grid-column: 1;
+    grid-row: 4;
+    align-self: center;
+    margin-top: 6px;
+    padding-bottom: 0;
+  }
+  .w-sg-copy .w-sg-blurb {
+    grid-column: 1;
+    grid-row: 5;
+    margin-top: 6px;
+  }
+  .w-sg-deskbar {
+    grid-row: 6;
+    padding-bottom: 0;
+  }
+  .w-sg-stage {
+    --bw: clamp(150px, min(44vw, 30vh), 300px);
+  }
+  /* no desk line behind the paragraph; the book's own shadow is the desk */
+  .w-sg-deskline {
+    display: none;
+  }
+}

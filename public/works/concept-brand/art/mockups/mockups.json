@@ -1,0 +1,409 @@
+{
+ "note": "Concept project - art-directed by Pau, built with AI-assisted tools. Fictional brand \"gotet\". Each image is its board cell at 2x with transparent rounded corners; place 1:1 at cell.x/y with size cell.w x cell.h.",
+ "board": {
+  "w": 3000,
+  "h": 4243
+ },
+ "mockups": [
+  {
+   "id": "m01",
+   "file": "m01-shopfront.webp",
+   "title": "Shopfront / awning / sign",
+   "tile": "Mantega",
+   "grid": "c0-2 r0-1",
+   "cell": {
+    "x": 100,
+    "y": 1620,
+    "w": 1035,
+    "h": 392
+   },
+   "px": {
+    "w": 2070,
+    "h": 784
+   },
+   "bytes": 106342,
+   "webpQuality": 69,
+   "transparentCorners": true
+  },
+  {
+   "id": "m02",
+   "file": "m02-social-greeting.webp",
+   "title": "Social tile 1 - greeting",
+   "tile": "Rosat",
+   "grid": "c3 r0-1",
+   "cell": {
+    "x": 1159,
+    "y": 1620,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 106582,
+   "webpQuality": 86,
+   "transparentCorners": true
+  },
+  {
+   "id": "m03",
+   "file": "m03-social-xips.webp",
+   "title": "Social tile 2 - crisps",
+   "tile": "Vermell",
+   "grid": "c4 r0-1",
+   "cell": {
+    "x": 1512,
+    "y": 1620,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 103872,
+   "webpQuality": 91,
+   "transparentCorners": true
+  },
+  {
+   "id": "m04",
+   "file": "m04-social-raig.webp",
+   "title": "Social tile 3 - splash",
+   "tile": "Oliva",
+   "grid": "c5 r0-1",
+   "cell": {
+    "x": 1865,
+    "y": 1620,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 107712,
+   "webpQuality": 91,
+   "transparentCorners": true
+  },
+  {
+   "id": "m05",
+   "file": "m05-cups.webp",
+   "title": "Takeaway cups x3",
+   "tile": "Rosat",
+   "grid": "c6-7 r0-1",
+   "cell": {
+    "x": 2218,
+    "y": 1620,
+    "w": 682,
+    "h": 392
+   },
+   "px": {
+    "w": 1364,
+    "h": 784
+   },
+   "bytes": 106260,
+   "webpQuality": 79,
+   "transparentCorners": true
+  },
+  {
+   "id": "m06",
+   "file": "m06-menu.webp",
+   "title": "Menu card A5",
+   "tile": "Oliva",
+   "grid": "c0-1 r2-4",
+   "cell": {
+    "x": 100,
+    "y": 2036,
+    "w": 682,
+    "h": 600
+   },
+   "px": {
+    "w": 1364,
+    "h": 1200
+   },
+   "bytes": 106032,
+   "webpQuality": 76,
+   "transparentCorners": true
+  },
+  {
+   "id": "m07",
+   "file": "m07-loyalty.webp",
+   "title": "Loyalty card \"Targeta d'olives\"",
+   "tile": "Mantega",
+   "grid": "c0 r5",
+   "cell": {
+    "x": 100,
+    "y": 2660,
+    "w": 329,
+    "h": 184
+   },
+   "px": {
+    "w": 658,
+    "h": 368
+   },
+   "bytes": 75446,
+   "webpQuality": 96,
+   "transparentCorners": true
+  },
+  {
+   "id": "m08",
+   "file": "m08-matchbooks.webp",
+   "title": "Matchbooks x2",
+   "tile": "Vermell",
+   "grid": "c1 r5",
+   "cell": {
+    "x": 453,
+    "y": 2660,
+    "w": 329,
+    "h": 184
+   },
+   "px": {
+    "w": 658,
+    "h": 368
+   },
+   "bytes": 66910,
+   "webpQuality": 96,
+   "transparentCorners": true
+  },
+  {
+   "id": "m09",
+   "file": "m09-bottle.webp",
+   "title": "House vermut bottle",
+   "tile": "Rosat",
+   "grid": "c2 r2-4",
+   "cell": {
+    "x": 806,
+    "y": 2036,
+    "w": 329,
+    "h": 600
+   },
+   "px": {
+    "w": 658,
+    "h": 1200
+   },
+   "bytes": 107198,
+   "webpQuality": 85,
+   "transparentCorners": true
+  },
+  {
+   "id": "m10",
+   "file": "m10-tags.webp",
+   "title": "Price tags x3",
+   "tile": "Oliva",
+   "grid": "c2 r5",
+   "cell": {
+    "x": 806,
+    "y": 2660,
+    "w": 329,
+    "h": 184
+   },
+   "px": {
+    "w": 658,
+    "h": 368
+   },
+   "bytes": 65472,
+   "webpQuality": 96,
+   "transparentCorners": true
+  },
+  {
+   "id": "m11",
+   "file": "m11-siphon.webp",
+   "title": "House siphon",
+   "tile": "Mantega",
+   "grid": "c3 r2-4",
+   "cell": {
+    "x": 1159,
+    "y": 2036,
+    "w": 329,
+    "h": 600
+   },
+   "px": {
+    "w": 658,
+    "h": 1200
+   },
+   "bytes": 107450,
+   "webpQuality": 86,
+   "transparentCorners": true
+  },
+  {
+   "id": "m12",
+   "file": "m12-caps.webp",
+   "title": "Crown caps x4",
+   "tile": "Tinta",
+   "grid": "c3 r5",
+   "cell": {
+    "x": 1159,
+    "y": 2660,
+    "w": 329,
+    "h": 184
+   },
+   "px": {
+    "w": 658,
+    "h": 368
+   },
+   "bytes": 36478,
+   "webpQuality": 96,
+   "transparentCorners": true
+  },
+  {
+   "id": "m13",
+   "file": "m13-business-cards.webp",
+   "title": "Business cards",
+   "tile": "Rosat",
+   "grid": "c4 r2-3",
+   "cell": {
+    "x": 1512,
+    "y": 2036,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 112130,
+   "webpQuality": 94,
+   "transparentCorners": true
+  },
+  {
+   "id": "m14",
+   "file": "m14-coasters.webp",
+   "title": "Coasters x2",
+   "tile": "Vermell",
+   "grid": "c4 r4-5",
+   "cell": {
+    "x": 1512,
+    "y": 2452,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 108120,
+   "webpQuality": 91,
+   "transparentCorners": true
+  },
+  {
+   "id": "m15",
+   "file": "m15-glass.webp",
+   "title": "Vermut glass",
+   "tile": "Tinta",
+   "grid": "c5 r2-3",
+   "cell": {
+    "x": 1865,
+    "y": 2036,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 33554,
+   "webpQuality": 96,
+   "transparentCorners": true
+  },
+  {
+   "id": "m16",
+   "file": "m16-napkin.webp",
+   "title": "Paper napkin",
+   "tile": "Mantega",
+   "grid": "c5 r4-5",
+   "cell": {
+    "x": 1865,
+    "y": 2452,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 110168,
+   "webpQuality": 93,
+   "transparentCorners": true
+  },
+  {
+   "id": "m17",
+   "file": "m17-tote.webp",
+   "title": "Tote bag",
+   "tile": "Oliva",
+   "grid": "c6 r2-3",
+   "cell": {
+    "x": 2218,
+    "y": 2036,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 98804,
+   "webpQuality": 96,
+   "transparentCorners": true
+  },
+  {
+   "id": "m18",
+   "file": "m18-apron.webp",
+   "title": "Apron",
+   "tile": "Rosat",
+   "grid": "c6 r4-5",
+   "cell": {
+    "x": 2218,
+    "y": 2452,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 107754,
+   "webpQuality": 94,
+   "transparentCorners": true
+  },
+  {
+   "id": "m19",
+   "file": "m19-flyer.webp",
+   "title": "Flyer A6",
+   "tile": "Mantega",
+   "grid": "c7 r2-3",
+   "cell": {
+    "x": 2571,
+    "y": 2036,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 112450,
+   "webpQuality": 94,
+   "transparentCorners": true
+  },
+  {
+   "id": "m20",
+   "file": "m20-stickers.webp",
+   "title": "Sticker set",
+   "tile": "Tinta",
+   "grid": "c7 r4-5",
+   "cell": {
+    "x": 2571,
+    "y": 2452,
+    "w": 329,
+    "h": 392
+   },
+   "px": {
+    "w": 658,
+    "h": 784
+   },
+   "bytes": 99922,
+   "webpQuality": 96,
+   "transparentCorners": true
+  }
+ ]
+}

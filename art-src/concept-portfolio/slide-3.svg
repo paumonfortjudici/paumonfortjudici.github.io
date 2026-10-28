@@ -186,7 +186,7 @@
   <symbol id="fp-boot-l" viewBox="0 0 200 520"><g transform="translate(200 0) scale(-1 1)"><g mask="url(#fp-m)"><path d="M72 10C122 0 176 22 190 80C198 118 194 160 186 200C180 232 172 256 162 274C150 292 112 290 100 270C84 240 62 216 38 180C12 140 2 96 18 56C28 30 48 14 72 10Z"/><path d="M100 338C102 318 180 316 186 342C192 394 186 450 162 488C148 510 114 512 102 490C88 462 94 394 100 338Z"/></g></g></symbol>
   <symbol id="tape" viewBox="0 0 260 72"><path d="M2 2L258 0L252 10L260 20L253 30L261 40L252 50L260 60L254 72L2 70L9 61L1 51L8 41L0 31L8 21L1 11L8 2Z"/></symbol>
   <symbol id="fx-waves" viewBox="-6 -150 160 300" overflow="visible"><g fill="none" stroke-linecap="round"><path d="M33.71 -28.28A44 44 0 0 1 33.71 28.28M70.48 -59.14A92 92 0 0 1 70.48 59.14M108.78 -91.28A142 142 0 0 1 108.78 91.28"/></g></symbol>
-  <g id="t-projects" font-family="Anybody, 'Arial Black', sans-serif" font-weight="600" font-size="192.89"><text x="0" y="0"><tspan x="-12.54" style="font-stretch:140%">P</tspan><tspan x="163.86" style="font-stretch:70%">R</tspan><tspan x="245.17" style="font-stretch:100%">O</tspan><tspan x="379.52" style="font-stretch:60%">J</tspan><tspan x="446.46" style="font-stretch:150%">E</tspan><tspan x="631.17" style="font-stretch:90%">C</tspan><tspan x="744.88" style="font-stretch:70%">T</tspan><tspan x="820.01" style="font-stretch:100%">S</tspan></text></g>
+  <g id="t-projects" font-family="Anybody, 'Arial Black', sans-serif" font-weight="600" font-size="192.89"><text x="0" y="0"><tspan x="-12.54" style="font-stretch:140%">P</tspan><tspan x="164.04" style="font-stretch:70%">R</tspan><tspan x="248.52" style="font-stretch:100%">O</tspan><tspan x="388.45" style="font-stretch:60%">J</tspan><tspan x="461.71" style="font-stretch:150%">E</tspan><tspan x="634.44" style="font-stretch:90%">C</tspan><tspan x="744.95" style="font-stretch:70%">T</tspan><tspan x="819.78" style="font-stretch:100%">S</tspan></text></g>
 </defs>
 <!--KIT:END-->
 
@@ -312,6 +312,11 @@
 <path d="M46 58C54 46 66 40 80 36" stroke="#F6F0DC" stroke-width="3.5" fill="none" stroke-linecap="round"/>
 <g fill="#C98A62"><circle cx="62" cy="120" r="2.6"/><circle cx="54" cy="122" r="2.6"/><circle cx="70" cy="114" r="2.6"/></g>
 <path d="M2 124L-12 120M0 136L-14 140M4 112L-6 102" stroke="#FDEFAF" stroke-width="4" stroke-linecap="round" fill="none"/>
+<g id="moon-contour" class="ink" stroke-width="6.5" transform="translate(-4.2 3.2)">
+<path d="M160 13.6C150 10.9 136 6 120 6.2C104 7 88 10.6 76 16"/>
+<path d="M9.6 92C7.6 103 7.6 112 7.8 120"/>
+<path d="M8.8 150C9.6 166 13.2 178 19 189C23 196 28 202 34 208"/>
+</g>
 </g></g></g>
 </g>
 <g id="noises" filter="url(#f-rough)"><g transform="rotate(-8 398 516)"><use href="#bst-11" x="329" y="448" width="150" height="150" fill="#101820"/><use href="#bst-11" x="323" y="441" width="150" height="150" fill="#F2C62F"/></g><g transform="rotate(7 946 1206)"><use href="#bst-15" x="878" y="1139" width="148" height="148" fill="#101820"/><use href="#bst-15" x="872" y="1132" width="148" height="148" fill="#F2C62F"/></g><g transform="rotate(-9 112 1352)"><use href="#bst-11" x="50" y="1291" width="136" height="136" fill="#101820"/><use href="#bst-11" x="44" y="1284" width="136" height="136" fill="#F2A29A"/></g></g>
@@ -341,7 +346,7 @@
 <g id="art-front">
 
 </g>
-<g id="chrome"><text x="72" y="112" class="t-sc" font-size="28" fill="#FDEFAF">WORK</text><text x="1008" y="112" class="t-sc" font-size="28" fill="#FDEFAF" text-anchor="end">03 / 05</text></g>
+<g id="chrome"><text x="72" y="112" class="t-sc" font-size="28" fill="#FDEFAF">WORK</text><text x="1010.5" y="112" class="t-sc" font-size="28" fill="#FDEFAF" text-anchor="end">03 / 05</text></g>
 
 <g id="guides" display="none" pointer-events="none" fill="none">
   <rect x="72" y="80" width="936" height="1760" stroke="#FF00AA" stroke-width="2"/>

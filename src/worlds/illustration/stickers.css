@@ -1,0 +1,452 @@
+/* ==========================================================================
+   World 10: the stickers (vinyl margin, art, shadows, the peeling corner), the caption tag and the two tape buttons.
+   The board writes the wrapper's transform and the variables --lift (0..1, can dip below 0: the slap), --r, --s, --ex, --ey-top,
+   --ey-bot and --tag-dx. Only transform, opacity and clip-path change per frame.
+   ========================================================================== */
+
+.w-illustration-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* until the board has measured the layout and given every sticker its place (before the first paint, in a layout effect), nothing shows */
+.w-illustration-stage:not([data-ready]) .w-illustration-stk {
+  visibility: hidden;
+}
+
+/* the wrapper: one sticker canvas (3:4), positioned by the board with a transform about its centre */
+.w-illustration-stk {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--u, 160px);
+  aspect-ratio: 3 / 4;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* the real control: a button that holds the hit shape. Only the vinyl silhouette takes the pointer, so overlapping stickers
+   never steal each other's clicks from their empty corners; touch-action is none there and nowhere else, so the page still
+   scrolls from every other spot. */
+.w-illustration-stk-btn {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  pointer-events: none;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.w-illustration-stk-btn:focus,
+.w-illustration-stk-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.w-illustration-stk-hit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  touch-action: none;
+}
+
+.w-illustration-stk-hit path {
+  fill: transparent;
+  pointer-events: all;
+  touch-action: none;
+  cursor: grab;
+}
+
+.w-illustration-stk[data-mode='held'] .w-illustration-stk-hit path {
+  cursor: grabbing;
+}
+
+.w-illustration-stk[data-locked] .w-illustration-stk-hit path {
+  cursor: pointer;
+}
+
+/* lift: the sticker rises a little under the fingers; the board animates --lift with a spring, so letting go dips below 0 and
+   the sticker slaps down (scale 1.065 to 1, the shadow shrinks) */
+.w-illustration-stk-lift {
+  position: absolute;
+  inset: 0;
+  transform: translateY(calc(var(--lift, 0) * -10px));
+  pointer-events: none;
+}
+
+.w-illustration-stk-shadow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.w-illustration-stk-shadow path {
+  fill: var(--ink);
+}
+
+.w-illustration-stk-shadow--tight {
+  opacity: calc(0.4 - var(--lift, 0) * 0.28);
+  transform: translateY(1.6px);
+  filter: blur(1.3px);
+}
+
+.w-illustration-stk-shadow--soft {
+  opacity: calc(var(--lift, 0) * 0.5);
+  transform: translate(calc(var(--lift, 0) * 7px), calc(var(--lift, 0) * 24px));
+  filter: blur(9px);
+}
+
+.w-illustration-stk-face {
+  position: absolute;
+  inset: 0;
+}
+
+.w-illustration-stk-vinyl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.w-illustration-stk-vinyl path {
+  fill: var(--wi-vinyl);
+  stroke: color-mix(in srgb, var(--wi-brown) 30%, transparent);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+
+.w-illustration-stk-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* the peeling corner: the lifted triangle of the vinyl, reflected across the fold line, showing the white back */
+.w-illustration-stk-flap {
+  position: absolute;
+  inset: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+/* hover (a real pointer only): the sticker's corner lifts a touch, the way a fingernail would find it. The board never writes
+   the face's transform, so this is free to transition. */
+.w-illustration-stk-face {
+  transform-origin: 50% 50%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .w-illustration-stk:not([data-locked]):not([data-mode='held']):not([data-mode='glide']) .w-illustration-stk-btn:hover + .w-illustration-stk-lift .w-illustration-stk-face {
+    transform: translateY(-3px) rotate(-0.8deg);
+    transition: transform 0.16s var(--ease-out);
+  }
+
+  .w-illustration-stk:not([data-locked]):not([data-mode='held']):not([data-mode='glide']) .w-illustration-stk-btn:hover + .w-illustration-stk-lift .w-illustration-stk-shadow--tight {
+    opacity: 0.2;
+    transform: translateY(4px);
+    transition:
+      transform 0.16s var(--ease-out),
+      opacity 0.16s var(--ease-out);
+  }
+}
+
+/* keyboard focus: the two-tone ring follows the die-cut silhouette */
+.w-illustration-stk-btn:focus-visible + .w-illustration-stk-lift .w-illustration-stk-face {
+  filter: var(--pm-ring);
+}
+
+.w-illustration-stk-btn[aria-pressed='true'] + .w-illustration-stk-lift .w-illustration-stk-face {
+  filter: var(--pm-ring);
+}
+
+/* ---- the caption tag and the tape buttons: upright, unscaled, hung from the sticker's centre ------------------------------- */
+.w-illustration-adorn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 4;
+  width: 0;
+  height: 0;
+  transform: rotate(calc(var(--r, 0) * -1deg)) scale(calc(1 / var(--s, 1)));
+  pointer-events: none;
+}
+
+.w-illustration-tag {
+  position: absolute;
+  left: var(--tag-dx, 0px);
+  top: calc(var(--ey-bot, 90px) + 20px);
+  width: min(344px, calc(100vw - 28px));
+  padding: 16px 14px 12px;
+  border-top: 10px solid var(--accent);
+  border-radius: 10px 10px 12px 12px;
+  background-color: var(--paper);
+  background-image: var(--pm-grain);
+  color: var(--ink);
+  box-shadow: 0 3px 0 var(--cream-2), 0 18px 22px -10px color-mix(in srgb, var(--ink) 60%, transparent);
+  transform: translateX(-50%) rotate(-1.2deg);
+  pointer-events: auto;
+  cursor: default;
+}
+
+/* the string from the sticker to the tag */
+.w-illustration-tag::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  width: 3px;
+  height: 20px;
+  margin-left: -1.5px;
+  border-radius: 2px;
+  background: repeating-linear-gradient(-30deg, var(--ink) 0 3px, color-mix(in srgb, var(--ink) 55%, var(--paper)) 3px 6px);
+}
+
+.w-illustration-tag-hole {
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: var(--desk);
+  box-shadow: 0 0 0 3px var(--paper), 0 0 0 4.5px var(--cream-2);
+}
+
+/* no room below the sticker inside the visible area: the tag hangs above it instead */
+.w-illustration-stk[data-tag='above'] .w-illustration-tag {
+  top: auto;
+  bottom: calc(var(--ey-top, 90px) + 20px);
+}
+
+.w-illustration-stk[data-tag='above'] .w-illustration-tag::before {
+  bottom: auto;
+  top: calc(100% + 8px);
+}
+
+.w-illustration-stk[data-tag='above'] .w-illustration-tag-hole {
+  top: auto;
+  bottom: -6px;
+}
+
+.w-illustration-tag-close {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.w-illustration-tag-close:hover {
+  background: var(--cream-2);
+}
+
+@media (pointer: coarse) {
+  .w-illustration-tag-close {
+    width: 44px;
+    height: 44px;
+    right: 2px;
+    top: 2px;
+  }
+}
+
+.w-illustration-tag-caption {
+  margin: 4px 36px 8px 0;
+  font-family: 'Cherry Bomb One', var(--font-body);
+  font-size: 1.5rem;
+  line-height: 1.04;
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+/* keyboard focus: caption and key hints only */
+.w-illustration-tag--caption {
+  width: min(310px, calc(100vw - 28px));
+  padding-bottom: 12px;
+  pointer-events: none;
+}
+
+.w-illustration-tag--caption .w-illustration-tag-caption {
+  margin-right: 0;
+}
+
+.w-illustration-tag-keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0;
+  font-size: var(--fs-caption);
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--ink) 86%, transparent);
+}
+
+.w-illustration-tag-keys span {
+  white-space: nowrap;
+}
+
+.w-illustration-tag-keys kbd {
+  display: inline-block;
+  margin: 0 3px 0 0;
+  padding: 0 6px;
+  border-radius: 5px;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+}
+
+.w-illustration-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.w-illustration-tag-swatch {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.w-illustration-tag-meta {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.w-illustration-tag-size {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.w-illustration-tag-size button {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--cream-2);
+  color: var(--ink);
+  font-size: 1.1rem;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--cream-2) 60%, var(--ink));
+}
+
+.w-illustration-tag-size button:active {
+  transform: translateY(1px);
+}
+
+@media (pointer: coarse) {
+  .w-illustration-tag-size button {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+.w-illustration-tag-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 6px 4px;
+  padding-bottom: 0;
+}
+
+/* tape buttons: two strips of washi in the sticker's accent, stuck across its top corners like the tape that holds a sticker down.
+   They turn it 20 degrees either way. The button is 48 px tall for fingers; the strip is the pseudo-element. */
+.w-illustration-tape {
+  position: absolute;
+  top: calc(var(--ey-top, 90px) * -1 - 6px);
+  display: grid;
+  place-items: center;
+  width: 74px;
+  height: 48px;
+  padding: 0;
+  color: var(--ink);
+  font-size: 1.35rem;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.w-illustration-tape::before {
+  content: '';
+  position: absolute;
+  inset: 8px 0;
+  background-color: color-mix(in srgb, var(--accent) 58%, var(--wi-white));
+  background-image: repeating-linear-gradient(-45deg, color-mix(in srgb, var(--wi-white) 50%, transparent) 0 5px, transparent 5px 11px), var(--pm-grain);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 20%, transparent), 0 6px 8px -4px color-mix(in srgb, var(--ink) 35%, transparent);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 4px) 17%, 100% 33%, calc(100% - 4px) 50%, 100% 67%, calc(100% - 4px) 83%, 100% 100%, 0 100%, 4px 83%, 0 67%, 4px 50%, 0 33%, 4px 17%);
+  transition: transform 0.16s var(--ease-out);
+}
+
+.w-illustration-tape svg {
+  position: relative;
+}
+
+.w-illustration-tape--left {
+  left: calc(var(--ex, 80px) * -0.52 - 37px);
+  transform: rotate(-34deg);
+}
+
+.w-illustration-tape--right {
+  left: calc(var(--ex, 80px) * 0.52 - 37px);
+  transform: rotate(34deg);
+}
+
+/* the arrow stays upright whatever the tape does */
+.w-illustration-tape--left svg {
+  transform: rotate(34deg);
+}
+
+.w-illustration-tape--right svg {
+  transform: rotate(-34deg);
+}
+
+.w-illustration-tape:hover::before,
+.w-illustration-tape:focus-visible::before {
+  transform: translateY(-2px);
+}
+
+.w-illustration-tape:active::before {
+  transform: translateY(1px);
+}

@@ -1,0 +1,488 @@
+/* ==========================================================================
+   plate 3 "Colour": proportion bar, paint chips (click = copy hex), contrast pairs for the chosen colour.
+   ========================================================================== */
+
+.w-plana-colour {
+  container: w-plana-colour / inline-size;
+  display: grid;
+  gap: clamp(1.4rem, 2.4cqw, 2.2rem);
+  align-content: start;
+  padding: clamp(0.9rem, 1.9cqw, 1.7rem);
+  padding-bottom: clamp(1.1rem, 2.2cqw, 1.9rem);
+}
+
+/* ---- the proportion bar ------------------------------------------------------------------------------------------------ */
+.w-plana-bar {
+  position: relative;
+  display: flex;
+  height: clamp(5.5rem, 11cqw, 9.5rem);
+  border: var(--outline) solid var(--night);
+  border-radius: 16px;
+}
+
+.w-plana-bar__seg {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex: 1 1 0;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.6rem clamp(0.4rem, 1cqw, 0.9rem) 0.55rem;
+  border-left: var(--outline) solid var(--night);
+}
+
+.w-plana-bar__seg:first-child {
+  border-left: 0;
+  border-radius: 12px 0 0 12px;
+}
+
+.w-plana-bar__seg:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+.w-plana-bar__seg[data-id='paper'] {
+  background: var(--paper);
+  color: var(--night);
+}
+.w-plana-bar__seg[data-id='holm'] {
+  background: var(--holm);
+  color: var(--paper);
+}
+.w-plana-bar__seg[data-id='wheat'] {
+  background: var(--wheat);
+  color: var(--night);
+}
+.w-plana-bar__seg[data-id='poppy'] {
+  background: var(--poppy);
+  color: var(--night);
+}
+.w-plana-bar__seg[data-id='night'] {
+  background: var(--night);
+  color: var(--paper);
+}
+
+.w-plana-bar__name {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 2cqw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* the narrow segments set their name upright along the bar's height (Night always; the others when the plate is narrow) */
+.w-plana-bar__seg[data-id='night'] .w-plana-bar__name {
+  align-self: flex-start;
+  font-size: 1.05rem;
+  transform: rotate(180deg);
+  writing-mode: vertical-rl;
+}
+
+@container w-plana-colour (max-width: 700px) {
+  .w-plana-bar__seg[data-id='wheat'] .w-plana-bar__name,
+  .w-plana-bar__seg[data-id='poppy'] .w-plana-bar__name {
+    align-self: flex-start;
+    font-size: 1.05rem;
+    transform: rotate(180deg);
+    writing-mode: vertical-rl;
+  }
+}
+
+@container w-plana-colour (max-width: 520px) {
+  .w-plana-bar__seg[data-id='holm'] .w-plana-bar__name {
+    align-self: flex-start;
+    font-size: 1.05rem;
+    transform: rotate(180deg);
+    writing-mode: vertical-rl;
+  }
+}
+
+.w-plana-bar__pct {
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* a little pin under the chosen segment, pointing down at its chip */
+.w-plana-bar__seg::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.95rem;
+  width: 0;
+  height: 0;
+  border-top: 0.75rem solid var(--night);
+  border-right: 0.6rem solid transparent;
+  border-left: 0.6rem solid transparent;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-4px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.3s var(--ease-spring);
+}
+
+.w-plana-bar__seg[data-on='true']::after {
+  opacity: 1;
+  transform: translateX(-50%);
+}
+
+/* ---- chips + contrast ------------------------------------------------------------------------------------------------- */
+.w-plana-colour__lower {
+  display: grid;
+  gap: clamp(1.2rem, 2.2cqw, 2rem);
+  align-items: start;
+}
+
+/* five chips in a row need about 150 px each (their RGB and CMYK lines); chips and pairs stack until the plate is very wide, then sit side by side */
+@container w-plana-colour (min-width: 1320px) {
+  .w-plana-colour__lower {
+    grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  }
+}
+
+.w-plana-chips {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(0.55rem, 1cqw, 0.9rem);
+  margin: 0;
+  padding: 0.5rem 0.2rem 0.35rem;
+  list-style: none;
+}
+
+/* loose chips on a desk: each one a little off square, none on the same line */
+.w-plana-chips li:nth-child(1) {
+  rotate: -0.9deg;
+}
+.w-plana-chips li:nth-child(2) {
+  rotate: 0.7deg;
+  translate: 0 0.35rem;
+}
+.w-plana-chips li:nth-child(3) {
+  rotate: -0.5deg;
+}
+.w-plana-chips li:nth-child(4) {
+  rotate: 0.9deg;
+  translate: 0 0.3rem;
+}
+.w-plana-chips li:nth-child(5) {
+  rotate: -0.7deg;
+}
+
+/* below 800 px of plate: three chips on the first row, two (wider) on the second; on a phone two by two, the last one full width */
+@container w-plana-colour (max-width: 799px) {
+  .w-plana-chips {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .w-plana-chips li:nth-child(-n + 3) {
+    grid-column: span 2;
+  }
+  .w-plana-chips li:nth-child(n + 4) {
+    grid-column: span 3;
+  }
+}
+
+@container w-plana-colour (max-width: 520px) {
+  .w-plana-chips {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .w-plana-chips li:nth-child(n) {
+    grid-column: auto;
+  }
+  .w-plana-chips li:last-child {
+    grid-column: 1 / -1;
+  }
+
+  /* the lone fifth chip lies down: swatch on the left, its numbers on the right */
+  .w-plana-chips li:last-child .w-plana-chip {
+    grid-template-columns: 34% minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+  .w-plana-chips li:last-child .w-plana-chip__tile {
+    height: auto;
+    min-height: 100%;
+    border-right: var(--outline) solid var(--night);
+    border-bottom: 0;
+  }
+
+  .w-plana-chips li:nth-child(n) {
+    translate: none;
+  }
+}
+
+.w-plana-chip {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  border: var(--outline) solid var(--night);
+  border-radius: 14px;
+  background: var(--paper);
+  color: var(--night);
+  text-align: left;
+  transition: transform 0.3s var(--ease-spring); /* the solid shadow snaps on with the lift (only transform and opacity animate) */
+}
+
+.w-plana-chip__tile {
+  position: relative;
+  height: clamp(3.2rem, 6cqw, 5.4rem);
+  border-bottom: var(--outline) solid var(--night);
+}
+
+/* a paint chip is a card: a punched hole at the top (the sheet's paper shows through it) */
+.w-plana-chip__tile::after {
+  content: '';
+  position: absolute;
+  top: 0.55rem;
+  right: 0.6rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 2px solid var(--night);
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: inset 1.5px 2px 0 rgb(24 24 27 / 0.28);
+}
+
+.w-plana-chip[data-id='paper'] .w-plana-chip__tile {
+  background: var(--paper);
+}
+.w-plana-chip[data-id='holm'] .w-plana-chip__tile {
+  background: var(--holm);
+}
+.w-plana-chip[data-id='wheat'] .w-plana-chip__tile {
+  background: var(--wheat);
+}
+.w-plana-chip[data-id='poppy'] .w-plana-chip__tile {
+  background: var(--poppy);
+}
+.w-plana-chip[data-id='night'] .w-plana-chip__tile {
+  background: var(--night);
+}
+
+.w-plana-chip__body {
+  display: grid;
+  align-content: start;
+  gap: 0.12rem;
+  padding: 0.55rem 0.7rem 0.65rem;
+}
+
+.w-plana-chip__name {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.7cqw, 1.3rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+}
+
+.w-plana-chip__local {
+  color: var(--night-2);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+}
+
+.w-plana-chip__hex {
+  margin-top: 0.3rem;
+  font-family: var(--font-label);
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+}
+
+.w-plana-chip__val {
+  color: var(--night-2);
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.w-plana-chip__copy {
+  justify-self: start;
+  margin-top: 0.45rem;
+  padding: 0.12rem 0.45rem;
+  border: 2px solid var(--night);
+  border-radius: 6px;
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.w-plana-chip[aria-pressed='true'] {
+  transform: translateY(-5px);
+  box-shadow: 4px 6px 0 var(--night);
+}
+
+.w-plana-chip[aria-pressed='true'] .w-plana-chip__copy {
+  background: var(--night);
+  color: var(--paper);
+}
+
+@media (hover: hover) {
+  .w-plana-chip:hover {
+    transform: translateY(-4px);
+  }
+  .w-plana-chip[aria-pressed='true']:hover {
+    transform: translateY(-6px);
+  }
+}
+
+.w-plana-chip:focus-visible {
+  outline: 2px solid var(--focus-in);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--paper);
+}
+
+/* ---- contrast pairs ----------------------------------------------------------------------------------------------------- */
+.w-plana-pairs {
+  display: grid;
+  gap: 0.9rem 2rem;
+  min-width: 0;
+  align-items: start;
+}
+
+.w-plana-pairs__head {
+  display: grid;
+  gap: 0.3rem;
+  align-content: start;
+}
+
+/* a margin note in my hand, under the text it belongs to (only where there is room) */
+.w-plana-pairs__note {
+  position: relative;
+  display: none;
+  width: max-content;
+  max-width: 100%;
+  margin: 0.6rem 0 0;
+  color: var(--holm);
+  rotate: -2.5deg;
+}
+
+.w-plana-pairs__note span {
+  display: block;
+  font-family: var(--font-hand);
+  font-size: clamp(1.4rem, 2.8cqw, 1.95rem);
+  line-height: 1.02;
+}
+
+.w-plana-pairs__note svg {
+  margin-top: 0.1rem;
+}
+
+@container w-plana-colour (min-width: 700px) {
+  .w-plana-pairs {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.6fr);
+  }
+  .w-plana-pairs__note {
+    display: block;
+  }
+}
+
+.w-plana-pairs__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.8cqw, 1.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.w-plana-pairs__lead {
+  color: var(--night);
+  text-decoration: underline;
+  text-decoration-color: var(--poppy);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.2em;
+}
+
+.w-plana-pairs__role {
+  margin: 0 0 0.5rem;
+  color: var(--night-2);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.w-plana-pairs__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-plana-pair {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.w-plana-pair__aa {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 3.3rem;
+  height: 3.3rem;
+  border: 2.5px solid var(--night);
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.w-plana-pair__aa[data-bg='paper'] {
+  background: var(--paper);
+}
+.w-plana-pair__aa[data-bg='holm'] {
+  background: var(--holm);
+}
+.w-plana-pair__aa[data-bg='wheat'] {
+  background: var(--wheat);
+}
+.w-plana-pair__aa[data-bg='poppy'] {
+  background: var(--poppy);
+}
+.w-plana-pair__aa[data-bg='night'] {
+  background: var(--night);
+}
+.w-plana-pair__aa[data-fg='paper'] {
+  color: var(--paper);
+}
+.w-plana-pair__aa[data-fg='holm'] {
+  color: var(--holm);
+}
+.w-plana-pair__aa[data-fg='wheat'] {
+  color: var(--wheat);
+}
+.w-plana-pair__aa[data-fg='poppy'] {
+  color: var(--poppy);
+}
+.w-plana-pair__aa[data-fg='night'] {
+  color: var(--night);
+}
+
+.w-plana-pair__line {
+  display: grid;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.w-plana-pair__ratio {
+  font-family: var(--font-label);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+.w-plana-pair__verdict {
+  color: var(--night-2);
+  font-size: 0.8125rem;
+}
+
+.w-plana-pair[data-verdict='no'] .w-plana-pair__verdict {
+  text-decoration: line-through;
+  text-decoration-color: var(--poppy);
+  text-decoration-thickness: 2px;
+}

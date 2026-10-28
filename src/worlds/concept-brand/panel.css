@@ -1,0 +1,1054 @@
+/* ==========================================================================
+   Gotet world: the info panel, a menu card hung on a cobalt strip of the wall, and everything written on it (bars, leaders, paint chips,
+   type samples, the cast, the pattern, the wordmark). Also used inline by the index. Prefix w-concept-brand-.
+   Text pairs follow the guide (2.5): Tinta on Rosat, Blau on Rosat and Mantega, Vermell only at 24 px and up.
+   ========================================================================== */
+
+.w-concept-brand-panel {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  padding: 14px;
+  background: var(--cb-blau);
+  box-shadow: -4px 0 0 var(--cb-hard);
+}
+
+.w-concept-brand-card {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 12px;
+  background: var(--cb-rosat);
+  box-shadow: 6px 8px 0 var(--cb-hard);
+  color: var(--cb-tinta);
+}
+
+/* the menu's inner keyline */
+.w-concept-brand-card::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 3px solid var(--cb-blau);
+  border-radius: 7px;
+  pointer-events: none;
+}
+
+.w-concept-brand-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 56px;
+  padding: 20px 26px 4px;
+}
+
+.w-concept-brand-mini {
+  display: block;
+  width: auto;
+  height: 30px;
+}
+
+/* the content scrolls inside the keyline (card inset 8 px + 3 px line) */
+.w-concept-brand-scroll {
+  flex: 1;
+  min-height: 0;
+  margin: 0 11px 11px;
+  padding: 4px 16px 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--cb-blau) transparent;
+  scrollbar-width: thin;
+}
+
+.w-concept-brand-scroll:focus-visible {
+  outline: 3px solid var(--cb-blau);
+  outline-offset: -3px;
+  box-shadow: none;
+}
+
+.w-concept-brand-foot {
+  margin-top: 26px;
+  padding-top: 16px;
+  border-top: 2px dotted rgba(33, 23, 54, 0.4);
+}
+
+.w-concept-brand-foot .pm-wf {
+  gap: 14px;
+}
+
+/* ---- words ---------------------------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-kicker {
+  margin: 0 0 6px;
+  color: var(--cb-blau);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-head {
+  margin: 4px 0 12px;
+}
+
+.w-concept-brand-title {
+  margin: 0;
+  color: var(--cb-tinta);
+  font-family: var(--cb-display);
+  font-size: clamp(32px, 2.5vw + 12px, 44px);
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 900;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.w-concept-brand-title--logo img {
+  display: block;
+  width: min(100%, 300px);
+  height: auto;
+  margin: 0 0 4px -6px;
+}
+
+.w-concept-brand-sub {
+  margin: 6px 0 0;
+  color: var(--cb-blau);
+  font-family: var(--cb-display);
+  font-size: 19px;
+  font-style: italic;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.w-concept-brand-p {
+  margin: 0 0 0.75em;
+  font-size: 16.5px;
+  line-height: 1.5;
+}
+
+.w-concept-brand-p--tight {
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+.w-concept-brand-p strong {
+  font-weight: 800;
+}
+
+/* italics are Fraunces (the brand's own italic): Barlow Semi Condensed has no italic loaded here and the guide bans a faux one */
+.w-concept-brand-note {
+  margin: 12px 0 0;
+  color: var(--cb-tinta);
+  font-family: var(--cb-display);
+  font-size: 15.5px;
+  font-style: italic;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 24;
+  font-weight: 500;
+  line-height: 1.38;
+}
+
+.w-concept-brand-tagline {
+  margin: 20px 0 0;
+  color: var(--cb-vermell);
+  font-family: var(--cb-display);
+  font-size: 28px;
+  font-style: italic;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.w-concept-brand-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0 4px;
+  margin: 18px 0 0 -6px;
+}
+
+/* section bars, like PER BEURE on the menu */
+.w-concept-brand-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0 11px;
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-bar span {
+  padding: 7px 12px 6px;
+  border-radius: 6px;
+  background: var(--cb-mantega);
+  color: var(--cb-blau);
+}
+
+.w-concept-brand-bar::after {
+  content: '';
+  flex: 1;
+  border-top: 2px dotted rgba(33, 23, 54, 0.45);
+}
+
+/* dotted leaders: name ........ value */
+.w-concept-brand-leader {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+}
+
+.w-concept-brand-leader > div {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.w-concept-brand-leader dt {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  min-width: 0;
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+.w-concept-brand-leader dt::after {
+  content: '';
+  flex: 1;
+  margin: 0 0 0 8px;
+  border-bottom: 2px dotted rgba(33, 23, 54, 0.45);
+  transform: translateY(-4px);
+}
+
+.w-concept-brand-leader dd {
+  margin: 0;
+  max-width: 62%;
+  font-size: 15.5px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.w-concept-brand-leader[data-big='true'] dd {
+  color: var(--cb-vermell);
+  font-family: var(--cb-display);
+  font-size: 26px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.w-concept-brand-leader[data-big='true'] dt {
+  font-size: 17px;
+}
+
+.w-concept-brand-list {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0 0 0 20px;
+  font-size: 15.5px;
+  line-height: 1.42;
+}
+
+.w-concept-brand-list li::marker {
+  color: var(--cb-vermell);
+}
+
+/* ---- paint chips ------------------------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-swatches {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-concept-brand-swatches[data-compact='true'] {
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+}
+
+.w-concept-brand-swatch {
+  display: block;
+  width: 100%;
+  padding: 6px 6px 7px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 10px;
+  background: var(--cb-rosat);
+  box-shadow: 2px 3px 0 rgba(33, 23, 54, 0.35);
+  color: var(--cb-tinta);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.18s cubic-bezier(0.3, 1.4, 0.5, 1),
+    box-shadow 0.15s ease-out;
+}
+
+@media (hover: hover) {
+  .w-concept-brand-swatch:hover {
+    transform: translateY(-3px) rotate(-1deg);
+    box-shadow: 3px 6px 0 rgba(33, 23, 54, 0.35);
+  }
+}
+
+.w-concept-brand-swatch:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 rgba(33, 23, 54, 0.35);
+}
+
+.w-concept-brand-swatch-chip {
+  display: block;
+  height: 38px;
+  border: 2px solid var(--cb-tinta);
+  border-radius: 6px;
+}
+
+.w-concept-brand-swatch-name {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.w-concept-brand-swatch-hex {
+  display: block;
+  color: var(--cb-blau);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* ---- type samples --------------------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-type {
+  display: grid;
+  gap: 14px;
+}
+
+.w-concept-brand-type-name {
+  margin: 0 0 5px;
+  color: var(--cb-blau);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-type-name span {
+  color: var(--cb-tinta);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.w-concept-brand-sample {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.w-concept-brand-sample[data-kind='display'] {
+  font-family: var(--cb-display);
+  font-size: clamp(26px, 1.7vw + 12px, 34px);
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 900;
+  line-height: 1.04;
+}
+
+.w-concept-brand-sample[data-kind='italic'] {
+  color: var(--cb-blau);
+  font-family: var(--cb-display);
+  font-size: 24px;
+  font-style: italic;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 72;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.w-concept-brand-sample[data-kind='label'] {
+  color: var(--cb-blau);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+/* ---- group rows and the crumb ----------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-rows {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-concept-brand-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 6px;
+  border-radius: 6px;
+  color: var(--cb-tinta);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease-out;
+}
+
+.w-concept-brand-row-code {
+  min-width: 34px;
+  color: var(--cb-blau);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.w-concept-brand-row-name {
+  font-family: var(--cb-display);
+  font-size: 19px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 36;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.w-concept-brand-row-dots {
+  flex: 1;
+  min-width: 14px;
+  border-bottom: 2px dotted rgba(33, 23, 54, 0.45);
+  transform: translateY(-4px);
+}
+
+.w-concept-brand-row-val {
+  font-size: 14.5px;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .w-concept-brand-row:hover {
+    background: var(--cb-mantega);
+  }
+}
+
+.w-concept-brand-row:focus-visible {
+  background: var(--cb-mantega);
+}
+
+.w-concept-brand-crumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-crumb button {
+  color: var(--cb-blau);
+  font-weight: 800;
+  letter-spacing: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.w-concept-brand-stepper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin: 22px 0 0;
+}
+
+/* ---- wordmark panel ---------------------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-choices,
+.w-concept-brand-ways {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.w-concept-brand-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.w-concept-brand-choice {
+  position: relative;
+  cursor: pointer;
+}
+
+.w-concept-brand-choice input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.w-concept-brand-choice span {
+  display: block;
+  padding: 7px 11px 6px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 9px;
+  background: var(--cb-rosat);
+  font-size: 13.5px;
+  font-weight: 800;
+  line-height: 1;
+  transition: transform 0.16s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.w-concept-brand-choice[data-on='true'] span {
+  background: var(--cb-tinta);
+  color: var(--cb-mantega);
+  transform: translateY(-2px);
+}
+
+.w-concept-brand-choice input:focus-visible + span {
+  outline: 2px solid var(--focus-in, var(--cb-tinta));
+  outline-offset: 2px;
+  box-shadow: 0 0 0 5px var(--focus-out, var(--cb-rosat));
+}
+
+.w-concept-brand-stage-card {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 22px 18px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 12px;
+  box-shadow: 3px 4px 0 rgba(33, 23, 54, 0.35);
+}
+
+.w-concept-brand-stage-card img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.w-concept-brand-clear {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.w-concept-brand-clear-box {
+  fill: none;
+  stroke: var(--cb-vermell);
+  stroke-dasharray: 22 14;
+  stroke-linecap: round;
+  stroke-width: 6;
+}
+
+.w-concept-brand-clear-x {
+  fill: rgba(216, 40, 59, 0.14);
+  stroke: var(--cb-vermell);
+  stroke-width: 3;
+}
+
+.w-concept-brand-clear-ink {
+  fill: none;
+  stroke: var(--cb-blau);
+  stroke-dasharray: 8 8;
+  stroke-width: 3;
+}
+
+.w-concept-brand-clear-t {
+  fill: var(--cb-blau);
+  font-family: var(--cb-utility);
+  font-size: 84px;
+  font-weight: 800;
+}
+
+.w-concept-brand-min {
+  display: grid;
+  gap: 12px;
+}
+
+.w-concept-brand-min figure {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 2px dashed var(--cb-tinta);
+  border-radius: 10px;
+}
+
+.w-concept-brand-min img {
+  display: block;
+  height: auto;
+}
+
+.w-concept-brand-min figcaption {
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+/* ---- cast panel -------------------------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-heads {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+
+.w-concept-brand-heads button {
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  font-size: 14.5px;
+  font-weight: 800;
+  text-align: center;
+  cursor: pointer;
+}
+
+.w-concept-brand-head-art {
+  display: block;
+  aspect-ratio: 1;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.18s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.w-concept-brand-head-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 6%;
+  object-fit: contain;
+}
+
+.w-concept-brand-heads button[aria-pressed='true'] .w-concept-brand-head-art {
+  box-shadow: 0 0 0 3px var(--cb-rosat), 0 0 0 6px var(--cb-blau);
+  transform: translateY(-3px) rotate(-2deg);
+}
+
+.w-concept-brand-heads button[aria-pressed='true'] > span:last-child {
+  color: var(--cb-blau);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.w-concept-brand-name {
+  margin: 4px 0 2px;
+  font-family: var(--cb-display);
+  font-size: 30px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 144;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.w-concept-brand-name span {
+  display: block;
+  margin-top: 4px;
+  color: var(--cb-blau);
+  font-size: 18px;
+  font-style: italic;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 24;
+  font-weight: 600;
+}
+
+.w-concept-brand-chip-line {
+  margin: 4px 0 10px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-says {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 12px 0 0;
+}
+
+.w-concept-brand-says q {
+  padding: 5px 14px 7px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 16px 16px 16px 4px;
+  background: var(--cb-mantega);
+  box-shadow: 3px 3px 0 var(--cb-blau);
+  font-family: var(--cb-display);
+  font-size: 24px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 72;
+  font-weight: 900;
+  quotes: none;
+}
+
+.w-concept-brand-says span {
+  font-family: var(--cb-display);
+  font-size: 16px;
+  font-style: italic;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 24;
+  font-weight: 500;
+}
+
+.w-concept-brand-poses {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.w-concept-brand-poses figure {
+  margin: 0;
+}
+
+/* each pose is cropped to its character (the canvas is mostly air) and framed like a menu card */
+.w-concept-brand-pose-frame {
+  position: relative;
+  aspect-ratio: 1000 / 1100;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 12px;
+  background: var(--cb-mantega);
+  overflow: hidden;
+}
+
+.w-concept-brand-pose-frame[data-tone='b'] {
+  background: var(--cb-blau);
+}
+
+.w-concept-brand-pose-frame img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  transform-origin: var(--ox, 50%) var(--oy, 50%);
+  transform: translate(var(--px, 0%), var(--py, 0%)) scale(var(--pk, 1));
+}
+
+.w-concept-brand-poses figcaption {
+  margin-top: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.w-concept-brand-poses figcaption b {
+  display: inline-block;
+  min-width: 20px;
+  margin-right: 3px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--cb-tinta);
+  color: var(--cb-rosat);
+  text-align: center;
+}
+
+.w-concept-brand-poses figcaption i {
+  display: block;
+  font-style: normal;
+  color: var(--cb-blau);
+  font-weight: 800;
+}
+
+.w-concept-brand-heads2 {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w-concept-brand-heads2 li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.w-concept-brand-heads2 img {
+  display: block;
+  width: 64px;
+  height: 64px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 12px;
+  background: var(--cb-mantega);
+  object-fit: contain;
+}
+
+.w-concept-brand-faces {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.w-concept-brand-faces li {
+  display: grid;
+  gap: 2px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.w-concept-brand-faces img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 12px;
+  background: var(--cb-mantega);
+  object-fit: contain;
+}
+
+.w-concept-brand-faces li:nth-child(even) img {
+  background: var(--cb-blau);
+}
+
+.w-concept-brand-faces b {
+  color: var(--cb-blau);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+
+/* ---- pattern panel ----------------------------------------------------------------------------------------------------------------------- */
+.w-concept-brand-ways {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.w-concept-brand-way {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  padding: 0 0 9px;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 11px;
+  background: var(--cb-rosat);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.w-concept-brand-way input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.w-concept-brand-way-tile {
+  display: block;
+  height: 62px;
+  margin-bottom: 7px;
+  border-bottom: 2.5px solid var(--cb-tinta);
+  background-position: 0 0;
+  background-size: 124px 124px;
+}
+
+.w-concept-brand-way-name,
+.w-concept-brand-way-use {
+  display: block;
+  padding: 0 9px;
+}
+
+.w-concept-brand-way-name {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.w-concept-brand-way-use {
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.w-concept-brand-way[data-on='true'] {
+  box-shadow: 0 0 0 3px var(--cb-rosat), 0 0 0 6px var(--cb-blau);
+  transform: translateY(-2px);
+}
+
+.w-concept-brand-way:has(input:focus-visible) {
+  outline: 2px solid var(--focus-in, var(--cb-tinta));
+  outline-offset: 7px;
+}
+
+.w-concept-brand-icons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.w-concept-brand-icons li {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.w-concept-brand-icon-tile {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 2.5px solid var(--cb-tinta);
+  border-radius: 10px;
+  transition: background-color 0.4s ease-out;
+}
+
+.w-concept-brand-icon-tile svg {
+  width: 74%;
+  height: 74%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 5;
+}
+
+/* ---- bottom sheet (narrower than 900 px) ----------------------------------------------------------------------------------------------- */
+.w-concept-brand[data-sheet='true'] {
+  display: block;
+}
+
+.w-concept-brand[data-sheet='true'] .w-concept-brand-main {
+  position: absolute;
+  inset: 0;
+}
+
+.w-concept-brand-panel[data-mode='sheet'] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8;
+  height: 56%;
+  padding: 10px 0 0;
+  background: transparent;
+  box-shadow: none;
+  transform: translateY(calc(100% - 76px));
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.w-concept-brand-panel[data-mode='sheet'][data-open='true'] {
+  transform: none;
+}
+
+.w-concept-brand-panel[data-mode='sheet'] .w-concept-brand-card {
+  border-radius: 18px 18px 0 0;
+  box-shadow: 0 -4px 0 var(--cb-blau), 0 -8px 0 var(--cb-hard);
+}
+
+.w-concept-brand-panel[data-mode='sheet'] .w-concept-brand-card::after {
+  inset: 7px 7px 0;
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+}
+
+.w-concept-brand-panel[data-mode='sheet'] .w-concept-brand-card-top {
+  min-height: 0;
+  padding: 0;
+}
+
+.w-concept-brand-handle {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'bar bar'
+    'title hint';
+  align-items: baseline;
+  width: 100%;
+  min-height: 66px;
+  padding: 10px 24px 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.w-concept-brand-handle-bar {
+  grid-area: bar;
+  justify-self: center;
+  width: 54px;
+  height: 6px;
+  margin-bottom: 8px;
+  border-radius: 3px;
+  background: var(--cb-tinta);
+}
+
+.w-concept-brand-handle-title {
+  grid-area: title;
+  font-family: var(--cb-display);
+  font-size: 24px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1, 'opsz' 72;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.w-concept-brand-handle-hint {
+  grid-area: hint;
+  color: var(--cb-blau);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.w-concept-brand-panel[data-mode='sheet'] .w-concept-brand-scroll {
+  padding: 0 22px 90px;
+}
+
+@media (max-width: 520px) {
+  .w-concept-brand-heads,
+  .w-concept-brand-faces {
+    gap: 6px;
+  }
+  .w-concept-brand-scroll {
+    padding-inline: 20px;
+  }
+}
+
+.w-concept-brand-card-top[data-empty='true'] {
+  min-height: 14px;
+  padding: 0;
+}
+
+/* touch: every control is at least 44 px tall */
+@media (pointer: coarse) {
+  .w-concept-brand-choice span {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .w-concept-brand-row {
+    min-height: 44px;
+  }
+  .w-concept-brand-crumb button {
+    min-height: 44px;
+    padding-inline: 4px;
+  }
+  .w-concept-brand-heads button {
+    min-height: 44px;
+  }
+}

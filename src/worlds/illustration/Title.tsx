@@ -10,16 +10,16 @@ const WORDS = ['STICKER', 'SHEET'] as const
 export function Title() {
   let k = 0
   return (
-    <h2 className="w-illustration-title" aria-label="Sticker sheet">
+    <h2 className="w-illustration-title">
+      {/* the one accessible name; the die-cut letters below are painted by CSS (data-c) and hidden from assistive technology */}
+      <span className="pm-sr">Sticker sheet</span>
       {WORDS.map((word) => (
         <span className="w-illustration-word" key={word} aria-hidden="true">
           {[...word].map((ch, i) => {
             const idx = k++
             const style = { '--c': `var(--wi-${ACCENTS[idx % ACCENTS.length]})`, '--tilt': `${TILT[idx % TILT.length]}deg`, '--drop': `${DROP[idx % DROP.length]}em` } as CSSProperties
             return (
-              <span className="w-illustration-ch" data-c={ch} style={style} key={i}>
-                {ch}
-              </span>
+              <span className="w-illustration-ch" data-c={ch} style={style} key={i} />
             )
           })}
         </span>

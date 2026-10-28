@@ -43,10 +43,23 @@ export default function IllustrationWorld() {
     setDetails(null)
     const el = opener.current
     opener.current = null
-    // the focus goes back to what opened the lightbox (or, if that is gone, to the sticker itself)
-    window.requestAnimationFrame(() => {
-      const target = el && el.isConnected ? el : stageRef.current?.querySelector<HTMLElement>(`[data-stk="${n}"] button`)
+    // the page behind the lightbox is inert until React's effect clears it, which comes after the next frame: clear it now,
+    // or the focus call below lands on an inert element and is dropped
+    contentRef.current?.removeAttribute('inert')
+    // the focus goes back to the sticker that was being viewed (the user may have stepped to another one with Previous / Next);
+    // the opener (a button of a tag that has closed since) is only the fallback
+    const focusIt = () => {
+      const stick = n === null ? null : stageRef.current?.querySelector<HTMLElement>(`[data-stk="${n}"] .w-illustration-stk-btn`)
+      const fromCast = el && el.isConnected && el.closest('.w-illustration-cast') ? el : null
+      const target = fromCast ?? stick ?? (el && el.isConnected ? el : null)
       target?.focus?.({ preventScroll: true })
+    }
+    window.requestAnimationFrame(() => {
+      focusIt()
+      // the lightbox leaves the DOM in this commit; if the focus is still not on a sticker or the opener, try once more
+      window.setTimeout(() => {
+        if (!document.activeElement || document.activeElement === document.body) focusIt()
+      }, 60)
     })
   }, [details])
 
@@ -137,9 +150,23 @@ export default function IllustrationWorld() {
           <div className="w-illustration-lidcol">
             <header className="w-illustration-head">
               <Title />
-              <p className="w-illustration-lede">
-                <strong>Peel, throw, stick.</strong> Drag a sticker off the sheet and let go: it glides across the lid, then holds.
-              </p>
+              <div className="w-illustration-headtext">
+                <p className="w-illustration-lede">
+                  <strong>Peel, throw, stick.</strong> Drag a sticker off the sheet and let go: it glides across the lid, then holds.
+                </p>
+                {/* a recap strip for wide screens, where the head has room: three little labels (the how-to below says it all again) */}
+                <ol className="w-illustration-steps" aria-hidden="true">
+                  <li style={{ '--c': 'var(--wi-tangerine)', '--t': '-2deg' } as CSSProperties}>
+                    <b>1</b>Peel it off
+                  </li>
+                  <li style={{ '--c': 'var(--wi-sky)', '--t': '1.6deg' } as CSSProperties}>
+                    <b>2</b>Throw it
+                  </li>
+                  <li style={{ '--c': 'var(--wi-mint)', '--t': '-1deg' } as CSSProperties}>
+                    <b>3</b>Stick it down
+                  </li>
+                </ol>
+              </div>
             </header>
             <Lid
               ref={lidRef}
@@ -184,7 +211,7 @@ export default function IllustrationWorld() {
             </div>
             <div>
               <dt>Touch</dt>
-              <dd>Drag a sticker, or tap it and choose Stick on lid. Double-tap turns it. The page still scrolls from anywhere that is not a sticker.</dd>
+              <dd>Press and hold a sticker for a moment, then drag it (or just drag it sideways). A swipe up or down that starts on a sticker still scrolls the page. Or tap it and choose Stick on lid. Double-tap turns it.</dd>
             </div>
           </dl>
         </aside>

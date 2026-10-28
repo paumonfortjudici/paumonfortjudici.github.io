@@ -19,7 +19,7 @@ The world is a **tufted rug hung from a marigold rail** (the folder's own colour
 | `fortyfour-lab/Clip.tsx` | a muted looping clip with a visible Pause / Play tab. |
 | `fortyfour-lab/Sizes.tsx` | the size chart: every rug whose size is printed in a caption, drawn to scale on a 10 cm cutting mat. |
 | `fortyfour-lab/Yarns.tsx` | the logo's five yarns on a shade card; each row copies its hex (`useCopy`). |
-| `fortyfour-lab/Footer.tsx` | fringe, "The label on the back" title, `WorldFacts`, and the whole logo on a label hung from the fringe on a loop of yarn. |
+| `fortyfour-lab/Footer.tsx` | fringe, "The label on the back" title, `WorldFacts`, the whole logo on a label hung from the fringe on a loop of yarn, a hand-written note, and the ribbon: 13 stitched cells (number, day and month, slide count / `01:14` / Still) built from `POSTS`, each a button that scrolls the wall back to that post's tag (`[data-ffl-post]`; smooth unless reduced or paused motion). Grid 3 / 5 / 7 columns, the thirteenth takes the rest of its row. |
 | `fortyfour-lab/posts.ts` | the 13 posts: exact file names, intrinsic sizes, date strings, my short titles and notes, alt text per slide. The raw manifest is not bundled (its captions carry 2023 prices and the Etsy shop). |
 | `fortyfour-lab/format.ts` | date helpers on the `YYYY-MM-DD` strings (no time zone ever), month grouping, `timecode(74.2) = '01:14'`. |
 | `fortyfour-lab/icons.tsx` | the world's own drawn pictograms (spool, plane, bubble, play, pause, film frame). |
@@ -113,3 +113,9 @@ Tools: `tools/shot.mjs` style runs through my own runner (retries when another a
 * Chango titles carry their offset shadow as `filter: drop-shadow` (not `text-shadow`); the month banner fuzz keeps `background-clip: text` (a texture tile clipped to the letter faces, marked `taste-skill-ignore`).
 * The month heading is one accessible name ("March 2023", `aria-label`); the visual word and the year badge are `aria-hidden`.
 * Mobile month banners are 12.8vw so the walking devil on the right-hand thread clears them.
+
+
+## Mop-up round
+
+* Post titles (D11): the letters are the logo's outline ink `#2D2D2D` (5.6:1 on the tan, measured) with a marigold halo (`-webkit-text-stroke` under the fill) and the red hard shadow; they no longer appear in the page audit's low-contrast list. The "Photos" and "Reel, still frame" labels flagged by the audit are a false positive (the audit reads the wall tan behind the tag): measured on pixels, brick on the tag paper is 5.7:1, and the reel label is cream on the film `#34302D`.
+* Footer (D12): title up to 6.4rem, facts slate scaled with `font-size`, the logo label up to 36rem, the marigold field is the tufted pile under a 66 % veil of the folder colour, plus the post ribbon and a hand note (tablet and wide). All content comes from `POSTS`.

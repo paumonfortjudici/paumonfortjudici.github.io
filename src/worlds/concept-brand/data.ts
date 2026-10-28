@@ -440,7 +440,8 @@ export function selectionRects(sel: Selection): Rect[] {
     case 'cast':
       return [union(MASCOTS.map(mascotRect))]
     case 'pattern':
-      return [{ x: 0, y: 0, w: 1200, h: 1200 }]
+      // the whole top zone, the ground the pattern is printed on (the marker pads outward, so the rect is inset to stay on the board)
+      return [{ x: 60, y: 60, w: BOARD_W - 120, h: PANEL_Y - 120 }]
     case null:
       return []
     default:

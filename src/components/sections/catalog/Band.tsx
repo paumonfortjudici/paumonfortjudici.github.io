@@ -130,6 +130,12 @@ function BandImpl({ work, index, state, words, hint, mounted, plays, inlineThumb
   const headId = `pm-cat-h-${work.slug}`
   const panelId = `pm-cat-p-${work.slug}`
   const dark = isDarkField(work.ink)
+  /** one short spoken name for the header button (the visible text is a glued run of spans: title, kind, years, group, search hint) */
+  const spokenYears = work.years ? work.years.replace(/\s*[–—-]\s*/, ' to ') : ''
+  const headLabel =
+    [work.title, work.kind, spokenYears].filter(Boolean).join(', ') +
+    (thin ? `. ${CAT_UI.noMatch}` : '') +
+    (hint ? `. ${hint.field} ${hint.word}` : '')
   /** the header row: the folder stock (motif) takes the room between the end of the title and the meta column */
   const bigRef = useRef<HTMLSpanElement>(null)
   useMotifRoom(bigRef)
@@ -169,6 +175,7 @@ function BandImpl({ work, index, state, words, hint, mounted, plays, inlineThumb
             id={headId}
             type="button"
             className="pm-cat-head"
+            aria-label={headLabel}
             aria-expanded={open}
             aria-controls={panelId}
             onClick={() => onToggle(work.slug)}

@@ -38,8 +38,9 @@ function StickerViewImpl({ n, board, selected, tagMode, held, onLid, locked, onD
         onPointerDown={(e) => {
           if (e.pointerType === 'mouse' && e.button !== 0) return
           e.preventDefault()
-          e.currentTarget.focus({ preventScroll: true })
+          // the board first: it notes that this is a pointer, so the focus below never draws the keyboard caption or ring
           board.pointerDown(n, e.nativeEvent)
+          e.currentTarget.focus({ preventScroll: true })
         }}
         onKeyDown={(e) => board.keyDown(n, e.nativeEvent)}
         onClick={() => board.activate(n)}

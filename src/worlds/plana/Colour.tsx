@@ -15,6 +15,19 @@ function verdict(ratio: number): { key: 'ok' | 'large' | 'no'; label: string } {
   return { key: 'no', label: 'Avoid' }
 }
 
+/** The specimen "Aa" is large type, so it must reach 3:1 itself. A pairing the manual forbids (ratio under 3) is still printed with its real
+ *  ratio and "Avoid", but the letters are nudged toward black or white just far enough to stay readable. */
+function legible(fg: string, bg: string): string | undefined {
+  if (contrast(fg, bg) >= 3) return undefined
+  const target = contrast('#000000', bg) >= contrast('#FFFFFF', bg) ? 0 : 255
+  const ch = [1, 3, 5].map((i) => parseInt(fg.slice(i, i + 2), 16))
+  for (let t = 0.05; t <= 1.001; t += 0.05) {
+    const hex = '#' + ch.map((c) => Math.round(c + (target - c) * t).toString(16).padStart(2, '0')).join('')
+    if (contrast(hex, bg) >= 3.1) return hex
+  }
+  return undefined
+}
+
 export default function Colour() {
   const [selected, setSelected] = useState<Swatch['id']>('poppy')
   const [copied, setCopied] = useState<Swatch['id'] | null>(null)
@@ -101,7 +114,7 @@ export default function Colour() {
                 const v = verdict(ratio)
                 return (
                   <li key={bg.id} className="w-plana-pair" data-verdict={v.key}>
-                    <span className="w-plana-pair__aa" data-bg={bg.id} data-fg={current.id} aria-hidden="true">
+                    <span className="w-plana-pair__aa" data-bg={bg.id} data-fg={current.id} aria-hidden="true" style={{ color: legible(current.hex, bg.hex) }}>
                       Aa
                     </span>
                     <span className="w-plana-pair__line">

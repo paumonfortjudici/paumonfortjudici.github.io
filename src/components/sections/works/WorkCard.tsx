@@ -231,7 +231,13 @@ export function WorkCard({ work, cell, filter, still, flat, index }: WorkCardPro
         exit: 'out',
       } as const)
 
-  const roles = work.roles.join(' / ')
+  // the role is a slate on every card (a small "My role" tag and the roles in full ink), so a visitor reads what Pau did at a glance
+  const role = (
+    <span className="pm-wk-role">
+      <span className="pm-wk-role__tag">{WORKS_UI.roleTag}</span>
+      <span className="pm-wk-role__text">{work.roles.join(' / ')}</span>
+    </span>
+  )
 
   return (
     <Folder
@@ -290,12 +296,13 @@ export function WorkCard({ work, cell, filter, still, flat, index }: WorkCardPro
             {HAS_DIGIT.test(work.years) && <span className="pm-wk-years">{work.years}</span>}
           </span>
           <span className="pm-wk-kind">{work.kind}</span>
+          {!featured && role}
         </span>
         {featured && (
           <>
             <span className="pm-wk-blurb">{work.blurb}</span>
             <span className="pm-wk-foot">
-              <span className="pm-wk-roles">{roles}</span>
+              {role}
               <span className="pm-tabbtn pm-wk-open" data-size="sm" aria-hidden="true">
                 <span className="pm-tabbtn__label">{CATALOG.button}</span>
                 <ArrowIcon dir="right" className="pm-tabbtn__icon" />

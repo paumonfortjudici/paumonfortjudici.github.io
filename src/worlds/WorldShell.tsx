@@ -9,7 +9,8 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSPrope
 import { motion, useIsPresent, type Variants } from 'framer-motion'
 import { UI, pad2 } from '../lib/copy'
 import { useKey, isTextEntryTarget } from '../lib/hooks/useKey'
-import { spring, useMotion } from '../lib/motion'
+import { spring, toggleMotionPaused, useMotion } from '../lib/motion'
+import { ReelGlyph } from '../components/chrome/MotionToggle'
 import { closeWork, folderLayoutId, getOpener, getRoute, openWork, workHref } from '../lib/router'
 import { nextOf, prevOf, type WorkMeta } from '../lib/works'
 import { WorldContext, topEscape, type WorldContextValue } from './WorldContext'
@@ -55,7 +56,7 @@ function Cross() {
 }
 
 export default function WorldShell({ work, origin, dir = 0, children }: WorldShellProps) {
-  const { still } = useMotion()
+  const { still, reduced: osReduced, paused } = useMotion()
   const isPresent = useIsPresent()
   const titleId = useId()
   const rootRef = useRef<HTMLDivElement>(null)
@@ -229,7 +230,7 @@ export default function WorldShell({ work, origin, dir = 0, children }: WorldShe
       >
         <motion.div className="pm-world-desk" aria-hidden="true" {...deskMotion} />
         <div className="pm-world-strip">
-          <motion.p id={titleId} className="pm-wtab pm-wtab--title t-label" {...tabMotion(0)}>
+          <motion.p id={titleId} role="heading" aria-level={1} className="pm-wtab pm-wtab--title t-label" {...tabMotion(0)}>
             <span className="pm-wtab-n">{pad2(work.n)}</span>
             <span className="pm-wtab-dot" aria-hidden="true">
               ·
@@ -240,6 +241,7 @@ export default function WorldShell({ work, origin, dir = 0, children }: WorldShe
           <motion.a
             className="pm-wtab pm-wtab--nav pm-wtab--prev t-label"
             href={workHref(prevWork.slug)}
+            aria-label={`${UI.world.prev}: ${pad2(prevWork.n)} ${prevWork.title}`}
             style={neighbourVars(prevWork)}
             data-cursor="Open"
             onClick={(event) => {
@@ -261,6 +263,7 @@ export default function WorldShell({ work, origin, dir = 0, children }: WorldShe
           <motion.a
             className="pm-wtab pm-wtab--nav pm-wtab--next t-label"
             href={workHref(nextWork.slug)}
+            aria-label={`${UI.world.next}: ${pad2(nextWork.n)} ${nextWork.title}`}
             style={neighbourVars(nextWork)}
             data-cursor="Open"
             onClick={(event) => {
@@ -279,6 +282,20 @@ export default function WorldShell({ work, origin, dir = 0, children }: WorldShe
             </span>
           </motion.a>
 
+          {!osReduced && (
+            <motion.button
+              type="button"
+              className="pm-wtab pm-wtab--motion t-label"
+              style={{ '--c': 'var(--ink)', '--on': 'var(--cream)' } as CSSProperties}
+              aria-pressed={paused}
+              data-cursor="none"
+              onClick={toggleMotionPaused}
+              {...tabMotion(3)}
+            >
+              <ReelGlyph className="pm-wtab-icon pm-wtab-reel pm-ambient" paused={paused} />
+              <span className="pm-wtab-t pm-wtab-t--motion">{UI.pauseMotion}</span>
+            </motion.button>
+          )}
           <motion.button type="button" className="pm-wtab pm-wtab--close t-label" data-cursor="Close" onClick={close} {...tabMotion(3)}>
             <Cross />
             <span className="pm-wtab-t pm-wtab-t--close">{UI.world.close}</span>

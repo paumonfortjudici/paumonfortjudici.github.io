@@ -31,6 +31,8 @@ export interface Geo {
   inset: number
   /** the control row sits under the lid (wide screens) rather than above it (phones): a tag must not hang over it */
   controlsBelow: boolean
+  /** where the control row starts (stage px): a tag may hang over the hinge strip but not over the row */
+  controlsTop: number
 }
 
 export type TagMode = 'full' | 'caption'
@@ -142,6 +144,12 @@ interface Drag {
   s0: number
   origin: Origin
   touch: boolean
+  /**
+   * a mouse or a pen peels on pointer down; a finger must first hold still for HOLD_MS (the sticker lifts a little: the cue) or
+   * move sideways, so a thumb that starts a page scroll on a sticker scrolls the page
+   */
+  armed: boolean
+  timer: number
 }
 
 interface Origin {
@@ -157,6 +165,7 @@ export interface BoardCallbacks {
   onDetails?: (n: number) => void
 }
 
+const HOLD_MS = 250 // a finger holds a sticker this long before it peels (until then the page scrolls under it)
 const THROW_MIN = 240 // px/s: slower releases just drop
 const GLIDE_K = 3.0 // 1/s: air drag of a thrown sticker
 const GLIDE_C = 520 // px/s^2: dry friction once it is flat on the lid, so the skid ends with a firm stop and no long crawl
@@ -211,6 +220,7 @@ export class Board {
     unit: 93,
     inset: 10,
     controlsBelow: true,
+    controlsTop: 0,
   }
   private still = false
   private raf = 0
@@ -372,6 +382,7 @@ export class Board {
     this.detachWindow()
     this.stage?.removeEventListener('wheel', this.onWheel)
     window.removeEventListener('keydown', this.onAnyKey, true)
+    if (this.drag?.timer) window.clearTimeout(this.drag.timer)
     this.world?.destroy()
     this.world = null
     this.stage = null
@@ -416,6 +427,7 @@ export class Board {
     const prev = this.geo
     this.geo = {
       controlsBelow: controls.w > 0 && controls.y > lid.y,
+      controlsTop: controls.y,
       stage: { w: stage.offsetWidth, h: stage.offsetHeight },
       lid,
       sheet,
@@ -578,8 +590,8 @@ export class Board {
    */
   private placeTag(el: HTMLElement, L: Live, e: { minX: number; maxX: number; minY: number; maxY: number }): void {
     const caption = this.ui.tagMode === 'caption'
-    const tagW = Math.min(caption ? 310 : 344, this.geo.stage.w - 24)
-    const tagH = caption ? 124 : 176
+    const tagW = Math.min(caption ? 262 : 300, this.geo.stage.w - 24)
+    const tagH = caption ? 132 : 176
     const gap = 20
     el.style.setProperty('--tag-dx', `${(clamp(L.x, tagW / 2 + 10, this.geo.stage.w - tagW / 2 - 10) - L.x).toFixed(1)}px`)
     const sr = this.scroller?.getBoundingClientRect()
@@ -590,34 +602,92 @@ export class Board {
     const onLid = L.place === 'lid'
     // the box the tag must stay in
     const top = onLid ? Math.max(lid.y + 4, visibleTop) : visibleTop
-    const bottom = onLid && this.geo.controlsBelow ? Math.min(lid.y + lid.h - 4, visibleBottom) : visibleBottom
+    // on a wide screen a tag on the lid may spill over the hinge strip below it and over the sheet beside it (a full lid has no free
+    // spot of its own); the control row and the title stay clear. On a phone it stays inside the lid.
+    const wide = this.geo.controlsBelow
+    const bottom = onLid && wide ? Math.min(Math.max(lid.y + lid.h - 4, this.geo.controlsTop - 10), visibleBottom) : onLid ? Math.min(lid.y + lid.h - 4, visibleBottom) : visibleBottom
     const left = onLid ? lid.x + 4 : 8
-    const right = onLid ? lid.x + lid.w - 4 : this.geo.stage.w - 8
+    const right = onLid && !wide ? lid.x + lid.w - 4 : this.geo.stage.w - 8
     const roomBelow = bottom - (L.y + e.maxY + gap)
     const roomAbove = L.y + e.minY - gap - top
     let mode: 'below' | 'above' | 'free'
     if (roomBelow >= tagH) mode = 'below'
     else if (roomAbove >= tagH) mode = 'above'
     else if (!onLid) mode = roomBelow >= roomAbove ? 'below' : 'above'
-    else {
-      mode = 'free'
-      const roomRight = right - (L.x + e.maxX + 14)
-      const roomLeft = L.x + e.minX - 14 - left
-      let tx: number
-      let ty: number
-      if (roomRight >= tagW || roomLeft >= tagW) {
-        // beside the sticker, level with its middle
-        tx = roomRight >= roomLeft ? L.x + e.maxX + 14 : L.x + e.minX - 14 - tagW
-        ty = clamp(L.y - tagH / 2, top, Math.max(top, bottom - tagH))
-      } else {
-        // no free side: lay it over the lid at the edge with more room, so it covers as little of the sticker as it can
-        tx = clamp(L.x - tagW / 2, left, Math.max(left, right - tagW))
-        ty = roomBelow >= roomAbove ? Math.max(top, bottom - tagH) : top
-      }
-      el.style.setProperty('--tag-x', `${(tx - L.x).toFixed(1)}px`)
-      el.style.setProperty('--tag-y', `${(ty - L.y).toFixed(1)}px`)
+    else mode = 'free'
+    // on a crowded lid the usual spot (hanging below or above) can sit on top of the neighbours: keep it only when it hides next to
+    // nothing, otherwise look for the legal spot on the lid that hides the least (and stays near its sticker)
+    if (onLid && mode !== 'free') {
+      const tx = clamp(L.x, tagW / 2 + 10, this.geo.stage.w - tagW / 2 - 10) - tagW / 2
+      const ty = mode === 'below' ? L.y + e.maxY + gap : L.y + e.minY - gap - tagH
+      if (this.hiddenBy(L, tx, ty, tagW, tagH) > 900) mode = 'free'
+    }
+    if (mode === 'free') {
+      const spot = this.bestTagSpot(L, e, tagW, tagH, { left, right, top, bottom })
+      el.style.setProperty('--tag-x', `${(spot.x - L.x).toFixed(1)}px`)
+      el.style.setProperty('--tag-y', `${(spot.y - L.y).toFixed(1)}px`)
     }
     el.dataset.tag = mode
+  }
+
+  /** how much of the other stickers on the lid (px squared, their silhouettes approximated by a slightly smaller box) a tag at (tx, ty) would hide */
+  private hiddenBy(L: Live, tx: number, ty: number, tw: number, th: number): number {
+    let total = 0
+    for (const O of this.lives) {
+      if (O === L || O.hide) continue
+      const oe = extentsOf(O.n, O.r, this.kOf(O.s))
+      const sx = (oe.maxX - oe.minX) * 0.12
+      const sy = (oe.maxY - oe.minY) * 0.12
+      const ox = Math.min(tx + tw, O.x + oe.maxX - sx) - Math.max(tx, O.x + oe.minX + sx)
+      const oy = Math.min(ty + th, O.y + oe.maxY - sy) - Math.max(ty, O.y + oe.minY + sy)
+      if (ox > 0 && oy > 0) total += ox * oy
+    }
+    return total
+  }
+
+  /** the top-left corner of the tag on the lid: scan the lid for the place that hides the fewest other stickers, never lies on the
+   *  tape buttons, covers as little of its own sticker as it can, and stays close to it */
+  private bestTagSpot(
+    L: Live,
+    e: { minX: number; maxX: number; minY: number; maxY: number },
+    tw: number,
+    th: number,
+    box: { left: number; right: number; top: number; bottom: number },
+  ): { x: number; y: number } {
+    const maxX = Math.max(box.left, box.right - tw)
+    const maxY = Math.max(box.top, box.bottom - th)
+    const ex = Math.max(Math.abs(e.minX), Math.abs(e.maxX))
+    const tape = this.ui.tagMode === 'full'
+    let best = { x: clamp(L.x - tw / 2, box.left, maxX), y: box.top }
+    let bestCost = Infinity
+    const STEP = 16
+    for (let ty = box.top; ty <= maxY + 0.01; ty += STEP) {
+      for (let tx = box.left; tx <= maxX + 0.01; tx += STEP) {
+        const x = Math.min(tx, maxX)
+        const y = Math.min(ty, maxY)
+        let cost = this.hiddenBy(L, x, y, tw, th)
+        // its own sticker: hiding it is the worst place for the tag
+        const sox = Math.min(x + tw, L.x + e.maxX) - Math.max(x, L.x + e.minX)
+        const soy = Math.min(y + th, L.y + e.maxY) - Math.max(y, L.y + e.minY)
+        if (sox > 0 && soy > 0) cost += sox * soy * 2.2
+        if (tape) {
+          const tx0 = L.x - ex * 0.52 - 37
+          const tx1 = L.x + ex * 0.52 + 37
+          const ty0 = L.y + e.minY - 6
+          const ty1 = ty0 + 48
+          const tox = Math.min(x + tw, tx1) - Math.max(x, tx0)
+          const toy = Math.min(y + th, ty1) - Math.max(y, ty0)
+          if (tox > 0 && toy > 0) cost += tox * toy * 3
+        }
+        // near its sticker (a tag a screen away from it reads as a stray label)
+        cost += Math.hypot(x + tw / 2 - L.x, y + th / 2 - L.y) * 7
+        if (cost < bestCost) {
+          bestCost = cost
+          best = { x, y }
+        }
+      }
+    }
+    return best
   }
 
   private renderFold(L: Live): void {
@@ -815,6 +885,12 @@ export class Board {
       s0: L.s,
       origin: this.originOf(L),
       touch: e.pointerType === 'touch',
+      armed: e.pointerType !== 'touch',
+      timer: 0,
+    }
+    if (!this.drag.armed) {
+      const d = this.drag
+      d.timer = window.setTimeout(() => this.arm(d), HOLD_MS)
     }
     try {
       this.stage?.setPointerCapture(e.pointerId)
@@ -830,6 +906,52 @@ export class Board {
     window.removeEventListener('pointermove', this.onMove)
     window.removeEventListener('pointerup', this.onUp)
     window.removeEventListener('pointercancel', this.onUp)
+    window.removeEventListener('touchmove', this.blockScroll)
+  }
+
+  /** a finger has held the sticker long enough: it is now the one being dragged, and the page must not scroll under it */
+  private arm(d: Drag): void {
+    d.timer = 0
+    if (this.drag !== d || d.armed) return
+    if (this.gravity || this.ui.busy) return
+    d.armed = true
+    window.addEventListener('touchmove', this.blockScroll, { passive: false })
+    const L = this.lives[d.n - 1]
+    if (L.mode === 'rest') {
+      // the cue: the sticker lifts a hair and a corner starts to curl under the finger
+      const p = this.toStage(d.cx, d.cy)
+      const rel = rotateAbout(p.x, p.y, L.x, L.y, -L.r)
+      const lx = (rel.x - L.x) / this.kOf(L.s)
+      const ly = (rel.y - L.y) / this.kOf(L.s)
+      L.liftT = 0.6
+      if (!(L.n === 7 && L.place === 'sheet')) {
+        L.corner = lx < 0 ? (ly < 0 ? 0 : 3) : ly < 0 ? 1 : 2
+        L.curlT = this.still ? 0 : 0.3
+      }
+      this.wake()
+    }
+    try {
+      navigator.vibrate?.(8)
+    } catch {
+      /* no haptics here */
+    }
+  }
+
+  private blockScroll = (e: TouchEvent): void => {
+    if (e.cancelable) e.preventDefault()
+  }
+
+  /** a finger let go (or the page took the gesture) before the sticker peeled: undo the cue and forget the press */
+  private endPress(d: Drag): void {
+    if (d.timer) window.clearTimeout(d.timer)
+    d.timer = 0
+    const L = this.lives[d.n - 1]
+    if (!d.moved && L.mode === 'rest') {
+      L.liftT = 0
+      L.curlT = 0
+      this.applyRestCurl(L, false)
+      this.wake()
+    }
   }
 
   private onMove = (e: PointerEvent): void => {
@@ -840,7 +962,28 @@ export class Board {
     d.samples.push({ t: now(), x: e.clientX, y: e.clientY })
     if (d.samples.length > 12) d.samples.shift()
     if (!d.moved) {
-      if (Math.hypot(d.cx - d.sx, d.cy - d.sy) < (d.touch ? 9 : 5)) return
+      const dx = d.cx - d.sx
+      const dy = d.cy - d.sy
+      if (Math.hypot(dx, dy) < (d.touch ? 9 : 5)) return
+      if (!d.armed) {
+        // a finger that moves before the hold is up: sideways is a deliberate drag (the page never scrolls sideways); anything
+        // else is a scroll that happens to start on a sticker, so let the page have it
+        if (Math.abs(dx) > Math.abs(dy) * 1.6 && !this.gravity && !this.ui.busy) {
+          d.armed = true
+          if (d.timer) window.clearTimeout(d.timer)
+          d.timer = 0
+        } else {
+          this.endPress(d)
+          this.drag = null
+          this.detachWindow()
+          try {
+            this.stage?.releasePointerCapture(d.id)
+          } catch {
+            /* already released */
+          }
+          return
+        }
+      }
       if (this.gravity || this.ui.busy) return
       this.beginDrag(d)
     }
@@ -852,6 +995,7 @@ export class Board {
     if (!d || e.pointerId !== d.id) return
     this.drag = null
     this.detachWindow()
+    this.endPress(d)
     try {
       this.stage?.releasePointerCapture(e.pointerId)
     } catch {
@@ -859,7 +1003,8 @@ export class Board {
     }
     const L = this.lives[d.n - 1]
     if (!d.moved) {
-      this.clicked(d.n, e)
+      // the page took the gesture (a scroll started on the sticker): that is neither a tap nor a drag
+      if (e.type !== 'pointercancel') this.clicked(d.n, e)
       return
     }
     this.release(L, d, e.type === 'pointercancel')

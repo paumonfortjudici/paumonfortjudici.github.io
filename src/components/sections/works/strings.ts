@@ -5,6 +5,8 @@
 import type { WorkMeta } from '@/lib/works'
 
 export const WORKS_UI = {
+  /** the tag of the slate that names Pau's part in each folder */
+  roleTag: 'My role',
   /** the sub on touch screens (WORKS_SECTION.sub tells visitors to press [ and ], which a phone does not have) */
   subTouch: 'Ten folders, ten different worlds. Filter the cabinet and open a file.',
   /** the index card that explains the keys inside a folder */

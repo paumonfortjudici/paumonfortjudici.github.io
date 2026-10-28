@@ -653,8 +653,9 @@
   font-weight: 400;
   line-height: 1.04;
   letter-spacing: 0.01em;
-  color: var(--ffl-sun);
-  -webkit-text-stroke: 0.13em var(--ffl-outline);
+  /* the letters are the logo's outline ink (5.6:1 on the tan); the marigold halo and the red hard shadow keep the logo's lettering look */
+  color: var(--ffl-outline);
+  -webkit-text-stroke: 0.14em var(--ffl-sun);
   paint-order: stroke fill;
   filter: drop-shadow(0.06em 0.08em 0 var(--ffl-red));
 }
@@ -1206,7 +1207,9 @@ html.js .w-fortyfour-lab-intro {
   position: relative;
   padding: clamp(64px, 9vw, 120px) calc(var(--ffl-border-w) + var(--ffl-pad)) calc(clamp(44px, 6vw, 84px) + env(safe-area-inset-bottom, 0px));
   background-color: var(--w-color);
-  background-image: var(--pm-grain);
+  /* the tufted pile under a veil of the folder's own marigold, so the texture is felt and the ink text on it stays calm */
+  background-image: linear-gradient(color-mix(in srgb, var(--w-color) 66%, transparent), color-mix(in srgb, var(--w-color) 66%, transparent)), var(--ffl-fuzz), var(--pm-grain);
+  background-size: auto, 200px 200px, auto;
   color: var(--w-ink);
 }
 .w-fortyfour-lab-fringe {
@@ -1221,12 +1224,15 @@ html.js .w-fortyfour-lab-intro {
 .w-fortyfour-lab-foot-grid {
   display: grid;
   gap: clamp(34px, 6vw, 56px);
-  max-width: 100rem;
   margin-top: clamp(18px, 3vw, 34px);
 }
 .w-fortyfour-lab-foot-main {
   min-width: 0;
   max-width: 84rem;
+}
+/* the facts slate, scaled with the title (its type is in em) */
+.w-fortyfour-lab-foot .pm-wf {
+  font-size: clamp(1rem, 0.7rem + 0.7vw, 1.28rem);
 }
 /* the facts slate is a primitive: only its proportions are adapted here, so the ticket's handle never breaks in two */
 .w-fortyfour-lab-foot .pm-ticket__label {
@@ -1306,7 +1312,7 @@ html.js .w-fortyfour-lab-intro {
     align-items: start;
   }
   .w-fortyfour-lab-foot-side {
-    width: clamp(15rem, 19vw, 24rem);
+    width: clamp(15rem, 27vw, 36rem);
     /* the label's top edge sits 44px under the rug's edge, so the cord is as long as that */
     margin-top: calc(44px - var(--ffl-foot-top) - clamp(18px, 3vw, 34px));
   }
@@ -1327,6 +1333,184 @@ html.js .w-fortyfour-lab-intro {
     border-radius: 3px;
   }
 }
+/* a hand-written note under the label, pointing down at the ribbon (wide screens: below that the ribbon's own heading is next to it) */
+.w-fortyfour-lab-foot-hint {
+  display: none;
+}
+@media (min-width: 640px) and (max-width: 999px) {
+  /* a tablet: the label on the left, the note beside it, so the right half is not left bare */
+  .w-fortyfour-lab-foot-side {
+    grid-template-columns: 17rem minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
+  }
+  .w-fortyfour-lab-foot-hint {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    margin: 0;
+    padding-left: 6%;
+    font-family: var(--font-hand);
+    font-size: clamp(1.9rem, 1.2rem + 1.6vw, 2.4rem);
+    line-height: 1.05;
+    color: var(--ffl-outline);
+    rotate: -3deg;
+  }
+  .w-fortyfour-lab-foot-hint svg {
+    flex: none;
+    width: 4.2rem;
+    height: auto;
+    translate: 0 6px;
+  }
+}
+@media (min-width: 1000px) {
+  .w-fortyfour-lab-foot-hint {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    margin: 0;
+    padding-left: 8%;
+    font-family: var(--font-hand);
+    font-size: clamp(1.7rem, 1.2rem + 0.9vw, 2.3rem);
+    line-height: 1.05;
+    color: var(--ffl-outline);
+    rotate: -3deg;
+  }
+  .w-fortyfour-lab-foot-hint svg {
+    flex: none;
+    width: 4.2rem;
+    height: auto;
+    translate: 0 6px;
+  }
+}
+
+/* the ribbon: all thirteen posts as stitched cells in date order; each one scrolls the wall back to its tag */
+.w-fortyfour-lab-ribbon {
+  position: relative;
+  margin-top: clamp(40px, 6vw, 76px);
+  padding-top: clamp(20px, 2.6vw, 30px);
+  border-top: 4px dashed var(--ffl-outline);
+}
+.w-fortyfour-lab-ribbon-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 24px;
+  margin: 0 0 clamp(16px, 2vw, 24px);
+  font-family: var(--ffl-chango);
+  font-size: clamp(1.6rem, 1.1rem + 1.7vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1;
+  color: var(--ffl-outline);
+}
+.w-fortyfour-lab-ribbon-span {
+  font-family: var(--font-hand);
+  font-size: 0.8em;
+  line-height: 1.1;
+  rotate: -1deg;
+}
+.w-fortyfour-lab-ribbon-list {
+  display: grid;
+  /* three a row (the thirteenth takes its whole row); five a row, then seven a row, wider up (the thirteenth takes the rest of its row) */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(10px, 1.2vw, 16px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.w-fortyfour-lab-ribbon-list li:last-child {
+  grid-column: span 3;
+}
+@media (min-width: 700px) {
+  /* five a row on a tablet: the thirteenth takes the last three slots */
+  .w-fortyfour-lab-ribbon-list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1200px) {
+  .w-fortyfour-lab-ribbon-list {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+  .w-fortyfour-lab-ribbon-list li:last-child {
+    grid-column: span 2;
+  }
+}
+.w-fortyfour-lab-ribbon-list li:nth-child(odd) .w-fortyfour-lab-cell {
+  rotate: -1.4deg;
+}
+.w-fortyfour-lab-ribbon-list li:nth-child(even) .w-fortyfour-lab-cell {
+  rotate: 1.2deg;
+}
+.w-fortyfour-lab-cell {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  width: 100%;
+  min-height: 6.4rem;
+  padding: 26px 4px 10px;
+  cursor: pointer;
+  background-color: var(--ffl-cream);
+  background-image: var(--pm-grain);
+  border: 3px solid var(--ffl-outline);
+  box-shadow: 4px 5px 0 var(--ffl-outline);
+  color: var(--ffl-outline);
+  text-align: center;
+  transition: translate 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+/* the colour band along the top says what kind of post it is (the word under the date says it too) */
+.w-fortyfour-lab-cell::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 14px;
+  background-color: var(--ffl-tan);
+  border-bottom: 3px solid var(--ffl-outline);
+}
+.w-fortyfour-lab-cell[data-kind='photos']::before {
+  background-color: var(--ffl-red);
+}
+.w-fortyfour-lab-cell[data-kind='clip']::before {
+  background-color: var(--ffl-sun);
+}
+.w-fortyfour-lab-cell:hover,
+.w-fortyfour-lab-cell:focus-visible {
+  translate: -2px -3px;
+  box-shadow: 6px 8px 0 var(--ffl-outline);
+}
+.w-fortyfour-lab-cell:focus-visible {
+  outline: 3px solid var(--ffl-outline);
+  outline-offset: 3px;
+}
+.w-fortyfour-lab-cell:active {
+  translate: 2px 2px;
+  box-shadow: 1px 1px 0 var(--ffl-outline);
+}
+.w-fortyfour-lab-cell-n {
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--ffl-brick);
+}
+.w-fortyfour-lab-cell-date {
+  font-family: var(--ffl-chango);
+  font-size: clamp(1rem, 0.8rem + 0.6vw, 1.7rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+.w-fortyfour-lab-cell-kind {
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 /* the five yarns: a tufter's shade card, one tuft of each colour with its name and hex; each row copies its hex */
 .w-fortyfour-lab-yarns {
   position: relative;
@@ -1400,9 +1584,9 @@ html.js .w-fortyfour-lab-intro {
 .w-fortyfour-lab-end-title {
   margin: 0 0 clamp(14px, 2vw, 26px);
   font-family: var(--ffl-chango);
-  font-size: clamp(2.3rem, 1.3rem + 4vw, 5rem);
+  font-size: clamp(2.5rem, 1.2rem + 4.9vw, 6.4rem);
   font-weight: 400;
-  line-height: 0.98;
+  line-height: 0.96;
   letter-spacing: 0.01em;
   color: var(--ffl-outline);
   filter: drop-shadow(0.05em 0.07em 0 var(--ffl-cream));
@@ -1771,6 +1955,12 @@ html.js .w-fortyfour-lab-intro {
   .w-fortyfour-lab-post[data-swing] .w-fortyfour-lab-media {
     animation: none;
   }
+  .w-fortyfour-lab-cell {
+    transition: none;
+  }
+}
+html[data-motion='paused'] .w-fortyfour-lab-cell {
+  transition: none;
 }
 html[data-motion='paused'].js .w-fortyfour-lab-post:not([data-seen]) .w-fortyfour-lab-hang {
   opacity: 1;

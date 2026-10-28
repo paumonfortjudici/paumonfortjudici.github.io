@@ -163,6 +163,11 @@
   filter: drop-shadow(0 0.04em 0 color-mix(in srgb, var(--ink) 55%, transparent));
 }
 
+/* the letter itself is generated: the title's text is one visually hidden "Sticker sheet", so nothing spells it out */
+.w-illustration-ch::after {
+  content: attr(data-c);
+}
+
 .w-illustration-ch::before {
   content: attr(data-c);
   position: absolute;
@@ -174,8 +179,71 @@
   paint-order: stroke fill;
 }
 
-.w-illustration-lede {
+.w-illustration-headtext {
+  display: grid;
   flex: 1 1 15rem;
+  gap: 20px;
+  min-width: 0;
+}
+
+/* a recap of the three moves, for screens wide enough that the head would otherwise float: label-maker strips in three accents */
+.w-illustration-steps {
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1700px) and (min-height: 860px) {
+  .w-illustration-head {
+    align-items: center;
+  }
+
+  .w-illustration-lede {
+    font-size: 1.32rem;
+  }
+
+  .w-illustration-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 18px;
+    padding-top: 4px;
+  }
+
+  .w-illustration-steps li {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 20px 9px 9px;
+    border-radius: 9px;
+    background-color: var(--c);
+    background-image: var(--pm-grain);
+    font-family: 'Cherry Bomb One', var(--font-body);
+    font-size: 1.3rem;
+    line-height: 1;
+    color: var(--ink);
+    box-shadow:
+      0 0 0 2.5px var(--ink),
+      inset 0 1.5px 0 color-mix(in srgb, var(--wi-white) 55%, transparent),
+      0 5px 0 2.5px var(--ink);
+    transform: rotate(var(--t, 0deg));
+  }
+
+  .w-illustration-steps b {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    background: var(--wi-white);
+    box-shadow: 0 0 0 2.5px var(--ink);
+    font-weight: 400;
+    font-size: 1.25rem;
+  }
+}
+
+.w-illustration-lede {
   margin: 0 0 0.4rem;
   max-width: 40ch;
   font-size: var(--fs-lead);

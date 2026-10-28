@@ -526,8 +526,7 @@ html.js .pm-mast__stamp {
   .pm-mast__tab { align-items: flex-end; padding-right: clamp(14px, 4.4vw, 22px); }
   .pm-mast__mark { position: static; flex: none; width: 26px; margin: 0 0 clamp(36px, 11vw, 52px) 6px; }
   .pm-mast__notes { padding: 14px 18px 0 calc(var(--mast-edge) + 14px); }
-  .pm-mast__brace,
-  .pm-mast__note--second { display: none; }
+  .pm-mast__brace { display: none; }
 }
 
 /* ==========================================================================
@@ -674,6 +673,7 @@ html.js .pm-mast__stamp {
   transform: translateX(-50%);
 }
 .pm-nav__item { display: block; }
+.pm-nav__num { display: none; }
 .pm-nav__tab {
   --tab-c: var(--tomato);
   --tab-on: var(--ink);
@@ -804,19 +804,24 @@ html.js .pm-mast__stamp {
     left: 0;
     /* the pause tab has its own slot at the right end (48px and a 10px gap): the tabs scroll away under a soft edge before it, never under it */
     right: 60px;
-    gap: 5px;
-    padding: 8px 14px 0 4px;
+    gap: 4px;
+    padding: 8px 4px 0 4px;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x proximity;
     scrollbar-width: none;
     transform: none;
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
-    mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 12px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 12px), transparent);
   }
   .pm-nav__tabs::-webkit-scrollbar { display: none; }
   .pm-nav__item { flex: none; scroll-snap-align: center; }
-  .pm-nav__tab { padding-inline: 1.15em; min-width: 44px; }
+  /* numerals for the sheets you are not on, the full word for the one you are on: the row fits the phone, nothing is cut mid-label */
+  .pm-nav__tab { padding-inline: 0.9em; min-width: 44px; }
+  .pm-nav__tab[data-active='true'] { padding-inline: 0.85em; }
+  .pm-nav__num { display: inline; font-variant-numeric: tabular-nums; }
+  .pm-nav__tab[data-active='true'] .pm-nav__num { display: none; }
+  .pm-nav__tab:not([data-active='true']) .pm-nav__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .pm-nav__inner > .pm-mt { right: 2px; }
 }
 

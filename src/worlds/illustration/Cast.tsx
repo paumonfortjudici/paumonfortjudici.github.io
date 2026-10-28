@@ -3,6 +3,7 @@
 // anything. The buttons are out of the Tab order (every sticker above is already a tab stop and D opens its details): a screen
 // reader or voice control still finds and activates them, a keyboard user does not tab through nine duplicates.
 import type { CSSProperties } from 'react'
+import { useMediaQuery } from '../../lib/hooks'
 import { STICKERS, art } from './data'
 
 /** one line per character, from the art director's notes (what they are, what they carry) */
@@ -23,12 +24,14 @@ interface Props {
 }
 
 export function Cast({ onOpen }: Props) {
+  // on a phone the strips are one swipeable shelf; a scroll area must be reachable by keyboard, so it is a tab stop only there
+  const shelf = useMediaQuery('(max-width: 560px)')
   return (
     <section className="w-illustration-cast" aria-labelledby="w-illustration-cast-h">
       <h3 className="w-illustration-cast-title" id="w-illustration-cast-h">
         The cast
       </h3>
-      <ol className="w-illustration-cast-list">
+      <ol className="w-illustration-cast-list" {...(shelf ? { tabIndex: 0, role: 'list', 'aria-label': 'The cast, swipe sideways' } : {})}>
         {STICKERS.map((s) => (
           <li key={s.n} style={{ '--accent': s.hex, '--tilt': `${[-1.6, 1.2, -0.6, 1.8, -1.2, 0.8, -2, 1.4, -0.8][s.n - 1]}deg` } as CSSProperties}>
             {/* the picture's alt text: hidden here (so it is not read twice), used as the accessible description of this button and of the sticker itself */}

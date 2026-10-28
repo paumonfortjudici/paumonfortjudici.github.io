@@ -31,8 +31,9 @@
 }
 
 /* the real control: a button that holds the hit shape. Only the vinyl silhouette takes the pointer, so overlapping stickers
-   never steal each other's clicks from their empty corners; touch-action is none there and nowhere else, so the page still
-   scrolls from every other spot. */
+   never steal each other's clicks from their empty corners. touch-action is pan-y: a finger that starts to scroll the page on a sticker scrolls it
+   (the board peels only after a 250 ms hold or a sideways drag, and blocks the scroll from then on), so a
+   scroll that starts on the art still moves the page. */
 .w-illustration-stk-btn {
   position: absolute;
   inset: 0;
@@ -43,7 +44,7 @@
   border: 0;
   background: none;
   pointer-events: none;
-  touch-action: none;
+  touch-action: pan-y;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -60,13 +61,13 @@
   height: 100%;
   overflow: visible;
   pointer-events: none;
-  touch-action: none;
+  touch-action: pan-y;
 }
 
 .w-illustration-stk-hit path {
   fill: transparent;
   pointer-events: all;
-  touch-action: none;
+  touch-action: pan-y;
   cursor: grab;
 }
 
@@ -197,7 +198,7 @@
   position: absolute;
   left: var(--tag-dx, 0px);
   top: calc(var(--ey-bot, 90px) + 20px);
-  width: min(344px, calc(100vw - 28px));
+  width: min(300px, calc(100vw - 28px));
   padding: 16px 14px 12px;
   border-top: 10px solid var(--accent);
   border-radius: 10px 10px 12px 12px;
@@ -301,7 +302,7 @@
 
 /* keyboard focus: caption and key hints only */
 .w-illustration-tag--caption {
-  width: min(310px, calc(100vw - 28px));
+  width: min(262px, calc(100vw - 28px));
   padding-bottom: 12px;
   pointer-events: none;
 }

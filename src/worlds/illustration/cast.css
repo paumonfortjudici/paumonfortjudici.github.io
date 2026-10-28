@@ -55,9 +55,44 @@
   }
 }
 
+/* a phone: nine stacked strips would be a column of cards, so they hang on one shelf instead, a swipe sideways; the next strip
+   always peeks in from the right (the end of the row is visible), and the accent colour of the strip is its own swatch (no hex) */
 @media (max-width: 560px) {
+  .w-illustration-cast {
+    gap: 4px;
+  }
+
   .w-illustration-cast-list {
-    grid-template-columns: minmax(0, 1fr);
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    margin-inline: calc(-1 * clamp(14px, 2.4vw, 44px));
+    padding: 38px 20px 30px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 20px;
+    scrollbar-width: thin;
+  }
+
+  .w-illustration-cast-list > li,
+  .w-illustration-cast-list > li:nth-child(3n + 2),
+  .w-illustration-cast-list > li:nth-child(3n) {
+    flex: none;
+    margin-bottom: 0;
+    scroll-snap-align: start;
+  }
+
+  .w-illustration-cast-list > li:nth-child(even) {
+    margin-top: 14px;
+  }
+
+  .w-illustration-chip {
+    width: min(76vw, 300px);
+  }
+
+  .w-illustration-chip-hex {
+    display: none;
   }
 }
 

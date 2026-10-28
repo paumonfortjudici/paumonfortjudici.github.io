@@ -139,6 +139,9 @@ export function PillNav() {
                 aria-current={i === active ? 'true' : undefined}
                 onClick={(e) => onClick(e, item.id)}
               >
+                <span className="pm-nav__num" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
                 <span className="pm-nav__label">{item.label}</span>
               </a>
             </li>

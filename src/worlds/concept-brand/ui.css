@@ -866,3 +866,10 @@
     min-height: 44px;
   }
 }
+
+/* touch widths (the bottom-sheet layout and phones): every tab in the world is at least 44 px high, whatever the pointer reports */
+@media (max-width: 899px) {
+  .w-concept-brand .pm-tabbtn {
+    min-height: 44px;
+  }
+}

@@ -46,6 +46,8 @@ export default function ConceptBrandWorld() {
   const sheet = useMediaQuery('(max-width: 899px)')
   // wide and tall enough: the nine chips stand in a column on the left edge of the wall (more height for the board, and the left margin is used)
   const rail = useMediaQuery('(min-width: 1100px) and (min-height: 700px)')
+  // a tablet (700 to 899 px) keeps the sheet but has free wall beside the board: the zoom controls stand in a column there too
+  const column = rail || (sheet && !phone)
 
   const [view, setView] = useState<View>(() => (typeof window !== 'undefined' && window.matchMedia?.('(max-width: 699px)').matches ? 'index' : 'board'))
   const chosen = useRef(false)
@@ -145,7 +147,7 @@ export default function ConceptBrandWorld() {
       const slip = tourRef.current
       if (slip) bottom = Math.max(bottom, (sheet ? foldPx(main) + 12 : 16) + slip.offsetHeight + 14)
       // in the rail layout the zoom controls stand in a column on the right edge of the wall: keep the board clear of it
-      const right = rail ? 84 : 14
+      const right = column ? 84 : 14
       setReserve((r) => (r.top === top && r.bottom === bottom && r.left === left && r.right === right ? r : { top, bottom, left, right }))
     }
     read()
@@ -154,7 +156,7 @@ export default function ConceptBrandWorld() {
     ro.observe(chips)
     if (tourRef.current) ro.observe(tourRef.current)
     return () => ro.disconnect()
-  }, [view, sheet, sheetOpen, touring, tour, rail, dockTour])
+  }, [view, sheet, sheetOpen, touring, tour, rail, column, dockTour])
 
   // the index scrolls inside the world (the shell's own scroller stays still), so give it the arrow keys on arrival
   const indexRef = useRef<HTMLDivElement>(null)
@@ -177,7 +179,7 @@ export default function ConceptBrandWorld() {
 
   const board = view === 'board'
   return (
-    <div className="w-concept-brand" data-view={view} data-sheet={board && sheet ? 'true' : undefined} data-rail={board && rail ? 'true' : undefined} data-touring={touring ? 'true' : undefined} data-sheet-open={board && sheet && sheetOpen ? 'true' : undefined} onKeyDown={onRootKey} style={{ '--cb-wall': `url(${IMG.wallTile})` } as CSSProperties}>
+    <div className="w-concept-brand" data-view={view} data-sheet={board && sheet ? 'true' : undefined} data-rail={board && rail ? 'true' : undefined} data-column={board && column ? 'true' : undefined} data-touring={touring ? 'true' : undefined} data-sheet-open={board && sheet && sheetOpen ? 'true' : undefined} onKeyDown={onRootKey} style={{ '--cb-wall': `url(${IMG.wallTile})` } as CSSProperties}>
       {board ? (
         <>
           <div className="w-concept-brand-main" ref={mainRef} tabIndex={-1}>

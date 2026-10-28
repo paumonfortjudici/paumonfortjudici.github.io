@@ -42,6 +42,8 @@
 }
 .pm-ct-head .pm-sw { --sw-size: clamp(4.5rem, 15vw, 11rem); }
 .pm-ct-head__word > .pm-sc[data-at] { left: 0; bottom: -34px; width: 54%; color: var(--cream); }
+/* CONTACT: the outline is drawn first, then the word fills with full ink (large text on the tomato sheet, well over 3:1) */
+.pm-ct-head .pm-sw[data-fill='tint'] { --fill-a: 1; }
 
 /* ---- the stack ------------------------------------------------------------------------------------------------------- */
 .pm-ct-stack {
@@ -58,6 +60,9 @@
 /* ---- folder 1: LET'S TALK :) -------------------------------------------------------------------------------------------- */
 .pm-ct-talk { --ct-word: 100cqw; container-type: inline-size; position: relative; }
 .pm-ct-phrase { color: var(--cream); }
+/* LET'S TALK :) the cream outline is drawn first, then the letters fill with solid cream; the tomato riso offset stays behind them */
+.pm-ct-talk .pm-sw[data-shadow][data-fill='tint'] { --fill-a: 1; }
+.pm-ct-talk .pm-sw[data-shadow] .pm-sw__fillp { fill: var(--cream); }
 /* the paragraph and the note share a row, so the note can never run into the word above it */
 .pm-ct-talk__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 18px 28px; margin-top: clamp(22px, 2.4vw, 34px); }
 .pm-ct-talk__p { margin: 0; max-width: min(46ch, var(--ct-word)); font-size: clamp(1.2rem, 0.85rem + 0.95vw, 2rem); line-height: 1.32; color: var(--cream); text-wrap: pretty; }
@@ -176,7 +181,7 @@
 .pm-ct-tix .pm-ticket__stub { width: clamp(3.4rem, min(17cqw, 6vw), 7rem); }
 .pm-ct-tix .pm-ticket__arrow { width: clamp(2rem, min(8cqw, 2.6vw), 3.6rem); }
 .pm-ct-kick { display: flex; align-items: center; gap: 0.55em; width: 100%; }
-.pm-ct-kick__host { margin-left: auto; padding-left: 0.8em; font-family: 'Courier Prime', var(--font-label); font-weight: 700; font-size: max(var(--fs-caption), 0.8vw); letter-spacing: 0.02em; text-transform: none; opacity: 0.85; white-space: nowrap; }
+.pm-ct-kick__host { margin-left: auto; padding-left: 0.8em; font-family: 'Courier Prime', var(--font-label); font-weight: 700; font-size: max(var(--fs-caption), 0.8vw); letter-spacing: 0.02em; text-transform: none; opacity: 1; white-space: nowrap; }
 @container (max-width: 330px) { .pm-ct-kick__host { display: none; } }
 .pm-ct-kick__glyph { flex: none; width: 1.9em; height: 1.9em; margin: -0.5em 0 -0.4em; }
 .pm-ct-tix .pm-ticket__kicker { font-size: max(var(--fs-label), 0.86vw); }

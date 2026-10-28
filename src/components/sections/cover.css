@@ -415,7 +415,7 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  color: var(--on2);
+  color: var(--on); /* opaque ink: the mixed secondary ink fell to 4.39:1 on the olive folder */
 }
 .cv-face__title {
   grid-area: title;
@@ -473,7 +473,7 @@ html.js .cv-deck[data-in] .cv-face__concept {
   font-size: clamp(0.8125rem, 1.05cqw, 1.1rem);
   line-height: 1.28;
   font-weight: 500;
-  color: var(--on2);
+  color: var(--on);
 }
 
 /* ---- lift + peek -------------------------------------------------------------------------------------------------- */

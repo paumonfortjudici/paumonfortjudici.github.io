@@ -411,7 +411,7 @@
   content: attr(data-title);
   position: absolute;
   left: 50%;
-  bottom: calc(100% + 10px);
+  top: calc(100% + 10px); /* below the spine: above it the flag met the hand-written note */
   z-index: 6;
   padding: 0.3rem 0.6rem 0.25rem;
   border-radius: 3px;
@@ -422,7 +422,7 @@
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
   white-space: nowrap;
-  transform: translate(-50%, 4px);
+  transform: translate(-50%, -4px);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s ease, transform 0.2s var(--ease-out);
@@ -1082,7 +1082,7 @@ html.js .pm-cat-stack[data-in] .pm-cat-item { transition-delay: calc(var(--i, 0)
   .pm-cat { --cat-rail: 13px; --cat-padx: 14px; --cat-no: 2.5rem; }
   .pm-cat-head { grid-template-columns: var(--cat-no) minmax(0, 1fr) auto; align-items: start; }
   /* the open band's slate and slip stack, each as wide as the column */
-  .pm-cat-kit { flex-direction: column; align-items: stretch; margin-top: 0.4rem; }
+  .pm-cat-kit { flex-direction: column; align-items: stretch; margin-top: 1.1rem; /* room for the clapper stick, which leans up to the right */ }
   .pm-cat-slate { flex: 0 0 auto; min-width: 0; }
   .pm-cat-inside { flex: 0 0 auto; max-width: none; margin-top: 0.2rem; transform: rotate(0.7deg); }
   .pm-cat-no { margin-top: clamp(14px, 1.5vw, 22px); }

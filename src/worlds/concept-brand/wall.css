@@ -693,26 +693,33 @@ html[data-motion='paused'] .w-concept-brand-marker-shade {
   transform: none;
 }
 
-/* the rail layout: the zoom controls stand in a column on the right edge of the wall, clear of the board */
+/* the rail layout (and the tablet sheet layout, data-column): the zoom controls stand in a column on the right edge of the wall, clear of the board */
 .w-concept-brand[data-rail='true'] .w-concept-brand-controls {
-  flex-direction: column;
   right: 14px;
   bottom: 18px;
 }
 
-.w-concept-brand[data-rail='true'] .w-concept-brand-coaster[data-kind='out'] {
+.w-concept-brand[data-rail='true'] .w-concept-brand-controls,
+.w-concept-brand[data-column='true'] .w-concept-brand-controls {
+  flex-direction: column;
+}
+
+.w-concept-brand[data-rail='true'] .w-concept-brand-coaster[data-kind='out'],
+.w-concept-brand[data-column='true'] .w-concept-brand-coaster[data-kind='out'] {
   margin: -8px 0 0;
   transform: rotate(-9deg);
   order: 3;
 }
 
-.w-concept-brand[data-rail='true'] .w-concept-brand-coaster[data-kind='in'] {
+.w-concept-brand[data-rail='true'] .w-concept-brand-coaster[data-kind='in'],
+.w-concept-brand[data-column='true'] .w-concept-brand-coaster[data-kind='in'] {
   margin: 0 0 -8px;
   transform: rotate(8deg);
   order: 1;
 }
 
-.w-concept-brand[data-rail='true'] .w-concept-brand-cap {
+.w-concept-brand[data-rail='true'] .w-concept-brand-cap,
+.w-concept-brand[data-column='true'] .w-concept-brand-cap {
   order: 2;
 }
 

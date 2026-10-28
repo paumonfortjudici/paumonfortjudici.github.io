@@ -568,7 +568,7 @@ html.js .pm-wk__ghost {
   --ws: calc(3 * var(--colw) + 2 * var(--g));
   --pad: 12px;
   --tab: 32px;
-  --txt: 86px;
+  --txt: 150px; /* title, kind, the role slate (up to two lines) and, on concept folders, the stamp strip */
   --pz: calc(var(--ws) * 0.3 - 20px);
   --rowh-nat: calc(var(--pz) + var(--tab) + 2 * var(--pad) + (var(--ws) - 2 * var(--pad)) * 1.25 + 10px + var(--txt));
   --rowh: var(--rowh-nat);
@@ -903,13 +903,39 @@ html.js .pm-wk__ghost {
   margin-top: auto;
   padding-top: 8px;
 }
-.pm-wk-roles {
+.pm-wk-role {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 3px 8px;
   min-width: 0;
+  margin-top: 3px;
+}
+/* the slate: a small ink tag in the folder's own colour, then the roles in full ink (never the faded secondary ink) */
+.pm-wk-role__tag {
+  flex: none;
+  padding: 2px 6px 1px;
+  border-radius: 3px;
+  background: var(--on);
+  color: var(--c);
   font-family: var(--font-label);
   font-size: var(--fs-label);
-  font-weight: 400;
-  line-height: 1.35;
-  color: var(--on2);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pm-wk-role__text {
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--on);
+}
+/* Gotet's olive cannot carry the faded secondary ink at 4.5:1: its small lines use the full ink */
+.pm-wk-card[data-slug='concept-brand'] {
+  --on2: var(--on);
 }
 .pm-wk-card .pm-wk-open {
   --c: var(--fi);
@@ -1380,9 +1406,6 @@ html.js .pm-wk-card[data-face] .pm-wk-title {
     flex-direction: column;
     align-items: flex-start;
     gap: 14px;
-  }
-  .pm-wk-cell[data-tw='2'] .pm-wk-roles {
-    font-size: var(--fs-label);
   }
   .pm-wk-cell[data-tw='2'] .pm-wk-peek {
     height: calc(36cqw * var(--pk, 1));

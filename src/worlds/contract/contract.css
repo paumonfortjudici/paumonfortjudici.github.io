@@ -900,6 +900,9 @@ html.js .w-contract-print {
 .w-contract-slip .w-contract-slip-tape .pm-tape__in {
   padding: 0 0.5rem;
   font-size: 1.05rem;
+  /* full ink on an opaque strip of tape (the shared tape is 74 % see-through, which let the photo under it grey the label to 3.9:1) */
+  color: var(--ink);
+  background-color: color-mix(in srgb, var(--tape) 94%, var(--paper));
 }
 
 /* the two columns do not line up: the right-hand slips hang a little lower, like things pinned by hand */

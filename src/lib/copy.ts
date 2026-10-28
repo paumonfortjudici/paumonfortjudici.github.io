@@ -278,7 +278,7 @@ export const CONTACT = {
   /** outline lettering: the apostrophe is U+2019 on purpose (a straight one looks like a stray tick) */
   phrase: 'LET’S TALK :)',
   paragraph:
-    'Open to freelance projects and studio collaborations — branding, editorial, illustration and web. Tell me what you’re making.',
+    'Open to freelance projects and studio collaborations — brand identities and manuals, editorial and books, illustration and characters, web design and build. Tell me what you’re making.',
   email: 'paumonfortjudici@gmail.com',
   emailSecond: 'pau@planadigital.cat',
   /** added: the two buttons next to the address (they read as tabs, not pills) */

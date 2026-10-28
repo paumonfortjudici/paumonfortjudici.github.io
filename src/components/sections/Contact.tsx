@@ -142,7 +142,7 @@ function MailRow({ address, main }: { address: string; main?: boolean }) {
       <div className="pm-ct-mail__who">
         {!main && <span className="pm-ct-mail__kicker">{TEXT.second}</span>}
         {/* the WRITE tab is the keyboard way in: the big address stays clickable for the mouse without a second tab stop */}
-        <a ref={addr} className="pm-ct-mail__addr" href={`mailto:${address}`} target="_blank" rel="noopener noreferrer" tabIndex={-1} translate="no" data-cursor="Open">
+        <a ref={addr} className="pm-ct-mail__addr" href={`mailto:${address}`} tabIndex={-1} translate="no" data-cursor="Open">
           {address.slice(0, at)}
           <wbr />
           {address.slice(at)}
@@ -150,7 +150,7 @@ function MailRow({ address, main }: { address: string; main?: boolean }) {
       </div>
       <div className="pm-ct-mail__acts">
         <CopyTab text={address} size={main ? 'md' : 'sm'} tone="ink" target={addr} />
-        <TabButton href={`mailto:${address}`} target="_blank" rel="noopener noreferrer" tone="paper" size={main ? 'md' : 'sm'} icon="arrow-up-right" cursor="Open" aria-label={`Write an email to ${address}`}>
+        <TabButton href={`mailto:${address}`} tone="paper" size={main ? 'md' : 'sm'} icon="arrow-up-right" cursor="Open" aria-label={`Write an email to ${address}`}>
           {CONTACT.emailActions.write}
         </TabButton>
       </div>

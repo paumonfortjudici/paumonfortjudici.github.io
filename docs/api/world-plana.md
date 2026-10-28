@@ -92,6 +92,8 @@ framer-motion is used only for the rail's drag; no other library.
 - `WorldFacts` clapper stick lies open (9 degrees) until it scrolls into view: `.w-plana-foot` keeps a margin above it so it never touches the sheet.
 - Needs from other files: nothing. `works.ts` lists no tools for Plana, so the slate shows Role and Year only.
 
+Final round: the plate 3 "Aa" specimens are large type, so a pairing under 3:1 (the ones marked "Avoid") draws its letters nudged toward black or white (`legible()` in `Colour.tsx`, inline colour) until they reach 3.1:1; the printed ratio and verdict are still the real palette values.
+
 ## 6. Verified (re-run with `node tools/shot.mjs`, `node tools/audit-page.mjs`, `npx tsc -b`)
 
 1440 x 900, 1920 x 1080, 1200 x 800, 768 x 1024, 390 x 844 (touch emulation, dpr 2); reduced motion and paused motion; deep link `#/work/plana` and opening from the works section; Esc and `[` `]`

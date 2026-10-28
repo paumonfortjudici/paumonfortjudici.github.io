@@ -9,7 +9,7 @@ It started from the structure of the *Folder Tab Portfolio Template* on 21st.dev
 ## Stack
 
 - React 18, Vite 5, TypeScript (strict), Tailwind 3 (layout only), framer-motion 14.7.1 (pinned: the shared-element folder flight depends on it).
-- A few libraries live inside single worlds only: `matter-js` (stickers), `gsap` (one scene), `react-zoom-pan-pinch` (brand board). Each world is a lazy chunk.
+- A few libraries live inside single worlds only: `matter-js` (stickers), `react-zoom-pan-pinch` (brand board). Each world is a lazy chunk.
 - No CSS-in-JS, no UI kit. Fonts come from Fontsource and are loaded per world.
 - Hash routing (`#/work/<slug>`, plus the section anchors `#cover #catalog #about #works #process #contact`) because GitHub Pages cannot rewrite URLs. `public/404.html` covers any other path.
 
@@ -54,8 +54,9 @@ tools/                      Playwright-based checks: screenshots, page audit, co
 The copy only claims what the evidence supports (`docs/ART_DIRECTION.md`, section 12). In short:
 
 - **AI-generated or AI-assisted material is labelled where it appears.** The animated portrait in *About* is an AI-generated stylised likeness. The 80 case illustrations of *Spelled Guilty* were made with AI image tools under Pau's art direction (the book's own credit says so). The three **Concept** folders (a vermuteria identity, a client portfolio deck, a sticker sheet) are invented projects, art-directed by Pau and built with AI-assisted tools; they carry a CONCEPT stamp.
-- *Proyecto Contract* is shown as an editorial-director credit (masthead and bylines), not as layout work. Page 4 is redacted; the pages are © Casual Magazines and their authors and are shown as portfolio samples.
-- No prices, no customer data, no third-party contact details anywhere. The only contact details are Pau's own.
+- *Proyecto Contract* is shown as an editorial-director credit (masthead and bylines), not as layout work. On page 4 the e-mails, phones and addresses were removed and the director's name is mosaic-masked; the pages are © Casual Magazines and their authors and are shown as portfolio samples.
+- No customer data and no third-party contact details: screenshots of other people's pages are masked (Somia's product prices) or left out, and the only contact details on the site are Pau's own. The placeholder contacts printed inside the Plana mockups are labelled as samples. The invented Gotet bar has invented prices and an invented address, labelled as such.
+- Held back until Pau confirms: a Procreate portrait of two children and a group portrait with a third-party logo. Their files are not in `public/`.
 
 ## Deploy
 

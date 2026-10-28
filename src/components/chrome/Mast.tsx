@@ -56,17 +56,19 @@ function Slate() {
   const diff = (((syd.hour * 60 + syd.minute - (bcn.hour * 60 + bcn.minute)) % 1440) + 1440) % 1440
   const hours = Math.round((diff > 720 ? 1440 - diff : diff) / 60)
   return (
-    <div className="pm-sydney" data-day={syd.isDay ? 'true' : 'false'}>
+    <div
+      className="pm-sydney"
+      data-day={syd.isDay ? 'true' : 'false'}
+      role="group"
+      aria-label={`Sydney now: ${syd.time}, ${syd.isDay ? 'daytime' : 'night'}. Barcelona is ${hours} hours behind.`}
+    >
       <span className="pm-sydney__stick" key={syd.time} aria-hidden="true" />
-      <div className="pm-sydney__body">
+      <div className="pm-sydney__body" aria-hidden="true">
         <p className="pm-sydney__head">
           <span>Sydney now</span>
-          <span className="pm-sydney__lamp" aria-hidden="true" />
-          <span className="pm-sr">{syd.isDay ? ', daytime' : ', night'}</span>
+          <span className="pm-sydney__lamp" />
         </p>
-        <p className="pm-sydney__time" aria-live="off">
-          {syd.time}
-        </p>
+        <p className="pm-sydney__time">{syd.time}</p>
         <p className="pm-sydney__sub">{`Barcelona is ${hours} h behind`}</p>
       </div>
     </div>

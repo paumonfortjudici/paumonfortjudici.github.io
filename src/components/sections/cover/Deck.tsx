@@ -39,7 +39,11 @@ function DeckFolder({ work, index, layout, deckWidth, peek, rest, ready }: DeckF
   const slot = DECK_SLOTS[index]
   const tab = layout === 'wide' ? fitTab(slot.tab.wide, deckWidth, slot.col === 4) : slot.tab[layout]
   const [peekFailed, setPeekFailed] = useState(false)
-  const label = `Open folder ${pad2(work.n)}: ${work.title}, ${work.kind}${work.years ? `, ${work.years}` : ''}`
+  // the year line of some folders is a phrase ("Early work") that opens with the same word as the kind ("Early illustration work"):
+  // read once, not twice
+  const firstWord = (s: string) => s.trim().split(/\s+/)[0]?.toLowerCase() ?? ''
+  const yearsRepeats = !!work.years && firstWord(work.years) === firstWord(work.kind)
+  const label = `Open folder ${pad2(work.n)}: ${work.title}, ${work.kind}${work.years && !yearsRepeats ? `, ${work.years}` : ''}`
   const art = peekFor(work.slug, work.peek)
   const size = art?.size ?? null
 

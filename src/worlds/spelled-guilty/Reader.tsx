@@ -93,6 +93,13 @@ const Reader = forwardRef<ReaderHandle, ReaderProps>(function Reader({ scrollRef
     else pending.current = target
   }, [])
 
+  /** the first page a visitor sees: the title spread on a desk, but on a phone (one page at a time) the half-title is a blank sheet, so open on the first case file */
+  const goFirst = useCallback(() => {
+    const book = bookRef.current
+    if (book && book.count > 0 && book.mode === 'single') book.goTo(3)
+    else goTo(1)
+  }, [goTo])
+
   const scrollHere = useCallback(() => {
     tableRef.current?.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' })
   }, [still])
@@ -104,7 +111,7 @@ const Reader = forwardRef<ReaderHandle, ReaderProps>(function Reader({ scrollRef
       show: (target = 1) => {
         scrollHere()
         // let the scroll get going, then turn the cover (the page-curl is the "opening")
-        window.setTimeout(() => goTo(target), still ? 0 : 450)
+        window.setTimeout(() => (target === 1 ? goFirst() : goTo(target)), still ? 0 : 450)
       },
       showCase: (caseNo) => {
         const i = CASE_SPREADS.indexOf(caseNo)
@@ -114,7 +121,7 @@ const Reader = forwardRef<ReaderHandle, ReaderProps>(function Reader({ scrollRef
         return true
       },
     }),
-    [goTo, scrollHere, still],
+    [goTo, goFirst, scrollHere, still],
   )
 
   const onSpread = useCallback((info: FlipSpreadInfo) => {
@@ -132,11 +139,11 @@ const Reader = forwardRef<ReaderHandle, ReaderProps>(function Reader({ scrollRef
   useEffect(() => {
     if (!tableIn || opened || touched.current || !near) return
     const id = window.setTimeout(() => {
-      if (!touched.current) goTo(1)
+      if (!touched.current) goFirst()
       setOpened(true)
     }, still ? 150 : 650)
     return () => window.clearTimeout(id)
-  }, [tableIn, opened, near, still, goTo])
+  }, [tableIn, opened, near, still, goFirst])
 
   useEffect(() => {
     onVisible?.(visible)
@@ -251,7 +258,7 @@ const Reader = forwardRef<ReaderHandle, ReaderProps>(function Reader({ scrollRef
                   aria-current={spread === t.spread ? 'true' : undefined}
                   aria-label={t.name}
                   cursor="Flip"
-                  onClick={() => goTo(t.spread)}
+                  onClick={() => (t.spread === 1 && bookRef.current?.mode === 'single' ? bookRef.current.goToPage('p-003') : goTo(t.spread))}
                 >
                   <span className="w-sg-tabrow">
                     {t.label}

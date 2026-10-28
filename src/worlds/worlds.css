@@ -154,9 +154,34 @@
 }
 
 .pm-wtab--close {
-  order: 4;
+  order: 5;
   margin-left: auto;
   cursor: pointer;
+}
+
+/* Pause motion: a dark neighbour tab next to Close, so a visitor can stop whatever moves from inside any world */
+.pm-wtab--motion {
+  --fr: 9px;
+  order: 4;
+  margin-left: auto;
+  height: calc(var(--w-tab-h) - 8px);
+  padding: 0 12px;
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pm-wtab--motion + .pm-wtab--close {
+  margin-left: 0;
+}
+
+.pm-wtab--motion .pm-wtab-reel {
+  width: 18px;
+  height: 18px;
+}
+
+.pm-wtab--motion:focus-visible {
+  transform: translateY(-5px);
 }
 
 .pm-wtab--close:hover .pm-wtab-icon {
@@ -185,9 +210,10 @@
 /* touch: bigger tabs (the strip grows to 52 px), every target at least 44 px wide */
 @media (pointer: coarse) {
   .pm-world {
-    --w-tab-h: 40px;
+    --w-tab-h: 48px;
   }
-  .pm-wtab--nav {
+  .pm-wtab--nav,
+  .pm-wtab--motion {
     height: calc(var(--w-tab-h) - 4px);
     min-width: 44px;
     justify-content: center;
@@ -200,7 +226,8 @@
 
 /* narrower: the neighbours keep their number, the close tab keeps its word */
 @media (max-width: 899px) {
-  .pm-wtab-t--nav {
+  .pm-wtab-t--nav,
+  .pm-wtab-t--motion {
     position: absolute;
     width: 1px;
     height: 1px;

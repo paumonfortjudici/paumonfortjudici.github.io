@@ -1,0 +1,70 @@
+@import url("fonts.css");
+
+/* ==========================================================================
+   ONA RIBAS - concept portfolio - DESIGN TOKENS
+   Load in a slide with   <style>@import url("kit/tokens.css");</style>   or let `node kit/inline-kit.mjs slide-N.svg` inline it.
+   In SVG you can use the variables directly:  fill="var(--teal)"  /  style="stroke:var(--ink)"  (tested in Chrome),
+   or the utility classes below (.f-teal = fill, .s-ink = stroke).
+   ========================================================================== */
+:root {
+  /* CORE (from the reference: teal / butter / deep teal / steel) */
+  --teal: #007E9B;          /* field. Slides 1 and 5 */
+  --butter: #FDEFAF;        /* field. Slides 2 and 4; type on teal / deep */
+  --deep: #1B6885;          /* field of slide 3; type on butter; shadow tone on teal */
+  --steel: #63A0AC;         /* secondary shapes, halftone on teal, tints. NEVER text */
+  /* NEUTRALS */
+  --ink: #101820;           /* all linework, hard shadows, shoes, hair */
+  --paper: #F6F0DC;         /* paper surfaces: frames, collage, tickets */
+  --butter-shade: #EBD58A;  /* shading on butter / paper edges */
+  --night: #0F4157;         /* darkest teal: deepest shadow, title misregistration */
+  /* ACCENTS (max 3 hues + sun per slide, <= 10% of the area together) */
+  --sun: #F2C62F;           /* sunbursts, headphones, numerals */
+  --tomato: #E8553E;        /* Ona's dungarees, boots, onomatopoeia */
+  --salmon: #F2A29A;        /* halftone dots, blush, tape */
+  --lilac: #B58AD6;         /* Ona's top, chair, soft objects */
+  --peri: #7A8CE8;          /* hardware: mic mount, monitors, umbrella */
+  --celery: #9CCF9A;        /* celery, cabbage, plants */
+  /* SHADES: the ONLY allowed second tone of an accent (flat two-tone shading, one shade shape per object, never gradients) */
+  --lilac-shade: #9B72BD;
+  --tomato-shade: #C23F2B;
+  --sun-shade: #D8A912;
+  --peri-shade: #5B6BC4;
+  --celery-shade: #6FAE79;
+  /* SKIN */
+  --skin: #E7AC84;
+  --skin-shade: #C98A62;
+
+  /* LAYOUT (px, slide = 1080 x 1920) */
+  --W: 1080; --H: 1920;
+  --mx: 72;                 /* left / right margin */
+  --my: 80;                 /* top / bottom margin */
+  --col: 136; --gut: 24;    /* 6 columns: x = 72 + n*160 (n = 0..5), each 136 wide */
+  /* ink line weights */
+  --ink-main: 7; --ink-fine: 4; --ink-heavy: 12;
+}
+
+/* ---- colour utilities ---- */
+.f-teal{fill:var(--teal)} .f-butter{fill:var(--butter)} .f-deep{fill:var(--deep)} .f-steel{fill:var(--steel)}
+.f-ink{fill:var(--ink)} .f-paper{fill:var(--paper)} .f-butter-shade{fill:var(--butter-shade)} .f-night{fill:var(--night)}
+.f-sun{fill:var(--sun)} .f-tomato{fill:var(--tomato)} .f-salmon{fill:var(--salmon)} .f-lilac{fill:var(--lilac)}
+.f-peri{fill:var(--peri)} .f-celery{fill:var(--celery)} .f-skin{fill:var(--skin)} .f-skin-shade{fill:var(--skin-shade)}
+.f-lilac-shade{fill:var(--lilac-shade)} .f-tomato-shade{fill:var(--tomato-shade)} .f-sun-shade{fill:var(--sun-shade)} .f-peri-shade{fill:var(--peri-shade)} .f-celery-shade{fill:var(--celery-shade)}
+.s-teal{stroke:var(--teal)} .s-butter{stroke:var(--butter)} .s-deep{stroke:var(--deep)} .s-steel{stroke:var(--steel)}
+.s-ink{stroke:var(--ink)} .s-paper{stroke:var(--paper)} .s-sun{stroke:var(--sun)} .s-tomato{stroke:var(--tomato)}
+.s-salmon{stroke:var(--salmon)} .s-lilac{stroke:var(--lilac)} .s-peri{stroke:var(--peri)} .s-celery{stroke:var(--celery)}
+
+/* ---- ink line presets (draw ALL linework with these, wrapped in a <g filter="url(#f-wobble)">) ---- */
+.ink      { fill:none; stroke:var(--ink); stroke-width:7;  stroke-linecap:round; stroke-linejoin:round }
+.ink-fine { fill:none; stroke:var(--ink); stroke-width:4;  stroke-linecap:round; stroke-linejoin:round }
+.ink-heavy{ fill:none; stroke:var(--ink); stroke-width:12; stroke-linecap:round; stroke-linejoin:round }
+.ink-fill { fill:var(--ink); stroke:none }                    /* hard shadows, shoes, hair, pupils */
+
+/* ---- type roles (SVG <text>; the sizes are in the guide's type-scale table) ----
+   Write caps literally in the text (do not rely on text-transform).
+   DISPLAY: do not hand-set it - use the pre-measured lockups in kit/titles.svg (<use href="#t-foley" .../>). The class is for ad-hoc words. */
+.t-display { font-family:"Anybody","Arial Black",sans-serif; font-weight:600; font-stretch:130%; letter-spacing:.01em }
+.t-sc      { font-family:"Syne","Arial",sans-serif; font-weight:700; letter-spacing:.09em; font-variant-numeric:lining-nums }          /* small-caps subhead / kicker: caps, tracked */
+.t-smcp    { font-family:"Syne","Arial",sans-serif; font-weight:700; font-variant-caps:small-caps; letter-spacing:.06em; font-variant-numeric:lining-nums } /* TRUE look of the reference: Big initials + small caps */
+.t-body    { font-family:"DM Sans","Arial",sans-serif; font-weight:500 }
+.t-body-i  { font-family:"DM Sans","Arial",sans-serif; font-weight:500; font-style:italic }
+.t-label   { font-family:"Syne","Arial",sans-serif; font-weight:700; letter-spacing:.1em; font-variant-numeric:lining-nums }

@@ -1,0 +1,5 @@
+pattern-blau-on-rosat.svg
+pattern-faint-vermell-on-rosat.svg
+pattern-icons-sheet.svg
+pattern-mantega-on-vermell.svg
+pattern-rosat-on-blau.svg

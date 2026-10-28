@@ -1,0 +1,61 @@
+{
+  "images": [
+    {
+      "file": "listing-desktop-01.webp",
+      "w": 1440,
+      "h": 1487,
+      "description": "RoomEscapes.es listing page for the \"Space monkey\" escape room in Granollers, desktop 1440 (third-party ranking site, dark neon UI, not the room's own site). Monkey-astronaut cover image, rating 7.25/10, quick facts (2-6 players, price 60-96, Granollers, theme \"aventuras\") and the story text \"Habeis conseguido graduaros con honores en la academia...\" (Lt./Col. John Tyler, station Helios, shuttle Icarus). Street address is masked.",
+      "page": "listing",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://www.roomescapes.es/barcelona/granollers/monkey/space-monkey.html",
+      "docY": [
+        0,
+        1487
+      ],
+      "order": 1
+    },
+    {
+      "file": "listing-desktop-hero@2x.webp",
+      "w": 2880,
+      "h": 1800,
+      "description": "RoomEscapes.es listing for \"Space monkey\", desktop, first screen at 2x (street address masked).",
+      "page": "listing",
+      "device": "desktop",
+      "kind": "hero-2x",
+      "url": "https://www.roomescapes.es/barcelona/granollers/monkey/space-monkey.html"
+    },
+    {
+      "file": "listing-mobile-01.webp",
+      "w": 780,
+      "h": 2000,
+      "description": "RoomEscapes.es listing for \"Space monkey\", mobile 390: header, title, facts chips and the cover image.",
+      "page": "listing",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://www.roomescapes.es/barcelona/granollers/monkey/space-monkey.html",
+      "order": 1
+    },
+    {
+      "file": "listing-mobile-02.webp",
+      "w": 780,
+      "h": 1184,
+      "description": "RoomEscapes.es listing for \"Space monkey\", mobile: story text and the Reservar button.",
+      "page": "listing",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://www.roomescapes.es/barcelona/granollers/monkey/space-monkey.html",
+      "order": 2
+    },
+    {
+      "file": "brand/space-monkey-logo.jpg",
+      "w": 650,
+      "h": 494,
+      "kind": "brand",
+      "url": "https://www.roomescapes.es/ImagenesEscapeRooms/EscapeRoom226.jpg",
+      "description": "Space Monkey logo/cover art as published on RoomEscapes.es: monkey astronaut with headset and helmet on a dark starry background with dashed orbit lines. Low resolution (650x494 JPG); the room's own site (monkeyroomescape.es) is offline and its archived copies have no images. Author of this artwork: UNKNOWN (not confirmed to be Pau)."
+    }
+  ],
+  "source": "https://www.roomescapes.es/barcelona/granollers/monkey/space-monkey.html",
+  "note": "Captured 2026-10-28. The room's own website monkeyroomescape.es no longer resolves; Internet Archive snapshots (2019-2022) render unstyled or blank and have no images, so they were used for text only. Desktop images 1440 px wide (1x), mobile 780 px wide (390 css px at 2x)."
+}

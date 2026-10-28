@@ -1,0 +1,64 @@
+/* ==========================================================================
+   fonts.css  -  the three core faces, LATIN ONLY, self-hosted from /public/fonts.
+
+   Why not import the Fontsource CSS: it also declares latin-ext / vietnamese subsets and Vite would still emit
+   those files into dist/. These rules use the exact same unicode-range Fontsource uses for `latin`
+   (covers à è é í ò ó ú ï ü ñ ç, the middle dot of l·l, curly quotes, dashes, the euro sign, ellipsis), and the
+   files have stable URLs so index.html can <link rel="preload"> them (Fraunces roman, Karla, Courier Prime 700).
+
+   Family names match the stacks in typography.css: 'Fraunces Variable', 'Karla Variable', 'Courier Prime'.
+   Fallback faces with matching metrics live in typography.css, so `swap` barely moves the layout.
+   Files: Fraunces (SOFT, WONK, opsz, wght), Karla (wght) are variable woff2; Courier Prime is static.
+   Licence (SIL OFL 1.1): public/fonts/LICENSE.txt
+   ========================================================================== */
+
+/* Fraunces: display + accent italic. Axes opsz 9-144, wght 100-900, SOFT 0-100, WONK 0-1. */
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/fraunces-latin-full-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/fraunces-latin-full-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Karla: body. Fontsource declares 200-800 for the wght axis. */
+@font-face {
+  font-family: 'Karla Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url('/fonts/karla-latin-wght-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Courier Prime: labels (700, uppercase) and lowercase captions (400). */
+@font-face {
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('/fonts/courier-prime-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Courier Prime';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url('/fonts/courier-prime-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}

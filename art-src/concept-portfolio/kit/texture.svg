@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1240" viewBox="0 0 1080 1240">
+<title>Ona Ribas concept portfolio - kit/texture.svg</title>
+<!--
+  TEXTURE KIT. Everything between <defs id="kit-texture"> and its closing tag is copied into every slide by
+  `node kit/inline-kit.mjs slide-N.svg` (external <use>/filter references are blocked by Chrome on file://).
+  Everything outside that <defs> is only a preview board for humans (open this file in Chrome or render it).
+
+  All filters use userSpaceOnUse over the full 1080x1920 slide, so they can be put on ANY group anywhere on the canvas
+  and the noise stays anchored to the canvas (two groups that share a filter wobble identically -> shared edges never gap).
+  All filters run in sRGB. Reserved ids: f-*, tone-*, gr-*.
+  BUDGET NOTE (final WebP <= 260 KB): fine grain over a whole slide costs 250-700 KB, so there is NO full-slide grain here.
+  f-speck (sparse flecks) is the only full-slide overlay. Keep halftone / gouache holes to hero areas.
+-->
+<defs id="kit-texture">
+
+  <!-- ================= 1. SPECK: sparse paper flecks, full-slide overlay =================
+       <rect width="1080" height="1920" filter="url(#f-speck)" opacity=".7"/>  (draw after the fields, before the art). Costs about 37 KB of WebP. -->
+  <filter id="f-speck" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.42" numOctaves="1" seed="5" result="n1"/>
+    <feColorMatrix in="n1" type="matrix" values="0 0 0 0 0.04  0 0 0 0 0.14  0 0 0 0 0.19  18 0 0 0 -13.63" result="dark"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.38" numOctaves="1" seed="19" result="n2"/>
+    <feColorMatrix in="n2" type="matrix" values="0 0 0 0 1  0 0 0 0 0.96  0 0 0 0 0.75  -18 0 0 0 4.5" result="light"/>
+    <feMerge><feMergeNode in="dark"/><feMergeNode in="light"/></feMerge>
+  </filter>
+
+  <!-- ================= 2. EDGES: hand-cut wobble for FLAT COLOUR shapes =================
+       f-rough   : wavy hand-cut edge only                          -> <g filter="url(#f-rough)">  all flat colour shapes of an object </g>
+       f-rough-lite : wavy only, no fine tooth (THIN shapes: sunbursts, sparkles, stripes)
+       f-type       : very mild wobble (+-1 px) for DISPLAY TYPE only. Display type is crisp by default; f-rough / f-rough-lite shred letters
+       f-gouache : wavy edge + patchy dry-brush holes (hero shapes) -> use on big colour areas only (costs KB)               -->
+  <filter id="f-rough" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.011 0.015" numOctaves="2" seed="4" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="14" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.30" numOctaves="2" seed="9" result="f"/>
+    <feDisplacementMap in="d1" in2="f" scale="3" xChannelSelector="G" yChannelSelector="B"/>
+  </filter>
+  <filter id="f-rough-lite" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.016" numOctaves="2" seed="4" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="f-type" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.009 0.012" numOctaves="2" seed="4" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="f-gouache" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.011 0.015" numOctaves="2" seed="4" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="14" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.30" numOctaves="2" seed="9" result="f"/>
+    <feDisplacementMap in="d1" in2="f" scale="3" xChannelSelector="G" yChannelSelector="B" result="d2"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.03 0.045" numOctaves="2" seed="2" result="p0"/>
+    <feColorMatrix in="p0" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1" result="patch"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="12" result="s0"/>
+    <feColorMatrix in="s0" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1" result="fine2"/>
+    <feComposite in="fine2" in2="patch" operator="arithmetic" k1="0" k2="1" k3="1.2" k4="-0.6" result="mix"/>
+    <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -14 0 0 0 13.2" result="holes"/>
+    <feComposite in="d2" in2="holes" operator="in"/>
+  </filter>
+
+  <!-- ================= 3. INK: wobble for LINEWORK =================
+       f-wobble : clean hand-inked line (default for all ink)
+       f-dry    : wobble + dry-brush dropout inside thick strokes (use on the heaviest strokes / ink shadows only) -->
+  <filter id="f-wobble" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.017" numOctaves="2" seed="7" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="9" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="2" seed="5" result="f"/>
+    <feDisplacementMap in="d1" in2="f" scale="1.8" xChannelSelector="G" yChannelSelector="B"/>
+  </filter>
+  <filter id="f-dry" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.017" numOctaves="2" seed="7" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="9" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.05 0.03" numOctaves="2" seed="21" result="p0"/>
+    <feColorMatrix in="p0" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1" result="patch"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.9 0.35" numOctaves="2" seed="15" result="s0"/>
+    <feColorMatrix in="s0" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1" result="fine2"/>
+    <feComposite in="fine2" in2="patch" operator="arithmetic" k1="0" k2="1" k3="1.2" k4="-0.6" result="mix"/>
+    <feColorMatrix in="mix" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -14 0 0 0 12.5" result="holes"/>
+    <feComposite in="d1" in2="holes" operator="in"/>
+  </filter>
+
+  <!-- ================= 4. CUTOUT: paper piece = rough edge + hard offset shadow (collage panel only) ================= -->
+  <filter id="f-cutout" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.013 0.017" numOctaves="2" seed="14" result="w"/>
+    <feDisplacementMap in="SourceGraphic" in2="w" scale="9" xChannelSelector="R" yChannelSelector="G" result="d1"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.3" numOctaves="2" seed="3" result="f"/>
+    <feDisplacementMap in="d1" in2="f" scale="2.6" xChannelSelector="G" yChannelSelector="B" result="piece"/>
+    <feOffset in="piece" dx="5" dy="6" result="off"/>
+    <feColorMatrix in="off" type="matrix" values="0 0 0 0 0.04  0 0 0 0 0.12  0 0 0 0 0.16  0 0 0 0.32 0" result="shadow"/>
+    <feMerge><feMergeNode in="shadow"/><feMergeNode in="piece"/></feMerge>
+  </filter>
+
+  <!-- ================= 5. HALFTONE: dots whose size follows TONE =================
+       The filter keeps the colour of whatever it is applied to and turns its ALPHA into the tone (0 = no dots, 1 = solid).
+       Constant tone  : <g filter="url(#f-ht-m)"><path d="..." fill="#F2A29A" fill-opacity=".45"/></g>
+       Gradient tone  : <g filter="url(#f-ht-m)"><path d="..." fill="#F2A29A" mask="url(#tone-lr)"/></g>
+       Lattice is 45deg and anchored to the canvas origin: s = 10 px pitch, m = 14 px, l = 20 px. -->
+  <filter id="f-ht-s" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feImage x="0" y="0" width="14" height="14" preserveAspectRatio="none" result="tile" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cdefs%3E%3CradialGradient id='c'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='0' cy='0' r='7' fill='url(%23c)'/%3E%3Ccircle cx='14' cy='0' r='7' fill='url(%23c)'/%3E%3Ccircle cx='0' cy='14' r='7' fill='url(%23c)'/%3E%3Ccircle cx='14' cy='14' r='7' fill='url(%23c)'/%3E%3Ccircle cx='7' cy='7' r='7' fill='url(%23c)'/%3E%3C/svg%3E"/>
+    <feTile in="tile" result="grid"/>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="tone"/>
+    <feComposite in="tone" in2="grid" operator="arithmetic" k1="0" k2="1" k3="1" k4="-1" result="sum"/>
+    <feComponentTransfer in="sum" result="dots"><feFuncA type="linear" slope="14" intercept="0"/></feComponentTransfer>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0 1" result="solid"/>
+    <feComposite in="solid" in2="dots" operator="in"/>
+  </filter>
+  <filter id="f-ht-m" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feImage x="0" y="0" width="20" height="20" preserveAspectRatio="none" result="tile" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cdefs%3E%3CradialGradient id='c'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='0' cy='0' r='10' fill='url(%23c)'/%3E%3Ccircle cx='20' cy='0' r='10' fill='url(%23c)'/%3E%3Ccircle cx='0' cy='20' r='10' fill='url(%23c)'/%3E%3Ccircle cx='20' cy='20' r='10' fill='url(%23c)'/%3E%3Ccircle cx='10' cy='10' r='10' fill='url(%23c)'/%3E%3C/svg%3E"/>
+    <feTile in="tile" result="grid"/>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="tone"/>
+    <feComposite in="tone" in2="grid" operator="arithmetic" k1="0" k2="1" k3="1" k4="-1" result="sum"/>
+    <feComponentTransfer in="sum" result="dots"><feFuncA type="linear" slope="14" intercept="0"/></feComponentTransfer>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0 1" result="solid"/>
+    <feComposite in="solid" in2="dots" operator="in"/>
+  </filter>
+  <filter id="f-ht-l" filterUnits="userSpaceOnUse" x="0" y="0" width="1080" height="1920" color-interpolation-filters="sRGB">
+    <feImage x="0" y="0" width="28" height="28" preserveAspectRatio="none" result="tile" href="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cdefs%3E%3CradialGradient id='c'%3E%3Cstop offset='0' stop-color='%23000'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='0' cy='0' r='14' fill='url(%23c)'/%3E%3Ccircle cx='28' cy='0' r='14' fill='url(%23c)'/%3E%3Ccircle cx='0' cy='28' r='14' fill='url(%23c)'/%3E%3Ccircle cx='28' cy='28' r='14' fill='url(%23c)'/%3E%3Ccircle cx='14' cy='14' r='14' fill='url(%23c)'/%3E%3C/svg%3E"/>
+    <feTile in="tile" result="grid"/>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="tone"/>
+    <feComposite in="tone" in2="grid" operator="arithmetic" k1="0" k2="1" k3="1" k4="-1" result="sum"/>
+    <feComponentTransfer in="sum" result="dots"><feFuncA type="linear" slope="14" intercept="0"/></feComponentTransfer>
+    <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0 1" result="solid"/>
+    <feComposite in="solid" in2="dots" operator="in"/>
+  </filter>
+
+  <!-- tone ramps for the masks below (white = dots, black = none). Gradients are objectBoundingBox -> they fit any shape. -->
+  <linearGradient id="gr-lr" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+  <linearGradient id="gr-rl" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+  <linearGradient id="gr-tb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+  <linearGradient id="gr-bt" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+  <linearGradient id="gr-diag" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>
+  <radialGradient id="gr-edge" cx=".5" cy=".5" r=".6"><stop offset=".25" stop-color="#000"/><stop offset="1" stop-color="#fff"/></radialGradient>
+  <radialGradient id="gr-core" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#fff"/><stop offset=".95" stop-color="#000"/></radialGradient>
+  <mask id="tone-lr" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#gr-lr)"/></mask>
+  <mask id="tone-rl" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#gr-rl)"/></mask>
+  <mask id="tone-tb" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#gr-tb)"/></mask>
+  <mask id="tone-bt" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#gr-bt)"/></mask>
+  <mask id="tone-diag" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#gr-diag)"/></mask>
+  <mask id="tone-edge" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#gr-edge)"/></mask>
+  <mask id="tone-core" maskContentUnits="objectBoundingBox"><rect width="1" height="1" fill="url(#gr-core)"/></mask>
+
+</defs>
+
+<!-- ======================= PREVIEW BOARD (not inlined) ======================= -->
+<g id="preview" font-family="sans-serif" font-size="22" fill="#101820">
+  <rect width="1080" height="620" fill="#007E9B"/>
+  <rect y="620" width="1080" height="620" fill="#FDEFAF"/>
+  <rect width="1080" height="1240" filter="url(#f-speck)" opacity=".7"/>
+
+  <!-- gouache / rough / cutout on teal -->
+  <g filter="url(#f-gouache)">
+    <path d="M60 150 C 80 60, 260 50, 330 110 C 400 170, 370 270, 260 290 C 150 310, 40 240, 60 150Z" fill="#7A8CE8"/>
+  </g>
+  <g filter="url(#f-rough)"><path d="M370 80 L 520 95 L 490 215 L 380 195Z" fill="#F2A29A"/><circle cx="440" cy="270" r="34" fill="#F2C62F"/></g>
+  <g filter="url(#f-cutout)"><path d="M560 70 L 760 60 L 780 230 L 575 245Z" fill="#F6F0DC"/></g>
+  <g filter="url(#f-wobble)" fill="none" stroke="#101820" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M820 90 C 880 60, 930 140, 990 100"/><path d="M820 150 L 1000 150"/>
+  </g>
+  <g filter="url(#f-dry)" fill="none" stroke="#101820" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M820 220 C 880 190, 930 270, 990 230"/>
+  </g>
+  <!-- halftone ramps on teal -->
+  <g filter="url(#f-ht-s)"><path d="M60 360 L 330 360 L 330 560 L 60 560Z" fill="#F2A29A" mask="url(#tone-lr)"/></g>
+  <g filter="url(#f-ht-m)"><path d="M370 360 L 640 360 L 640 560 L 370 560Z" fill="#FDEFAF" mask="url(#tone-tb)"/></g>
+  <g filter="url(#f-ht-l)"><path d="M680 360 L 950 360 L 950 560 L 680 560Z" fill="#101820" mask="url(#tone-edge)"/></g>
+  <text x="60" y="590" fill="#FDEFAF" font-size="18">f-ht-s + tone-lr</text><text x="370" y="590" fill="#FDEFAF" font-size="18">f-ht-m + tone-tb</text><text x="680" y="590" fill="#FDEFAF" font-size="18">f-ht-l + tone-edge</text>
+
+  <!-- same on butter -->
+  <g filter="url(#f-gouache)"><path d="M60 770 C 80 680, 260 670, 330 730 C 400 790, 370 890, 260 910 C 150 930, 40 860, 60 770Z" fill="#B58AD6"/></g>
+  <g filter="url(#f-rough)"><path d="M370 700 L 520 715 L 490 835 L 380 815Z" fill="#1B6885"/><circle cx="440" cy="890" r="34" fill="#E8553E"/></g>
+  <g filter="url(#f-cutout)"><path d="M560 690 L 760 680 L 780 850 L 575 865Z" fill="#F6F0DC"/></g>
+  <g filter="url(#f-ht-m)"><path d="M590 710 L 740 705 L 755 830 L 600 840Z" fill="#F2A29A" fill-opacity=".55"/></g>
+  <g filter="url(#f-wobble)" fill="none" stroke="#101820" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M820 710 C 880 680, 930 760, 990 720"/><path d="M820 770 L 1000 770"/>
+  </g>
+  <g filter="url(#f-dry)" fill="none" stroke="#101820" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M820 840 C 880 810, 930 890, 990 850"/>
+  </g>
+  <g filter="url(#f-ht-s)"><path d="M60 980 L 330 980 L 330 1180 L 60 1180Z" fill="#E8553E" mask="url(#tone-rl)"/></g>
+  <g filter="url(#f-ht-m)"><path d="M370 980 L 640 980 L 640 1180 L 370 1180Z" fill="#1B6885" mask="url(#tone-bt)"/></g>
+  <g filter="url(#f-ht-l)"><path d="M680 980 L 950 980 L 950 1180 L 680 1180Z" fill="#101820" mask="url(#tone-core)"/></g>
+  <text x="60" y="1210" font-size="18">f-ht-s + tone-rl</text><text x="370" y="1210" font-size="18">f-ht-m + tone-bt</text><text x="680" y="1210" font-size="18">f-ht-l + tone-core</text>
+</g>
+</svg>

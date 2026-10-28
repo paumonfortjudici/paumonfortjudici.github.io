@@ -1,0 +1,514 @@
+/* ==========================================================================
+   FlipBook - a page-turning book in CSS 3D (see docs/api/flipbook.md)
+
+   Theme with these custom properties on the book or any ancestor:
+     --book-paper    paper colour behind / under the page images   (var(--paper))
+     --book-edge     colour of the page-stack edge                  (var(--cream-2))
+     --book-shadow   shadow of the book on the table                (the desk colour at 62 %)
+     --book-gutter   shading that sinks the pages into the spine    (rgb(60 38 18 / .32))
+     --book-radius   corner radius of a page                        (3px)
+     --book-tint     flat warm tint over every page (paperbacks)    (transparent)
+     --flip-max-h    tallest the book may get                       (78vh)
+     --flip-ink / --flip-on   fill and ink of the prev / next tabs and the scrubber (var(--ink) / var(--cream))
+
+   Shading (gutter, curl, shadows) is light and shadow on paper: black, brown and white mixes, not palette colours.
+   ========================================================================== */
+
+.pm-flip {
+  position: relative;
+  display: block;
+  width: 100%;
+  container: pmflip / inline-size;
+  outline: none;
+  border-radius: 8px;
+  -webkit-tap-highlight-color: transparent;
+}
+.pm-flip:focus-visible {
+  outline: 2px solid var(--focus-in);
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px var(--focus-out);
+}
+
+.pm-flip__inner {
+  --_paper: var(--book-paper, var(--paper));
+  --_edge: var(--book-edge, var(--cream-2));
+  --_shadow: var(--book-shadow, color-mix(in srgb, var(--desk) 62%, transparent));
+  --_gutter: var(--book-gutter, rgb(60 38 18 / 0.32));
+  --_radius: var(--book-radius, 3px);
+  --_tint: var(--book-tint, transparent);
+  --_ink: var(--flip-ink, var(--ink));
+  --_on: var(--flip-on, var(--cream));
+  --hc: 0.028;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(30px, 3.6vw, 50px);
+  padding-block: clamp(8px, 1.6vw, 22px);
+}
+
+/* ---- the frame: sized by the page aspect, carries the perspective ---- */
+.pm-flip__frame {
+  position: relative;
+  width: min(100%, calc(var(--flip-max-h, 78vh) * var(--pa, 0.75) * 2));
+  aspect-ratio: calc(var(--pa, 0.75) * 2);
+  perspective: calc(var(--pw, 450px) * 6.5);
+  perspective-origin: 50% 50%;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.pm-flip[data-mode='single'] .pm-flip__frame {
+  width: min(100%, calc(var(--flip-max-h, 78vh) * var(--pa, 0.75)));
+  aspect-ratio: var(--pa, 0.75);
+  /* a leaf that turns away leaves through the left edge; the shadow and the lift above and below stay */
+  clip-path: inset(-14% 0 -18% 0);
+}
+.pm-flip__frame--ph {
+  width: min(100%, calc(var(--flip-max-h, 78vh) * var(--pa, 0.75) * 2));
+  aspect-ratio: calc(var(--pa, 0.75) * 2);
+  margin-inline: auto;
+}
+.pm-flip[data-mode='single'] .pm-flip__frame--ph {
+  aspect-ratio: var(--pa, 0.75);
+}
+
+.pm-flip__stage {
+  --spine: 50%;
+  --pwp: 50%;
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.pm-flip[data-mode='single'] .pm-flip__stage,
+.pm-flip[data-mode='single'] .pm-flip__zones {
+  --spine: 0%;
+  --pwp: 100%;
+}
+.pm-flip__zones {
+  --spine: 50%;
+  --pwp: 50%;
+}
+
+/* ---- paper blocks under the leaves: the table shadow and the page-stack edges ---- */
+.pm-flip__block {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: var(--pwp);
+  background: var(--_paper);
+  z-index: 1;
+  pointer-events: none;
+  box-shadow:
+    0 1px 1px rgb(0 0 0 / 0.4),
+    0 14px 22px -8px var(--_shadow),
+    0 38px 60px -22px var(--_shadow);
+}
+.pm-flip__block--l {
+  left: calc(var(--spine) - var(--pwp));
+  border-radius: var(--_radius) 0 0 var(--_radius);
+}
+.pm-flip__block--r {
+  left: var(--spine);
+  border-radius: 0 var(--_radius) var(--_radius) 0;
+}
+.pm-flip__stack {
+  position: absolute;
+  top: 0.7%;
+  bottom: 0.7%;
+  width: calc(var(--pwp) * var(--stack-t, 0.032));
+  z-index: 2;
+  pointer-events: none;
+  background-color: var(--_edge);
+  background-image:
+    linear-gradient(to right, rgb(0 0 0 / 0.04), rgb(0 0 0 / 0.26)),
+    repeating-linear-gradient(to right, rgb(255 255 255 / 0.5) 0 1px, rgb(0 0 0 / 0.13) 1px 2px);
+}
+.pm-flip__stack--r {
+  left: calc(var(--spine) + var(--pwp));
+  border-radius: 0 2px 2px 0;
+}
+.pm-flip__stack--l {
+  left: calc(var(--spine) - var(--pwp));
+  transform: translateX(-100%);
+  border-radius: 2px 0 0 2px;
+  background-image:
+    linear-gradient(to left, rgb(0 0 0 / 0.04), rgb(0 0 0 / 0.26)),
+    repeating-linear-gradient(to right, rgb(255 255 255 / 0.5) 0 1px, rgb(0 0 0 / 0.13) 1px 2px);
+}
+.pm-flip__spine {
+  position: absolute;
+  left: var(--spine);
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  margin-left: -2.5px;
+  z-index: 300;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgb(0 0 0 / 0.2) 38%,
+    rgb(0 0 0 / 0.34) 49%,
+    rgb(255 255 255 / 0.16) 57%,
+    transparent
+  );
+}
+
+/* ---- leaves ---- */
+.pm-flip__leaf {
+  display: contents;
+}
+.pm-flip__face {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: var(--pwp);
+  background: var(--_paper);
+  overflow: hidden;
+}
+.pm-flip__face--r {
+  left: var(--spine);
+  border-radius: 0 var(--_radius) var(--_radius) 0;
+}
+.pm-flip__face--l {
+  left: calc(var(--spine) - var(--pwp));
+  border-radius: var(--_radius) 0 0 var(--_radius);
+}
+.pm-flip__leaf[data-state='m'] .pm-flip__face,
+.pm-flip__leaf[data-state='r'] .pm-flip__face--l,
+.pm-flip__leaf[data-state='l'] .pm-flip__face--r {
+  visibility: hidden;
+}
+.pm-flip__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  opacity: 0;
+  transition: opacity 0.22s ease-out;
+  -webkit-user-drag: none;
+}
+.pm-flip__img.is-loaded {
+  opacity: 1;
+}
+.pm-flip__img.is-instant {
+  transition: none;
+}
+.pm-flip__ph {
+  position: absolute;
+  inset: 0;
+}
+.pm-flip__finish {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    var(--_gut),
+    linear-gradient(var(--_tint), var(--_tint)),
+    var(--grain, none);
+  background-size: 100% 100%, 100% 100%, 96px 96px;
+  background-repeat: no-repeat, no-repeat, repeat;
+}
+.pm-flip__face--r .pm-flip__finish {
+  --_gut: linear-gradient(to right, var(--_gutter), rgb(0 0 0 / 0) 11%, rgb(255 255 255 / 0.06) 27%, rgb(255 255 255 / 0) 46%, rgb(0 0 0 / 0) 80%, rgb(0 0 0 / 0.07));
+}
+.pm-flip__face--l .pm-flip__finish {
+  --_gut: linear-gradient(to left, var(--_gutter), rgb(0 0 0 / 0) 11%, rgb(255 255 255 / 0.06) 27%, rgb(255 255 255 / 0) 46%, rgb(0 0 0 / 0) 80%, rgb(0 0 0 / 0.07));
+}
+.pm-flip[data-mode='single'] .pm-flip__face--r .pm-flip__finish {
+  --_gut: linear-gradient(to right, rgb(0 0 0 / 0.12), rgb(0 0 0 / 0) 5%, rgb(0 0 0 / 0) 84%, rgb(0 0 0 / 0.06));
+}
+.pm-flip__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* hard cover: the boards are a little larger than the paper */
+.pm-flip__inner[data-hard] .pm-flip__face[data-board] {
+  top: calc(var(--hc) * -100%);
+  height: calc(100% + var(--hc) * 200%);
+  width: calc(var(--pwp) * (1 + var(--hc)));
+  box-shadow:
+    inset 0 0 0 1.5px rgb(0 0 0 / 0.28),
+    inset 0 0 0 2.5px rgb(255 255 255 / 0.1),
+    0 12px 22px -8px var(--_shadow);
+}
+.pm-flip__inner[data-hard] .pm-flip__face--l[data-board] {
+  left: calc(var(--spine) - var(--pwp) * (1 + var(--hc)));
+}
+.pm-flip__inner[data-hard] .pm-flip__face--r[data-board] {
+  border-radius: 1px 5px 5px 1px;
+}
+.pm-flip__inner[data-hard] .pm-flip__face--l[data-board] {
+  border-radius: 5px 1px 1px 5px;
+}
+
+/* ---- the sheet: vertical strips that bend ---- */
+.pm-flip__sheet {
+  --lw: var(--pw);
+  --lh: var(--ph);
+  position: absolute;
+  left: var(--spine);
+  top: 0;
+  width: 0;
+  height: 100%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+.pm-flip__sheet--board {
+  --lw: calc(var(--pw) * (1 + var(--hc)));
+  --lh: calc(var(--ph) * (1 + 2 * var(--hc)));
+  top: calc(var(--ph) * var(--hc) * -1);
+}
+.pm-flip__seg {
+  --sw: calc(var(--lw) / var(--n));
+  --pos: calc(var(--j) * var(--sw) * -1);
+  --img: var(--img-f);
+  --gut: linear-gradient(to right, var(--_gutter), rgb(0 0 0 / 0) 11%, rgb(255 255 255 / 0.06) 27%, rgb(255 255 255 / 0) 46%, rgb(0 0 0 / 0) 80%, rgb(0 0 0 / 0.07));
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: var(--lh);
+  width: calc(var(--sw) + var(--ovl));
+  opacity: 0.01;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  background-color: var(--_paper);
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat, no-repeat;
+  background-size: 100% 100%, 100% 100%, 100% 100%, var(--lw) var(--lh), 96px 96px, var(--lw) var(--lh);
+  background-position: 0 0, 0 0, 0 0, var(--pos) 0, 0 0, var(--pos) 0;
+  background-image:
+    linear-gradient(to right, rgb(34 20 10 / var(--d0, 0)), rgb(34 20 10 / var(--d1, 0))),
+    linear-gradient(to right, rgb(255 252 244 / var(--h0, 0)), rgb(255 252 244 / var(--h1, 0))),
+    linear-gradient(var(--_tint), var(--_tint)),
+    var(--gut),
+    var(--grain, none),
+    var(--img);
+}
+.pm-flip__seg:last-child {
+  width: var(--sw);
+  box-shadow: inset -1.5px 0 0 rgb(255 255 255 / 0.5);
+}
+.pm-flip__seg:last-child[data-side='b'] {
+  box-shadow: inset 1.5px 0 0 rgb(255 255 255 / 0.5);
+}
+.pm-flip__seg[data-side='b'] {
+  --pos: calc(((var(--n) - 1 - var(--j)) * var(--sw) * -1) + var(--ovl));
+  --img: var(--img-b);
+  --gut: linear-gradient(to left, var(--_gutter), rgb(0 0 0 / 0) 11%, rgb(255 255 255 / 0.06) 27%, rgb(255 255 255 / 0) 46%, rgb(0 0 0 / 0) 80%, rgb(0 0 0 / 0.07));
+}
+.pm-flip__seg:last-child[data-side='b'] {
+  --pos: calc((var(--n) - 1 - var(--j)) * var(--sw) * -1);
+}
+.pm-flip__sheet[data-live='1'] .pm-flip__seg {
+  opacity: 1;
+}
+
+/* the shadow a turning sheet casts on the pages under it */
+.pm-flip__cast {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  left: calc(var(--spine) - var(--pwp));
+  width: calc(var(--pwp) * 2);
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateZ(0.6px);
+}
+.pm-flip__cast[data-edge='first'],
+.pm-flip__cast[data-edge='both'] {
+  left: var(--spine);
+  width: var(--pwp);
+}
+.pm-flip__cast[data-edge='last'] {
+  width: var(--pwp);
+}
+.pm-flip__cast i {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 96px;
+  height: 100%;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.pm-flip__cast-a {
+  transform-origin: 0 0;
+  background: linear-gradient(
+    to right,
+    rgb(20 10 5 / 0.9),
+    rgb(20 10 5 / 0.62) 10%,
+    rgb(20 10 5 / 0.38) 26%,
+    rgb(20 10 5 / 0.2) 48%,
+    rgb(20 10 5 / 0.08) 72%,
+    rgb(20 10 5 / 0)
+  );
+}
+.pm-flip__cast-b {
+  transform-origin: 100% 0;
+  background: linear-gradient(
+    to left,
+    rgb(20 10 5 / 0.9),
+    rgb(20 10 5 / 0.62) 10%,
+    rgb(20 10 5 / 0.38) 26%,
+    rgb(20 10 5 / 0.2) 48%,
+    rgb(20 10 5 / 0.08) 72%,
+    rgb(20 10 5 / 0)
+  );
+}
+
+/* ---- pointer zones: the outer 20 % of each page (flat layer above the 3D stage) ---- */
+.pm-flip__zones {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.pm-flip__zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(var(--pwp) * 0.2);
+  pointer-events: auto;
+  cursor: grab;
+}
+.pm-flip__zone--r {
+  left: calc(var(--spine) + var(--pwp) * 0.8);
+}
+.pm-flip__zone--l {
+  left: calc(var(--spine) - var(--pwp));
+}
+.pm-flip[data-mode='single'] .pm-flip__zone--l {
+  left: 0;
+}
+.pm-flip__frame:active .pm-flip__zone {
+  cursor: grabbing;
+}
+
+/* ---- reduced / paused motion: no curl, a quick cross-fade ---- */
+.pm-flip__still {
+  position: absolute;
+  inset: 0;
+  --spine: 50%;
+  --pwp: 50%;
+}
+.pm-flip[data-mode='single'] .pm-flip__still {
+  --spine: 0%;
+  --pwp: 100%;
+}
+.pm-flip__still.is-in {
+  animation: pm-flip-in 0.24s ease-out both;
+}
+@keyframes pm-flip-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---- controls: two tabs and a scrubber ---- */
+.pm-flip__bar {
+  display: flex;
+  align-items: center;
+  gap: clamp(6px, 1.4vw, 18px);
+  width: min(100%, 760px);
+  padding-inline: 14px;
+}
+/* The prev / next tabs are .pm-tabbtn (the shared folder-tab button, src/components/primitives/css/20-tabbutton.css),
+   coloured through --c / --on set on the element. Only what is specific to the book is here. */
+.pm-flip__chev {
+  flex: none;
+}
+/* narrow books: the tabs keep only their arrows (the labels stay for assistive tech) */
+@container pmflip (max-width: 520px) {
+  .pm-flip__btn {
+    padding-inline: 15px;
+  }
+  .pm-flip__btn > .pm-tabbtn__label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .pm-flip__bar {
+    padding-inline: 12px;
+  }
+}
+.pm-flip__range:focus-visible {
+  outline: 2px solid var(--focus-in);
+  outline-offset: 0;
+  box-shadow: 0 0 0 4px var(--focus-out);
+}
+.pm-flip__range {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1 1 auto;
+  min-width: 60px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  align-self: center;
+  border-radius: 6px;
+}
+.pm-flip__range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--_ink) var(--fill, 0%), rgb(23 16 27 / 0.24) var(--fill, 0%));
+}
+.pm-flip__range::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--_ink) var(--fill, 0%), rgb(23 16 27 / 0.24) var(--fill, 0%));
+}
+.pm-flip__range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 26px;
+  margin-top: -10px;
+  border: 2px solid var(--_on);
+  border-radius: 5px 5px 2px 2px;
+  background: var(--_ink);
+}
+.pm-flip__range::-moz-range-thumb {
+  width: 14px;
+  height: 22px;
+  border: 2px solid var(--_on);
+  border-radius: 5px 5px 2px 2px;
+  background: var(--_ink);
+}
+
+.pm-flip__live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-flip__img,
+  .pm-flip__btn {
+    transition: none;
+  }
+  .pm-flip__still.is-in {
+    animation-duration: 0.16s;
+  }
+}
+html[data-motion='paused'] .pm-flip__img,
+html[data-motion='paused'] .pm-flip__btn {
+  transition: none;
+}

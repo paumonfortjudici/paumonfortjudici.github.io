@@ -1,0 +1,99 @@
+{
+  "files": [
+    {
+      "file": "devil.webp",
+      "role": "artwork-on-tan",
+      "desc": "FULL artwork: devil + curved \"44 LAB\" lettering on the flat tan background (1600x1600 area-average downscale of 12.png, lossless)",
+      "source": "12.png (8334x8334)",
+      "w": 1600,
+      "h": 1600,
+      "bytes": 95380
+    },
+    {
+      "file": "devil-only.webp",
+      "role": "artwork-on-tan",
+      "desc": "devil + trident + ground shadow only, no lettering, on tan (1600x1600, lossless)",
+      "source": "devil 2.png (8334x8334)",
+      "w": 1600,
+      "h": 1600,
+      "bytes": 75982
+    },
+    {
+      "file": "lockup-cutout.png",
+      "role": "cutout",
+      "desc": "devil + lettering, transparent background",
+      "source": "12.png",
+      "scale": "1/3 of the 8334px master",
+      "origin_xy_at_1_3_scale": [611, 339],
+      "w": 1493,
+      "h": 2124,
+      "bytes": 351468
+    },
+    {
+      "file": "lockup-cutout.webp",
+      "role": "cutout",
+      "desc": "same pixels as lockup-cutout.png (WebP lossless, smaller)",
+      "w": 1493,
+      "h": 2124,
+      "bytes": 141876
+    },
+    {
+      "file": "devil-cutout.png",
+      "role": "cutout",
+      "desc": "devil + trident + ground shadow, transparent background",
+      "source": "devil 2.png",
+      "scale": "1/3 of the 8334px master",
+      "origin_xy_at_1_3_scale": [611, 701],
+      "w": 1418,
+      "h": 1762,
+      "bytes": 283739
+    },
+    {
+      "file": "devil-cutout.webp",
+      "role": "cutout",
+      "desc": "same pixels as devil-cutout.png (WebP lossless, smaller)",
+      "w": 1418,
+      "h": 1762,
+      "bytes": 115242
+    },
+    {
+      "file": "wordmark-44lab.png",
+      "role": "cutout",
+      "desc": "the curved \"44 LAB\" lettering alone, transparent background (counters of A and B are transparent)",
+      "source": "12.png minus devil 2.png",
+      "scale": "1/3 of the 8334px master",
+      "origin_xy_at_1_3_scale": [680, 345],
+      "w": 1420,
+      "h": 456,
+      "bytes": 66462
+    },
+    {
+      "file": "wordmark-44lab.webp",
+      "role": "cutout",
+      "desc": "same pixels as wordmark-44lab.png (WebP lossless, smaller)",
+      "w": 1420,
+      "h": 456,
+      "bytes": 25872
+    }
+  ],
+  "folder": "fortyfour-lab/logo",
+  "generated": "2026-10-28",
+  "context": "44 Lab / Fortyfour Lab custom-rug project: hand-drawn devil logo by Pau. The two source PNGs are NOT identical: \"devil 2.png\" = devil only; \"12.png\" = the same devil (pixel-identical) + the curved \"44 LAB\" lettering. 1,847,280 pixels differ, all inside x2047-6286, y1043-2394 (the lettering).",
+  "palette_exact": {
+    "tan_background": "#c9a269",
+    "orange_red_body": "#e8673f",
+    "dark_outline_and_shadow": "#2d2d2d",
+    "cream_hands_feet": "#ffe4ab",
+    "yellow_horns_trident": "#edb52b",
+    "yellow_lettering": "#f9b925",
+    "lettering_outline": "#232a33",
+    "brown_trident_shaft": "#9e672d",
+    "white": "#ffffff",
+    "light_cream_highlight_line": "#efe1bf"
+  },
+  "palette_note": "flat vector art, only ~1100 unique colours in 69 Mpx (rest = antialiasing). The lettering uses its own slightly brighter yellow and a blue-black outline, different from the devil (#edb52b / #2d2d2d).",
+  "keying_method": "every boundary between art and tan is a dark outline with an exact linear antialias mix (residual <= 2/255), so alpha was solved per pixel at full 8334px resolution against the tan (0 fringe pixels unexplained), colour set to the pure outline colour, then alpha/premultiplied colour averaged over 3x3 blocks",
+  "background_note": "the dark outline (#2d2d2d) disappears on near-black backgrounds (cream highlight line + fills still read); best on cream/tan/white/colour. Enclosed tan areas (between trident prongs, inside A/B counters) are transparent.",
+  "related_file_check": "C:/Users/User/Downloads/123.jpeg (1200x1600): photo of a hand (silver ring) holding a printed card; illustration of many pimento-stuffed green olives with tiny nude women climbing/lounging on them around a central martini glass. A third-party art print/card - unrelated to 44 Lab, the Procreate set or any of the 10 folders. Not used. Contains nudity + a hand -> not for publication.",
+  "total_bytes": 1156021
+}

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1080" height="1920" viewBox="0 0 1080 1920">
+<title>Ona Ribas - concept portfolio slide</title>
+<!--KIT:BEGIN-->
+<!--KIT:END-->
+
+<!-- ===== LAYERS, bottom to top. Keep these ids; put your artwork inside them. =====
+     Canvas 1080 x 1920. Margins: x 72..1008, y 80..1840. 6 columns (136 wide, 24 gutter): x = 72 + 160n.  Rows every 160 px from y = 80.
+     OBJECT PATTERN (one group per illustrated object, so overlaps stay correct):
+       <g id="obj-ona">
+         <g class="flat" filter="url(#f-rough)"> ...flat colour shapes... </g>
+         <g class="ink"  filter="url(#f-wobble)"> ...ink strokes / hard shadows (class="ink", "ink-fine", "ink-fill")... </g>
+       </g>
+     Keep <= 14 filtered groups per slide (render time + the 260 KB WebP budget). -->
+
+<g id="bg">
+  <rect id="field" width="1080" height="1920" class="f-teal"/>
+</g>
+<rect id="speck" width="1080" height="1920" filter="url(#f-speck)" opacity=".7"/>   <!-- paper flecks, ~37 KB of WebP: .7 on teal / deep, .8 on butter -->
+
+<g id="art-back"><!-- sunburst, halftone fields, big blobs behind everything --></g>
+<g id="art"><!-- illustrated objects, back to front --></g>
+<g id="type"><!-- display lockups (<use href="#t-..."/>), subheads, body --></g>
+<g id="art-front"><!-- anything that overlaps the type on purpose --></g>
+<g id="chrome"><!-- header micro-row + page number, same position on every slide --></g>
+
+<!-- Layout overlay: set display="inline" to check alignment, back to "none" before the final export. -->
+<g id="guides" display="none" pointer-events="none" fill="none">
+  <rect x="72" y="80" width="936" height="1760" stroke="#FF00AA" stroke-width="2"/>
+  <g fill="#FF00AA" fill-opacity=".10">
+    <rect x="72" y="80" width="136" height="1760"/><rect x="232" y="80" width="136" height="1760"/><rect x="392" y="80" width="136" height="1760"/>
+    <rect x="552" y="80" width="136" height="1760"/><rect x="712" y="80" width="136" height="1760"/><rect x="872" y="80" width="136" height="1760"/>
+  </g>
+  <g stroke="#FF00AA" stroke-width="1" stroke-opacity=".6">
+    <path d="M0 80H1080M0 240H1080M0 400H1080M0 560H1080M0 720H1080M0 880H1080M0 1040H1080M0 1200H1080M0 1360H1080M0 1520H1080M0 1680H1080M0 1840H1080"/>
+  </g>
+</g>
+</svg>

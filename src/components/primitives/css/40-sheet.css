@@ -1,0 +1,130 @@
+/* ==========================================================================
+   primitives / 40 sheet + meta bar
+   A sheet is a piece of paper on the desk: grain, 3px darker edge, highlight, soft shadow, '+' crop marks in the corners.
+   Surface variables (contrast measured against the tokens):
+     tone     --sheet        --on-sheet   --muted-on-sheet            text contrast
+     cream    cream          ink          ink-3                       16.8 / 9.2
+     ink      ink            cream        cream-2                     16.8 / 14.8
+     marigold marigold       ink          ink at 72 %                 10.8 / 5.7
+     ultraviolet ultraviolet cream        cream-2                      5.5 / 4.9
+     tomato   tomato         ink          ink (a softer ink fails)     5.6 / 5.6
+   plus --accent / --accent-ink (meta bar, chips, scribbles): chosen per page, ink or cream by measured contrast.
+   ========================================================================== */
+
+.pm-sheet {
+  --sheet: var(--cream);
+  --on-sheet: var(--ink);
+  --muted-on-sheet: var(--ink-3);
+  --accent: var(--tomato);
+  --accent-ink: var(--ink);
+  --sheet-edge: color-mix(in srgb, var(--sheet) 60%, var(--ink));
+  --meta-h: 48px;
+
+  position: relative;
+  box-sizing: border-box;
+  width: var(--wrap, 100%);
+  margin: 0 auto var(--sheet-gap, 24px);
+  padding: var(--sheet-pad, 28px);
+  border-radius: var(--sheet-radius, 26px);
+  background-color: var(--sheet);
+  background-image: var(--pm-grain);
+  box-shadow:
+    inset 0 1px 0 var(--pm-hl),
+    0 var(--edge-h) 0 var(--sheet-edge),
+    var(--shadow-sheet);
+  color: var(--on-sheet);
+  scroll-margin-top: 12px; /* html already has scroll-padding-top for the sticky nav */
+}
+.pm-sheet[data-tone='ink'] { --sheet: var(--ink); --on-sheet: var(--cream); --muted-on-sheet: var(--cream-2); --accent: var(--marigold); }
+.pm-sheet[data-tone='marigold'] { --sheet: var(--marigold); --on-sheet: var(--ink); --muted-on-sheet: color-mix(in srgb, var(--ink) 72%, transparent); --accent: var(--oxblood); --accent-ink: var(--cream); }
+.pm-sheet[data-tone='ultraviolet'] { --sheet: var(--ultraviolet); --on-sheet: var(--cream); --muted-on-sheet: var(--cream-2); --accent: var(--bubblegum); }
+.pm-sheet[data-tone='tomato'] { --sheet: var(--tomato); --on-sheet: var(--ink); --muted-on-sheet: var(--ink); --accent: var(--pine); --accent-ink: var(--cream); }
+
+/* ---- the meta bar: only what is real (years, the three kinds of work, this page, the counter) -------------------------- */
+.pm-meta {
+  --edge: color-mix(in srgb, var(--accent) 68%, var(--ink));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+  box-sizing: border-box;
+  min-height: var(--meta-h, 48px);
+  margin: calc(var(--sheet-pad, 28px) * -1) calc(var(--sheet-pad, 28px) * -1) var(--sheet-pad, 28px);
+  padding: 8px var(--sheet-pad, 28px);
+  border-radius: var(--sheet-radius, 26px) var(--sheet-radius, 26px) 0 0;
+  background-color: var(--accent);
+  background-image: var(--pm-grain);
+  box-shadow: inset 0 1px 0 var(--pm-hl), inset 0 -2px 0 var(--edge);
+  color: var(--accent-ink);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: var(--lh-label);
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  font-synthesis: none;
+}
+.pm-meta__years,
+.pm-meta__count { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pm-meta__cat {
+  position: relative;
+  margin: 0;
+  padding: 8px 2px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.pm-meta__cat::after {
+  content: '';
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: 4px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s var(--ease-out);
+}
+.pm-meta__cat:hover::after,
+.pm-meta__cat:focus-visible::after { transform: scaleX(1); }
+.pm-meta__cat:focus { outline: none; }
+.pm-meta__cat:focus-visible { outline: 2px solid var(--focus-in); outline-offset: 0; box-shadow: 0 0 0 4px var(--focus-out); }
+.pm-meta__page { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+@media (max-width: 720px) {
+  .pm-meta { justify-content: space-between; }
+  .pm-meta__cat { display: none; }
+}
+
+/* ---- '+' crop marks ---------------------------------------------------------------------------------------------- */
+.pm-plus {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  color: color-mix(in srgb, var(--on-sheet) 38%, transparent);
+  pointer-events: none;
+}
+.pm-plus::before,
+.pm-plus::after { content: ''; position: absolute; background: currentColor; }
+.pm-plus::before { left: 6.25px; top: 0; width: 1.5px; height: 14px; }
+.pm-plus::after { top: 6.25px; left: 0; width: 14px; height: 1.5px; }
+.pm-plus--tl { left: 12px; top: calc(var(--meta-h, 48px) + 12px); }
+.pm-plus--tr { right: 12px; top: calc(var(--meta-h, 48px) + 12px); }
+.pm-plus--bl { left: 12px; bottom: 12px; }
+.pm-plus--br { right: 12px; bottom: 12px; }
+.pm-sheet[data-meta='false'] .pm-plus--tl,
+.pm-sheet[data-meta='false'] .pm-plus--tr { top: 12px; }
+@media (max-width: 720px) {
+  .pm-plus { display: none; }
+}
+
+/* ---- STILL ------------------------------------------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) { .pm-meta__cat::after { transition: none; } }
+html[data-motion='paused'] .pm-meta__cat::after { transition: none; }

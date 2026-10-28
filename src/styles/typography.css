@@ -1,0 +1,93 @@
+/* ==========================================================================
+   typography.css  -  Pau Monfort portfolio type system (final, from notes/typography.md)
+
+   npm (all OFL-1.1, v5.3.0, self-hosted by Vite):
+     @fontsource-variable/fraunces   -> import '@fontsource-variable/fraunces/full.css';        (opsz, wght, SOFT, WONK)
+                                        import '@fontsource-variable/fraunces/full-italic.css';
+     @fontsource-variable/karla      -> import '@fontsource-variable/karla/wght.css';
+     @fontsource/courier-prime       -> import '@fontsource/courier-prime/latin-700.css';  latin-400.css
+     @fontsource/gochi-hand          -> import '@fontsource/gochi-hand/latin-400.css';      (lazy)
+     @fontsource/reenie-beanie       -> import '@fontsource/reenie-beanie/latin-400.css';   (lazy)
+   Families registered by Fontsource: 'Fraunces Variable', 'Karla Variable', 'Courier Prime', 'Gochi Hand', 'Reenie Beanie'.
+   ========================================================================== */
+
+/* ---- 1. fallback faces: same metrics as the web fonts, so swapping them in does not move the layout ---------------- */
+@font-face { font-family: 'Fraunces Fallback'; src: local('Georgia');                         size-adjust: 116.22%; ascent-override: 84.15%; descent-override: 21.94%; line-gap-override: 0%; }
+@font-face { font-family: 'Fraunces Fallback'; src: local('Georgia Italic'), local('Georgia-Italic'); font-style: italic; size-adjust: 112.34%; ascent-override: 87.06%; descent-override: 22.70%; line-gap-override: 0%; }
+@font-face { font-family: 'Karla Fallback';    src: local('Arial');                           size-adjust: 102.14%; ascent-override: 89.78%; descent-override: 24.67%; line-gap-override: 0%; }
+@font-face { font-family: 'Courier Prime Fallback'; src: local('Courier New');                size-adjust: 99.92%;  ascent-override: 78.19%; descent-override: 34.21%; line-gap-override: 0%; }
+
+:root {
+  /* ---- 2. families ------------------------------------------------------------------------------------------------ */
+  --font-display: 'Fraunces Variable', 'Fraunces Fallback', Georgia, 'Times New Roman', serif;      /* headlines + accent italic */
+  --font-body:    'Karla Variable', 'Karla Fallback', Arial, 'Helvetica Neue', sans-serif;           /* paragraphs, UI text */
+  --font-label:   'Courier Prime', 'Courier Prime Fallback', 'Courier New', Courier, monospace;      /* tabs, chips, counters */
+  --font-hand:    'Gochi Hand', 'Segoe Print', 'Bradley Hand', 'Comic Sans MS', cursive;             /* marker annotations */
+  --font-hand-thin: 'Reenie Beanie', 'Segoe Print', 'Bradley Hand', cursive;                         /* whispered pen notes, >= 26px */
+
+  /* Fraunces character: SOFT rounds the terminals (tactile), WONK adds the swash & / leaning n m h */
+  --soft: 100;
+  --wonk: 1;
+
+  /* ---- 3. fluid scale: viewport 360px -> 1440px, clamp(min, intercept + slope*vw, max) --------------------------- */
+  --fs-label:   clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);  /* 13 -> 14   (floor raised: nothing is read under 13px) */
+  --fs-caption: clamp(0.875rem,  0.8333rem + 0.1389vw, 0.9625rem); /* 14 -> 15.4 */
+  --fs-body:    clamp(1rem,      0.9792rem + 0.0926vw, 1.0625rem); /* 16 -> 17   */
+  --fs-lead:    clamp(1.125rem,  1.0417rem + 0.3704vw, 1.375rem);  /* 18 -> 22   */
+  --fs-h5:      clamp(1.375rem,  1.2083rem + 0.7407vw, 1.875rem);  /* 22 -> 30   card titles */
+  --fs-h4:      clamp(1.75rem,   1.5rem    + 1.1111vw, 2.5rem);    /* 28 -> 40   */
+  --fs-h3:      clamp(2.125rem,  1.75rem   + 1.6667vw, 3.25rem);   /* 34 -> 52   */
+  --fs-h2:      clamp(2.5rem,    1.8333rem + 2.963vw,  4.5rem);    /* 40 -> 72   hero statement */
+  --fs-h1:      clamp(3.5rem,    2rem      + 6.6667vw, 8rem);      /* 56 -> 128  big solid words */
+  --fs-mega:    clamp(3.5rem,    1rem      + 11.1111vw, 11rem);    /* 56 -> 176  the name, when set solid */
+  --fs-num:     clamp(2.5rem,    1.3333rem + 5.1852vw, 6rem);      /* 40 -> 96   "01 / 07" */
+
+  /* ---- 4. line-height + tracking ---------------------------------------------------------------------------------- */
+  --lh-label: 1.25;  --ls-label: 0.1em;
+  --lh-caption: 1.45; --ls-caption: 0;
+  --lh-body: 1.6;    --ls-body: 0;
+  --lh-lead: 1.5;    --ls-lead: -0.005em;
+  --lh-h5: 1.1;      --ls-h5: -0.01em;
+  --lh-h4: 1.08;     --ls-h4: -0.015em;
+  --lh-h3: 1.04;     --ls-h3: -0.02em;
+  --lh-h2: 1;        --ls-h2: -0.025em;
+  --lh-h1: 0.94;     --ls-h1: -0.03em;
+  --lh-mega: 0.88;   --ls-mega: -0.035em;
+  --lh-num: 1;       --ls-num: -0.03em;
+}
+
+/* ---- 5. role classes ------------------------------------------------------------------------------------------------ */
+.t-display { font-family: var(--font-display); font-variation-settings: 'SOFT' var(--soft), 'WONK' var(--wonk); font-optical-sizing: auto; text-wrap: balance; }
+.t-mega { font-size: var(--fs-mega); line-height: var(--lh-mega); letter-spacing: var(--ls-mega); font-weight: 900; }
+.t-h1   { font-size: var(--fs-h1);   line-height: var(--lh-h1);   letter-spacing: var(--ls-h1);   font-weight: 900; }
+.t-h2   { font-size: var(--fs-h2);   line-height: var(--lh-h2);   letter-spacing: var(--ls-h2);   font-weight: 800; }
+.t-h3   { font-size: var(--fs-h3);   line-height: var(--lh-h3);   letter-spacing: var(--ls-h3);   font-weight: 800; }
+.t-h4   { font-size: var(--fs-h4);   line-height: var(--lh-h4);   letter-spacing: var(--ls-h4);   font-weight: 700; }
+.t-h5   { font-size: var(--fs-h5);   line-height: var(--lh-h5);   letter-spacing: var(--ls-h5);   font-weight: 700; }
+.t-num  { font-size: var(--fs-num);  line-height: var(--lh-num);  letter-spacing: var(--ls-num);  font-weight: 900; }
+
+/* accent: the italic twin, same family. Use inside display text (<em>) or alone for the role line */
+.t-display em, .t-accent { font-family: var(--font-display); font-style: italic; font-weight: 300; letter-spacing: 0;
+  font-variation-settings: 'SOFT' var(--soft), 'WONK' var(--wonk); font-size: 1.04em; }
+.t-accent { font-size: var(--fs-h4); line-height: 1.1; }
+
+.t-lead    { font-family: var(--font-body); font-size: var(--fs-lead);    line-height: var(--lh-lead);    letter-spacing: var(--ls-lead);    font-weight: 400; }
+.t-body    { font-family: var(--font-body); font-size: var(--fs-body);    line-height: var(--lh-body);    letter-spacing: var(--ls-body);    font-weight: 400; font-variant-numeric: tabular-nums; }
+.t-caption { font-family: var(--font-body); font-size: var(--fs-caption); line-height: var(--lh-caption); letter-spacing: var(--ls-caption); font-weight: 500; }
+.t-body strong, .t-lead strong { font-weight: 700; }
+/* inline accent inside body copy: the italic twin again, slightly larger so x-heights match Karla */
+.t-body em, .t-lead em { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: 1.06em;
+  font-variation-settings: 'SOFT' var(--soft), 'WONK' var(--wonk); }
+
+.t-label { font-family: var(--font-label); font-size: var(--fs-label); line-height: var(--lh-label); letter-spacing: var(--ls-label); font-weight: 700; text-transform: uppercase; font-synthesis: none; }
+.t-label-lower { font-family: var(--font-label); font-size: var(--fs-caption); line-height: var(--lh-caption); letter-spacing: 0.02em; font-weight: 400; }
+
+.t-hand      { font-family: var(--font-hand);      font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem); line-height: 1.05; font-weight: 400; }
+.t-hand-thin { font-family: var(--font-hand-thin); font-size: clamp(1.75rem, 1.4rem + 1.2vw, 2.75rem); line-height: 1; font-weight: 400; }
+
+/* optional: the SOFT axis is animatable once registered as a number, e.g. a title that hardens on hover */
+@property --soft { syntax: '<number>'; inherits: true; initial-value: 100; }
+@media (prefers-reduced-motion: no-preference) {
+  .t-display--hover { transition: --soft .35s ease; }
+  .t-display--hover:hover { --soft: 0; }
+}

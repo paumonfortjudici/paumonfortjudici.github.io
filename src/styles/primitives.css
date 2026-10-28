@@ -1,0 +1,17 @@
+/* ==========================================================================
+   primitives.css - the physical-object vocabulary (Folder, TabButton, StrokeWord, Sheet, Stamp, Tape, Ticket, Sticker,
+   Polaroid, StickyNote, PaperClip, Pin, Scribble, Reveal, SlateLabel, ColorBars, FilmPerforations, WorldFacts, RegMark, CropMarks).
+   Imported once by src/components/primitives/index.ts. The partials live next to the components.
+   API + variables: docs/api/primitives.md
+   ========================================================================== */
+@import '../components/primitives/css/00-base.css';
+@import '../components/primitives/css/10-folder.css';
+@import '../components/primitives/css/20-tabbutton.css';
+@import '../components/primitives/css/30-strokeword.css';
+@import '../components/primitives/css/40-sheet.css';
+@import '../components/primitives/css/50-stamp-tape.css';
+@import '../components/primitives/css/52-ticket.css';
+@import '../components/primitives/css/54-sticker-polaroid-note.css';
+@import '../components/primitives/css/60-scribble-reveal.css';
+@import '../components/primitives/css/70-slate-bars.css';
+@import '../components/primitives/css/80-marks.css';

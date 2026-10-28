@@ -1,0 +1,175 @@
+/* ==========================================================================
+   primitives / 70 cinema details: slate label, colour bars, film perforations, film strip, world facts
+   Slate: --board (the slate) / --chalk (the lines and letters), cream on ink or ink on paper. Cells are label-font typed text.
+   Perforations: the holes are cut out of the strip with a mask, so whatever lies behind shows through them.
+   ========================================================================== */
+
+/* ---- slate label ------------------------------------------------------------------------------------------------- */
+.pm-slate {
+  --board: var(--ink);
+  --chalk: var(--cream);
+  display: block;
+  box-sizing: border-box;
+  width: min(100%, 46rem);
+  max-width: 100%;
+  filter: drop-shadow(0 12px 10px color-mix(in srgb, var(--ink) 30%, transparent));
+}
+.pm-slate[data-tone='paper'] { --board: var(--paper); --chalk: var(--ink); }
+.pm-slate__stick {
+  position: relative;
+  z-index: 1;
+  height: 1.75rem;
+  margin-bottom: -2px;
+  border: 2px solid var(--chalk);
+  border-radius: 8px 8px 0 0;
+  background: repeating-linear-gradient(-58deg, var(--chalk) 0 0.95rem, var(--board) 0.95rem 1.9rem);
+  transform-origin: 1rem 100%;
+  transform: rotate(-2.5deg) translateY(-2px);
+}
+.pm-slate__stick::before {
+  content: '';
+  position: absolute;
+  left: 0.55rem;
+  bottom: -0.45rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  background: var(--chalk);
+  box-shadow: inset 0 0 0 0.2rem var(--board);
+}
+.pm-slate__board {
+  overflow: hidden;
+  border: 2px solid var(--chalk);
+  border-radius: 0 0 8px 8px;
+  background-color: var(--board);
+}
+/* cells wrap by themselves; every cell draws its right and bottom rule, and the grid is pulled 2px out of the clipped board
+   so the last column and the last row do not double the slate's own border */
+.pm-slate__grid { display: flex; flex-wrap: wrap; margin: 0 -2px -2px 0; padding: 0; }
+.pm-slate__cell {
+  flex: 1 1 11rem;
+  min-width: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0.6rem 0.95rem 0.8rem;
+  background-color: var(--board);
+  background-image: var(--pm-grain);
+  box-shadow: inset -1.5px 0 0 color-mix(in srgb, var(--chalk) 58%, transparent), inset 0 -1.5px 0 color-mix(in srgb, var(--chalk) 58%, transparent);
+  color: var(--chalk);
+}
+.pm-slate__k {
+  margin: 0;
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--chalk) 74%, transparent);
+  font-synthesis: none;
+}
+.pm-slate__line { display: block; }
+.pm-slate__v {
+  margin: 0.32rem 0 0;
+  font-family: var(--font-label);
+  font-size: clamp(1rem, 0.95rem + 0.4vw, 1.2rem);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+  font-synthesis: none;
+}
+
+/* the stick snaps shut when the slate arrives */
+html.js .pm-slate[data-clap]:not([data-in]) .pm-slate__stick { transform: rotate(-9deg) translateY(-3px); }
+html.js .pm-slate[data-clap][data-in] .pm-slate__stick { animation: pm-clap 0.36s cubic-bezier(0.3, 1.7, 0.5, 1) both; }
+@keyframes pm-clap {
+  from { transform: rotate(-9deg) translateY(-3px); }
+  to { transform: rotate(-2.5deg) translateY(-2px); }
+}
+
+/* ---- colour bars (SMPTE order, folder palette) ---------------------------------------------------------------------- */
+.pm-bars {
+  --h: 4.5rem;
+  display: grid;
+  grid-template-rows: 66fr 8fr 26fr;
+  height: var(--h);
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ink) 85%, transparent);
+}
+.pm-bars[data-compact] { grid-template-rows: 1fr; }
+.pm-bars__top {
+  background: linear-gradient(
+    90deg,
+    var(--cream) 0 14.2857%, var(--marigold) 0 28.5714%, var(--lagoon) 0 42.8571%, var(--olive) 0 57.1429%,
+    var(--bubblegum) 0 71.4286%, var(--tomato) 0 85.7143%, var(--ultraviolet) 0
+  );
+}
+.pm-bars__mid {
+  background: linear-gradient(
+    90deg,
+    var(--ultraviolet) 0 14.2857%, var(--ink) 0 28.5714%, var(--bubblegum) 0 42.8571%, var(--ink) 0 57.1429%,
+    var(--lagoon) 0 71.4286%, var(--ink) 0 85.7143%, var(--cream) 0
+  );
+}
+.pm-bars__low {
+  background: linear-gradient(
+    90deg,
+    var(--pine) 0 17.8571%, var(--cream) 0 35.7143%, color-mix(in srgb, var(--ultraviolet) 70%, var(--ink)) 0 53.5714%,
+    var(--ink) 0 71.4286%, var(--ink-2) 0 78.5714%, var(--ink) 0 85.7143%, var(--ink-3) 0 92.8571%, var(--ink) 0
+  );
+}
+
+/* ---- film perforations ------------------------------------------------------------------------------------------- */
+.pm-perf {
+  --hole: 1rem;
+  --perf: var(--ink);
+  --pm-hole: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 14'%3E%3Cpath fill-rule='evenodd' d='M0 0H20V14H0Z M6.8 3.2H13.2A1.8 1.8 0 0 1 15 5V9A1.8 1.8 0 0 1 13.2 10.8H6.8A1.8 1.8 0 0 1 5 9V5A1.8 1.8 0 0 1 6.8 3.2Z'/%3E%3C/svg%3E");
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(var(--hole) * 1.5);
+  background-color: var(--perf);
+  -webkit-mask: var(--pm-hole) 0 50% / auto 100% repeat-x;
+  mask: var(--pm-hole) 0 50% / auto 100% repeat-x;
+}
+.pm-perf[data-tone='cream'] { --perf: var(--cream); }
+
+.pm-strip { --perf: var(--ink); display: block; }
+.pm-strip[data-tone='cream'] { --perf: var(--cream); }
+.pm-strip__frames {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  background-color: var(--perf);
+  background-image: var(--pm-grain);
+  color: var(--cream);
+}
+.pm-strip[data-tone='cream'] .pm-strip__frames { color: var(--ink); }
+
+/* ---- world facts -------------------------------------------------------------------------------------------------- */
+.pm-wf {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 1.6rem 2.4rem;
+  padding-top: clamp(18px, 2vw, 32px);
+}
+.pm-wf__slate { grid-column: 1; width: 100%; }
+.pm-wf__tix { display: flex; flex-direction: column; align-items: flex-start; gap: 1.1rem; grid-column: 2; padding-top: 1.2rem; }
+.pm-wf__concept { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.8rem; }
+.pm-wf__line { margin: 0; max-width: 52ch; }
+.pm-wf__note { grid-column: 1 / -1; max-width: 70ch; }
+@media (max-width: 720px) {
+  .pm-wf { grid-template-columns: minmax(0, 1fr); }
+  .pm-wf__slate, .pm-wf__tix { grid-column: 1; }
+}
+
+/* ---- STILL ------------------------------------------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html.js .pm-slate[data-clap]:not([data-in]) .pm-slate__stick { transform: rotate(-2.5deg) translateY(-2px); }
+  html.js .pm-slate[data-clap][data-in] .pm-slate__stick { animation: none; }
+}
+html[data-motion='paused'].js .pm-slate[data-clap]:not([data-in]) .pm-slate__stick { transform: rotate(-2.5deg) translateY(-2px); }
+html[data-motion='paused'].js .pm-slate[data-clap][data-in] .pm-slate__stick { animation: none; }

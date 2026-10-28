@@ -1,0 +1,1097 @@
+{
+  "images": [
+    {
+      "file": "about-desktop-01.webp",
+      "w": 1440,
+      "h": 1998,
+      "description": "Somia about page \"El Proyecto Somia: moda hecha por mujeres para mujeres\", desktop. Founder portrait with her signed letter, video band, \"nuestros valores\" heading.",
+      "page": "about",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "docY": [
+        0,
+        1998
+      ],
+      "order": 1
+    },
+    {
+      "file": "about-desktop-02.webp",
+      "w": 1440,
+      "h": 347,
+      "description": "Somia about page, desktop. Five values with line icons (Proximidad, Compromiso social, Sostenibilidad, Durabilidad, Versatilidad) and the \"visto como pienso\" marquee.",
+      "page": "about",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "docY": [
+        1998,
+        2345
+      ],
+      "order": 2
+    },
+    {
+      "file": "about-desktop-03.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia about page, desktop. Scroll-story state 1/3 (\"Que es Somia? Somia es un sueno\"): team photo.",
+      "page": "about",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 3,
+      "scrollY": 2265
+    },
+    {
+      "file": "about-desktop-04.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia about page, desktop. Scroll-story state 2/3: sewing-machine photo.",
+      "page": "about",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 4,
+      "scrollY": 2696
+    },
+    {
+      "file": "about-desktop-05.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia about page, desktop. Scroll-story state 3/3: brand video (SOMIA Barcelona logo reveal).",
+      "page": "about",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 5,
+      "scrollY": 3127
+    },
+    {
+      "file": "about-desktop-06.webp",
+      "w": 1440,
+      "h": 1689,
+      "description": "Somia about page, desktop. \"el equipo de Somia\" (round portraits), black testimonial slider \"que opinan de nosotras?\", \"nuestras colecciones\" carousel with year tabs.",
+      "page": "about",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "docY": [
+        3987,
+        5676
+      ],
+      "order": 6
+    },
+    {
+      "file": "about-desktop-07.webp",
+      "w": 1440,
+      "h": 1084,
+      "description": "Somia about page, desktop. Newsletter block and footer.",
+      "page": "about",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "docY": [
+        5676,
+        6760
+      ],
+      "order": 7
+    },
+    {
+      "file": "about-desktop-hero@2x.webp",
+      "w": 2880,
+      "h": 1800,
+      "description": "Somia about page, desktop, first screen at 2x.",
+      "page": "about",
+      "device": "desktop",
+      "kind": "hero-2x",
+      "url": "https://somia.store/pages/proyecto-somia"
+    },
+    {
+      "file": "about-mobile-01.webp",
+      "w": 780,
+      "h": 1816,
+      "description": "Somia about page, mobile. Title \"El Proyecto Somia: moda hecha por mujeres para mujeres\", founder portrait and the start of her letter.",
+      "page": "about",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 1
+    },
+    {
+      "file": "about-mobile-02.webp",
+      "w": 780,
+      "h": 1604,
+      "description": "Somia about page, mobile. Founder letter and signature.",
+      "page": "about",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 2
+    },
+    {
+      "file": "about-mobile-03.webp",
+      "w": 780,
+      "h": 1616,
+      "description": "Somia about page, mobile. SOMIA Barcelona video band, \"nuestros valores\" and the first value (Proximidad) with dot pager.",
+      "page": "about",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 3
+    },
+    {
+      "file": "about-mobile-04.webp",
+      "w": 780,
+      "h": 1688,
+      "description": "Somia about page, mobile. \"Que es Somia?\" carousel (swipe) with team photo, sticky header.",
+      "page": "about",
+      "device": "mobile",
+      "kind": "scene",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 4,
+      "scrollY": 2388
+    },
+    {
+      "file": "about-mobile-05.webp",
+      "w": 780,
+      "h": 1842,
+      "description": "Somia about page, mobile. \"el equipo de Somia\" round portraits and black testimonial slider.",
+      "page": "about",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 5
+    },
+    {
+      "file": "about-mobile-06.webp",
+      "w": 780,
+      "h": 1744,
+      "description": "Somia about page, mobile. \"nuestras colecciones\" card (Mediterranean 2024) with year tabs.",
+      "page": "about",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 6
+    },
+    {
+      "file": "about-mobile-07.webp",
+      "w": 780,
+      "h": 1980,
+      "description": "Somia about page, mobile. Newsletter block and footer.",
+      "page": "about",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 7
+    },
+    {
+      "file": "about-mobile-08.webp",
+      "w": 780,
+      "h": 1216,
+      "description": "Somia about page, mobile. Footer links.",
+      "page": "about",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/proyecto-somia",
+      "order": 8
+    },
+    {
+      "file": "blog-article-desktop-01.webp",
+      "w": 1440,
+      "h": 2000,
+      "description": "Somia blog article \"Moda sostenible: mucho mas que una tendencia\", desktop. Illustrated flat-vector header (recycling, plants, people) over grey paper, serif headline and long-form text with sub-headings and illustrations.",
+      "page": "blog-article",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/blogs/news/moda-sostenible",
+      "docY": [
+        0,
+        2000
+      ],
+      "order": 1
+    },
+    {
+      "file": "cart-desktop-01.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia empty cart, desktop: the /cart page (\"Cesta - La cesta esta vacia - SEGUIR COMPRANDO\") dimmed behind the iCart drawer \"TU CESTA / Tus prendas sostenibles / Tienes la cesta vacia\", trust lines (\"Pago 100% seguro - SSL cifrado\", \"Cambios gratuitos en 30 dias\") and the green italic microcopy \"Tu compra apoya la insercion laboral de mujeres en Barcelona.\" + \"Visto como pienso\".",
+      "page": "cart",
+      "device": "desktop",
+      "kind": "ui-state",
+      "url": "https://somia.store/cart"
+    },
+    {
+      "file": "collection-vincles-desktop-01.webp",
+      "w": 1440,
+      "h": 1555,
+      "description": "Somia collection page \"Vincles\" (62 products), desktop. Breadcrumb, serif title, product count and filter bar, 4-column grid of product cards with NEW pill badges and colour dots.",
+      "page": "collection-vincles",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/collections/vincles",
+      "docY": [
+        0,
+        1555
+      ],
+      "order": 1
+    },
+    {
+      "file": "collection-vincles-desktop-02.webp",
+      "w": 1440,
+      "h": 1727,
+      "description": "Somia collection page \"Vincles\", desktop, further product rows (bags and accessories). The page uses infinite scroll; only the first ~3300px are kept.",
+      "page": "collection-vincles",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/collections/vincles",
+      "docY": [
+        1555,
+        3282
+      ],
+      "order": 2
+    },
+    {
+      "file": "collection-vincles-desktop-hero@2x.webp",
+      "w": 2880,
+      "h": 1800,
+      "description": "Somia collection page \"Vincles\", desktop, first screen at 2x.",
+      "page": "collection-vincles",
+      "device": "desktop",
+      "kind": "hero-2x",
+      "url": "https://somia.store/collections/vincles"
+    },
+    {
+      "file": "collection-vincles-mobile-01.webp",
+      "w": 780,
+      "h": 1994,
+      "description": "Somia collection \"Vincles\", mobile. Header, breadcrumb, title, product count/filter and the first product cards (2-column grid).",
+      "page": "collection-vincles",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/collections/vincles",
+      "order": 1
+    },
+    {
+      "file": "collection-vincles-mobile-02.webp",
+      "w": 780,
+      "h": 1590,
+      "description": "Somia collection \"Vincles\", mobile. Product grid, second block.",
+      "page": "collection-vincles",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/collections/vincles",
+      "order": 2
+    },
+    {
+      "file": "collection-vincles-mobile-03.webp",
+      "w": 780,
+      "h": 1492,
+      "description": "Somia collection \"Vincles\", mobile. Product grid, third block.",
+      "page": "collection-vincles",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/collections/vincles",
+      "order": 3
+    },
+    {
+      "file": "collection-vincles-mobile-04.webp",
+      "w": 780,
+      "h": 746,
+      "description": "Somia collection \"Vincles\", mobile. Product grid, fourth block (page uses infinite scroll; first ~2900px kept).",
+      "page": "collection-vincles",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/collections/vincles",
+      "order": 4
+    },
+    {
+      "file": "editorial-cap-de-creus-desktop-01.webp",
+      "w": 1440,
+      "h": 1903,
+      "description": "Somia editorial lookbook \"Cap de Creus 2026\", desktop. Hero photo with title card, \"Inspiracion\" text and two photos.",
+      "page": "editorial-cap-de-creus-2026",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/editorial-cap-de-creus-2026",
+      "docY": [
+        0,
+        1903
+      ],
+      "order": 1
+    },
+    {
+      "file": "editorial-cap-de-creus-desktop-02.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia editorial \"Cap de Creus 2026\", desktop. Scroll-story state 1/2: \"Valores\".",
+      "page": "editorial-cap-de-creus-2026",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/editorial-cap-de-creus-2026",
+      "order": 2,
+      "scrollY": 1828
+    },
+    {
+      "file": "editorial-cap-de-creus-desktop-03.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia editorial \"Cap de Creus 2026\", desktop. Scroll-story state 2/2: \"Tendencia\".",
+      "page": "editorial-cap-de-creus-2026",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/editorial-cap-de-creus-2026",
+      "order": 3,
+      "scrollY": 2451
+    },
+    {
+      "file": "editorial-cap-de-creus-desktop-04.webp",
+      "w": 1440,
+      "h": 1654,
+      "description": "Somia editorial \"Cap de Creus 2026\", desktop. Lookbook photo grid.",
+      "page": "editorial-cap-de-creus-2026",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/editorial-cap-de-creus-2026",
+      "docY": [
+        3306,
+        4960
+      ],
+      "order": 4
+    },
+    {
+      "file": "editorial-cap-de-creus-desktop-05.webp",
+      "w": 1440,
+      "h": 1598,
+      "description": "Somia editorial \"Cap de Creus 2026\", desktop. Lookbook photo grid (landscape and portrait photos).",
+      "page": "editorial-cap-de-creus-2026",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/editorial-cap-de-creus-2026",
+      "docY": [
+        4960,
+        6558
+      ],
+      "order": 5
+    },
+    {
+      "file": "editorial-cap-de-creus-desktop-06.webp",
+      "w": 1440,
+      "h": 1924,
+      "description": "Somia editorial \"Cap de Creus 2026\", desktop. Last photos, \"Nueva Coleccion Cap de Creus\" product carousel, newsletter block.",
+      "page": "editorial-cap-de-creus-2026",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/editorial-cap-de-creus-2026",
+      "docY": [
+        6558,
+        8482
+      ],
+      "order": 6
+    },
+    {
+      "file": "editorial-cap-de-creus-desktop-hero@2x.webp",
+      "w": 2880,
+      "h": 1800,
+      "description": "Somia editorial \"Cap de Creus 2026\", desktop, first screen at 2x.",
+      "page": "editorial-cap-de-creus-2026",
+      "device": "desktop",
+      "kind": "hero-2x",
+      "url": "https://somia.store/pages/editorial-cap-de-creus-2026"
+    },
+    {
+      "file": "editorial-vincles-2026-desktop-01.webp",
+      "w": 1440,
+      "h": 1930,
+      "description": "Somia editorial lookbook \"Vincles 2026\", desktop. Hero photo with title card, \"Inspiracion\" text and photos.",
+      "page": "editorial-vincles-2026",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/vincles-2026",
+      "docY": [
+        0,
+        1930
+      ],
+      "order": 1
+    },
+    {
+      "file": "home-desktop-01.webp",
+      "w": 1440,
+      "h": 1478,
+      "description": "Somia home, desktop 1440. Transparent header over the hero video (campaign shot with hand-lettered \"Visto como pienso\" on the wall, headline \"tienda de ropa de mujer sostenible\", outlined CTA \"NUEVA COLECCION\"), then the first row of category tiles (Chaquetas, Chalecos).",
+      "page": "home",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "docY": [
+        0,
+        1478
+      ],
+      "order": 1
+    },
+    {
+      "file": "home-desktop-02.webp",
+      "w": 1440,
+      "h": 1354,
+      "description": "Somia home, desktop. Second row of category tiles (Camisas y blusas, Jerseis) and the full-bleed knitting-machine video band with underlined CTA \"DESCUBRE LAS PRENDAS SOSTENIBLES\".",
+      "page": "home",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "docY": [
+        1478,
+        2832
+      ],
+      "order": 2
+    },
+    {
+      "file": "home-desktop-03.webp",
+      "w": 1440,
+      "h": 1036,
+      "description": "Somia home, desktop. \"compra tu look sostenible\": shoppable look carousel with hotspot dots and a product card (Chaqueta Xivitona, 165,00 EUR, black VER PRODUCTO button).",
+      "page": "home",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "docY": [
+        2832,
+        3868
+      ],
+      "order": 3
+    },
+    {
+      "file": "home-desktop-04.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia home, desktop. Scroll-story section, state 1/3 (viewport capture at scroll position 3875: sticky image + text cross-fade). \"sostenibilidad y elegancia en cada prenda\", CTA NUESTRA HISTORIA, Cadaques S/25 video.",
+      "page": "home",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/",
+      "order": 4,
+      "scrollY": 3875
+    },
+    {
+      "file": "home-desktop-05.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia home, desktop. Scroll-story section, state 2/3 (scroll position 4500). \"ropa sostenible y ecologica para vivir con estilo y consciencia\", collage of workshop photos with the ring stamp.",
+      "page": "home",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/",
+      "order": 5,
+      "scrollY": 4500
+    },
+    {
+      "file": "home-desktop-06.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia home, desktop. Scroll-story section, state 3/3 (scroll position 5125). \"ropa sostenible disenada y hecha en espana\", seamstress at work.",
+      "page": "home",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/",
+      "order": 6,
+      "scrollY": 5125
+    },
+    {
+      "file": "home-desktop-07.webp",
+      "w": 1440,
+      "h": 1968,
+      "description": "Somia home, desktop. Four value icons (Sostenibilidad, Calidad, Proximidad, Solidaridad), FAQ accordion, \"siguenos en @somia.store\" Instagram strip, \"visto como pienso\" marquee, newsletter block with the ring stamp. (Instagram strip re-shot separately because the ticker was mid-animation.)",
+      "page": "home",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "docY": [
+        5868,
+        7836
+      ],
+      "order": 7
+    },
+    {
+      "file": "home-desktop-08.webp",
+      "w": 1440,
+      "h": 635,
+      "description": "Somia home, desktop. Footer: wordmark, About us, category links, info links, social icons, payment logos.",
+      "page": "home",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "docY": [
+        7836,
+        8471
+      ],
+      "order": 8
+    },
+    {
+      "file": "home-desktop-fullpage.webp",
+      "w": 1440,
+      "h": 8496,
+      "description": "Somia home, desktop: the whole page as ONE tall image (1440 x ~8500). COMPOSITE: the scroll-story section is rebuilt from the three viewport states, the Instagram strip is a separate re-shot. Use for scrolling-preview mockups; use the numbered chunks when image height must be <= 2000.",
+      "page": "home",
+      "device": "desktop",
+      "kind": "composite",
+      "url": "https://somia.store/"
+    },
+    {
+      "file": "home-desktop-hero@2x.webp",
+      "w": 2880,
+      "h": 1800,
+      "description": "Somia home, desktop, first screen at 2x (2880x1800): hero video with campaign shot, hand-lettered wall text, headline and CTA.",
+      "page": "home",
+      "device": "desktop",
+      "kind": "hero-2x",
+      "url": "https://somia.store/"
+    },
+    {
+      "file": "home-en-desktop-hero@2x.webp",
+      "w": 2880,
+      "h": 1800,
+      "description": "Somia home in the site's official English version (/en), desktop, first screen at 2x: announcement bar \"FREE shipping on orders over EUR90\", nav \"Women / Add-ons / Vincles / Seen as I think / Editorial\", hero slide \"join the sustainable fashion - new Cadaques collection S/25\" with outlined CTA \"SEE COLLECTION\".",
+      "page": "home-en",
+      "device": "desktop",
+      "kind": "hero-2x",
+      "url": "https://somia.store/en/"
+    },
+    {
+      "file": "home-mobile-01.webp",
+      "w": 780,
+      "h": 1688,
+      "description": "Somia home, mobile 390. Header with burger menu, hero video (campaign shot), headline \"tienda de ropa de mujer sostenible\" and CTA.",
+      "page": "home",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "order": 1
+    },
+    {
+      "file": "home-mobile-02.webp",
+      "w": 780,
+      "h": 1604,
+      "description": "Somia home, mobile. Category tiles Chaquetas / Camisas y blusas (2-column grid).",
+      "page": "home",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "order": 2
+    },
+    {
+      "file": "home-mobile-03.webp",
+      "w": 780,
+      "h": 1596,
+      "description": "Somia home, mobile. Category tiles Chalecos / Jerseis.",
+      "page": "home",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "order": 3
+    },
+    {
+      "file": "home-mobile-04.webp",
+      "w": 780,
+      "h": 1562,
+      "description": "Somia home, mobile. Knitting-machine video band with CTA \"Descubre las prendas sostenibles\".",
+      "page": "home",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "order": 4
+    },
+    {
+      "file": "home-mobile-05.webp",
+      "w": 780,
+      "h": 1482,
+      "description": "Somia home, mobile. \"compra tu look sostenible\" shoppable look carousel with hotspots and VER PRODUCTOS button.",
+      "page": "home",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "order": 5
+    },
+    {
+      "file": "home-mobile-06.webp",
+      "w": 780,
+      "h": 1960,
+      "description": "Somia home, mobile. Story carousel (sostenibilidad y elegancia en cada prenda, Cadaques video) and the value icons carousel.",
+      "page": "home",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "order": 6
+    },
+    {
+      "file": "home-mobile-07.webp",
+      "w": 780,
+      "h": 1974,
+      "description": "Somia home, mobile. FAQ accordion, Instagram handle and \"visto como pienso\" marquee.",
+      "page": "home",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "order": 7
+    },
+    {
+      "file": "home-mobile-08.webp",
+      "w": 780,
+      "h": 1978,
+      "description": "Somia home, mobile. Newsletter block with ring stamp, wordmark and the start of the footer links.",
+      "page": "home",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "order": 8
+    },
+    {
+      "file": "home-mobile-09.webp",
+      "w": 780,
+      "h": 1218,
+      "description": "Somia home, mobile. Footer links, social icons, payment logos.",
+      "page": "home",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/",
+      "order": 9
+    },
+    {
+      "file": "home-mobile-popup.webp",
+      "w": 780,
+      "h": 1688,
+      "description": "Somia home, mobile. Timed \"10% de descuento en tu primera compra\" newsletter pop-up over the hero (appears ~15s after load on mobile).",
+      "page": "home",
+      "device": "mobile",
+      "kind": "ui-state",
+      "url": "https://somia.store/"
+    },
+    {
+      "file": "materials-desktop-01.webp",
+      "w": 1440,
+      "h": 1125,
+      "description": "Somia \"Materiales\" page, desktop. Full-bleed hero photo (scissors, fabrics, SOMIA label), intro \"Durabilidad como Clave de la Sostenibilidad\", headline \"Materiales sostenibles: algodon, lino, viscosa reciclada y mas\".",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/materiales",
+      "docY": [
+        0,
+        1125
+      ],
+      "order": 1
+    },
+    {
+      "file": "materials-desktop-02.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia \"Materiales\" page, desktop. Scroll-story state 1/10: circular fabric swatch photo + \"Algodon 100%\" with a one-line description.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/materiales",
+      "order": 2,
+      "scrollY": 1037
+    },
+    {
+      "file": "materials-desktop-03.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia \"Materiales\" page, desktop. Scroll-story state 2/10: circular fabric swatch photo + \"Viscosa reciclada\" with a one-line description.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/materiales",
+      "order": 3,
+      "scrollY": 1660
+    },
+    {
+      "file": "materials-desktop-04.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia \"Materiales\" page, desktop. Scroll-story state 3/10: circular fabric swatch photo + \"Lana\" with a one-line description.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/materiales",
+      "order": 4,
+      "scrollY": 2283
+    },
+    {
+      "file": "materials-desktop-05.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia \"Materiales\" page, desktop. Scroll-story state 4/10: circular fabric swatch photo + \"Poliester\" with a one-line description.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/materiales",
+      "order": 5,
+      "scrollY": 2906
+    },
+    {
+      "file": "materials-desktop-06.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia \"Materiales\" page, desktop. Scroll-story state 5/10: circular fabric swatch photo + \"Bambu 93%\" with a one-line description.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/materiales",
+      "order": 6,
+      "scrollY": 3529
+    },
+    {
+      "file": "materials-desktop-07.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia \"Materiales\" page, desktop. Scroll-story state 6/10: circular fabric swatch photo + \"Seda 100%\" with a one-line description.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/materiales",
+      "order": 7,
+      "scrollY": 4152
+    },
+    {
+      "file": "materials-desktop-08.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia \"Materiales\" page, desktop. Scroll-story state 7/10: circular fabric swatch photo + \"Lino 100%\" with a one-line description.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/materiales",
+      "order": 8,
+      "scrollY": 4775
+    },
+    {
+      "file": "materials-desktop-09.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia \"Materiales\" page, desktop. Scroll-story state 8/10: circular fabric swatch photo + \"Cashmere\" with a one-line description.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/materiales",
+      "order": 9,
+      "scrollY": 5398
+    },
+    {
+      "file": "materials-desktop-10.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia \"Materiales\" page, desktop. Scroll-story state 9/10: circular fabric swatch photo + \"Alpaca\" with a one-line description.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/materiales",
+      "order": 10,
+      "scrollY": 6021
+    },
+    {
+      "file": "materials-desktop-11.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia \"Materiales\" page, desktop. Scroll-story state 10/10: circular fabric swatch photo + \"Cuero\" with a one-line description.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "scene",
+      "url": "https://somia.store/pages/materiales",
+      "order": 11,
+      "scrollY": 6644
+    },
+    {
+      "file": "materials-desktop-12.webp",
+      "w": 1440,
+      "h": 1084,
+      "description": "Somia \"Materiales\" page, desktop. Newsletter block and footer.",
+      "page": "materials",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/materiales",
+      "docY": [
+        7512,
+        8596
+      ],
+      "order": 12
+    },
+    {
+      "file": "materials-mobile-01.webp",
+      "w": 780,
+      "h": 1700,
+      "description": "Somia \"Materiales\" page, mobile, screen 1/4 (hero with scissors/fabric photo, intro, headline, a swipe carousel of circular fabric cards with only the first card \"Algodon 100%\" visible, then newsletter and footer).",
+      "page": "materials",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/materiales",
+      "order": 1
+    },
+    {
+      "file": "materials-mobile-02.webp",
+      "w": 780,
+      "h": 1468,
+      "description": "Somia \"Materiales\" page, mobile, screen 2/4 (hero with scissors/fabric photo, intro, headline, a swipe carousel of circular fabric cards with only the first card \"Algodon 100%\" visible, then newsletter and footer).",
+      "page": "materials",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/materiales",
+      "order": 2
+    },
+    {
+      "file": "materials-mobile-03.webp",
+      "w": 780,
+      "h": 1980,
+      "description": "Somia \"Materiales\" page, mobile, screen 3/4 (hero with scissors/fabric photo, intro, headline, a swipe carousel of circular fabric cards with only the first card \"Algodon 100%\" visible, then newsletter and footer).",
+      "page": "materials",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/materiales",
+      "order": 3
+    },
+    {
+      "file": "materials-mobile-04.webp",
+      "w": 780,
+      "h": 850,
+      "description": "Somia \"Materiales\" page, mobile, screen 4/4 (hero with scissors/fabric photo, intro, headline, a swipe carousel of circular fabric cards with only the first card \"Algodon 100%\" visible, then newsletter and footer).",
+      "page": "materials",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/pages/materiales",
+      "order": 4
+    },
+    {
+      "file": "menu-complementos-desktop.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia desktop mega menu \"Complementos\" open over the home hero (white panel, sub-links: Bolsos, Chales y Bufandas, Gorros y Boinas, Mitones + one image).",
+      "page": "menu-complementos",
+      "device": "desktop",
+      "kind": "ui-state",
+      "url": "https://somia.store/"
+    },
+    {
+      "file": "menu-editorial-desktop.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia desktop mega menu \"Editorial\" open over the home hero (white panel, sub-links: Birds W24, Mediterranean S24, Cadaques S25, Barcelona W25, Cap de Creus S26, Vincles S26 + campaign photo).",
+      "page": "menu-editorial",
+      "device": "desktop",
+      "kind": "ui-state",
+      "url": "https://somia.store/"
+    },
+    {
+      "file": "menu-mujer-desktop.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia desktop mega menu \"Mujer\" open over the home hero (white panel, sub-links: Ver todo, Chaquetas & Americanas, Blusas & Tops, Camisetas & Polos, Chalecos, Jerseis, Pantalones, Faldas, Vestidos + two campaign images).",
+      "page": "menu-mujer",
+      "device": "desktop",
+      "kind": "ui-state",
+      "url": "https://somia.store/"
+    },
+    {
+      "file": "menu-visto-como-pienso-desktop.webp",
+      "w": 1440,
+      "h": 900,
+      "description": "Somia desktop mega menu \"Visto como pienso\" open over the home hero (white panel, sub-links: Proyecto, Materiales, Tiendas, Talleres, Fundacion + a yarn-cones photo).",
+      "page": "menu-visto-como-pienso",
+      "device": "desktop",
+      "kind": "ui-state",
+      "url": "https://somia.store/"
+    },
+    {
+      "file": "product-desktop-01.webp",
+      "w": 1440,
+      "h": 1970,
+      "description": "Somia product page (Chaqueta Xivitona, 165,00 EUR), desktop. Breadcrumb, two-column photo gallery, title, price, description, size and colour pickers, quantity, black ANADIR A LA CESTA button, accordion (Composicion, Envios, Cuidados, Cambios y devoluciones, Confeccion).",
+      "page": "product",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/products/chaqueta-xivitona-gris",
+      "docY": [
+        0,
+        1970
+      ],
+      "order": 1
+    },
+    {
+      "file": "product-desktop-02.webp",
+      "w": 1440,
+      "h": 1782,
+      "description": "Somia product page, desktop. Last gallery photo, \"Productos Relacionados\" carousel (four cards with colour dots) and the reviews block (\"que opinan nuestras clientas?\").",
+      "page": "product",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/products/chaqueta-xivitona-gris",
+      "docY": [
+        1970,
+        3752
+      ],
+      "order": 2
+    },
+    {
+      "file": "product-desktop-03.webp",
+      "w": 1440,
+      "h": 1084,
+      "description": "Somia product page, desktop. Newsletter block with ring stamp and footer.",
+      "page": "product",
+      "device": "desktop",
+      "kind": "chunk",
+      "url": "https://somia.store/products/chaqueta-xivitona-gris",
+      "docY": [
+        3752,
+        4836
+      ],
+      "order": 3
+    },
+    {
+      "file": "product-desktop-hero@2x.webp",
+      "w": 2880,
+      "h": 1800,
+      "description": "Somia product page, desktop, first screen at 2x.",
+      "page": "product",
+      "device": "desktop",
+      "kind": "hero-2x",
+      "url": "https://somia.store/products/chaqueta-xivitona-gris"
+    },
+    {
+      "file": "product-mobile-01.webp",
+      "w": 780,
+      "h": 1904,
+      "description": "Somia product page, mobile. Breadcrumb, swipe gallery (dots) and sticky ANADIR A LA CESTA bar.",
+      "page": "product",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/products/chaqueta-xivitona-gris",
+      "order": 1
+    },
+    {
+      "file": "product-mobile-02.webp",
+      "w": 780,
+      "h": 1752,
+      "description": "Somia product page, mobile. Title, price, description, size and colour pickers, quantity, add-to-cart and accordions.",
+      "page": "product",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/products/chaqueta-xivitona-gris",
+      "order": 2
+    },
+    {
+      "file": "product-mobile-03.webp",
+      "w": 780,
+      "h": 1404,
+      "description": "Somia product page, mobile. Remaining accordion rows and \"Productos Relacionados\" horizontal carousel.",
+      "page": "product",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/products/chaqueta-xivitona-gris",
+      "order": 3
+    },
+    {
+      "file": "product-mobile-04.webp",
+      "w": 780,
+      "h": 1858,
+      "description": "Somia product page, mobile. Reviews block, newsletter block with ring stamp, footer start.",
+      "page": "product",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/products/chaqueta-xivitona-gris",
+      "order": 4
+    },
+    {
+      "file": "product-mobile-05.webp",
+      "w": 780,
+      "h": 1984,
+      "description": "Somia product page, mobile. Footer links and payment logos.",
+      "page": "product",
+      "device": "mobile",
+      "kind": "chunk",
+      "url": "https://somia.store/products/chaqueta-xivitona-gris",
+      "order": 5
+    },
+    {
+      "file": "brand/logo-somia-dark.png",
+      "w": 281,
+      "h": 101,
+      "description": "Somia wordmark, black (as used in the light header/footer). Raster only (281x101 on the CDN); no SVG is published on the site.",
+      "kind": "brand",
+      "url": "https://somia.store"
+    },
+    {
+      "file": "brand/logo-somia-white.png",
+      "w": 281,
+      "h": 101,
+      "description": "Somia wordmark, white (used over the transparent header on the hero video).",
+      "kind": "brand",
+      "url": "https://somia.store"
+    },
+    {
+      "file": "brand/letra-somia.png",
+      "w": 351,
+      "h": 352,
+      "description": "Somia circular stamp: the wordmark repeated on a ring (near-black at ~27% opacity, so it reads as warm grey on paper; transparent PNG), used rotating behind the newsletter block.",
+      "kind": "brand",
+      "url": "https://somia.store"
+    },
+    {
+      "file": "brand/sello-somia.png",
+      "w": 189,
+      "h": 206,
+      "description": "Somia ribbon \"S\" monogram (near-black at ~27% opacity, transparent PNG); sits in the middle of the ring stamp.",
+      "kind": "brand",
+      "url": "https://somia.store"
+    },
+    {
+      "file": "brand/favicon-somia.png",
+      "w": 128,
+      "h": 128,
+      "description": "Somia favicon: black ribbon \"S\" monogram, 128x128 transparent PNG.",
+      "kind": "brand",
+      "url": "https://somia.store"
+    },
+    {
+      "file": "brand/icon-sostenibilidad.png",
+      "w": 534,
+      "h": 534,
+      "description": "Line icon (hanger with recycling arrows) for the value \"Sostenibilidad\". 534x534 transparent PNG.",
+      "kind": "brand",
+      "url": "https://somia.store"
+    },
+    {
+      "file": "brand/icon-calidad.png",
+      "w": 534,
+      "h": 534,
+      "description": "Line icon (three buttons) for the value \"Calidad\". 534x534 transparent PNG.",
+      "kind": "brand",
+      "url": "https://somia.store"
+    },
+    {
+      "file": "brand/icon-proximidad.png",
+      "w": 534,
+      "h": 534,
+      "description": "Line icon (needle, thread and leaf) for the value \"Proximidad\". 534x534 transparent PNG.",
+      "kind": "brand",
+      "url": "https://somia.store"
+    },
+    {
+      "file": "brand/icon-solidaridad.png",
+      "w": 534,
+      "h": 534,
+      "description": "Line icon (two hands) for the value \"Solidaridad\". 534x534 transparent PNG.",
+      "kind": "brand",
+      "url": "https://somia.store"
+    },
+    {
+      "file": "scroll-home-desktop.mp4",
+      "w": 1280,
+      "h": 800,
+      "kind": "video",
+      "page": "home",
+      "device": "desktop",
+      "url": "https://somia.store/",
+      "duration_s": 17.5,
+      "fps": 24,
+      "description": "Somia home, desktop: 17.5 s constant-speed scroll from the hero video to the end of the scroll-story section (y 0 -> 6000). Rendered frame by frame from the live site (H.264, yuv420p, no audio, 1280x800). Shows the transparent-to-white sticky header and the sticky image/text cross-fades."
+    }
+  ],
+  "source": "https://somia.store",
+  "note": "Captured 2026-10-28 with headless Chrome. Desktop images are 1440px wide (1x, supersampled from a 2x render) with chunk height <= 2000; *-hero@2x.webp are 2880x1800. Mobile images are 780px wide (390 css px at 2x). kind: chunk = full-page slice, scene = viewport capture of a scroll-driven section, composite = reassembled page, ui-state = menu/pop-up, brand = identity asset. Scene entries carry scrollY = the window scroll position (css px) at which the viewport capture was taken."
+}

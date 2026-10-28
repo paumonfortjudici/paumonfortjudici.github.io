@@ -1,0 +1,29 @@
+/* DEV-ONLY styles of the primitives gallery (kit.html). Not part of primitives.css. */
+
+html { background: var(--desk); }
+
+.kit { width: min(100% - 2 * clamp(10px, 1.6vw, 28px), 1880px); margin: 0 auto; padding: 28px 0 120px; }
+.kit__head { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: baseline; justify-content: space-between; margin: 0 0 28px; }
+.kit__head h1 { margin: 0; font-family: var(--font-display); font-weight: 900; font-size: var(--fs-h3); letter-spacing: var(--ls-h3); }
+.kit__head p { margin: 0; max-width: 70ch; color: var(--cream-2); }
+.kit__nav { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 40px; padding: 0; list-style: none; }
+.kit__nav a { color: var(--cream-2); font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; }
+
+.kit-sec { margin: 0 0 72px; scroll-margin-top: 16px; }
+.kit-sec__title { margin: 0 0 6px; font-family: var(--font-display); font-weight: 800; font-size: var(--fs-h4); letter-spacing: var(--ls-h4); }
+.kit-sec__note { margin: 0 0 22px; max-width: 80ch; color: var(--cream-2); }
+.kit-row { display: flex; flex-wrap: wrap; gap: 28px 24px; align-items: flex-start; }
+
+/* a stage = a coloured surface to test an object on */
+.kit-stage { position: relative; padding: clamp(16px, 2vw, 30px); border-radius: 22px; color: var(--ink); background: var(--cream); }
+.kit-stage--desk { background: var(--desk); color: var(--cream); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cream) 14%, transparent); }
+.kit-stage--cream { background: var(--cream); color: var(--ink); }
+.kit-stage--ink { background: var(--ink); color: var(--cream); }
+.kit-stage--marigold { background: var(--marigold); color: var(--ink); }
+.kit-stage--ultraviolet { background: var(--ultraviolet); color: var(--cream); }
+.kit-stage--tomato { background: var(--tomato); color: var(--ink); }
+.kit-stage__label { margin: 0 0 14px; font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; opacity: 0.7; }
+.kit-stage__body { }
+.kit-stages { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); }
+
+.kit__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 0 0 26px; color: var(--cream-2); }

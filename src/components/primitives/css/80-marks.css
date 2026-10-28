@@ -1,0 +1,25 @@
+/* ==========================================================================
+   primitives / 80 printer's marks: registration target and crop (trim) marks. Colour = currentColor.
+   ========================================================================== */
+
+.pm-reg { --size: 2rem; display: block; flex: none; width: var(--size); height: var(--size); overflow: visible; }
+
+/* trim marks: two hairlines per corner, outside the parent's box, offset by --gap */
+.pm-crop { --gap: 0.5rem; --len: 1.3rem; position: absolute; inset: 0; pointer-events: none; }
+.pm-crop > span { position: absolute; width: 0; height: 0; }
+.pm-crop > span::before,
+.pm-crop > span::after { content: ''; position: absolute; background: currentColor; }
+.pm-crop > span::before { width: var(--len); height: 1.5px; }
+.pm-crop > span::after { width: 1.5px; height: var(--len); }
+.pm-crop > [data-c='tl'] { left: 0; top: 0; }
+.pm-crop > [data-c='tr'] { right: 0; top: 0; }
+.pm-crop > [data-c='bl'] { left: 0; bottom: 0; }
+.pm-crop > [data-c='br'] { right: 0; bottom: 0; }
+.pm-crop > [data-c='tl']::before { right: var(--gap); top: -0.75px; }
+.pm-crop > [data-c='tl']::after { bottom: var(--gap); left: -0.75px; }
+.pm-crop > [data-c='tr']::before { left: var(--gap); top: -0.75px; }
+.pm-crop > [data-c='tr']::after { bottom: var(--gap); right: -0.75px; }
+.pm-crop > [data-c='bl']::before { right: var(--gap); bottom: -0.75px; }
+.pm-crop > [data-c='bl']::after { top: var(--gap); left: -0.75px; }
+.pm-crop > [data-c='br']::before { left: var(--gap); bottom: -0.75px; }
+.pm-crop > [data-c='br']::after { top: var(--gap); right: -0.75px; }

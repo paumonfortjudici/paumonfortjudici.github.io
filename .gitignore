@@ -7,3 +7,13 @@ Thumbs.db
 .claude/skills
 __pycache__
 *.pyc
+
+.playwright-mcp/
+_work/
+skills-lock.json
+.claude/skills
+.locks/
+.taste-skill/
+
+# TypeScript incremental build info
+*.tsbuildinfo

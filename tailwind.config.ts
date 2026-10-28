@@ -1,53 +1,32 @@
 import type { Config } from 'tailwindcss'
 
+// Tailwind is used for layout utilities only; bespoke components use plain CSS (see docs/ARCHITECTURE.md).
 export default {
-  darkMode: ['class'],
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        heading: ['var(--font-heading)'],
+        display: ['var(--font-display)'],
+        accent: ['var(--font-accent)'],
         body: ['var(--font-body)'],
+        label: ['var(--font-label)'],
+        hand: ['var(--font-hand)'],
       },
       colors: {
-        border: 'var(--border)',
-        input: 'var(--input)',
-        ring: 'var(--ring)',
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
-        primary: {
-          DEFAULT: 'var(--primary)',
-          foreground: 'var(--primary-foreground)',
-        },
-        secondary: {
-          DEFAULT: 'var(--secondary)',
-          foreground: 'var(--secondary-foreground)',
-        },
-        destructive: {
-          DEFAULT: 'var(--destructive)',
-          foreground: 'var(--destructive-foreground)',
-        },
-        muted: {
-          DEFAULT: 'var(--muted)',
-          foreground: 'var(--muted-foreground)',
-        },
-        accent: {
-          DEFAULT: 'var(--accent)',
-          foreground: 'var(--accent-foreground)',
-        },
-        popover: {
-          DEFAULT: 'var(--popover)',
-          foreground: 'var(--popover-foreground)',
-        },
-        card: {
-          DEFAULT: 'var(--card)',
-          foreground: 'var(--card-foreground)',
-        },
-      },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        desk: 'var(--desk)',
+        ink: 'var(--ink)',
+        cream: 'var(--cream)',
+        paper: 'var(--paper)',
+        tomato: 'var(--tomato)',
+        marigold: 'var(--marigold)',
+        pine: 'var(--pine)',
+        oxblood: 'var(--oxblood)',
+        ultraviolet: 'var(--ultraviolet)',
+        bubblegum: 'var(--bubblegum)',
+        lagoon: 'var(--lagoon)',
+        olive: 'var(--olive)',
+        butter: 'var(--butter)',
+        lilac: 'var(--lilac)',
       },
     },
   },

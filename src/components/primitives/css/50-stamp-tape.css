@@ -1,0 +1,178 @@
+/* ==========================================================================
+   primitives / 50 stamp + tape
+   Stamp: the ink is `currentColor`. The rough letterpress edge comes from the shared SVG filters #pm-stamp-1..3 (defs.ts),
+   applied to the inner .pm-stamp__ink so the wrapper can thump, rotate and spin without re-running the filter every frame.
+   Tape: translucent washi with torn zig-zag ends. The shadow lives on the outer box (clip-path would cut an inner one).
+   ========================================================================== */
+
+/* ---- stamp ------------------------------------------------------------------------------------------------------ */
+.pm-stamp {
+  --rot: -8deg;
+  --size: 1.6rem;
+  position: relative;
+  display: inline-block;
+  font-size: var(--size);
+  line-height: 1;
+  transform: rotate(var(--rot));
+  opacity: 0.93;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  user-select: none;
+}
+.pm-stamp[data-blend='normal'] { mix-blend-mode: normal; }
+.pm-stamp__turn,
+.pm-stamp__ink { display: block; }
+.pm-stamp[data-rough='1'] .pm-stamp__ink { filter: url(#pm-stamp-1); }
+.pm-stamp[data-rough='2'] .pm-stamp__ink { filter: url(#pm-stamp-2); }
+.pm-stamp[data-rough='3'] .pm-stamp__ink { filter: url(#pm-stamp-3); }
+
+/* rectangular: a double frame round typed capitals */
+.pm-stamp__frame {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.28em;
+  box-sizing: border-box;
+  padding: 0.36em 0.66em 0.34em;
+  border: 0.13em solid currentColor;
+  border-radius: 0.2em;
+  font-family: var(--font-label);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-synthesis: none;
+}
+.pm-stamp__frame::before {
+  content: '';
+  position: absolute;
+  inset: 0.17em;
+  border: 0.045em solid currentColor;
+  border-radius: 0.1em;
+  pointer-events: none;
+}
+.pm-stamp__text { padding-left: 0.16em; }
+.pm-stamp__sub { padding-left: 0.2em; font-size: max(0.42em, 13px); letter-spacing: 0.2em; }
+.pm-stamp--plain .pm-stamp__frame { border-inline: 0; border-radius: 0; padding-inline: 0.2em; }
+.pm-stamp--plain .pm-stamp__frame::before { inset: 0.17em 0; border-inline: 0; border-radius: 0; }
+
+/* round: ring text on a circle, centre word, inner and outer ring */
+.pm-stamp--round { --size: 10rem; width: var(--size); min-width: 10rem; font-size: 1rem; }
+.pm-stamp__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.pm-stamp__ring { font-family: var(--font-label); font-weight: 700; font-size: 19px; text-transform: uppercase; font-synthesis: none; }
+.pm-stamp__core { font-family: var(--font-display); font-weight: 900; font-size: 27px; font-variation-settings: 'SOFT' 100, 'WONK' 1; letter-spacing: -0.01em; }
+.pm-stamp__subtext { font-family: var(--font-label); font-weight: 700; font-size: 17px; letter-spacing: 0.08em; text-transform: uppercase; font-synthesis: none; }
+
+/* spinning badge (ambient: the class pm-ambient stops it for reduced motion and "Pause motion") */
+.pm-stamp__turn[data-spin] { animation: pm-spin 38s linear infinite; }
+@keyframes pm-spin { to { transform: rotate(360deg); } }
+
+/* thump in (html.js only): comes down big, squashes a little, settles */
+html.js .pm-stamp[data-thump]:not([data-in]) { opacity: 0; transform: rotate(var(--rot)) scale(1.45); }
+html.js .pm-stamp[data-thump][data-in] { animation: pm-thump 0.44s cubic-bezier(0.2, 1.5, 0.4, 1) both; }
+@keyframes pm-thump {
+  0% { opacity: 0; transform: rotate(var(--rot)) scale(1.45); }
+  45% { opacity: 0.97; transform: rotate(var(--rot)) scale(0.94); }
+  100% { opacity: 0.93; transform: rotate(var(--rot)) scale(1); }
+}
+
+/* ---- tape -------------------------------------------------------------------------------------------------------- */
+.pm-tape {
+  --tape: var(--butter);
+  --w: 7.5rem;
+  --h: 1.9rem;
+  display: inline-block;
+  width: var(--w);
+  height: var(--h);
+  transform: rotate(var(--rot, -3deg)); /* --rot is NOT declared here, so the `at` placements below fall back to their own angles */
+  filter: drop-shadow(0 1px 1px color-mix(in srgb, var(--ink) 34%, transparent));
+  pointer-events: none;
+  vertical-align: middle;
+}
+.pm-tape__in {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 0 0.9rem;
+  color: var(--ink);
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  line-height: 1;
+  white-space: nowrap;
+  background-color: color-mix(in srgb, var(--tape) 74%, transparent);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--paper) 55%, transparent), color-mix(in srgb, var(--paper) 55%, transparent)),
+    linear-gradient(color-mix(in srgb, var(--ink) 12%, transparent), color-mix(in srgb, var(--ink) 12%, transparent)),
+    var(--pm-grain);
+  background-size: 100% 1px, 100% 1px, auto;
+  background-position: top, bottom, 0 0;
+  background-repeat: no-repeat, no-repeat, repeat;
+  clip-path: polygon(
+    0 0, 100% 0, calc(100% - 4px) 12.5%, 100% 25%, calc(100% - 4px) 37.5%, 100% 50%, calc(100% - 4px) 62.5%, 100% 75%, calc(100% - 4px) 87.5%, 100% 100%,
+    0 100%, 4px 87.5%, 0 75%, 4px 62.5%, 0 50%, 4px 37.5%, 0 25%, 4px 12.5%
+  );
+}
+.pm-tape[data-pattern='stripes'] .pm-tape__in {
+  background-image:
+    repeating-linear-gradient(-45deg, color-mix(in srgb, var(--paper) 42%, transparent) 0 5px, transparent 5px 11px),
+    linear-gradient(color-mix(in srgb, var(--paper) 55%, transparent), color-mix(in srgb, var(--paper) 55%, transparent)),
+    linear-gradient(color-mix(in srgb, var(--ink) 12%, transparent), color-mix(in srgb, var(--ink) 12%, transparent)),
+    var(--pm-grain);
+  background-size: auto, 100% 1px, 100% 1px, auto;
+  background-position: 0 0, top, bottom, 0 0;
+  background-repeat: repeat, no-repeat, no-repeat, repeat;
+}
+.pm-tape[data-pattern='dots'] .pm-tape__in {
+  background-image:
+    radial-gradient(circle, color-mix(in srgb, var(--paper) 62%, transparent) 1.7px, transparent 2.2px),
+    linear-gradient(color-mix(in srgb, var(--paper) 55%, transparent), color-mix(in srgb, var(--paper) 55%, transparent)),
+    linear-gradient(color-mix(in srgb, var(--ink) 12%, transparent), color-mix(in srgb, var(--ink) 12%, transparent)),
+    var(--pm-grain);
+  background-size: 12px 12px, 100% 1px, 100% 1px, auto;
+  background-position: 3px 3px, top, bottom, 0 0;
+  background-repeat: repeat, no-repeat, no-repeat, repeat;
+}
+.pm-tape[data-pattern='grid'] .pm-tape__in {
+  background-image:
+    linear-gradient(90deg, color-mix(in srgb, var(--paper) 50%, transparent) 1.5px, transparent 1.5px),
+    linear-gradient(color-mix(in srgb, var(--paper) 50%, transparent) 1.5px, transparent 1.5px),
+    linear-gradient(color-mix(in srgb, var(--paper) 55%, transparent), color-mix(in srgb, var(--paper) 55%, transparent)),
+    linear-gradient(color-mix(in srgb, var(--ink) 12%, transparent), color-mix(in srgb, var(--ink) 12%, transparent)),
+    var(--pm-grain);
+  background-size: 10px 10px, 10px 10px, 100% 1px, 100% 1px, auto;
+  background-position: 0 0, 0 0, top, bottom, 0 0;
+  background-repeat: repeat, repeat, no-repeat, no-repeat, repeat;
+}
+.pm-tape[data-pattern='checks'] .pm-tape__in {
+  background-image:
+    conic-gradient(color-mix(in srgb, var(--paper) 46%, transparent) 25%, transparent 0 50%, color-mix(in srgb, var(--paper) 46%, transparent) 0 75%, transparent 0),
+    linear-gradient(color-mix(in srgb, var(--paper) 55%, transparent), color-mix(in srgb, var(--paper) 55%, transparent)),
+    linear-gradient(color-mix(in srgb, var(--ink) 12%, transparent), color-mix(in srgb, var(--ink) 12%, transparent)),
+    var(--pm-grain);
+  background-size: 14px 14px, 100% 1px, 100% 1px, auto;
+  background-position: 0 0, top, bottom, 0 0;
+  background-repeat: repeat, no-repeat, no-repeat, repeat;
+}
+
+/* placed: overhangs the edge or corner of its position:relative parent */
+.pm-tape[data-at] { position: absolute; z-index: 2; }
+.pm-tape[data-at='top'] { left: 50%; top: 0; transform: translate(-50%, -52%) rotate(var(--rot, -2deg)); }
+.pm-tape[data-at='bottom'] { left: 50%; bottom: 0; transform: translate(-50%, 52%) rotate(var(--rot, 2deg)); }
+.pm-tape[data-at='left'] { left: 0; top: 50%; transform: translate(-52%, -50%) rotate(var(--rot, 88deg)); }
+.pm-tape[data-at='right'] { right: 0; top: 50%; transform: translate(52%, -50%) rotate(var(--rot, 92deg)); }
+.pm-tape[data-at='tl'] { left: 0; top: 0; transform: translate(-32%, -30%) rotate(var(--rot, -38deg)); }
+.pm-tape[data-at='tr'] { right: 0; top: 0; transform: translate(32%, -30%) rotate(var(--rot, 38deg)); }
+.pm-tape[data-at='bl'] { left: 0; bottom: 0; transform: translate(-32%, 30%) rotate(var(--rot, 38deg)); }
+.pm-tape[data-at='br'] { right: 0; bottom: 0; transform: translate(32%, 30%) rotate(var(--rot, -38deg)); }
+
+/* ---- STILL: the thump is a plain appearance, the badge stops turning ----------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html.js .pm-stamp[data-thump]:not([data-in]) { opacity: 0.93; transform: rotate(var(--rot)); }
+  html.js .pm-stamp[data-thump][data-in] { animation: none; }
+}
+html[data-motion='paused'].js .pm-stamp[data-thump]:not([data-in]) { opacity: 0.93; transform: rotate(var(--rot)); }
+html[data-motion='paused'].js .pm-stamp[data-thump][data-in] { animation: none; }

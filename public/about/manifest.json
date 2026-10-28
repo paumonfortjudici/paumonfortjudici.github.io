@@ -1,0 +1,438 @@
+{
+  "asset": "About-page portrait video (lenticular pointer-scrub)",
+  "created": "2026-10-28",
+  "source": {
+    "file": "hero-video-smoothed.mp4 (kept out of public/; skin pre-smoothed with smartblur)",
+    "width": 3832,
+    "height": 2164,
+    "fps": 24,
+    "frames": 145,
+    "durationSec": 6.041667,
+    "audio": false,
+    "subject": "stylised man, curly brown hair, tattooed forearms, brown T-shirt, dark blue-grey background; slow push-in / lean toward the camera and three slow blinks"
+  },
+  "crop": {
+    "aspectRatio": "4:5",
+    "ratioValue": 0.8,
+    "x": 990,
+    "y": 0,
+    "width": 1732,
+    "height": 2164,
+    "ffmpeg": "crop=1732:2164:990:0",
+    "sourceFraction": {
+      "x": [
+        0.2584,
+        0.7103
+      ],
+      "y": [
+        0,
+        1
+      ]
+    },
+    "why": "full source height (hair top is only 4-48 px below the top edge, so any vertical crop would cut hair); width centred on the head/body axis with a slight bias that leaves look-room on the right, the direction he faces",
+    "scaledTo": [
+      "960x1200 (lanczos)",
+      "640x800 (lanczos)"
+    ]
+  },
+  "framing": {
+    "unitNote": "fractions of the 4:5 output frame, measured across the whole clip",
+    "headCentreX": 0.485,
+    "hairLeftEdgeX": [
+      0.135,
+      0.186
+    ],
+    "hairRightEdgeX": [
+      0.789,
+      0.835
+    ],
+    "hairTopY": [
+      0.002,
+      0.022
+    ],
+    "eyeLineY": [
+      0.34,
+      0.36
+    ],
+    "chinY": [
+      0.55,
+      0.61
+    ],
+    "necklineShoulderY": [
+      0.56,
+      0.62
+    ],
+    "handsAndTattooedForearmsTopY": [
+      0.76,
+      0.82
+    ],
+    "minClearanceFullResPx": {
+      "left": 234,
+      "right": 286,
+      "topFirstFrame": 48,
+      "topLastFrame": 4
+    },
+    "tightHeadroom": "by the last frames the outermost hair strands graze the top edge (the dense curls stay about 15-40 source px inside); give the frame a mat/border and do not crop any further from the top"
+  },
+  "timing": {
+    "fps": 24,
+    "frames": 145,
+    "frameDurationSec": 0.0416667,
+    "durationSec": 6.041667,
+    "firstFrameTimeSec": 0,
+    "lastFrameTimeSec": 6,
+    "mapping": "frame i is shown at t = i/24. Map pointer progress p in [0,1] to currentTime = p * 6 (NOT p * duration, which can land past the last frame). To snap: t = Math.round(p * 144) / 24.",
+    "motion": {
+      "blinkFrames": [
+        [
+          13,
+          19
+        ],
+        [
+          60,
+          66
+        ],
+        [
+          106,
+          112
+        ]
+      ],
+      "headDrift": "very slow push-in / lean toward the camera: hair width grows about 12% (1068 -> 1204 px full-res) and the forearm span about 11% between frame 0 and frame 144; hair top rises from y=48 to y=4 px; head centre stays within +-12 px. The first ~0.3 s (frames 2-6) moves slightly faster as the head settles. Gaze stays fixed off-camera to the right. No clear periodic breathing motion was detected in the shoulder line (it drifts by under 2% of the frame height).",
+      "loopable": false,
+      "loopNote": "frame 0 and frame 144 differ (push-in), so a plain loop jump-cuts; use ping-pong (portrait-loop.mp4 or JS) instead"
+    }
+  },
+  "videos": [
+    {
+      "path": "about/portrait.mp4",
+      "role": "scrub-desktop-fallback",
+      "type": "video/mp4; codecs=\"avc1.641028\"",
+      "codec": "h264",
+      "profile": "High",
+      "width": 960,
+      "height": 1200,
+      "fps": 24,
+      "frames": 145,
+      "durationSec": 6.0417,
+      "bytes": 8241108,
+      "mb": 8.24,
+      "mib": 7.86,
+      "avgKbps": 10912,
+      "pixFmt": "yuv420p",
+      "audio": false,
+      "allIntra": true,
+      "keyframePackets": 145,
+      "totalPackets": 145,
+      "colorTags": "bt709/bt709/bt709/tv",
+      "faststart": true,
+      "notes": "H.264 High L4.0, all-intra (every frame an IDR), crf 18 + tune film. Universal fallback for the scrub effect."
+    },
+    {
+      "path": "about/portrait.webm",
+      "role": "scrub-desktop",
+      "type": "video/webm; codecs=\"vp09.00.40.08\"",
+      "codec": "vp9",
+      "profile": "Profile 0",
+      "width": 960,
+      "height": 1200,
+      "fps": 24,
+      "frames": 145,
+      "durationSec": 6.042,
+      "bytes": 6194225,
+      "mb": 6.19,
+      "mib": 5.91,
+      "avgKbps": 8202,
+      "pixFmt": "yuv420p",
+      "audio": false,
+      "allIntra": true,
+      "keyframePackets": 145,
+      "totalPackets": 145,
+      "colorTags": "bt709/bt709/bt709/tv",
+      "cuesAtFront": true,
+      "notes": "VP9 profile 0, all-intra (every frame a keyframe), crf 40. About 25% smaller than portrait.mp4 at equal-or-better SSIM/VMAF. List first, mp4 second."
+    },
+    {
+      "path": "about/portrait-sm.mp4",
+      "role": "scrub-mobile-fallback",
+      "type": "video/mp4; codecs=\"avc1.64101f\"",
+      "codec": "h264",
+      "profile": "High",
+      "width": 640,
+      "height": 800,
+      "fps": 24,
+      "frames": 145,
+      "durationSec": 6.0417,
+      "bytes": 3863013,
+      "mb": 3.86,
+      "mib": 3.68,
+      "avgKbps": 5115,
+      "pixFmt": "yuv420p",
+      "audio": false,
+      "allIntra": true,
+      "keyframePackets": 145,
+      "totalPackets": 145,
+      "colorTags": "bt709/bt709/bt709/tv",
+      "faststart": true,
+      "notes": "H.264 High L3.1, all-intra, crf 20 + tune film. 640 px wide for phones and tight bandwidth."
+    },
+    {
+      "path": "about/portrait-sm.webm",
+      "role": "scrub-mobile",
+      "type": "video/webm; codecs=\"vp09.00.30.08\"",
+      "codec": "vp9",
+      "profile": "Profile 0",
+      "width": 640,
+      "height": 800,
+      "fps": 24,
+      "frames": 145,
+      "durationSec": 6.042,
+      "bytes": 2849505,
+      "mb": 2.85,
+      "mib": 2.72,
+      "avgKbps": 3773,
+      "pixFmt": "yuv420p",
+      "audio": false,
+      "allIntra": true,
+      "keyframePackets": 145,
+      "totalPackets": 145,
+      "colorTags": "bt709/bt709/bt709/tv",
+      "cuesAtFront": true,
+      "notes": "VP9 all-intra, crf 46, 640 px wide. About 26% smaller than portrait-sm.mp4 at about the same SSIM."
+    },
+    {
+      "path": "about/portrait-loop.mp4",
+      "role": "autoplay-loop-no-hover",
+      "type": "video/mp4; codecs=\"avc1.64001f\"",
+      "codec": "h264",
+      "profile": "High",
+      "width": 640,
+      "height": 800,
+      "fps": 24,
+      "frames": 288,
+      "durationSec": 12.0,
+      "bytes": 1100017,
+      "mb": 1.1,
+      "mib": 1.05,
+      "avgKbps": 733,
+      "pixFmt": "yuv420p",
+      "audio": false,
+      "allIntra": false,
+      "keyframePackets": 3,
+      "totalPackets": 288,
+      "colorTags": "bt709/bt709/bt709/tv",
+      "faststart": true,
+      "notes": "OPTIONAL touch/no-hover fallback: seamless ping-pong loop (frames 0..144 then 143..1 = 288 frames = 12.0 s), long-GOP H.264, crf 20. NOT scrub-friendly (inter-coded); use only with autoplay muted loop playsinline."
+    }
+  ],
+  "posters": [
+    {
+      "path": "about/poster.webp",
+      "width": 960,
+      "height": 1200,
+      "format": "webp",
+      "bytes": 45046,
+      "frame": 0,
+      "timeSec": 0.0,
+      "use": "poster attribute for portrait.* (960x1200) and the static fallback"
+    },
+    {
+      "path": "about/poster-mid.webp",
+      "width": 960,
+      "height": 1200,
+      "format": "webp",
+      "bytes": 52680,
+      "frame": 72,
+      "timeSec": 3.0,
+      "use": "alternative still (eyes open, mid push-in): reduced-motion / hover-intent / share-image candidate"
+    },
+    {
+      "path": "about/poster-sm.webp",
+      "width": 640,
+      "height": 800,
+      "format": "webp",
+      "bytes": 27766,
+      "frame": 0,
+      "timeSec": 0.0,
+      "use": "poster for portrait-sm.* and portrait-loop.mp4 (640x800)"
+    }
+  ],
+  "filmStrip": {
+    "dir": "about/frames/",
+    "count": 12,
+    "width": 240,
+    "height": 300,
+    "aspectRatio": "4:5",
+    "sameCropAsVideo": true,
+    "frameIndices": [
+      0,
+      13,
+      26,
+      39,
+      52,
+      65,
+      79,
+      92,
+      105,
+      118,
+      131,
+      144
+    ],
+    "evenlySpacedInclusiveOfFirstAndLast": true,
+    "note": "eyes are open in every thumbnail except f-06 (frame 65), which catches the second blink as the lids reopen; swap in frame 68 if all-open eyes are preferred. No sprocket artwork is baked in; draw the perforations in CSS.",
+    "files": [
+      {
+        "path": "about/frames/f-01.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 7612,
+        "frame": 0,
+        "timeSec": 0.0
+      },
+      {
+        "path": "about/frames/f-02.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 7938,
+        "frame": 13,
+        "timeSec": 0.542
+      },
+      {
+        "path": "about/frames/f-03.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 8058,
+        "frame": 26,
+        "timeSec": 1.083
+      },
+      {
+        "path": "about/frames/f-04.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 8142,
+        "frame": 39,
+        "timeSec": 1.625
+      },
+      {
+        "path": "about/frames/f-05.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 8022,
+        "frame": 52,
+        "timeSec": 2.167
+      },
+      {
+        "path": "about/frames/f-06.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 8032,
+        "frame": 65,
+        "timeSec": 2.708
+      },
+      {
+        "path": "about/frames/f-07.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 8116,
+        "frame": 79,
+        "timeSec": 3.292
+      },
+      {
+        "path": "about/frames/f-08.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 8066,
+        "frame": 92,
+        "timeSec": 3.833
+      },
+      {
+        "path": "about/frames/f-09.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 7984,
+        "frame": 105,
+        "timeSec": 4.375
+      },
+      {
+        "path": "about/frames/f-10.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 8086,
+        "frame": 118,
+        "timeSec": 4.917
+      },
+      {
+        "path": "about/frames/f-11.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 7900,
+        "frame": 131,
+        "timeSec": 5.458
+      },
+      {
+        "path": "about/frames/f-12.webp",
+        "width": 240,
+        "height": 300,
+        "format": "webp",
+        "bytes": 7932,
+        "frame": 144,
+        "timeSec": 6.0
+      }
+    ]
+  },
+  "css": {
+    "aspectRatio": "4 / 5",
+    "objectFit": "cover",
+    "objectPosition": "48% 0%",
+    "objectPositionNote": "only matters if the container is not 4:5. Wider than 4:5 (square, 4:3): cover trims top/bottom, so top-align (0%) to keep the hair and trim forearms. Narrower than 4:5 (3:4, 2:3): trims the sides; 48% keeps the head centred. Never use a y position above 0%.",
+    "placeholderBackground": "#1a1b20",
+    "placeholderNote": "average of the dark blue-grey backdrop (corners about #17181d to #1f2024). Set it on the frame so nothing flashes white before the poster decodes.",
+    "videoAttributes": "muted playsinline preload=\"none\" disablepictureinpicture disableremoteplayback (no controls; no loop for the scrub version)",
+    "reserveSpace": "set aspect-ratio: 4 / 5 on the frame (or width/height 960x1200) to avoid layout shift"
+  },
+  "usage": {
+    "assetUrls": "Vite base is '/', so '/about/portrait.webm' works; the safe form is `${import.meta.env.BASE_URL}about/portrait.webm`",
+    "chooseSource": [
+      "Do not rely on <source media=...> inside <video> (not honoured consistently); pick the file in JS.",
+      "Pointer devices (matchMedia('(hover: hover) and (pointer: fine)')) on viewports wider than ~700 px with no saveData: portrait.webm if v.canPlayType('video/webm; codecs=\"vp09.00.40.08\"') is truthy, else portrait.mp4.",
+      "Pointer devices on small viewports, navigator.connection.saveData, or effectiveType 2g/3g: portrait-sm.webm / portrait-sm.mp4 (same selection logic).",
+      "No-hover (touch) devices: see touchFallback."
+    ],
+    "loading": [
+      "Render the poster first (poster attribute or an <img>), keep preload=\"none\", and set src + call load() when the frame is within about one viewport of the screen (IntersectionObserver, rootMargin ~600px).",
+      "Enable scrubbing only after readyState === 4 / 'canplaythrough' so the whole file is buffered; until then keep showing the poster.",
+      "Files are faststart (mp4) / cues-at-front (webm), so range requests and seeking work as soon as the header is fetched."
+    ],
+    "scrub": [
+      "Listen to pointermove on the frame; p = (clientX - rect.left) / rect.width, clamped 0..1 (horizontal scrub reads as turning the head).",
+      "Smooth in a requestAnimationFrame loop: current += (target - current) * 0.18, then video.currentTime = current * 6. Skip the assignment when |delta| < 1/48 s or video.seeking is true.",
+      "Measured in desktop Chrome (local file, the four scrub files): seek-to-presented median about 7 ms (seeked event 2-4 ms), 0 wrong frames in 480 random seeks, and a 3 s sweep presented a frame on (almost) every one of ~432 rAF ticks while visiting 144-145 of the 145 frames. All-intra is why: no keyframe back-tracking.",
+      "Do not use fastSeek(); with all-intra files plain currentTime is already exact and cheap.",
+      "On pointerleave glide back to the resting frame (about 0) with the same smoothing instead of jumping."
+    ],
+    "touchFallback": [
+      "Recommended for (hover: none) devices: <video autoplay muted loop playsinline poster=poster-sm.webp src=portrait-loop.mp4> (1.1 MB, seamless 12 s ping-pong). Cheaper than the 3.9 MB scrub file and needs no seeking on iOS.",
+      "Optional: also allow drag-to-scrub on touch by loading portrait-sm.* on first touch (touch-action: pan-y on the frame so vertical page scroll still works). Untested on iOS/Safari: seeking an unplayed video there can need a prior play()/pause(), which is why the loop file is the default.",
+      "prefers-reduced-motion: reduce -> show poster.webp / poster-sm.webp only (no autoplay loop, no auto-animation); pointer scrub is user-driven and may stay.",
+      "iOS Low Power Mode and some data-saver modes block autoplay: that is fine, the poster simply stays visible, so always set the poster.",
+      "A plain forward loop of portrait.* is NOT recommended (jump-cut from frame 144 back to 0)."
+    ]
+  },
+  "encode": {
+    "tool": "ffmpeg 9.0.1 (libx264, libvpx-vp9)",
+    "pipeline": "hero-video-smoothed.mp4 -> crop=1732:2164:990:0 -> scale lanczos+accurate_rnd -> lossless FFV1 intermediate -> final encodes",
+    "h264AllIntra": "-c:v libx264 -preset veryslow -tune film -profile:v high -pix_fmt yuv420p -g 1 -keyint_min 1 -sc_threshold 0 -bf 0 -an -movflags +faststart (crf 18 for 960 px, crf 20 for 640 px)",
+    "vp9AllIntra": "-c:v libvpx-vp9 -b:v 0 -crf 40 (960) | 46 (640) -g 1 -keyint_min 1 -deadline good -cpu-used 0 -row-mt 1 -aq-mode 0 -an -cues_to_front 1",
+    "color": "all video tagged BT.709 / limited (tv) range via setparams; posters and thumbnails converted YUV->RGB with the BT.709 matrix, so poster and video match (mean abs difference about 1.4 of 255 in Chrome)"
+  }
+}

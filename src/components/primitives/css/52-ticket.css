@@ -1,0 +1,164 @@
+/* ==========================================================================
+   primitives / 52 ticket: a perforated stub = the external-link CTA.
+   The shape is cut with masks (two quarter-circle notches per part + a row of perforation bites along the tear line), so the
+   folder colour shows through the holes and the drop shadow follows the cuts. On hover / focus the stub tears away.
+   Variables: --c / --on (paper + ink of the main part), --stub / --stub-ink, --n (notch radius), --rot.
+   ========================================================================== */
+
+.pm-ticket {
+  --c: var(--paper);
+  --on: var(--ink);
+  --stub: var(--ink);
+  --stub-ink: var(--cream);
+  --n: 9px;
+  --rot: 0deg;
+  --bite: 3px;
+
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  max-width: 100%;
+  min-height: 60px;
+  color: var(--on);
+  text-decoration: none;
+  transform: rotate(var(--rot));
+  filter: var(--pm-float);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.3s var(--ease-spring), filter 0.3s var(--ease-out);
+}
+.pm-ticket:focus { outline: none; }
+/* two-tone ring around the whole ticket: ink outline, cream border on a pseudo-element (above the tearing stub) */
+.pm-ticket::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 3px solid var(--focus-out);
+  border-radius: 17px;
+  opacity: 0;
+  pointer-events: none;
+}
+.pm-ticket:focus-visible { outline: 2px solid var(--focus-in); outline-offset: 3px; box-shadow: none; border-radius: 12px; }
+.pm-ticket:focus-visible::after { opacity: 1; }
+
+.pm-ticket__main,
+.pm-ticket__stub {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  background-image: var(--pm-grain);
+  transition: transform 0.34s var(--ease-spring);
+}
+.pm-ticket__main {
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+  min-width: 0;
+  padding: 0.8rem 1.35rem 0.8rem 1.4rem;
+  border-radius: 12px 0 0 12px;
+  background-color: var(--c);
+  -webkit-mask-image:
+    radial-gradient(circle at 100% 0, transparent var(--n), #000 calc(var(--n) + 0.6px)),
+    radial-gradient(circle at 100% 100%, transparent var(--n), #000 calc(var(--n) + 0.6px)),
+    radial-gradient(circle at 100% 7px, transparent var(--bite), #000 calc(var(--bite) + 0.6px));
+  -webkit-mask-size: 100% 100%, 100% 100%, 100% 14px;
+  -webkit-mask-repeat: no-repeat, no-repeat, repeat-y;
+  -webkit-mask-composite: source-in, source-in;
+  mask-image:
+    radial-gradient(circle at 100% 0, transparent var(--n), #000 calc(var(--n) + 0.6px)),
+    radial-gradient(circle at 100% 100%, transparent var(--n), #000 calc(var(--n) + 0.6px)),
+    radial-gradient(circle at 100% 7px, transparent var(--bite), #000 calc(var(--bite) + 0.6px));
+  mask-size: 100% 100%, 100% 100%, 100% 14px;
+  mask-repeat: no-repeat, no-repeat, repeat-y;
+  mask-composite: intersect;
+}
+.pm-ticket__stub {
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 4.1rem;
+  border-radius: 0 12px 12px 0;
+  background-color: var(--stub);
+  color: var(--stub-ink);
+  transform-origin: 0 100%;
+  -webkit-mask-image:
+    radial-gradient(circle at 0 0, transparent var(--n), #000 calc(var(--n) + 0.6px)),
+    radial-gradient(circle at 0 100%, transparent var(--n), #000 calc(var(--n) + 0.6px)),
+    radial-gradient(circle at 0 7px, transparent var(--bite), #000 calc(var(--bite) + 0.6px));
+  -webkit-mask-size: 100% 100%, 100% 100%, 100% 14px;
+  -webkit-mask-repeat: no-repeat, no-repeat, repeat-y;
+  -webkit-mask-composite: source-in, source-in;
+  mask-image:
+    radial-gradient(circle at 0 0, transparent var(--n), #000 calc(var(--n) + 0.6px)),
+    radial-gradient(circle at 0 100%, transparent var(--n), #000 calc(var(--n) + 0.6px)),
+    radial-gradient(circle at 0 7px, transparent var(--bite), #000 calc(var(--bite) + 0.6px));
+  mask-size: 100% 100%, 100% 100%, 100% 14px;
+  mask-repeat: no-repeat, no-repeat, repeat-y;
+  mask-composite: intersect;
+}
+
+.pm-ticket__kicker {
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--on) 76%, transparent);
+  font-synthesis: none;
+}
+.pm-ticket__label {
+  font-family: var(--font-display);
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.45rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.pm-ticket__arrow { width: 2.2rem; height: auto; overflow: visible; }
+.pm-ticket__arrow path { stroke-dasharray: 1 2; stroke-dashoffset: 0; }
+
+/* tear: the stub swings away from its bottom-left corner, the main part gives a little */
+@media (hover: hover) {
+  .pm-ticket:hover { transform: rotate(var(--rot)) translateY(-2px); }
+  .pm-ticket:hover .pm-ticket__stub { transform: translate(9px, 3px) rotate(6deg); }
+  .pm-ticket:hover .pm-ticket__main { transform: translateX(-3px); }
+  .pm-ticket:hover .pm-ticket__arrow path { animation: pm-arrow-draw 0.5s ease-out both; }
+  .pm-ticket:hover .pm-ticket__arrow path + path { animation-delay: 0.12s; }
+}
+.pm-ticket:focus-visible .pm-ticket__stub { transform: translate(5px, 2px) rotate(3deg); }
+.pm-ticket:focus-visible .pm-ticket__main { transform: translateX(-2px); }
+.pm-ticket:active { transform: rotate(var(--rot)) translateY(1px); transition-duration: 0.08s; }
+@keyframes pm-arrow-draw {
+  from { stroke-dashoffset: 1.1; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* ---- STILL: no tearing; the label underlines instead so the state is still visible -------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .pm-ticket,
+  .pm-ticket__main,
+  .pm-ticket__stub { transition: none; }
+  .pm-ticket:hover,
+  .pm-ticket:active { transform: rotate(var(--rot)); }
+  .pm-ticket:hover .pm-ticket__stub,
+  .pm-ticket:hover .pm-ticket__main,
+  .pm-ticket:focus-visible .pm-ticket__stub,
+  .pm-ticket:focus-visible .pm-ticket__main { transform: none; }
+  .pm-ticket:hover .pm-ticket__arrow path { animation: none; }
+  .pm-ticket:hover .pm-ticket__label,
+  .pm-ticket:focus-visible .pm-ticket__label { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+}
+html[data-motion='paused'] .pm-ticket,
+html[data-motion='paused'] .pm-ticket__main,
+html[data-motion='paused'] .pm-ticket__stub { transition: none; }
+html[data-motion='paused'] .pm-ticket:hover,
+html[data-motion='paused'] .pm-ticket:active { transform: rotate(var(--rot)); }
+html[data-motion='paused'] .pm-ticket:hover .pm-ticket__stub,
+html[data-motion='paused'] .pm-ticket:hover .pm-ticket__main,
+html[data-motion='paused'] .pm-ticket:focus-visible .pm-ticket__stub,
+html[data-motion='paused'] .pm-ticket:focus-visible .pm-ticket__main { transform: none; }
+html[data-motion='paused'] .pm-ticket:hover .pm-ticket__arrow path { animation: none; }
+html[data-motion='paused'] .pm-ticket:hover .pm-ticket__label,
+html[data-motion='paused'] .pm-ticket:focus-visible .pm-ticket__label { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }

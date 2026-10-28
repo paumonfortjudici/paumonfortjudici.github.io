@@ -1,0 +1,41 @@
+/* ==========================================================================
+   primitives / 00 base: shared custom properties, the visually-hidden helper and the motion switches.
+   All primitive classes are prefixed pm-. Colours come from src/styles/tokens.css (no raw hex here).
+   Motion contract: hidden / initial animation states exist ONLY under html.js; every animation also has a path for
+   @media (prefers-reduced-motion: reduce) and html[data-motion="paused"] (see the STILL blocks at the end of each file).
+   ========================================================================== */
+
+:root {
+  /* paper tooth: a tiny speck tile (dark + light dust, a few fibres) tiled over sheets and drawn into the folder art */
+  --pm-grain: url('../grain.png');
+  /* the drawn paper thickness under every folder, sheet, ticket and sticky note (light comes from the top left) */
+  --edge-h: 3px;
+  /* highlight on the top edge of paper */
+  --pm-hl: color-mix(in srgb, var(--paper) 62%, transparent);
+  /* one soft shadow recipe for things that float (lifted folders, stickers, tickets, polaroids) */
+  --pm-float: drop-shadow(0 2px 0 color-mix(in srgb, var(--ink) 22%, transparent)) drop-shadow(0 14px 14px color-mix(in srgb, var(--ink) 34%, transparent));
+  /* two-tone focus ring that follows an irregular silhouette (shoulders, notches): 2px ink, then 2px cream, grown with offset shadows */
+  --pm-ring:
+    drop-shadow(2px 0 0 var(--focus-in)) drop-shadow(-2px 0 0 var(--focus-in)) drop-shadow(0 2px 0 var(--focus-in)) drop-shadow(0 -2px 0 var(--focus-in))
+    drop-shadow(2px 0 0 var(--focus-out)) drop-shadow(-2px 0 0 var(--focus-out)) drop-shadow(0 2px 0 var(--focus-out)) drop-shadow(0 -2px 0 var(--focus-out));
+}
+
+/* visually hidden, still read by screen readers (the real text behind lettering made of SVG) */
+.pm-sr {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ambient loops (rotating stamp ring, light leaks...) stop for both switches. base.css has the same rule. */
+@media (prefers-reduced-motion: reduce) {
+  .pm-ambient { animation: none !important; }
+}
+html[data-motion='paused'] .pm-ambient { animation: none !important; }

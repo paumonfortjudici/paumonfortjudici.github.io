@@ -1,0 +1,46 @@
+/* Ona Ribas concept portfolio - FONTS
+   Installed with:  cd <scratchpad>/art/fonts && npm i @fontsource-variable/anybody @fontsource/syne @fontsource-variable/dm-sans
+   (all three are SIL OFL; fontsource 5.3.0). Absolute file:/// URLs because the npm project lives in the session scratchpad, outside the repo.
+
+   DISPLAY   Anybody (variable: wght 100-900, wdth 50-150)   -> use weight 600 and a different font-stretch PER LETTER (see kit/titles.svg)
+   SUBHEAD   Syne 700 (static, also 600 / 800)                -> UPPERCASE or small-caps, tracked
+   BODY      DM Sans (variable wght 100-1000, + italic)       -> weight 500 on the dark fields, 500 on butter
+   None of the three has arrows, stars or the numero sign: draw those as shapes. All have the Catalan set (a e i o u c with accents, middle dot). */
+
+@font-face {
+  font-family: "Anybody";
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 50% 150%;
+  src: url("file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/node_modules/@fontsource-variable/anybody/files/anybody-latin-wdth-normal.woff2") format("woff2-variations");
+}
+@font-face {
+  font-family: "Syne";
+  font-style: normal;
+  font-weight: 600;
+  src: url("file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/node_modules/@fontsource/syne/files/syne-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Syne";
+  font-style: normal;
+  font-weight: 700;
+  src: url("file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/node_modules/@fontsource/syne/files/syne-latin-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Syne";
+  font-style: normal;
+  font-weight: 800;
+  src: url("file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/node_modules/@fontsource/syne/files/syne-latin-800-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 100 1000;
+  src: url("file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2") format("woff2-variations");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: italic;
+  font-weight: 100 1000;
+  src: url("file:///C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/fonts/node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-italic.woff2") format("woff2-variations");
+}

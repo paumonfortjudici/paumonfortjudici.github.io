@@ -1,0 +1,69 @@
+/* Design tokens — single source of truth (see docs/ART_DIRECTION.md §2-4). */
+:root {
+  /* desk + neutrals */
+  --desk: #0e0912;
+  --ink: #17101b;
+  --ink-2: #2a1f30;
+  --ink-3: #4a3c52;
+  --cream: #fff2da;
+  --paper: #fff8ea;
+  --cream-2: #f6e3be;
+  --line: rgba(23, 16, 27, 0.16);
+
+  /* vivid materials */
+  --tomato: #ff4b2b;
+  --marigold: #ffb81c;
+  --pine: #1f5c46;
+  --oxblood: #8a1b3d;
+  --ultraviolet: #5b3df5;
+  --bubblegum: #ff8fc1;
+  --lagoon: #0f9aa8;
+  --olive: #86a22f; /* Verd Oliva of the Gotet concept brand */
+  --butter: #fbe79a;
+  --lilac: #b79cff;
+
+  /* folder colors per project (kept in sync with src/lib/works.ts) */
+  --f-contract: var(--tomato);
+  --f-plana: var(--pine);
+  --f-fortyfour-lab: var(--marigold);
+  --f-spelled-guilty: var(--oxblood);
+  --f-space-monkey: var(--ultraviolet);
+  --f-procreate: var(--bubblegum);
+  --f-somia: var(--lagoon);
+  --f-concept-brand: var(--olive);
+  --f-concept-portfolio: var(--butter);
+  --f-illustration: var(--lilac);
+
+  /* type families + fluid scale live in typography.css */
+
+  /* focus ring: two-tone so it reads on the desk and on every folder colour */
+  --focus-in: var(--ink);
+  --focus-out: var(--cream);
+
+  /* layout */
+  --wrap: min(100vw - 2 * clamp(10px, 1.6vw, 28px), 1880px);
+  --sheet-pad: clamp(18px, 2.6vw, 44px);
+  --sheet-gap: clamp(18px, 2vw, 28px);
+  --sheet-radius: clamp(20px, 2vw, 30px);
+  --folder-radius: 18px;
+  --tab-h: 32px;
+
+  /* elevation */
+  --shadow-sheet: 0 1px 2px rgba(0, 0, 0, 0.35), 0 28px 60px -28px rgba(0, 0, 0, 0.75);
+  --shadow-card: 0 2px 0 rgba(23, 16, 27, 0.12), 0 22px 36px -22px rgba(23, 16, 27, 0.55);
+
+  /* motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.3, 1.4, 0.5, 1);
+  --dur-1: 0.25s;
+  --dur-2: 0.5s;
+  --dur-3: 0.9s;
+
+  /* z layers */
+  --z-sheet: 1;
+  --z-nav: 40;
+  --z-world: 80;
+  --z-toast: 90;
+  --z-intro: 95;
+  --z-cursor: 100;
+}

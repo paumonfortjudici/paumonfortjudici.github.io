@@ -1,0 +1,30 @@
+{
+  "handle": "fortyfour.lab",
+  "url": "https://www.instagram.com/fortyfour.lab/",
+  "displayName": "44 Lab",
+  "bio": "🧵 Alfombras Handtufted\n🛩️ Envío Internacional\nDM - pedidos personalizados 🔽",
+  "bioEn": "🧵 Handtufted rugs\n🛩️ International shipping\nDM for custom orders 🔽",
+  "bioLink": "linktr.ee/44lab",
+  "followers": 154,
+  "following": 60,
+  "posts": 13,
+  "countsSeenOn": "2026-10-28",
+  "countsNote": "Seen logged-out in the rendered profile header (154 seguidores, 60 seguidos). The page's <meta description> still said '64 siguiendo' (stale cache); 13 posts comes from the meta description and the embed footer ('13 publicaciones · 154 seguidores'), and matches the 13 grid items that loaded.",
+  "isPrivate": false,
+  "isVerified": false,
+  "highlights": [
+    "For Sale💲",
+    "Progress",
+    "Feedback🫶🏻"
+  ],
+  "highlightsNote": "Only the three titles and their 150 px cover thumbnails are visible on the logged-out profile. The stories inside the highlights (/stories/highlights/<id>/) were NOT opened: Instagram normally gates Stories behind a login and I did not poke that wall. Ask Pau for them (the 'Progress' highlight is probably process footage).",
+  "avatar": "avatar.webp",
+  "avatarNote": "150x150 px is the largest avatar Instagram serves logged-out (the same hand-drawn devil on a tan disc as ../logo/*).",
+  "firstPostISO": "2023-03-08T16:42:32Z",
+  "lastPostISO": "2023-06-30T11:17:37Z",
+  "language": "es",
+  "capturedOn": "2026-10-28",
+  "capturedBy": "logged-out visitor, no login / sign-up / cookies accepted (optional cookies rejected)",
+  "bioLinkNote": "Link-in-bio only; the Linktree page itself was not visited (not part of this capture).",
+  "dateNote": "dateISO values in manifest.json are UTC (<time datetime> on each permalink). All 13 posts were published between 10:41 and 16:47 UTC, so the calendar date is identical in UTC and in Spain (UTC+1 / UTC+2); in Sydney (UTC+11) the later ones would roll to the next day - show the 'date' string as text instead of converting it to the viewer's timezone."
+}

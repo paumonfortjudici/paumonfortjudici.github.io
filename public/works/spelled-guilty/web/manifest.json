@@ -1,0 +1,5 @@
+{
+  "images": [],
+  "source": "https://www.amazon.com/dp/B0HNKTP74L",
+  "note": "No capture. On 2026-10-28 the Amazon product URL returned Amazon's automation interstitial (heading 'Click the button below to continue shopping' with a 'Continue shopping' button) instead of the product page. Per the task rules this was treated as a bot wall: nothing was clicked or solved and the page was not captured. Title, subtitle, format and description of the book are therefore UNKNOWN from the web; use the source project in C:/libros/spelled-guilty."
+}

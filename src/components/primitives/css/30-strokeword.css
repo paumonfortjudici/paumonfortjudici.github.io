@@ -1,0 +1,99 @@
+/* ==========================================================================
+   primitives / 30 stroke word: outline lettering drawn on with stroke-dash (pathLength = 1 on every contour).
+   Variables on .pm-sw: --sw-size (the em, any CSS length), --sw-size-stack, --step (ms between letters), --d (start delay),
+   --draw-dur, --fill-delay, --ghost-a (opacity of ghost words), --k (viewBox width / 200, set on the svg).
+   Hidden / initial states exist only under html.js; STILL (reduced motion or paused) shows the finished lettering.
+   ========================================================================== */
+
+.pm-sw {
+  --sw-size: clamp(4.5rem, 13vw, 17rem);
+  --sw-size-stack: min(24vw, 8rem);
+  --step: 70ms;
+  --d: 0ms;
+  --draw-dur: 1.25s;
+  --fill-a: 1;
+  display: block;
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  letter-spacing: normal;
+  line-height: 0;
+  text-transform: none;
+}
+span.pm-sw { display: inline-block; vertical-align: baseline; }
+.pm-sw[data-fill='tint'] { --fill-a: 0.16; }
+
+.pm-sw__svg {
+  display: block;
+  overflow: visible;
+  width: calc(var(--sw-size) * var(--k));
+  max-width: 100%;
+  height: auto;
+}
+.pm-sw__svg--stack { width: min(100%, calc(var(--sw-size-stack) * var(--k))); }
+.pm-sw[data-stack='mobile'] .pm-sw__svg--stack { display: none; }
+@media (max-width: 720px) {
+  .pm-sw[data-stack='mobile'] .pm-sw__svg--line { display: none; }
+  .pm-sw[data-stack='mobile'] .pm-sw__svg--stack { display: block; }
+}
+
+/* riso misregistration: the outline again, offset, in another colour (drop-shadow follows the strokes) */
+.pm-sw[data-shadow] .pm-sw__svg { filter: drop-shadow(0.02em 0.02em 0 var(--sw-shadow)); }
+.pm-sw[data-shadow] { font-size: var(--sw-size); }
+/* the tint fill takes the offset colour: ink outline, tomato (say) fill and shadow = one riso overprint */
+.pm-sw[data-shadow] .pm-sw__fillp { fill: var(--sw-shadow); }
+.pm-sw[data-shadow][data-fill='tint'] { --fill-a: 0.3; }
+
+/* the ink: every contour is its own path with pathLength 1, so every contour of a letter finishes together */
+.pm-sw__s { stroke-dasharray: 1 2; stroke-dashoffset: 0; }
+.pm-sw__ghostp { fill: currentColor; stroke: none; opacity: var(--ghost-a, 0.13); }
+.pm-sw__fillp { fill: currentColor; stroke: none; opacity: var(--fill-a); }
+
+/* initial state (html.js only): nothing drawn yet; the shared observer sets data-in when the word is on screen */
+html.js .pm-sw[data-draw]:not([data-in]) .pm-sw__s { stroke-dashoffset: 1.1; }
+html.js .pm-sw[data-draw]:not([data-in]) .pm-sw__fillp { opacity: 0; }
+html.js .pm-sw[data-draw][data-in] .pm-sw__s {
+  animation: pm-sw-draw var(--draw-dur) cubic-bezier(0.65, 0, 0.25, 1) both;
+  animation-delay: calc(var(--d) + var(--i, 0) * var(--step));
+}
+html.js .pm-sw[data-draw][data-in] .pm-sw__fillp {
+  animation: pm-sw-fill 0.8s ease both;
+  animation-delay: var(--fill-delay, 1.4s);
+}
+@keyframes pm-sw-draw {
+  from { stroke-dashoffset: 1.1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes pm-sw-fill {
+  from { opacity: 0; }
+  to { opacity: var(--fill-a); }
+}
+
+/* hover wave: each letter hops, rippling along the word (mouse only; keyboard and touch do not need it) */
+@media (hover: hover) and (pointer: fine) {
+  .pm-sw[data-wave]:hover .pm-sw__gl {
+    animation: pm-sw-wave 0.7s cubic-bezier(0.3, 1.6, 0.5, 1) both;
+    animation-delay: calc(var(--i, 0) * 35ms);
+  }
+}
+@keyframes pm-sw-wave {
+  0% { transform: none; }
+  40% { transform: translateY(-12px); }
+  100% { transform: none; }
+}
+
+/* ---- STILL: fully drawn, no wave --------------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .pm-sw__s,
+  html.js .pm-sw[data-draw] .pm-sw__s { animation: none !important; stroke-dashoffset: 0 !important; }
+  .pm-sw__fillp,
+  html.js .pm-sw[data-draw] .pm-sw__fillp { animation: none !important; opacity: var(--fill-a) !important; }
+  .pm-sw__gl { animation: none !important; }
+}
+html[data-motion='paused'] .pm-sw__s,
+html[data-motion='paused'].js .pm-sw[data-draw] .pm-sw__s { animation: none !important; stroke-dashoffset: 0 !important; }
+html[data-motion='paused'] .pm-sw__fillp,
+html[data-motion='paused'].js .pm-sw[data-draw] .pm-sw__fillp { animation: none !important; opacity: var(--fill-a) !important; }
+html[data-motion='paused'] .pm-sw__gl { animation: none !important; }

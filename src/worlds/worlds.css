@@ -1,0 +1,362 @@
+/* ==========================================================================
+   worlds.css  -  the world shell (pm-world-*), its folder tabs (pm-wtab-*), the film leader (pm-leader-*)
+   and the placeholder world (w-placeholder-*). Worlds never restyle the shell classes.
+
+   Anatomy (all inside the fixed overlay .pm-world, which is the desk colour):
+     .pm-world-strip   the desk strip along the top with the tabs standing on the folder's top edge:
+                       [previous neighbour] [title tab] [next neighbour] ............ [Close]
+     .pm-world-body    the folder body in the project colour (--w-bg), the shared element of the folder-open transition
+       .pm-world-scroll  the world's own scroll container (focusable, overscroll contained); worlds render inside it
+
+   Variables set on .pm-world:  --w-color  --w-ink  --w-accent  (inline, from the registry)
+                                --w-bg     (defaults to the folder colour; a world sets it on its own root for its content)
+                                --w-strip  (height of the desk strip, including the iOS safe area)
+   ========================================================================== */
+
+.pm-world {
+  --w-bg: var(--w-color);
+  --w-tab-h: var(--tab-h);
+  --w-strip: calc(var(--w-tab-h) + 12px + env(safe-area-inset-top, 0px));
+  --w-edge: max(var(--w-pad, clamp(10px, 1.6vw, 28px)), 14px);
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-world);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  color: var(--w-ink);
+}
+
+/* a shell that is leaving (closing, or sliding away after a hop) is inert: clicks go through to what is behind it */
+.pm-world[inert] {
+  pointer-events: none;
+}
+
+/* the desk the folder lies on: its own layer, so it can fade while the folder body is still flying back to its card */
+.pm-world-desk {
+  position: absolute;
+  inset: 0;
+  background: var(--desk);
+}
+
+/* ---- the strip with the tabs -------------------------------------------------------------------------------------- */
+.pm-world-strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: var(--w-strip);
+  padding: 0 var(--w-edge);
+  pointer-events: none;
+}
+
+.pm-world-strip > * {
+  pointer-events: auto;
+}
+
+/* a folder tab: the template technique. Two 12 px concave shoulders (radial gradients) join the tab to the folder's top edge. */
+.pm-wtab {
+  --fr: 12px;
+  --tab: var(--c, var(--w-color));
+
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  height: var(--w-tab-h);
+  margin: 0;
+  padding: 0 16px;
+  border-radius: var(--fr) var(--fr) 0 0;
+  background: var(--tab);
+  color: var(--on, var(--w-ink));
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.pm-wtab::before,
+.pm-wtab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: var(--fr);
+  height: var(--fr);
+  pointer-events: none;
+}
+
+.pm-wtab::before {
+  right: 100%;
+  background: radial-gradient(circle at 0 0, transparent calc(var(--fr) - 0.5px), var(--tab) var(--fr));
+}
+
+.pm-wtab::after {
+  left: 100%;
+  background: radial-gradient(circle at 100% 0, transparent calc(var(--fr) - 0.5px), var(--tab) var(--fr));
+}
+
+.pm-wtab-icon {
+  flex: 0 0 auto;
+}
+
+.pm-wtab-n {
+  font-variant-numeric: tabular-nums;
+}
+
+.pm-wtab-dot {
+  margin-inline: -2px;
+  opacity: 0.6;
+}
+
+/* the title tab is the front folder: it stands tallest and shrinks (ellipsis) before anything else */
+.pm-wtab--title {
+  order: 2;
+  flex: 0 1 auto;
+  min-width: 0;
+  margin-inline: 4px;
+  padding-inline: 18px;
+}
+
+.pm-wtab--title .pm-wtab-t {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* the neighbours stand behind it in the colour of their own folders: previous on the left, next on the right */
+.pm-wtab--nav {
+  --fr: 9px;
+  height: calc(var(--w-tab-h) - 8px);
+  padding: 0 12px;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+
+.pm-wtab--prev {
+  order: 1;
+}
+
+.pm-wtab--next {
+  order: 3;
+}
+
+.pm-wtab--nav:focus-visible {
+  transform: translateY(-5px);
+}
+
+@media (hover: hover) {
+  .pm-wtab--nav:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.pm-wtab--close {
+  order: 4;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.pm-wtab--close:hover .pm-wtab-icon {
+  transform: rotate(90deg);
+}
+
+.pm-wtab--close .pm-wtab-icon {
+  transition: transform 0.3s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.pm-wtab-key {
+  display: none;
+  padding: 0 5px;
+  border: 1.5px solid currentColor;
+  border-radius: 6px;
+  line-height: 1.3;
+  opacity: 0.88;
+}
+
+@media (hover: hover) and (pointer: fine) and (min-width: 900px) {
+  .pm-wtab-key {
+    display: inline-block;
+  }
+}
+
+/* touch: bigger tabs (the strip grows to 52 px), every target at least 44 px wide */
+@media (pointer: coarse) {
+  .pm-world {
+    --w-tab-h: 40px;
+  }
+  .pm-wtab--nav {
+    height: calc(var(--w-tab-h) - 4px);
+    min-width: 44px;
+    justify-content: center;
+  }
+  .pm-wtab--close {
+    min-width: 44px;
+    justify-content: center;
+  }
+}
+
+/* narrower: the neighbours keep their number, the close tab keeps its word */
+@media (max-width: 899px) {
+  .pm-wtab-t--nav {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* phones: only chevrons and a cross, the title tab gets the room */
+@media (max-width: 520px) {
+  .pm-wtab {
+    padding-inline: 12px;
+  }
+  .pm-wtab--nav {
+    padding-inline: 10px;
+  }
+  .pm-wtab--nav .pm-wtab-n,
+  .pm-wtab-t--close {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .pm-world-strip {
+    gap: 6px;
+  }
+}
+
+/* ---- the folder body and the world's scroller ----------------------------------------------------------------------- */
+.pm-world-body {
+  position: absolute;
+  top: var(--w-strip);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  border-radius: var(--folder-radius) var(--folder-radius) 0 0;
+  background: var(--w-bg);
+  color: var(--w-ink);
+}
+
+.pm-world-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--w-ink) 55%, transparent) transparent;
+}
+
+/* the scroller takes programmatic focus when a world opens (so arrows and space scroll it); it is not a control, no ring */
+.pm-world-scroll:focus,
+.pm-world-scroll:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ---- film leader (Suspense fallback) ---------------------------------------------------------------------------------- */
+.pm-leader {
+  display: grid;
+  min-height: 100%;
+  padding: 24px;
+  place-content: center;
+  justify-items: center;
+  gap: 20px;
+  color: var(--w-ink);
+}
+
+.pm-leader-art {
+  width: min(220px, 52vw);
+  height: auto;
+  overflow: visible;
+}
+
+.pm-leader-sweep {
+  opacity: 0.2;
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: pm-leader-spin 1s linear infinite;
+}
+
+.pm-leader-digit {
+  fill: currentColor;
+  font-family: var(--font-display);
+  font-size: 104px;
+  font-variation-settings: 'SOFT' var(--soft), 'WONK' var(--wonk);
+  font-weight: 900;
+  opacity: 0;
+}
+
+.pm-leader-digit--3 {
+  opacity: 1;
+  animation: pm-leader-tick 2.1s steps(1, end) infinite;
+}
+
+.pm-leader-digit--2 {
+  animation: pm-leader-tick 2.1s steps(1, end) 0.7s infinite;
+}
+
+.pm-leader-digit--1 {
+  animation: pm-leader-tick 2.1s steps(1, end) 1.4s infinite;
+}
+
+.pm-leader-text {
+  margin: 0;
+}
+
+.pm-leader-retry {
+  padding: 8px 16px;
+  border: 2px solid currentColor;
+  border-radius: 12px 12px 0 0;
+}
+
+@keyframes pm-leader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pm-leader-tick {
+  0% {
+    opacity: 1;
+  }
+  33.333%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- placeholder world (foundation phase; each world agent replaces its own file and CSS) --------------------------- */
+.w-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 14px;
+  min-height: 100%;
+  padding: clamp(18px, 3vw, 48px);
+  color: var(--w-ink);
+}
+
+.w-placeholder-title {
+  margin: 0;
+  font-size: clamp(3.5rem, 2rem + 9vw, 12rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 0.86;
+  overflow-wrap: anywhere;
+}
+
+.w-placeholder-kicker,
+.w-placeholder-note {
+  margin: 0;
+}

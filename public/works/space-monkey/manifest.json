@@ -1,0 +1,104 @@
+{
+  "files": [
+    {
+      "file": "tyler.webp",
+      "role": "poster",
+      "title": "TYLER poster",
+      "alt": "Space Monkey escape-room poster \"TYLER\": a line-drawn astronaut floating in front of the Earth on a starfield, title in brushed-metal condensed capitals.",
+      "source": "C:/Users/User/Downloads/TYLER.jpg (1729x2580, Adobe RGB -> converted to sRGB; file metadata: Adobe Photoshop CS6 (Windows), created 2017-12-08, last saved 2017-12-08)",
+      "encode": "webp q88",
+      "palette_dominant": [["#020308", 0.35], ["#0c152f", 0.16], ["#1f2124", 0.1], ["#343b4a", 0.07], ["#7f8388", 0.07], ["#dedede", 0.06], ["#5c5f65", 0.06], ["#a1a2a4", 0.06], ["#bfc0c0", 0.05]],
+      "palette_accent": ["#065d8c", "#306990", "#4c7da2", "#193362"],
+      "palette_note": "near-monochrome: space black/navy + silver-grey suit + one accent family (the ocean blues of the Earth, only ~3% of the pixels are saturated)",
+      "w": 1005,
+      "h": 1500,
+      "bytes": 345558
+    },
+    {
+      "file": "tyler-thumb.webp",
+      "role": "poster-thumb",
+      "title": "TYLER poster (thumb 600w)",
+      "thumb_of": "tyler.webp",
+      "w": 600,
+      "h": 895,
+      "bytes": 100132
+    },
+    {
+      "file": "smith.webp",
+      "role": "poster",
+      "title": "SMITH poster",
+      "alt": "Space Monkey escape-room poster \"SMITH\": a stern cartoon sergeant in a royal-blue uniform with yellow epaulettes in front of a space-shuttle launch hangar, title in chrome capitals.",
+      "source": "C:/Users/User/Downloads/SMITH 2.jpg (1729x2551, Adobe RGB -> converted to sRGB; file metadata: Adobe Photoshop CS6 (Windows), created 2017-12-13, last saved 2017-12-20)",
+      "encode": "webp q88",
+      "palette_dominant": [["#1961d0", 0.17], ["#140d0e", 0.15], ["#4d3122", 0.15], ["#8b5e2f", 0.13], ["#2b4d8d", 0.12], ["#8d8ca0", 0.07], ["#e9f5fb", 0.06], ["#0d2655", 0.06], ["#c89231", 0.05], ["#e2cc96", 0.04]],
+      "palette_accent": ["#1551b2", "#855327", "#bb803d", "#e1de0a", "#e5cf79"],
+      "palette_note": "royal blue (uniform) against burnt-orange/brown industrial hangar; yellow epaulettes + gold hat badge as small accents",
+      "w": 1017,
+      "h": 1500,
+      "bytes": 323490
+    },
+    {
+      "file": "smith-thumb.webp",
+      "role": "poster-thumb",
+      "title": "SMITH poster (thumb 600w)",
+      "thumb_of": "smith.webp",
+      "w": 600,
+      "h": 885,
+      "bytes": 99792
+    },
+    {
+      "file": "logo-monkey-patch.png",
+      "role": "logo",
+      "quality": "CLEAN",
+      "title": "Monkey head patch (from SMITH sleeve)",
+      "alt": "Round badge: a tan-and-white cartoon monkey head with big eyes and an open smile, wearing a headset with microphone, inside a black helmet ring.",
+      "source": "SMITH poster, sleeve patch (crop 220x200 at x1130,y960 of the 1729x2551 original)",
+      "method": "colour-keyed from the flat blue sleeve; 2 thin ink lines crossing the patch removed (Telea inpainting); blue slivers/fringe removed; edge band recoloured to the rim colour",
+      "palette_dominant": [["#fdfdfd", 0.35], ["#1c1718", 0.3], ["#cf9a6a", 0.22], ["#ae825e", 0.05]],
+      "note": "native size = poster pixels (no extra detail exists); tilted about 12 deg counter-clockwise on the poster (CSS rotate(12deg) levels the headset); the black rim/headset disappears on near-black backgrounds",
+      "w": 181,
+      "h": 162,
+      "bytes": 38051
+    },
+    {
+      "file": "logo-monkey-patch@3x.png",
+      "role": "logo",
+      "quality": "CLEAN",
+      "title": "Monkey head patch, 3x smooth upscale of the above",
+      "note": "Lanczos 3x + light unsharp; same information as the 1x file",
+      "w": 543,
+      "h": 486,
+      "bytes": 226119
+    },
+    {
+      "file": "logo-monkey-roomescape-rough.png",
+      "role": "logo",
+      "quality": "ROUGH / low-res reference",
+      "title": "MONKEY roomescape mark (from TYLER chest)",
+      "alt": "Mark printed on the astronaut suit: monkey astronaut head in a black helmet ring, a pale-blue rocket body with tan nose cone and orange fins, the word MONKEY in bold dark capitals and ROOMESCAPE in small spaced capitals.",
+      "source": "TYLER poster, chest mark (crop 220x180 at x650,y1060 of the 1729x2580 original)",
+      "palette_dominant": [["#e5e9ea", 0.3], ["#e5c5aa", 0.24], ["#bfcacf", 0.17], ["#121212", 0.1], ["#4b494a", 0.1], ["#817f7f", 0.09]],
+      "method": "multiply-blend un-mixed from the grey paper texture (paper layer is exactly neutral R=G=B so the colour is the logo), mask from chroma + luma, 2 thin ink lines removed (Telea)",
+      "note": "ONLY ~190x150 px, warped/tilted ~35-45 deg by the suit folds, face and ROOMESCAPE letters are blurry; colours are the washed-out poster rendering; use as a reference/inset, not as a production logo",
+      "w": 190,
+      "h": 149,
+      "bytes": 30163
+    },
+    {
+      "file": "logo-monkey-roomescape-rough@3x.png",
+      "role": "logo",
+      "quality": "ROUGH / low-res reference",
+      "title": "MONKEY roomescape mark, 3x upscale of the above",
+      "w": 570,
+      "h": 447,
+      "bytes": 164575
+    }
+  ],
+  "folder": "space-monkey",
+  "generated": "2026-10-28",
+  "context": "Two posters (TYLER, SMITH) for the Space Monkey escape room in Granollers - Pau's first project, made when he was 13.",
+  "thumb_rule": "thumbs are 600px wide (height follows the aspect ratio), never upscaled",
+  "colour_note": "both source JPGs carry an Adobe RGB (1998) profile; they were converted to sRGB before encoding (colours match what Pau saw in Photoshop)",
+  "not_extracted": "TYLER sleeve patch: same badge as the SMITH one but multiplied onto textured paper, ~105px wide, crossed by 4-5 thick ink strokes -> not cleanly extractable; the SMITH patch is the clean version.",
+  "total_bytes": 1327880
+}

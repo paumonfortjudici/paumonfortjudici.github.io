@@ -1,0 +1,12 @@
+badge-round.svg
+icon-app.svg
+icon-glass.svg
+icon-olive.svg
+logo-primary.svg
+logo-sheet.svg
+logo-stacked.svg
+wordmark-mono-blau.svg
+wordmark-mono-ink.svg
+wordmark-mono-rosat.svg
+wordmark-reverse.svg
+wordmark.svg

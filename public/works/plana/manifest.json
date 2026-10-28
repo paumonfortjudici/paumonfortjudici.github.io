@@ -1,0 +1,854 @@
+{
+  "slug": "plana",
+  "title": "Plana Digital",
+  "generated": "2026-10-28",
+  "basePath": "works/plana/",
+  "usage": "Every 'file' is relative to public/works/plana/. In Vite use `${import.meta.env.BASE_URL}works/plana/${file}`. w/h are intrinsic pixel size (SVG: viewBox units). 'bg' = dominant border colour of the image (handy for letterbox/card backgrounds).",
+  "identity": "v2.0 'plana digital' (browser-window sunrise symbol, Sora/Figtree/DM Mono). The old v1.0 'plana' board is only in archive/.",
+  "palette": {
+    "poppy": {
+      "es": "Amapola",
+      "ca": "Rosella",
+      "hex": "#E5502F",
+      "role": "accent"
+    },
+    "wheat": {
+      "es": "Trigo",
+      "ca": "Blat",
+      "hex": "#F2CF6B",
+      "role": "warmth, backgrounds, stickers"
+    },
+    "holmOak": {
+      "es": "Encina",
+      "ca": "Alzina",
+      "hex": "#1E4634",
+      "role": "dark base"
+    },
+    "paper": {
+      "es": "Papel",
+      "ca": "Paper",
+      "hex": "#F7F2E8",
+      "role": "main background"
+    },
+    "night": {
+      "es": "Noche",
+      "ca": "Nit",
+      "hex": "#18181B",
+      "role": "text, outlines, volume"
+    },
+    "sunriseOrange": {
+      "es": "Naranja amanecer",
+      "hex": "#EC8F4D",
+      "role": "symbol only (title-bar dot 2)"
+    },
+    "fieldGreen": {
+      "es": "Verde campo",
+      "hex": "#2E6A4F",
+      "role": "symbol only (horizon stripe)"
+    },
+    "dotOff": {
+      "hex": "#D8D0BF",
+      "role": "unlit title-bar dot in the Day 1/2/3 windows (measured from manual p3)"
+    }
+  },
+  "fonts": {
+    "headlines": "Sora (ExtraBold 800; Regular 400 for 'digital')",
+    "text": "Figtree (400-700)",
+    "labels": "DM Mono (Medium 500), uppercase, letter-spaced"
+  },
+  "carouselRecommendation": {
+    "core": [
+      "manual/m-01.webp",
+      "manual/m-03.webp",
+      "manual/m-06.webp",
+      "manual/m-08.webp",
+      "manual/m-09.webp",
+      "manual/m-11.webp",
+      "manual/m-13.webp",
+      "manual/m-16.webp"
+    ],
+    "extended_after_core": [
+      "manual/m-02.webp",
+      "manual/m-04.webp",
+      "manual/m-10.webp",
+      "manual/m-12.webp",
+      "manual/m-14.webp",
+      "manual/m-15.webp",
+      "manual/m-17.webp"
+    ],
+    "optional_technical": [
+      "manual/m-05.webp",
+      "manual/m-07.webp"
+    ],
+    "note": "tier 'core' (8 slides, order field) tells the story: cover, symbol idea, logo forms, palette, type, website, street sign, social. 'extended' adds naming, construction, graphic elements, apparel, stationery, van and the closing slide."
+  },
+  "flags": [
+    "Mock contact data inside several images (planadigital.com, hola@planadigital.com, 600 000 000, 'Nom Cognom'): placeholders, not the real contacts. Real domain is planadigital.cat.",
+    "Example client 'Fleca Rosella' / 'Montse' and Instagram stats 48 / 1,204 / 310 are illustrative mock content, not real clients or audience numbers.",
+    "Text inside the images is Catalan/Spanish; the site UI is English, so write English captions around them.",
+    "archive/board-v1-superseded.webp is the old identity."
+  ],
+  "folders": {
+    "manual": "17 pages of Plana Digital brand manual v2.0 (October 2026), 1600x1000 WebP",
+    "board": "crops of the brand board PDF (v2.0)",
+    "logo": "sanitised, optimised SVG logo set + derived animatable parts",
+    "archive": "superseded v1.0 board",
+    "web": "reserved for the live-site screenshots (other agent) - not listed here"
+  },
+  "totalBytes": 3678259,
+  "files": [
+    {
+      "file": "manual/m-01.webp",
+      "kind": "manual-page",
+      "page": 1,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 57354,
+      "title": "Cover",
+      "role": "cover",
+      "alt": "Brand manual cover on holm-oak green: the plana digital horizontal logo, the line 'Webs llestes en 72 hores.' in wheat yellow and a large browser-window symbol with a sunrise and a cursor, cropped at the bottom-right.",
+      "note": "Opener. Dark green, big sticker-style symbol.",
+      "bg": "#1C4434",
+      "carousel": {
+        "tier": "core",
+        "order": 1
+      }
+    },
+    {
+      "file": "manual/m-02.webp",
+      "kind": "manual-page",
+      "page": 2,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 116082,
+      "title": "The name",
+      "role": "story",
+      "alt": "Manual page 'El nombre': the words 'plana digital' set huge in Sora, with four numbered readings of the name (plana web, la Plana, pla/plana, digital), the slogan and the four personality words.",
+      "note": "Naming story; text is Spanish.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "extended",
+        "order": 3
+      }
+    },
+    {
+      "file": "manual/m-03.webp",
+      "kind": "manual-page",
+      "page": 3,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 100708,
+      "title": "The symbol: a sunrise inside the browser",
+      "role": "story",
+      "alt": "Manual page 'El símbolo' on wheat yellow: the headline 'Un amanecer dentro del navegador.' beside the large symbol, and three small windows for Day 1, Day 2 and Day 3 in which the sun rises and the three title-bar dots light up one by one.",
+      "note": "Best story page: explains the logo idea (sunrise = business coming online; 3 dots = 3 days = 72 h).",
+      "bg": "#ECCC64",
+      "carousel": {
+        "tier": "core",
+        "order": 2
+      }
+    },
+    {
+      "file": "manual/m-04.webp",
+      "kind": "manual-page",
+      "page": 4,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 117268,
+      "title": "Construction of the symbol",
+      "role": "system",
+      "alt": "Technical drawing of the symbol on a 124 by 100 unit grid with annotated frame stroke 7.5, corner radius 18, bar at 24, horizon at 74, sun radius 27 and a solid volume offset of 8 and 9, plus the two support colours.",
+      "note": "Craft detail; strong for a design audience.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "extended",
+        "order": 6
+      }
+    },
+    {
+      "file": "manual/m-05.webp",
+      "kind": "manual-page",
+      "page": 5,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 110976,
+      "title": "Logotype anatomy and clear space",
+      "role": "system",
+      "alt": "Manual page 'Logotipo principal' showing the horizontal logo with baseline, x-height, ascender and descender guides and the clear-space box equal to the height of the letter a.",
+      "note": "Technical; low visual impact.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "optional",
+        "order": null
+      }
+    },
+    {
+      "file": "manual/m-06.webp",
+      "kind": "manual-page",
+      "page": 6,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 76488,
+      "title": "Logo versions",
+      "role": "system",
+      "alt": "Four full-height colour columns showing the logo versions: horizontal on paper, vertical on wheat yellow, symbol alone on holm-oak green and the round seal on poppy red.",
+      "note": "Very visual: all four brand colours + all four logo forms.",
+      "bg": "#DC4C2C",
+      "carousel": {
+        "tier": "core",
+        "order": 3
+      }
+    },
+    {
+      "file": "manual/m-07.webp",
+      "kind": "manual-page",
+      "page": 7,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 98246,
+      "title": "Colour application and misuse",
+      "role": "system",
+      "alt": "Six logo-on-colour tiles (paper, holm-oak, poppy, wheat, night, one ink on white) and four crossed-out misuse examples: do not distort, do not change the colours, do not change the order, do not use on competing backgrounds.",
+      "note": "Rules page.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "optional",
+        "order": null
+      }
+    },
+    {
+      "file": "manual/m-08.webp",
+      "kind": "manual-page",
+      "page": 8,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 96832,
+      "title": "Colour palette",
+      "role": "system",
+      "alt": "Manual page 'Los colores del Vallès en junio.' with five large swatches, Poppy E5502F, Wheat F2CF6B, Holm oak 1E4634, Paper F7F2E8 and Night 18181B, each with RGB, CMYK and a usage note, and a bar showing the approximate proportion of use.",
+      "note": "Hex/RGB/CMYK in the image are the source of truth.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "core",
+        "order": 4
+      }
+    },
+    {
+      "file": "manual/m-09.webp",
+      "kind": "manual-page",
+      "page": 9,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 98206,
+      "title": "Typography",
+      "role": "system",
+      "alt": "Holm-oak green page with three giant 'Aa' specimens: Sora ExtraBold for headlines and the logotype, Figtree Regular to Bold for text, DM Mono Medium for labels and data.",
+      "note": "Names the three Google fonts.",
+      "bg": "#1C4434",
+      "carousel": {
+        "tier": "core",
+        "order": 5
+      }
+    },
+    {
+      "file": "manual/m-10.webp",
+      "kind": "manual-page",
+      "page": 10,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 121668,
+      "title": "Graphic elements and tone of voice",
+      "role": "system",
+      "alt": "Left: a poppy '72 h' sticker, the round seal, the three-window sequence and the app icon. Right: the voice rule 'Como en el mostrador, no como en un folleto' with three yes/no phrase pairs.",
+      "note": "Sticker finish = thick outline + solid shadow in Night.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "extended",
+        "order": 7
+      }
+    },
+    {
+      "file": "manual/m-11.webp",
+      "kind": "manual-page",
+      "page": 11,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 124968,
+      "title": "Application: website",
+      "role": "application",
+      "alt": "A laptop and a phone on a holm-oak green and sand backdrop showing the Plana Digital website: Catalan headline 'La web del teu negoci, llesta en 72 hores.', a green three-days card and a fixed-price footer strip.",
+      "note": "Shows the site layout Pau designed (mockup).",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "core",
+        "order": 6
+      }
+    },
+    {
+      "file": "manual/m-12.webp",
+      "kind": "manual-page",
+      "page": 12,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 137772,
+      "title": "Application: T-shirts and tote bag",
+      "role": "application",
+      "alt": "A white T-shirt with a small logo, a green T-shirt with the large red seal, and a cotton tote bag reading 'Fet a Cardedeu' with the symbol.",
+      "note": "Merch.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "extended",
+        "order": 9
+      }
+    },
+    {
+      "file": "manual/m-13.webp",
+      "kind": "manual-page",
+      "page": 13,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 104316,
+      "title": "Application: street sign",
+      "role": "application",
+      "alt": "Flat illustration of a shop front: green fascia sign with the logo, window vinyl with 'Estudi web', an 'Obert' door sign and a round hanging seal sign.",
+      "note": "Charming; contains mock opening hours.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "core",
+        "order": 7
+      }
+    },
+    {
+      "file": "manual/m-14.webp",
+      "kind": "manual-page",
+      "page": 14,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 144998,
+      "title": "Application: cards and stationery",
+      "role": "application",
+      "alt": "Business cards in paper and holm-oak green, a proposal letter, a round seal sticker and a red '72 h' sticker on a wheat-yellow surface.",
+      "note": "Mock placeholders: hola@planadigital.com, 600 000 000, 'Nom Cognom'.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "extended",
+        "order": 10
+      }
+    },
+    {
+      "file": "manual/m-15.webp",
+      "kind": "manual-page",
+      "page": 15,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 100900,
+      "title": "Application: van",
+      "role": "application",
+      "alt": "A white van with a green lower band and a large poppy sun rising from it in front of hills; side text 'Webs llestes en 72 hores.' and the logo.",
+      "note": "Mock placeholders: PLANADIGITAL.COM, 600 000 000.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "extended",
+        "order": 11
+      }
+    },
+    {
+      "file": "manual/m-16.webp",
+      "kind": "manual-page",
+      "page": 16,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 164398,
+      "title": "Application: social media",
+      "role": "application",
+      "alt": "An Instagram profile on a phone and three square post templates: '72 h.' process card, 'Diem web. No solució digital 360º.' and a before/after card for an example bakery.",
+      "note": "Mock stats (48 posts, 1,204 followers, 310 following) and example bakery.",
+      "bg": "#F4ECE4",
+      "carousel": {
+        "tier": "core",
+        "order": 8
+      }
+    },
+    {
+      "file": "manual/m-17.webp",
+      "kind": "manual-page",
+      "page": 17,
+      "w": 1600,
+      "h": 1000,
+      "bytes": 58744,
+      "title": "Closing slide",
+      "role": "closing",
+      "alt": "Poppy-red closing page with the round seal and the line 'Ens veiem a la Plana.' above the web, email and town line.",
+      "note": "Mock placeholders: PLANADIGITAL.COM, HOLA@PLANADIGITAL.COM.",
+      "bg": "#DC4C2C",
+      "carousel": {
+        "tier": "extended",
+        "order": 12
+      }
+    },
+    {
+      "file": "board/board-full.webp",
+      "kind": "board-crop",
+      "w": 1400,
+      "h": 3423,
+      "bytes": 379388,
+      "title": "Full brand board (v2.0)",
+      "role": "overview",
+      "alt": "The complete Plana Digital brand board: logo header, four logo panels, colour palette, three-day strip, typography and six application mockups.",
+      "bg": "#ECECE4",
+      "order": 1
+    },
+    {
+      "file": "board/lockup-primary.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 395,
+      "bytes": 20394,
+      "title": "Primary lockup header",
+      "role": "logo",
+      "alt": "The horizontal plana digital logo centred on paper with the line 'Estudi web, Cardedeu, webs llestes en 72 hores'.",
+      "bg": "#F4ECE4",
+      "order": 2
+    },
+    {
+      "file": "board/lockups-row.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 344,
+      "bytes": 25604,
+      "title": "Logo forms row",
+      "role": "logo",
+      "alt": "Four panels in a row: vertical logo on paper, symbol on wheat yellow, reversed horizontal logo on holm-oak green and the round seal on poppy red.",
+      "bg": "#ECE4D4",
+      "order": 3
+    },
+    {
+      "file": "board/lockup-vertical.webp",
+      "kind": "board-crop",
+      "w": 800,
+      "h": 915,
+      "bytes": 36054,
+      "title": "Vertical logo panel",
+      "role": "logo",
+      "alt": "Vertical logo, symbol over the words plana and digital, on warm paper.",
+      "bg": "#ECE4D4",
+      "order": 0
+    },
+    {
+      "file": "board/lockup-symbol.webp",
+      "kind": "board-crop",
+      "w": 800,
+      "h": 915,
+      "bytes": 32608,
+      "title": "Symbol panel",
+      "role": "logo",
+      "alt": "The symbol alone, a browser window with a sunrise and a cursor, on wheat yellow.",
+      "bg": "#ECCC64",
+      "order": 0
+    },
+    {
+      "file": "board/lockup-reversed.webp",
+      "kind": "board-crop",
+      "w": 800,
+      "h": 915,
+      "bytes": 15292,
+      "title": "Reversed logo panel",
+      "role": "logo",
+      "alt": "The horizontal logo reversed for dark backgrounds on holm-oak green.",
+      "bg": "#1C4434",
+      "order": 0
+    },
+    {
+      "file": "board/lockup-seal.webp",
+      "kind": "board-crop",
+      "w": 800,
+      "h": 915,
+      "bytes": 41024,
+      "title": "Seal panel",
+      "role": "logo",
+      "alt": "The black round seal with the symbol and the ring text Plana Digital, Cardedeu, Webs llestes en 72 h, on poppy red.",
+      "bg": "#DC4C2C",
+      "order": 0
+    },
+    {
+      "file": "board/palette.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 326,
+      "bytes": 19528,
+      "title": "Colour palette strip",
+      "role": "system",
+      "alt": "Five colour circles with names and hex codes: Amapola E5502F, Trigo F2CF6B, Encina 1E4634, Papel F7F2E8, Noche 18181B.",
+      "bg": "#F4ECE4",
+      "order": 4
+    },
+    {
+      "file": "board/process-three-days.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 258,
+      "bytes": 14744,
+      "title": "Three days strip",
+      "role": "system",
+      "alt": "A wheat-yellow strip with three browser-window symbols labelled Day 1, Day 2 and Day 3: the title-bar dots light up and the sun climbs from window to window.",
+      "bg": "#ECCC64",
+      "order": 5
+    },
+    {
+      "file": "board/typography.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 360,
+      "bytes": 16028,
+      "title": "Typography strip",
+      "role": "system",
+      "alt": "Holm-oak green strip with three 'Aa' specimens: Sora, Figtree and DM Mono.",
+      "bg": "#1C4434",
+      "order": 6
+    },
+    {
+      "file": "board/mockup-website.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 750,
+      "bytes": 77082,
+      "title": "Mockup: website",
+      "role": "mockup",
+      "alt": "Laptop and phone showing the Plana Digital website, Catalan copy, on green and sand.",
+      "bg": "#1C4434",
+      "order": 7
+    },
+    {
+      "file": "board/mockup-signage.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 749,
+      "bytes": 64878,
+      "title": "Mockup: street sign",
+      "role": "mockup",
+      "alt": "Shop front with green fascia, window vinyl, 'Obert' door sign, round hanging seal and a plant.",
+      "bg": "#DCD4BC",
+      "order": 8
+    },
+    {
+      "file": "board/mockup-apparel.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 752,
+      "bytes": 71424,
+      "title": "Mockup: T-shirts and tote",
+      "role": "mockup",
+      "alt": "A white T-shirt, a green T-shirt with the red seal and a 'Fet a Cardedeu' cotton tote.",
+      "bg": "#DCCCBC",
+      "order": 9
+    },
+    {
+      "file": "board/mockup-stationery.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 751,
+      "bytes": 93060,
+      "title": "Mockup: cards and letterhead",
+      "role": "mockup",
+      "alt": "Business cards, proposal letter and two stickers on wheat yellow.",
+      "bg": "#DCC47C",
+      "order": 10
+    },
+    {
+      "file": "board/mockup-van.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 753,
+      "bytes": 57404,
+      "title": "Mockup: van",
+      "role": "mockup",
+      "alt": "White van with green livery and a big red sun against green hills.",
+      "bg": "#E4D4AC",
+      "order": 11
+    },
+    {
+      "file": "board/mockup-social.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 752,
+      "bytes": 100270,
+      "title": "Mockup: social media",
+      "role": "mockup",
+      "alt": "Instagram profile on a phone plus three post templates.",
+      "bg": "#DCD4BC",
+      "order": 12
+    },
+    {
+      "file": "board/detail-website-ui.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 746,
+      "bytes": 93534,
+      "title": "Detail: website UI",
+      "role": "detail",
+      "alt": "Crisp close-up of the website design on the laptop screen: nav, headline '72 hores.' in red, three-days card, fixed-price strip. Vector-sharp.",
+      "bg": "#E4E4DC",
+      "order": 13
+    },
+    {
+      "file": "board/detail-apparel-tees.webp",
+      "kind": "board-crop",
+      "w": 1200,
+      "h": 944,
+      "bytes": 75604,
+      "title": "Detail: the two T-shirts",
+      "role": "detail",
+      "alt": "White T-shirt with a small chest logo next to a green T-shirt with the large red seal.",
+      "bg": "#DCCCBC",
+      "order": 14
+    },
+    {
+      "file": "board/detail-apparel-tote.webp",
+      "kind": "board-crop",
+      "w": 550,
+      "h": 860,
+      "bytes": 40788,
+      "title": "Detail: tote bag",
+      "role": "detail",
+      "alt": "Cotton tote bag with the symbol and the line 'Fet a Cardedeu'.",
+      "bg": "#DCCCBC",
+      "order": 15
+    },
+    {
+      "file": "board/detail-instagram-phone.webp",
+      "kind": "board-crop",
+      "w": 664,
+      "h": 1160,
+      "bytes": 94870,
+      "title": "Detail: Instagram profile",
+      "role": "detail",
+      "alt": "A phone showing the planadigital Instagram profile with a nine-tile grid of branded posts.",
+      "bg": "#DCD4BC",
+      "order": 16
+    },
+    {
+      "file": "board/detail-instagram-posts.webp",
+      "kind": "board-crop",
+      "w": 1000,
+      "h": 1025,
+      "bytes": 84346,
+      "title": "Detail: social post templates",
+      "role": "detail",
+      "alt": "Three post templates: the green '72 h.' process card, the 'Diem web' phrase card and the 'Mateix negoci. Nova façana.' before/after card.",
+      "bg": "#DCD4BC",
+      "order": 17
+    },
+    {
+      "file": "archive/board-v1-superseded.webp",
+      "kind": "archive",
+      "w": 1400,
+      "h": 3183,
+      "bytes": 185098,
+      "title": "Brand board v1.0 (SUPERSEDED identity)",
+      "role": "archive",
+      "alt": "Earlier version of the brand board: the plain 'plana' wordmark with a half-sun mark in Bricolage Grotesque, before the browser-window symbol and the Plana Digital name.",
+      "note": "From plana-brand-board.jpg (v1.0 era: wordmark 'plana', half-sun mark, Bricolage Grotesque, planaestudi.com). Replaced by v2.0 'plana digital'. Do NOT present as the current brand; usable only as an explicit before/after.",
+      "status": "superseded"
+    },
+    {
+      "file": "logo/plana-digital-app-icon-green.svg",
+      "kind": "logo-svg",
+      "w": 240.0,
+      "h": 240.0,
+      "viewBox": "0 0 240 240",
+      "bytes": 12026,
+      "role": "App icon on holm-oak green, 240x240",
+      "source": "zip: logos/plana-digital-icono-app-encina.svg"
+    },
+    {
+      "file": "logo/plana-digital-app-icon.svg",
+      "kind": "logo-svg",
+      "w": 240.0,
+      "h": 240.0,
+      "viewBox": "0 0 240 240",
+      "bytes": 8090,
+      "role": "App icon on wheat yellow, 240x240",
+      "source": "zip: logos/plana-digital-icono-app.svg"
+    },
+    {
+      "file": "logo/plana-digital-favicon.svg",
+      "kind": "logo-svg",
+      "w": 124.0,
+      "h": 100.0,
+      "viewBox": "0 0 124 100",
+      "bytes": 1424,
+      "role": "Favicon: window + sunrise only, 124x100 (no cursor, no volume)",
+      "source": "zip: logos/plana-digital-favicon.svg"
+    },
+    {
+      "file": "logo/plana-digital-horizontal-mono-night.svg",
+      "kind": "logo-svg",
+      "w": 793.44,
+      "h": 155.0,
+      "viewBox": "0 0 793.44 155",
+      "bytes": 11871,
+      "role": "Horizontal lockup, one ink Night #18181B",
+      "source": "zip: logos/plana-digital-horizontal-una-tinta-noche.svg"
+    },
+    {
+      "file": "logo/plana-digital-horizontal-mono-paper.svg",
+      "kind": "logo-svg",
+      "w": 793.44,
+      "h": 155.0,
+      "viewBox": "0 0 793.44 155",
+      "bytes": 11871,
+      "role": "Horizontal lockup, one ink Paper #F7F2E8",
+      "source": "zip: logos/plana-digital-horizontal-una-tinta-papel.svg"
+    },
+    {
+      "file": "logo/plana-digital-horizontal-reversed.svg",
+      "kind": "logo-svg",
+      "w": 792.4,
+      "h": 155.0,
+      "viewBox": "0 0 792.4 155",
+      "bytes": 16945,
+      "role": "Horizontal lockup for dark backgrounds (Paper wordmark and sticker edge)",
+      "source": "zip: logos/plana-digital-horizontal-negativo.svg"
+    },
+    {
+      "file": "logo/plana-digital-horizontal.svg",
+      "kind": "logo-svg",
+      "w": 793.44,
+      "h": 155.0,
+      "viewBox": "0 0 793.44 155",
+      "bytes": 13372,
+      "role": "Primary horizontal lockup, full colour, for light backgrounds",
+      "source": "zip: logos/plana-digital-horizontal.svg"
+    },
+    {
+      "file": "logo/plana-digital-seal-green.svg",
+      "kind": "logo-svg",
+      "w": 400.0,
+      "h": 400.0,
+      "viewBox": "0 0 400 400",
+      "bytes": 21367,
+      "role": "Round seal on holm-oak green with wheat ring text. Same ids as the red seal",
+      "source": "zip: logos/plana-digital-sello-encina.svg"
+    },
+    {
+      "file": "logo/plana-digital-seal.svg",
+      "kind": "logo-svg",
+      "w": 400.0,
+      "h": 400.0,
+      "viewBox": "0 0 400 400",
+      "bytes": 21367,
+      "role": "Round seal on Poppy red. Groups: #pd-seal-disc, #pd-seal-ring (rotatable ring text), #pd-seal-symbol",
+      "source": "zip: logos/plana-digital-sello.svg"
+    },
+    {
+      "file": "logo/plana-digital-sunrise-motif.svg",
+      "kind": "logo-svg",
+      "w": 124.0,
+      "h": 45.5,
+      "viewBox": "0 0 124 45.5",
+      "bytes": 555,
+      "role": "DERIVED. Sun + horizon band motif (as used on the van and the e-mail signature), ids #pd-sun, #pd-horizon-field, #pd-horizon-stripe",
+      "source": "derived (see notes)"
+    },
+    {
+      "file": "logo/plana-digital-symbol-animatable-reversed.svg",
+      "kind": "logo-svg",
+      "w": 151.5,
+      "h": 139.52,
+      "viewBox": "-5 -5 151.5 139.52",
+      "bytes": 3122,
+      "role": "DERIVED. Same as above with a Paper sticker edge for dark backgrounds (#pd-edge-window, #pd-cursor-edge)",
+      "source": "derived (see notes)"
+    },
+    {
+      "file": "logo/plana-digital-symbol-animatable.svg",
+      "kind": "logo-svg",
+      "w": 141.5,
+      "h": 129.52,
+      "viewBox": "0 0 141.5 129.52",
+      "bytes": 2503,
+      "role": "DERIVED. Symbol rebuilt from the brand geometry with an id per part for animation (sun, horizon, dots, frame, bar, cursor, volumes). Inline it (not <img>) to animate",
+      "source": "derived (see notes)"
+    },
+    {
+      "file": "logo/plana-digital-symbol-mono-night.svg",
+      "kind": "logo-svg",
+      "w": 141.5,
+      "h": 129.52,
+      "viewBox": "0 0 141.5 129.52",
+      "bytes": 5714,
+      "role": "Symbol, one ink Night",
+      "source": "zip: logos/plana-digital-simbolo-una-tinta-noche.svg"
+    },
+    {
+      "file": "logo/plana-digital-symbol-mono-paper.svg",
+      "kind": "logo-svg",
+      "w": 141.5,
+      "h": 129.52,
+      "viewBox": "0 0 141.5 129.52",
+      "bytes": 5714,
+      "role": "Symbol, one ink Paper",
+      "source": "zip: logos/plana-digital-simbolo-una-tinta-papel.svg"
+    },
+    {
+      "file": "logo/plana-digital-symbol-reversed.svg",
+      "kind": "logo-svg",
+      "w": 151.5,
+      "h": 139.53,
+      "viewBox": "-5 -5 151.5 139.53",
+      "bytes": 10640,
+      "role": "Symbol alone with Paper sticker edge (dark backgrounds)",
+      "source": "zip: logos/plana-digital-simbolo-negativo.svg"
+    },
+    {
+      "file": "logo/plana-digital-symbol.svg",
+      "kind": "logo-svg",
+      "w": 141.5,
+      "h": 129.52,
+      "viewBox": "0 0 141.5 129.52",
+      "bytes": 6992,
+      "role": "Symbol alone, full colour (light backgrounds)",
+      "source": "zip: logos/plana-digital-simbolo.svg"
+    },
+    {
+      "file": "logo/plana-digital-vertical-mono-night.svg",
+      "kind": "logo-svg",
+      "w": 264.6,
+      "h": 372.46,
+      "viewBox": "-132.3 0 264.6 372.46",
+      "bytes": 12228,
+      "role": "Vertical lockup, one ink Night",
+      "source": "zip: logos/plana-digital-vertical-una-tinta-noche.svg"
+    },
+    {
+      "file": "logo/plana-digital-vertical-mono-paper.svg",
+      "kind": "logo-svg",
+      "w": 264.6,
+      "h": 372.46,
+      "viewBox": "-132.3 0 264.6 372.46",
+      "bytes": 12228,
+      "role": "Vertical lockup, one ink Paper",
+      "source": "zip: logos/plana-digital-vertical-una-tinta-papel.svg"
+    },
+    {
+      "file": "logo/plana-digital-vertical-reversed.svg",
+      "kind": "logo-svg",
+      "w": 264.6,
+      "h": 373.61,
+      "viewBox": "-132.3 0 264.6 373.61",
+      "bytes": 17550,
+      "role": "Vertical lockup for dark backgrounds",
+      "source": "zip: logos/plana-digital-vertical-negativo.svg"
+    },
+    {
+      "file": "logo/plana-digital-vertical.svg",
+      "kind": "logo-svg",
+      "w": 264.6,
+      "h": 372.46,
+      "viewBox": "-132.3 0 264.6 372.46",
+      "bytes": 13734,
+      "role": "Vertical lockup, full colour",
+      "source": "zip: logos/plana-digital-vertical.svg"
+    }
+  ]
+}

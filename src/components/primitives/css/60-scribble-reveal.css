@@ -1,0 +1,78 @@
+/* ==========================================================================
+   primitives / 60 scribble + reveal
+   Scribble: marks drawn with stroke-dash (pathLength = 1). Variables: --w width, --d delay, --dur duration, --rot.
+   Reveal: arrives once when scrolled into view. Hidden states exist only under html.js; STILL shows everything at once.
+   ========================================================================== */
+
+/* ---- scribble ---------------------------------------------------------------------------------------------------- */
+.pm-sc {
+  --w: 6rem;
+  --d: 0ms;
+  --dur: 0.7s;
+  --rot: 0deg;
+  display: block;
+  width: var(--w);
+  height: auto;
+  overflow: visible;
+  transform: rotate(var(--rot));
+  pointer-events: none;
+}
+.pm-sc[data-at] { max-width: none; } /* base.css caps every svg at 100% of its parent; these marks overhang it on purpose */
+.pm-sc[data-at='under'] { position: absolute; left: -3%; bottom: -0.32em; width: 106%; }
+.pm-sc[data-at='around'] { position: absolute; left: -12%; top: -16%; width: 124%; height: 132%; transform: rotate(var(--rot)); }
+.pm-sc__p { stroke-dasharray: 1 2; stroke-dashoffset: 0; }
+.pm-sc[data-filled] .pm-sc__p:first-child { fill: currentColor; fill-opacity: 0.18; }
+
+html.js .pm-sc[data-draw]:not([data-in]) .pm-sc__p { stroke-dashoffset: 1.1; }
+html.js .pm-sc[data-draw]:not([data-in])[data-filled] .pm-sc__p:first-child { fill-opacity: 0; }
+html.js .pm-sc[data-draw][data-in] .pm-sc__p {
+  animation: pm-sc-draw var(--dur) cubic-bezier(0.5, 0, 0.2, 1) both;
+  animation-delay: calc(var(--d) + var(--p, 0) * 240ms);
+}
+html.js .pm-sc[data-draw][data-in][data-filled] .pm-sc__p:first-child {
+  animation: pm-sc-draw var(--dur) cubic-bezier(0.5, 0, 0.2, 1) both, pm-sc-fill 0.4s ease both;
+  animation-delay: var(--d), calc(var(--d) + var(--dur));
+}
+@keyframes pm-sc-draw {
+  from { stroke-dashoffset: 1.1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes pm-sc-fill {
+  from { fill-opacity: 0; }
+  to { fill-opacity: 0.18; }
+}
+
+/* ---- reveal ------------------------------------------------------------------------------------------------------ */
+.pm-rv {
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s var(--ease-out);
+  transition-delay: var(--rv-delay, 0ms);
+}
+html.js .pm-rv:not([data-in]) { opacity: 0; transform: translateY(22px); }
+html.js .pm-rv[data-kind='fade']:not([data-in]) { transform: none; }
+html.js .pm-rv[data-kind='left']:not([data-in]) { transform: translateX(-28px); }
+html.js .pm-rv[data-kind='right']:not([data-in]) { transform: translateX(28px); }
+/* physical objects may overshoot: they land */
+html.js .pm-rv[data-kind='pop']:not([data-in]) { transform: scale(0.88); }
+html.js .pm-rv[data-kind='drop']:not([data-in]) { transform: translateY(-26px) rotate(-1.5deg); }
+.pm-rv[data-kind='pop'],
+.pm-rv[data-kind='drop'] {
+  transition:
+    opacity 0.5s ease,
+    transform 0.7s var(--ease-spring);
+  transition-delay: var(--rv-delay, 0ms);
+}
+.pm-rv[data-in] { opacity: 1; transform: none; }
+
+/* ---- STILL ------------------------------------------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html.js .pm-rv:not([data-in]) { opacity: 1; transform: none; }
+  .pm-rv { transition: none; }
+  html.js .pm-sc[data-draw] .pm-sc__p { animation: none !important; stroke-dashoffset: 0 !important; }
+  html.js .pm-sc[data-draw][data-filled] .pm-sc__p:first-child { fill-opacity: 0.18 !important; }
+}
+html[data-motion='paused'].js .pm-rv:not([data-in]) { opacity: 1; transform: none; }
+html[data-motion='paused'] .pm-rv { transition: none; }
+html[data-motion='paused'].js .pm-sc[data-draw] .pm-sc__p { animation: none !important; stroke-dashoffset: 0 !important; }
+html[data-motion='paused'].js .pm-sc[data-draw][data-filled] .pm-sc__p:first-child { fill-opacity: 0.18 !important; }

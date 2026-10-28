@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="1600" viewBox="0 0 1200 1600">
+<title>Case of the missing sock - doodle sticker 06</title>
+<desc>A trench-coated detective in a fedora creeps forward, one eye hugely magnified by an oversized lens, pinching a single striped sock. Concept illustration, art-directed by Pau, built with AI-assisted tools.</desc>
+<style>
+/* palette: ink #0C0A10 / accent #FA6A57 / paper #FFEFDF  (recolour = replace the accent hex everywhere) */
+.fa{fill:#FA6A57} .fi{fill:#0C0A10} .fp{fill:#FFEFDF}
+.k{stroke:#0C0A10;stroke-width:10;stroke-linecap:round;stroke-linejoin:round}
+.k2{fill:none;stroke:#0C0A10;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+.k3{fill:none;stroke:#0C0A10;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.k3f{stroke:#0C0A10;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.st{fill:none;stroke:#0C0A10;stroke-width:6;stroke-linecap:round;stroke-dasharray:1 14}
+.sh{fill:none;stroke:#FA6A57;stroke-width:7;stroke-linecap:round}
+.pp{fill:none;stroke:#FFEFDF;stroke-width:7;stroke-linecap:round}
+.tube-k{fill:none;stroke:#0C0A10;stroke-width:28;stroke-linecap:round;stroke-linejoin:round}
+.tube-a{fill:none;stroke:#FA6A57;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<defs>
+<path id="legB" d="M352.6 1076.2C325.8 1121.9 299.1 1167.6 272.3 1213.3C272.1 1213.7 271.8 1214.2 271.6 1214.6C271.3 1215 271.1 1215.5 270.8 1215.9C258 1243.9 245.2 1271.8 232.4 1299.8C256.1 1311.9 279.9 1324.1 303.6 1336.2C318.6 1310 333.5 1283.7 348.5 1257.4C376.1 1212.9 403.8 1168.3 431.4 1123.8C405.1 1107.9 378.9 1092.1 352.6 1076.2Z"/>
+<path id="cuffB" d="M232.4 1299.8C256.1 1311.9 279.9 1324.1 303.6 1336.2C308.8 1326.1 313.9 1316.1 319.1 1306C295.4 1293.8 271.6 1281.7 247.9 1269.5C242.7 1279.6 237.6 1289.7 232.4 1299.8Z"/>
+<path id="ankleB" d="M247.6 1300.8C242.4 1313.9 233.2 1326 232 1340C231.1 1350.3 232.3 1364.9 241.6 1369.6C250.8 1374.4 263.3 1366.8 271.2 1360.1C281.8 1350.9 286.3 1336.4 293.9 1324.5C278.4 1316.6 263 1308.7 247.6 1300.8Z"/>
+<path id="shoeB" d="M-46 -8C-48.7 4.7 -52.3 17.2 -54 30C-55.7 42.6 -57.4 55.4 -56 68C-55.3 73.9 -50.7 78.7 -48 84C18 84 84 84 150 84C162.7 80.7 177.1 81.3 188 74C194.7 69.5 200.7 59.6 198 52C194.7 42.6 183.4 37.3 174 34C156.1 27.7 136.3 28.9 118 24C103.5 20.2 89.7 14 76 8C63.7 2.6 52 -4 40 -10C11.3 -9.3 -17.3 -8.7 -46 -8Z" transform="translate(247 1358.9) rotate(40)"/>
+<clipPath id="clipshoeB"><path d="M-46 -8C-48.7 4.7 -52.3 17.2 -54 30C-55.7 42.6 -57.4 55.4 -56 68C-55.3 73.9 -50.7 78.7 -48 84C18 84 84 84 150 84C162.7 80.7 177.1 81.3 188 74C194.7 69.5 200.7 59.6 198 52C194.7 42.6 183.4 37.3 174 34C156.1 27.7 136.3 28.9 118 24C103.5 20.2 89.7 14 76 8C63.7 2.6 52 -4 40 -10C11.3 -9.3 -17.3 -8.7 -46 -8Z"/></clipPath>
+<path id="shoeF" d="M-46 -8C-48.7 4.7 -52.3 17.2 -54 30C-55.7 42.6 -57.4 55.4 -56 68C-55.3 73.9 -50.7 78.7 -48 84C18 84 84 84 150 84C162.7 80.7 177.1 81.3 188 74C194.7 69.5 200.7 59.6 198 52C194.7 42.6 183.4 37.3 174 34C156.1 27.7 136.3 28.9 118 24C103.5 20.2 89.7 14 76 8C63.7 2.6 52 -4 40 -10C11.3 -9.3 -17.3 -8.7 -46 -8Z" transform="translate(754 1386) rotate(0)"/>
+<clipPath id="clipshoeF"><path d="M-46 -8C-48.7 4.7 -52.3 17.2 -54 30C-55.7 42.6 -57.4 55.4 -56 68C-55.3 73.9 -50.7 78.7 -48 84C18 84 84 84 150 84C162.7 80.7 177.1 81.3 188 74C194.7 69.5 200.7 59.6 198 52C194.7 42.6 183.4 37.3 174 34C156.1 27.7 136.3 28.9 118 24C103.5 20.2 89.7 14 76 8C63.7 2.6 52 -4 40 -10C11.3 -9.3 -17.3 -8.7 -46 -8Z"/></clipPath>
+<path id="sockF" d="M691 1300.6C701 1334.2 704.5 1370.5 721 1401.5C727.2 1413.1 742.8 1424.5 755.5 1421C768.2 1417.5 775.6 1399.7 775 1386.5C773.3 1351.5 757.5 1318.6 748.8 1284.6C729.6 1289.9 710.3 1295.3 691 1300.6Z"/>
+<path id="legF" d="M555.6 1138.8C581.7 1172.5 607.8 1206.2 633.9 1239.8C651.3 1265.8 668.7 1291.9 686.1 1317.9C710 1303.3 734 1288.7 757.9 1274.1C742.3 1246.1 726.8 1218.1 711.3 1190.1C710.9 1189.4 710.5 1188.8 710.1 1188.2C709.7 1187.6 709.2 1187 708.8 1186.4C683.3 1151.3 657.9 1116.3 632.4 1081.2C606.8 1100.4 581.2 1119.6 555.6 1138.8Z"/>
+<path id="cuffF" d="M686.1 1317.9C710 1303.3 734 1288.7 757.9 1274.1C752.3 1265 746.8 1255.9 741.2 1246.8C717.3 1261.4 693.4 1276 669.5 1290.5C675 1299.7 680.6 1308.8 686.1 1317.9Z"/>
+<path id="coat" d="M444.2 603.8C467.4 604.4 491.1 601 513.8 605.7C549.7 613 586.3 622 618.5 639.5C642.7 652.7 658.8 676.9 679 695.6C663.8 733.4 649.8 771.6 633.5 808.9C616.1 848.7 579 883.4 577.8 926.9C576.9 959.3 614 980.8 627.9 1010C656.8 1070.7 680 1134 706 1196C682.7 1204 660.6 1218.7 636 1220C609.5 1221.4 584.5 1204 558 1204C534.7 1204 513.1 1222.6 490 1220C463.9 1217 444 1191.8 418 1188C392.1 1184.2 365.8 1202.6 340 1198C311.5 1192.9 287.2 1174.1 262 1160C232.5 1143.4 170 1139.3 176 1106C184.8 1057.3 263 1052 289.2 1010C343.4 923.1 375.2 823.9 411.7 728.2C427 688.1 433.4 645.2 444.2 603.8Z"/>
+<path id="pocket" d="M566 1010C595.3 1012.7 624.7 1015.3 654 1018C652 1032 650 1046 648 1060C618.7 1057.3 589.3 1054.7 560 1052C562 1038 564 1024 566 1010Z"/>
+<path id="belt" d="M372.9 829C407.7 844.5 441.3 863.1 477.3 875.5C514.1 888.1 552.7 894.4 590.4 903.9C585.9 916.4 581.3 928.9 576.7 941.4C539.3 931.4 500.9 924.1 464.3 911.2C428.4 898.5 394.7 880.2 359.9 864.7C364.3 852.8 368.6 840.9 372.9 829Z"/>
+<path id="beltTail" d="M529.2 919.9C536.5 923.3 543.8 926.6 551.1 930C545.3 949.9 539.5 969.7 533.7 989.6C525.9 987.5 518.2 985.4 510.4 983.3C516.7 962.2 523 941 529.2 919.9Z"/>
+<path id="sockHeld" d="M451.8 1017.9C457.2 1013.9 461.2 1006.3 467.8 1005.9C474.1 1005.5 477.6 1015.9 483.8 1015.9C490.1 1015.9 493.6 1005.5 499.8 1005.9C506.5 1006.3 510.5 1013.9 515.8 1017.9C516.5 1051.3 506 1086.7 517.8 1117.9C524.7 1135.9 553.6 1135.1 565.8 1149.9C576.7 1163.1 587.8 1181.3 583.8 1197.9C580.8 1210.7 563 1217.9 549.8 1217.9C528.8 1217.9 504.9 1212.7 489.8 1197.9C472.8 1181.2 466.8 1155.3 461.8 1131.9C454 1094.6 455.2 1055.9 451.8 1017.9Z"/>
+<clipPath id="clipSockHeld"><path d="M451.8 1017.9C457.2 1013.9 461.2 1006.3 467.8 1005.9C474.1 1005.5 477.6 1015.9 483.8 1015.9C490.1 1015.9 493.6 1005.5 499.8 1005.9C506.5 1006.3 510.5 1013.9 515.8 1017.9C516.5 1051.3 506 1086.7 517.8 1117.9C524.7 1135.9 553.6 1135.1 565.8 1149.9C576.7 1163.1 587.8 1181.3 583.8 1197.9C580.8 1210.7 563 1217.9 549.8 1217.9C528.8 1217.9 504.9 1212.7 489.8 1197.9C472.8 1181.2 466.8 1155.3 461.8 1131.9C454 1094.6 455.2 1055.9 451.8 1017.9Z"/></clipPath>
+<path id="slvL" d="M402.3 588.5C365.7 640.2 326.5 690.2 292.5 743.7C286.3 753.5 282.7 765.4 282.6 776.9C282.5 788.5 285.4 800.8 292 810.3C319.9 850.6 353.8 886.4 384.7 924.5C409.5 908.9 434.4 893.4 459.3 877.8C445.5 844.5 431.8 811.2 418 777.9C443 734.3 468 690.7 493 647.1C462.8 627.5 432.5 608 402.3 588.5Z"/>
+<path id="cuffL" d="M384.7 924.5C390.7 934.1 396.7 943.7 402.7 953.3C427.6 937.8 452.4 922.2 477.3 906.7C471.3 897.1 465.3 887.5 459.3 877.8C434.4 893.4 409.5 908.9 384.7 924.5Z"/>
+<path id="lhPalm" d="M-16 0H16A22 22 0 0 1 38 22V30A22 22 0 0 1 16 52H-16A22 22 0 0 1 -38 30V22A22 22 0 0 1 -16 0Z" transform="translate(440 930) rotate(-6)"/>
+<path id="lhC0" d="M-26 30H-26A11 11 0 0 1 -15 41V49A11 11 0 0 1 -26 60H-26A11 11 0 0 1 -37 49V41A11 11 0 0 1 -26 30Z" transform="translate(440 930) rotate(-6)"/>
+<path id="lhC1" d="M-6 30H-6A11 11 0 0 1 5 41V49A11 11 0 0 1 -6 60H-6A11 11 0 0 1 -17 49V41A11 11 0 0 1 -6 30Z" transform="translate(440 930) rotate(-6)"/>
+<path id="lhC2" d="M14 30H14A11 11 0 0 1 25 41V49A11 11 0 0 1 14 60H14A11 11 0 0 1 3 49V41A11 11 0 0 1 14 30Z" transform="translate(440 930) rotate(-6)"/>
+<path id="lhIdx" d="M10.4 33.4C13.3 43.6 16.2 53.8 19.1 64C20.4 73.6 19.4 83.8 23 92.7C25 97.5 29.6 103.3 34.7 103C39.9 102.6 43.7 96.3 45 91.3C47.4 81.5 45 71.2 45 61.1C45 60.7 44.9 60.4 44.8 60C44.8 59.6 44.7 59.2 44.6 58.8C42.3 48.1 39.9 37.4 37.6 26.6C28.5 28.9 19.5 31.1 10.4 33.4Z" transform="translate(440 930) rotate(-6)"/>
+<path id="lhThb" d="M26.9 15.4C32.4 24.3 37.8 33.3 43.3 42.3C41.9 54.2 38.1 66 39.2 77.8C39.7 83 42.8 89.8 47.8 90.8C52.9 91.8 58.5 86.8 60.8 82.2C66.9 69.9 68.4 56 71.7 42.7C72.1 41.1 72.1 39.4 71.8 37.8C71.6 36.2 70.9 34.6 70.2 33.1C64.7 22.2 58.8 11.5 53.1 0.6C44.4 5.5 35.6 10.5 26.9 15.4Z" transform="translate(440 930) rotate(-6)"/>
+<path id="neck" d="M528.2 561.1C550.9 563.1 573.6 565.1 596.2 567.1C598.9 591.8 601.6 616.5 604.2 641.1C578.2 641.8 552.2 642.5 526.2 643.1C526.9 615.8 527.6 588.5 528.2 561.1Z"/>
+<path id="collarBand" d="M496.7 629.2C503 615.9 509.2 602.6 515.5 589.3C522.2 598.1 527.3 608.5 535.7 615.8C544.3 623.3 554.7 629.1 565.6 633C576.4 637 588 639.2 599.6 639C610.6 638.8 621.2 634.1 632 631.7C628.3 645.9 624.5 660.2 620.7 674.4C609.3 674.5 597.9 676 586.6 674.7C575.2 673.5 564 670.8 553.2 666.9C542.5 662.9 532.2 657.8 522.7 651.5C513.2 645.2 505.3 636.6 496.7 629.2Z"/>
+<path id="face" d="M503.3 353C483.9 365.5 483.9 395.5 480 418.3C476.3 439.7 476.2 462.3 480.8 483.6C485.7 506.2 494.5 528.6 507.9 547.5C518.6 562.5 533.4 576.4 550.9 582.2C567.5 587.8 587.4 586.4 603.5 579.4C622.6 571 638.5 555.2 650.9 538.5C664.3 520.6 673.6 499.4 679.2 477.8C685 455.1 697 427.7 684.7 407.8C665.5 376.8 631.1 354.1 596.1 343.5C566.4 334.5 529.5 336.2 503.3 353Z"/>
+<path id="earHalo" d="M508.4 462.2C508.8 474.1 507.1 487.3 500 496.7C493.6 505.4 482 509.7 471.4 511.8C461.1 513.8 449 514 440 508.6C430.1 502.6 423.1 491.5 419.6 480.4C416 468.9 415.8 455.6 419.7 444.2C423.4 433.6 431.9 424.4 441.2 418.2C450.1 412.2 461.5 406.9 472 409.1C482.8 411.4 491.5 420.8 497.8 429.9C504.2 439.3 508.1 450.9 508.4 462.2Z"/>
+<path id="fedoraCrown" d="M511.6 306.6C517 287 517 265.1 527.8 248C537.8 232.1 552.4 213.3 571.2 212C589 210.8 600.8 232.1 615.6 242.2C633.3 238.4 652.3 223.2 668.8 230.9C688 239.9 698.9 263.1 704.6 283.6C710.1 304 701.9 325.7 700.6 346.8C637.6 333.4 574.6 320 511.6 306.6Z"/>
+<path id="fedoraBrim" d="M404.2 325.1C404.9 312.2 418.5 300.7 430.9 296.9C452.5 290.4 476.2 294.2 498.7 296.3C535.4 299.8 571.8 306.2 607.8 313.9C643.9 321.5 679.8 330.5 714.7 342.2C736.1 349.4 759.2 355.7 776.4 370.4C786.5 379 795.8 395 791.1 407.4C786.2 420.4 768.5 425.8 754.8 427.9C729.6 431.8 703.7 427.6 678.3 424.8C647.8 421.4 617.6 415.6 587.6 409.3C557.6 402.9 527.6 395.8 498.3 386.5C474 378.8 448.6 372.2 427.2 358.3C416 350.9 403.4 338.6 404.2 325.1Z"/>
+<path id="fedoraBand" d="M510.5 302.6C542.9 307 575.6 308.9 607.5 315.7C639.4 322.5 670 334 701.3 343.2C698.7 352.6 696 362.1 693.4 371.6C662 366.1 630.2 362.2 599 355.3C567.9 348.3 537.4 338.4 506.6 330C507.9 320.9 509.2 311.7 510.5 302.6Z"/>
+<path id="lensHandle" d="M130 -24C152 -22.3 173.9 -19.5 196 -19C272.6 -17.2 349.3 -17.7 426 -17C430 -14 435.8 -12.5 438 -8C440.3 -3.2 440.3 3.2 438 8C435.8 12.5 430 14 426 17C349.3 17.7 272.6 17.2 196 19C173.9 19.5 152 22.3 130 24C130 8 130 -8 130 -24Z" transform="translate(742 452) rotate(56)"/>
+<path id="lensRing" d="M898.7 452C898.6 487.8 885.5 525.7 862.3 552.9C839.2 580 804 598.5 768.9 604.6C733.9 610.7 694.5 605.3 663.8 587.5C633.1 569.7 609 538.1 596.9 504.8C584.8 471.5 583.3 431.9 595.1 398.5C607 364.9 632.6 334 663.6 316.2C694.5 298.4 733.9 292.4 769.1 298.5C804.3 304.6 839.6 323.5 862.7 350.7C885.8 378.1 898.8 416.2 898.7 452Z"/>
+<path id="wristR" d="M877.4 827C882.2 824.6 888.5 824.1 891.7 819.8C897.1 812.7 905.2 803.1 901.7 794.9C898.2 786.6 885.6 785.9 876.8 784.9C871.4 784.3 866.7 788.5 861.7 790.3C866.9 802.5 872.2 814.8 877.4 827Z"/>
+<path id="slvR" d="M622.6 713.7C637.4 771.9 647.1 831.6 666.9 888.3C671.8 902.3 682.3 915.8 695.7 922.1C709.1 928.4 726.3 928.2 740.1 922.9C781.3 907 817.8 880.9 856.7 859.9C845.6 834.1 834.6 808.4 823.6 782.7C800.3 788.3 777 793.9 753.7 799.6C740.7 762.1 727.8 724.5 714.8 687C684.1 695.9 653.4 704.8 622.6 713.7Z"/>
+<path id="cuffR" d="M856.7 859.9C866.5 855.7 876.3 851.5 886.1 847.3C875 821.5 864 795.8 853 770.1C843.2 774.3 833.4 778.5 823.6 782.7C834.6 808.4 845.6 834.1 856.7 859.9Z"/>
+<path id="rfBack" d="M-28 8H28A22 22 0 0 1 50 30V44A22 22 0 0 1 28 66H-28A22 22 0 0 1 -50 44V30A22 22 0 0 1 -28 8Z" transform="translate(742 452) rotate(56) translate(370 0)"/>
+<path id="rfB0" d="M-42 -50H-42A15 15 0 0 1 -27 -35V13A15 15 0 0 1 -42 28H-42A15 15 0 0 1 -57 13V-35A15 15 0 0 1 -42 -50Z" transform="translate(742 452) rotate(56) translate(370 0)"/>
+<path id="rfB1" d="M-14 -50H-14A15 15 0 0 1 1 -35V13A15 15 0 0 1 -14 28H-14A15 15 0 0 1 -29 13V-35A15 15 0 0 1 -14 -50Z" transform="translate(742 452) rotate(56) translate(370 0)"/>
+<path id="rfB2" d="M14 -50H14A15 15 0 0 1 29 -35V13A15 15 0 0 1 14 28H14A15 15 0 0 1 -1 13V-35A15 15 0 0 1 14 -50Z" transform="translate(742 452) rotate(56) translate(370 0)"/>
+<path id="rfB3" d="M42 -50H42A15 15 0 0 1 57 -35V13A15 15 0 0 1 42 28H42A15 15 0 0 1 27 13V-35A15 15 0 0 1 42 -50Z" transform="translate(742 452) rotate(56) translate(370 0)"/>
+<path id="rfThumb" d="M-30 45.4C-25.7 33.3 -21.3 21.2 -17 9.1C-16.8 8.8 -16.7 8.4 -16.6 8.1C-16.5 7.8 -16.4 7.5 -16.4 7.1C-15 -1.7 -11.2 -10.4 -12.3 -19.3C-13 -24.9 -15.8 -32.4 -21.3 -33.7C-26.8 -35 -32.6 -29.4 -35.7 -24.7C-40.4 -17.5 -40.8 -8.3 -43.4 -0.1C-48.3 11.4 -53.1 23 -58 34.6C-48.7 38.2 -39.3 41.8 -30 45.4Z" transform="translate(742 452) rotate(56) translate(370 0)"/>
+<path id="qHook" d="M-21.5 -13.8L-21.4 -16.5L-21.4 -20.3L-21.4 -24.6L-21.4 -29.2L-21.1 -33.8L-20.5 -37.9L-19.6 -41.1L-18.4 -43.3L-16.7 -44.9L-14.1 -46.6L-10.9 -48.2L-7.3 -49.4L-3.5 -50.4L0.5 -51.1L4.3 -51.5L7.8 -51.5L11.4 -51.2L15.2 -50.5L19.2 -49.5L23.1 -48.2L26.8 -46.6L30.1 -44.8L32.7 -43L34.5 -41.2L35.7 -39.3L36.6 -36.8L37.1 -33.9L37.4 -30.6L37.3 -27.2L37 -23.7L36.4 -20.3L35.7 -17.3L34.7 -14.5L33.3 -11.7L31.5 -8.9L29.4 -5.9L27.1 -3L24.8 -0.2L22.5 2.6L20.5 5.2L18.6 7.5L16.8 9.5L14.8 11.5L12.8 13.4L10.9 15.4L9 17.4L7.3 19.6L5.9 22.1L5 24.9L4.5 27.6L4.5 30.1L4.7 32.5L4.9 34.6L5.2 36.3L5.4 37.5L5.5 38.4L14.5 37.6L14.4 36.3L14.1 34.8L13.8 33.2L13.6 31.5L13.5 29.9L13.5 28.4L13.7 27L14.1 25.9L14.8 24.7L15.9 23.2L17.4 21.6L19.2 19.8L21.2 17.9L23.3 15.7L25.5 13.3L27.5 10.8L29.5 8.2L31.8 5.5L34.2 2.6L36.6 -0.6L39 -3.8L41.1 -7.3L43 -11L44.3 -14.7L45.2 -18.5L45.9 -22.5L46.3 -26.6L46.4 -30.9L46.1 -35.1L45.2 -39.2L43.8 -43.2L41.5 -46.8L38.5 -49.9L34.8 -52.5L30.8 -54.7L26.4 -56.6L21.8 -58.1L17.1 -59.3L12.5 -60.1L8.2 -60.5L3.8 -60.4L-0.7 -60L-5.3 -59.2L-9.9 -58.1L-14.4 -56.5L-18.5 -54.5L-22.3 -52L-25.6 -48.7L-27.9 -44.5L-29.3 -39.7L-30.1 -34.7L-30.4 -29.5L-30.4 -24.6L-30.4 -20.2L-30.4 -16.7L-30.5 -14.2Z" transform="translate(330 300) rotate(-12)"/>
+<path id="qDot" d="M21.9 68C21.9 70.7 20.9 73.6 19.1 75.7C17.4 77.7 14.7 79.1 12 79.6C9.4 80 6.4 79.6 4.1 78.3C1.7 76.9 -0.3 74.6 -1.3 72.1C-2.3 69.5 -2.6 66.4 -1.7 63.8C-0.8 61.1 1.3 58.6 3.8 57.3C6.2 55.9 9.3 55.8 12.1 56.3C14.7 56.9 17.4 58.3 19.1 60.3C20.9 62.4 21.9 65.3 21.9 68Z" transform="translate(330 300) rotate(-12)"/>
+<path id="haloFix" d="M818.4 695C818.4 700.6 816.5 706.6 812.8 710.8C809.2 714.9 803.5 717.1 798.1 718C792.7 718.9 786.6 718.8 781.9 716C777.2 713.3 774.1 708 772.3 702.9C770.4 697.8 769.6 691.9 771.3 686.7C773 681.4 776.9 676.5 781.8 673.8C786.6 671.1 792.7 670.5 798.2 671.5C803.6 672.4 809.4 674.8 813.1 679C816.7 683.3 818.4 689.4 818.4 695Z"/>
+<!-- HALO: shapes dilated by a round stroke, then blurred + thresholded => rounded, closed-up die-cut border -->
+<filter id="halo-smooth" filterUnits="userSpaceOnUse" x="-100" y="-100" width="1400" height="1800" color-interpolation-filters="sRGB">
+  <feGaussianBlur stdDeviation="13"/>
+  <feComponentTransfer><feFuncA type="linear" slope="18" intercept="-7.5"/></feComponentTransfer>
+</filter>
+<!-- WOBBLE: slow (wavelength ~165 px), +-1-2 px displacement of the whole line art = hand-drawn feel without jitter -->
+<filter id="wobble" filterUnits="userSpaceOnUse" x="-100" y="-100" width="1400" height="1800" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency="0.006" numOctaves="1" seed="23" result="n"/>
+  <feDisplacementMap in="SourceGraphic" in2="n" scale="9" xChannelSelector="R" yChannelSelector="G"/>
+</filter>
+<!-- GRAIN: fine ink speckle, clipped to the die-cut with a mask that repeats the halo -->
+<filter id="grain" filterUnits="userSpaceOnUse" x="0" y="0" width="1200" height="1600" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="27" result="n"/>
+  <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.047  0 0 0 0 0.039  0 0 0 0 0.063  3.4 0 0 0 -1.9"/>
+</filter>
+<mask id="haloMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="1600">
+  <g transform="translate(-1,-114) scale(1.045)"><g filter="url(#halo-smooth)"><g fill="#fff" stroke="#fff" stroke-width="76" stroke-linejoin="round"><use href="#legB" xlink:href="#legB"/><use href="#cuffB" xlink:href="#cuffB"/><use href="#ankleB" xlink:href="#ankleB"/><use href="#shoeB" xlink:href="#shoeB"/><use href="#shoeF" xlink:href="#shoeF"/><use href="#sockF" xlink:href="#sockF"/><use href="#legF" xlink:href="#legF"/><use href="#cuffF" xlink:href="#cuffF"/><use href="#coat" xlink:href="#coat"/><use href="#pocket" xlink:href="#pocket"/><use href="#belt" xlink:href="#belt"/><use href="#beltTail" xlink:href="#beltTail"/><use href="#sockHeld" xlink:href="#sockHeld"/><use href="#slvL" xlink:href="#slvL"/><use href="#cuffL" xlink:href="#cuffL"/><use href="#lhPalm" xlink:href="#lhPalm"/><use href="#lhC0" xlink:href="#lhC0"/><use href="#lhC1" xlink:href="#lhC1"/><use href="#lhC2" xlink:href="#lhC2"/><use href="#lhIdx" xlink:href="#lhIdx"/><use href="#lhThb" xlink:href="#lhThb"/><use href="#neck" xlink:href="#neck"/><use href="#collarBand" xlink:href="#collarBand"/><use href="#face" xlink:href="#face"/><use href="#earHalo" xlink:href="#earHalo"/><use href="#fedoraCrown" xlink:href="#fedoraCrown"/><use href="#fedoraBrim" xlink:href="#fedoraBrim"/><use href="#fedoraBand" xlink:href="#fedoraBand"/><use href="#lensHandle" xlink:href="#lensHandle"/><use href="#lensRing" xlink:href="#lensRing"/><use href="#wristR" xlink:href="#wristR"/><use href="#slvR" xlink:href="#slvR"/><use href="#cuffR" xlink:href="#cuffR"/><use href="#rfBack" xlink:href="#rfBack"/><use href="#rfB0" xlink:href="#rfB0"/><use href="#rfB1" xlink:href="#rfB1"/><use href="#rfB2" xlink:href="#rfB2"/><use href="#rfB3" xlink:href="#rfB3"/><use href="#rfThumb" xlink:href="#rfThumb"/><use href="#qHook" xlink:href="#qHook"/><use href="#qDot" xlink:href="#qDot"/><use href="#haloFix" xlink:href="#haloFix"/></g></g></g>
+</mask>
+</defs>
+<g transform="translate(-1,-114) scale(1.045)">
+<g id="halo" filter="url(#halo-smooth)"><g fill="#FA6A57" stroke="#FA6A57" stroke-width="76" stroke-linejoin="round"><use href="#legB" xlink:href="#legB"/><use href="#cuffB" xlink:href="#cuffB"/><use href="#ankleB" xlink:href="#ankleB"/><use href="#shoeB" xlink:href="#shoeB"/><use href="#shoeF" xlink:href="#shoeF"/><use href="#sockF" xlink:href="#sockF"/><use href="#legF" xlink:href="#legF"/><use href="#cuffF" xlink:href="#cuffF"/><use href="#coat" xlink:href="#coat"/><use href="#pocket" xlink:href="#pocket"/><use href="#belt" xlink:href="#belt"/><use href="#beltTail" xlink:href="#beltTail"/><use href="#sockHeld" xlink:href="#sockHeld"/><use href="#slvL" xlink:href="#slvL"/><use href="#cuffL" xlink:href="#cuffL"/><use href="#lhPalm" xlink:href="#lhPalm"/><use href="#lhC0" xlink:href="#lhC0"/><use href="#lhC1" xlink:href="#lhC1"/><use href="#lhC2" xlink:href="#lhC2"/><use href="#lhIdx" xlink:href="#lhIdx"/><use href="#lhThb" xlink:href="#lhThb"/><use href="#neck" xlink:href="#neck"/><use href="#collarBand" xlink:href="#collarBand"/><use href="#face" xlink:href="#face"/><use href="#earHalo" xlink:href="#earHalo"/><use href="#fedoraCrown" xlink:href="#fedoraCrown"/><use href="#fedoraBrim" xlink:href="#fedoraBrim"/><use href="#fedoraBand" xlink:href="#fedoraBand"/><use href="#lensHandle" xlink:href="#lensHandle"/><use href="#lensRing" xlink:href="#lensRing"/><use href="#wristR" xlink:href="#wristR"/><use href="#slvR" xlink:href="#slvR"/><use href="#cuffR" xlink:href="#cuffR"/><use href="#rfBack" xlink:href="#rfBack"/><use href="#rfB0" xlink:href="#rfB0"/><use href="#rfB1" xlink:href="#rfB1"/><use href="#rfB2" xlink:href="#rfB2"/><use href="#rfB3" xlink:href="#rfB3"/><use href="#rfThumb" xlink:href="#rfThumb"/><use href="#qHook" xlink:href="#qHook"/><use href="#qDot" xlink:href="#qDot"/><use href="#haloFix" xlink:href="#haloFix"/></g></g>
+<g id="art" filter="url(#wobble)">
+<g id="g-leg-back">
+<use href="#legB" xlink:href="#legB" class="fa k"/>
+<use href="#cuffB" xlink:href="#cuffB" class="fa k"/>
+<use href="#ankleB" xlink:href="#ankleB" class="fa k"/>
+<path class="fi" d="M270.3 1341.1C270.2 1342.5 269.4 1343.8 268.6 1344.8C267.7 1345.9 266.5 1346.8 265.2 1347C263.9 1347.3 262.4 1346.8 261.3 1346.1C260.1 1345.5 258.9 1344.5 258.4 1343.2C257.9 1342 258 1340.4 258.5 1339.1C259 1337.8 260 1336.6 261.2 1336C262.3 1335.3 263.8 1335.2 265.2 1335.4C266.5 1335.7 267.8 1336.4 268.6 1337.4C269.6 1338.4 270.3 1339.8 270.3 1341.1Z"/>
+<use href="#shoeB" xlink:href="#shoeB" class="fi k"/>
+<g transform="translate(247 1358.9) rotate(40)"><g clip-path="url(#clipshoeB)"><path class="fp" d="M-100 68 L260 66 L260 130 L-100 130Z"/><path class="k3" d="M-100 68 L260 66"/></g>
+<path class="pp" d="M96 26 L116 42"/><path class="pp" d="M70 14 L88 30"/><path class="pp" d="M122 36 L140 50"/></g>
+</g>
+<g id="g-leg-front">
+<use href="#shoeF" xlink:href="#shoeF" class="fi k"/>
+<g transform="translate(754 1386) rotate(0)"><g clip-path="url(#clipshoeF)"><path class="fp" d="M-100 68 L260 66 L260 130 L-100 130Z"/><path class="k3" d="M-100 68 L260 66"/></g>
+<path class="pp" d="M96 26 L116 42"/><path class="pp" d="M70 14 L88 30"/><path class="pp" d="M122 36 L140 50"/></g>
+<use href="#sockF" xlink:href="#sockF" class="fp k"/>
+<path class="fi" d="M758.3 1310.3L702 1330.9L702 1342.9L758.3 1322.3Z"/>
+<path class="fi" d="M767.9 1336.5L711.5 1357L711.5 1369L767.9 1348.5Z"/>
+<path class="fi" d="M777.4 1362.6L721 1383.2L721 1395.2L777.4 1374.6Z"/>
+<use href="#legF" xlink:href="#legF" class="fa k"/>
+<use href="#cuffF" xlink:href="#cuffF" class="fa k"/>
+</g>
+<g id="g-coat">
+<use href="#coat" xlink:href="#coat" class="fa k"/>
+</g>
+<g id="g-coat-details">
+<path class="k2" d="M585.5 642.4 L497 897.5 Q552 1060 604 1214"/>
+<path class="fi" d="M504.4 743C504.3 745.5 503.2 747.9 501.6 749.8C500.1 751.6 497.8 753.2 495.4 753.6C493 754 490.4 753.5 488.3 752.3C486.1 751.1 484.2 749.1 483.3 746.8C482.4 744.5 482.4 741.6 483.2 739.3C484 736.9 485.8 734.7 488 733.4C490.2 732.1 493 731.6 495.5 732.1C498 732.5 500.4 734 502 736C503.5 737.9 504.4 740.6 504.4 743Z"/>
+<path class="fi" d="M485.9 793.8C485.8 796.2 484.7 798.7 483.2 800.5C481.6 802.4 479.4 803.9 477 804.3C474.6 804.8 471.9 804.2 469.8 803C467.6 801.8 465.7 799.8 464.8 797.5C463.9 795.2 463.9 792.4 464.7 790C465.6 787.6 467.4 785.4 469.6 784.2C471.7 782.9 474.6 782.3 477 782.8C479.5 783.3 481.9 784.8 483.5 786.7C485.1 788.7 485.9 791.3 485.9 793.8Z"/>
+<path class="fi" d="M467.4 844.5C467.4 847 466.3 849.4 464.7 851.3C463.1 853.1 460.9 854.7 458.5 855.1C456.1 855.5 453.4 854.9 451.3 853.8C449.2 852.5 447.2 850.6 446.3 848.3C445.4 845.9 445.4 843.1 446.3 840.8C447.1 838.4 448.9 836.2 451.1 834.9C453.3 833.6 456.1 833.1 458.6 833.6C461.1 834 463.5 835.5 465 837.5C466.6 839.4 467.5 842.1 467.4 844.5Z"/>
+<path class="fi" d="M603.1 776.7C603.2 779.3 602.4 782.1 600.7 784C599 785.9 596.3 786.8 593.8 787.2C591.4 787.6 588.7 787.4 586.6 786.1C584.4 784.9 582.9 782.7 582 780.4C581.1 778 580.6 775.2 581.4 772.9C582.2 770.5 584.3 768.5 586.5 767.3C588.7 766 591.5 765.2 593.9 765.7C596.4 766.1 598.6 767.9 600.2 769.8C601.8 771.8 603 774.2 603.1 776.7Z"/>
+<path class="fi" d="M584.9 827.5C584.9 830 583.8 832.7 582.1 834.7C580.4 836.6 577.9 837.8 575.4 838.2C573 838.6 570.2 838.1 568.1 836.9C565.9 835.6 564.1 833.5 563.3 831.2C562.5 828.9 562.7 826.1 563.5 823.8C564.3 821.5 565.9 819.2 568 817.9C570.2 816.7 573 816.3 575.4 816.8C577.8 817.2 580.1 818.7 581.7 820.6C583.4 822.5 584.8 825 584.9 827.5Z"/>
+<path class="fi" d="M565.8 878.2C565.7 880.6 564.6 883.1 563.1 885C561.6 886.9 559.3 888.5 557 889C554.5 889.5 551.6 889.3 549.4 888C547.2 886.8 545.5 884.4 544.7 882C543.9 879.6 543.8 876.8 544.7 874.5C545.6 872.2 547.6 870.3 549.8 869.1C551.9 867.9 554.5 867.3 556.9 867.6C559.4 867.9 562.1 869 563.7 871C565.3 872.9 565.9 875.7 565.8 878.2Z"/>
+<use href="#pocket" xlink:href="#pocket" class="fa k"/>
+<path class="k3" d="M566 1030 Q610 1044 654 1034"/>
+<path class="k3" d="M320 950l19.1 30.5M308.1 957.4l19.1 30.5M296.3 964.8l19.1 30.5"/>
+<path class="k3" d="M262 1040l19.1 30.5M250.1 1047.4l19.1 30.5M238.3 1054.8l19.1 30.5"/>
+<path class="k3" d="M340 1090l19.1 30.5M328.1 1097.4l19.1 30.5M316.3 1104.8l19.1 30.5"/>
+<path class="k3" d="M234 1112l19.1 30.5M222.1 1119.4l19.1 30.5M210.3 1126.8l19.1 30.5"/>
+<path class="k3" d="M410 1134l19.1 30.5M398.1 1141.4l19.1 30.5M386.3 1148.8l19.1 30.5"/>
+</g>
+<g id="g-belt">
+<use href="#belt" xlink:href="#belt" class="fi k"/>
+<g transform="translate(501.4 897) rotate(20)"><path class="fp k3f" d="M-20 -24H20A10 10 0 0 1 30 -14V14A10 10 0 0 1 20 24H-20A10 10 0 0 1 -30 14V-14A10 10 0 0 1 -20 -24Z"/><path class="fi" d="M-1 -14H1A5 5 0 0 1 6 -9V9A5 5 0 0 1 1 14H-1A5 5 0 0 1 -6 9V-9A5 5 0 0 1 -1 -14Z"/></g>
+<use href="#beltTail" xlink:href="#beltTail" class="fi k"/>
+</g>
+<g id="g-sock">
+<use href="#sockHeld" xlink:href="#sockHeld" class="fp k"/>
+<g clip-path="url(#clipSockHeld)"><path class="fi" d="M423.84847691621604 1043.920134204254H613.848476916216V1063.920134204254H423.84847691621604ZM423.84847691621604 1087.920134204254H613.848476916216V1107.920134204254H423.84847691621604ZM423.84847691621604 1131.920134204254H613.848476916216V1151.920134204254H423.84847691621604ZM423.84847691621604 1175.920134204254H613.848476916216V1195.920134204254H423.84847691621604Z"/></g>
+</g>
+<g id="g-arm-left">
+<use href="#slvL" xlink:href="#slvL" class="fa"/>
+<path class="k2" d="M460.6 628.9C446.4 678.6 432.2 728.2 418 777.9C431.8 811.2 445.5 844.5 459.3 877.8"/>
+<path class="k2" d="M421.5 695.5C378.5 711.6 332.1 720.5 292.5 743.7C282.5 749.6 282.7 765.4 282.6 776.9C282.5 788.5 285.4 800.8 292 810.3C319.9 850.6 353.8 886.4 384.7 924.5"/>
+<path class="k3" d="M376.2 764.9C377 769.1 378.6 773.3 378.6 777.6C378.5 782 376.9 786.1 376 790.3"/>
+<path class="k3" d="M387.3 760.5C388.4 766.2 390.6 771.9 390.6 777.7C390.5 783.6 388.2 789.2 387.1 794.9"/>
+<path class="k3" d="M398.5 756C399.9 763.3 402.6 770.4 402.6 777.8C402.5 785.2 399.6 792.3 398.2 799.5"/>
+<use href="#cuffL" xlink:href="#cuffL" class="fa k"/>
+<path class="k3" d="M393.7 938.9 L468.3 892.3"/>
+<use href="#lhPalm" xlink:href="#lhPalm" class="fa k"/>
+<use href="#lhC0" xlink:href="#lhC0" class="fa k"/>
+<use href="#lhC1" xlink:href="#lhC1" class="fa k"/>
+<use href="#lhC2" xlink:href="#lhC2" class="fa k"/>
+<use href="#lhIdx" xlink:href="#lhIdx" class="fa k"/>
+<use href="#lhThb" xlink:href="#lhThb" class="fa k"/>
+</g>
+<g id="g-head">
+<use href="#neck" xlink:href="#neck" class="fa"/>
+<use href="#collarBand" xlink:href="#collarBand" class="fa k"/>
+<use href="#face" xlink:href="#face" class="fa k"/>
+<path class="fa k" d="M490.1 436.6C481.9 433.5 474.1 425.4 465.5 427.1C456.1 429.1 448.3 437.6 443.9 446.1C439.6 454.3 439.2 464.7 441.4 473.6C443.6 482.5 448.3 492.4 456.4 496.5C463.3 500 471.7 493.9 479.4 492.7C482.9 474 486.5 455.3 490.1 436.6Z"/>
+<path class="k3" d="M471.4 448.6C467.1 452.2 460.1 454.1 458.5 459.6C457 464.8 461.8 470 463.5 475.3"/>
+<g transform="translate(578 458) rotate(9)">
+<path class="fi" d="M-67.1 1.8C-67.1 5.1 -67.7 8.6 -69.4 11.5C-70.7 13.8 -72.9 16 -75.5 16.6C-77.8 17 -80.4 15.8 -82.2 14.2C-84.4 12.4 -86 9.6 -86.7 6.8C-87.6 3.6 -87.5 0.1 -86.7 -3.1C-86 -6 -84.4 -8.7 -82.2 -10.6C-80.4 -12.2 -77.8 -13.5 -75.5 -13C-72.9 -12.5 -70.7 -10.1 -69.4 -7.8C-67.8 -4.9 -67.1 -1.5 -67.1 1.8Z"/><path class="fp" d="M-70 -6.4C-70 -5.6 -70.2 -4.7 -70.7 -4C-71.3 -3.4 -72.1 -3 -73 -2.9C-73.8 -2.7 -74.8 -2.7 -75.5 -3.1C-76.2 -3.6 -76.8 -4.4 -77.1 -5.2C-77.3 -6 -77.4 -6.9 -77 -7.7C-76.7 -8.5 -76.1 -9.1 -75.4 -9.5C-74.6 -9.9 -73.8 -10.2 -73 -10.1C-72.1 -10 -71.3 -9.5 -70.7 -8.9C-70.2 -8.2 -70 -7.3 -70 -6.4Z"/>
+<path class="k2" d="M-84.6 -36.8 Q-57 -46 -27.6 -40.5"/>
+<path class="k2" d="M-1.8 -3.7 C3.7 9.2 11 20.2 9.2 31.3 C7.4 42.3 -5.5 49.7 -23.9 46"/>
+<path class="k2" d="M-42.3 88.3 Q-16.6 97.5 16.6 90.2"/><path class="k3" d="M-46 79.1 L-42.3 90.2"/>
+</g>
+<use href="#fedoraCrown" xlink:href="#fedoraCrown" class="fi k"/>
+<use href="#fedoraBrim" xlink:href="#fedoraBrim" class="fi k"/>
+<use href="#fedoraBand" xlink:href="#fedoraBand" class="fa k"/>
+<path class="sh" d="M426.9 324.3C448.7 325.2 470.5 325 492.2 326.9C516.7 329.1 541 333.5 565.3 336.8"/>
+</g>
+<g id="g-magnifier">
+<use href="#lensHandle" xlink:href="#lensHandle" class="fi k"/>
+<g transform="translate(742 452) rotate(56)"><path class="fa" d="M194 -17 H212 V17 H194Z M232 -17 H250 V17 H232Z M270 -17 H288 V17 H270Z"/></g>
+<use href="#lensRing" xlink:href="#lensRing" class="fa k"/>
+<path class="fa k3f" d="M864.1 452C863.7 479.7 852.1 508.3 834.3 529.5C816.6 550.7 790.5 567.7 763.3 572.6C735.9 577.5 705.5 570.8 681.4 556.9C657.4 543 636.7 519.8 627.2 493.8C617.8 467.7 618.9 436.7 628.5 410.7C638.1 384.9 658.1 361.6 681.7 347.6C705.6 333.4 736 326.2 763.4 330.6C791.2 335.1 818.6 351.1 836.5 372.7C854.4 394.2 864.5 424 864.1 452Z"/>
+<g transform="translate(742 452)"><path class="pp" d="M-100 -22 Q-94 -64 -60 -90"/><path class="pp" d="M-88 22 L-86 30"/></g>
+<g transform="translate(746 460)">
+<path class="fp k" d="M-92 6 Q-46 -50 6 -52 Q58 -50 92 4 Q56 48 4 50 Q-48 50 -92 6Z"/>
+<path class="fi" d="M55.5 -2C55.5 7.1 52.6 16.9 46.8 23.8C41 30.8 31.9 35.5 22.9 37.1C13.9 38.7 3.8 37.4 -4.2 32.9C-12.1 28.4 -18.6 20.4 -21.7 11.7C-24.8 3.1 -24.6 -7.1 -21.5 -15.7C-18.4 -24.3 -12.2 -32.5 -4.3 -37.1C3.7 -41.6 13.9 -42.6 22.9 -41C31.8 -39.3 40.8 -34.7 46.6 -27.7C52.5 -20.8 55.4 -11.1 55.5 -2Z"/>
+<path class="fp" d="M12.7 -14C12.8 -11.5 12.3 -8.6 10.7 -6.7C9.1 -4.8 6.3 -3.9 3.8 -3.5C1.4 -3.1 -1.4 -3 -3.7 -4.2C-5.9 -5.4 -7.7 -7.7 -8.5 -10.2C-9.4 -12.6 -9.4 -15.4 -8.5 -17.8C-7.6 -20.2 -5.5 -22 -3.4 -23.3C-1.2 -24.6 1.5 -25.7 4 -25.2C6.5 -24.8 8.6 -22.8 10.1 -20.8C11.6 -18.9 12.6 -16.4 12.7 -14Z"/><path class="fp" d="M35.5 12C35.6 13.3 35.2 14.7 34.4 15.7C33.6 16.7 32.2 17.3 31 17.5C29.7 17.7 28.3 17.5 27.2 16.9C26.1 16.2 25.3 15.1 24.9 13.9C24.4 12.7 24.4 11.3 24.9 10.1C25.3 9 26.2 8 27.3 7.4C28.4 6.8 29.7 6.6 30.9 6.8C32.1 7 33.2 7.7 34 8.6C34.8 9.5 35.4 10.8 35.5 12Z"/>
+<path class="k" fill="none" d="M-90 4 Q-46 -50 6 -52 Q58 -50 92 2" style="stroke-width:14"/>
+<path class="k3" d="M-74 -26 L-86 -42 M-44 -42 L-52 -60 M-12 -50 L-14 -68 M24 -52 L30 -70"/>
+<path class="k2" d="M-76 -76 Q-14 -112 54 -88"/>
+<path class="k3" d="M-52 60 Q-4 78 44 64"/>
+</g>
+</g>
+<g id="g-arm-right">
+<use href="#wristR" xlink:href="#wristR" class="fa k"/>
+<use href="#slvR" xlink:href="#slvR" class="fa"/>
+<path class="k2" d="M648.6 697.3C654.7 761 653.8 825.7 666.9 888.3C670 902.8 682.3 915.8 695.7 922.1C709.1 928.4 726.3 928.2 740.1 922.9C781.3 907 817.8 880.9 856.7 859.9"/>
+<path class="k2" d="M636.9 776.1C675.8 783.9 714.8 791.7 753.7 799.6C777 793.9 800.3 788.3 823.6 782.7"/>
+<path class="k3" d="M720.5 843.3C724.2 844.3 728.2 844.5 731.6 846.2C735.1 847.8 737.8 850.7 740.9 852.9"/>
+<path class="k3" d="M721.2 831.3C726.4 832.7 731.9 833 736.8 835.3C741.6 837.6 745.4 841.6 749.7 844.8"/>
+<path class="k3" d="M721.9 819.4C728.6 821.1 735.7 821.5 741.9 824.5C748.1 827.4 753 832.6 758.5 836.7"/>
+<use href="#cuffR" xlink:href="#cuffR" class="fa k"/>
+<path class="k3" d="M871.4 853.6 L838.3 776.4"/>
+<use href="#rfBack" xlink:href="#rfBack" class="fa k"/>
+<use href="#rfB0" xlink:href="#rfB0" class="fa k"/>
+<use href="#rfB1" xlink:href="#rfB1" class="fa k"/>
+<use href="#rfB2" xlink:href="#rfB2" class="fa k"/>
+<use href="#rfB3" xlink:href="#rfB3" class="fa k"/>
+<use href="#rfThumb" xlink:href="#rfThumb" class="fa k"/>
+</g>
+<g id="g-extras">
+<g transform="translate(330 300) rotate(-12)"><path class="k2" d="M-26 -14C-24.7 -24.7 -28.8 -37.6 -22 -46C-15.4 -54.2 -2.5 -56.4 8 -56C18.8 -55.6 31.3 -52.4 38 -44C43.8 -36.7 42.4 -25 40 -16C37.5 -6.7 29.8 0.3 24 8C19.7 13.7 13 17.6 10 24C8 28.2 10 33.3 10 38"/><path class="fi" d="M21.9 68C21.9 70.7 20.9 73.6 19.1 75.7C17.4 77.7 14.7 79.1 12 79.6C9.4 80 6.4 79.6 4.1 78.3C1.7 76.9 -0.3 74.6 -1.3 72.1C-2.3 69.5 -2.6 66.4 -1.7 63.8C-0.8 61.1 1.3 58.6 3.8 57.3C6.2 55.9 9.3 55.8 12.1 56.3C14.7 56.9 17.4 58.3 19.1 60.3C20.9 62.4 21.9 65.3 21.9 68Z"/></g>
+</g>
+</g>
+</g>
+<rect id="grain-overlay" width="1200" height="1600" filter="url(#grain)" mask="url(#haloMask)" opacity="0.16"/>
+</svg>

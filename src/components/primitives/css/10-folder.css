@@ -1,0 +1,157 @@
+/* ==========================================================================
+   primitives / 10 folder + tab chip
+   The silhouette (body + tab + concave shoulders) is ONE svg path drawn by Folder.tsx (no seams at any zoom);
+   CSS paints its layers: ring (focus) < rim (dark folders) < edge (paper thickness) < fill < grain < highlight.
+   Variables on .pm-folder: --c fill, --on ink, --on2 secondary ink (contrast-checked), --edge darker paper edge,
+   --th tab height, --fr tab/shoulder radius, --br body radius, --fpad body padding.
+   ========================================================================== */
+
+.pm-folder {
+  --th: var(--tab-h, 32px);
+  --fr: 12px;
+  --br: var(--folder-radius, 18px);
+  --on2: color-mix(in srgb, var(--on) var(--on2-p, 72%), transparent);
+  --edge: color-mix(in srgb, var(--c) 68%, var(--ink));
+
+  position: relative;
+  isolation: isolate;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: var(--th) 0 0;
+  border: 0;
+  background: none;
+  color: var(--on);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  /* only the visible shape takes the pointer: the empty corners above the body must not steal clicks from folders underneath */
+  pointer-events: none;
+  transition: transform 0.38s var(--ease-spring);
+}
+.pm-folder:not([data-tab]) { padding-top: 0; }
+.pm-folder:focus,
+.pm-folder:focus-visible { outline: none; box-shadow: none; } /* the ring follows the silhouette (svg), not the box */
+.pm-folder:is(a, button, [role='button'], [tabindex]) :is(.pm-folder__tab, .pm-folder__body) { cursor: pointer; }
+.pm-folder:is(button, a):disabled,
+.pm-folder[aria-disabled='true'] { cursor: not-allowed; opacity: 0.6; }
+
+/* ---- the art layer ---------------------------------------------------------------------------------------------- */
+.pm-folder__art {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+  transition: filter 0.38s var(--ease-out);
+}
+.pm-folder__fill { fill: var(--c); }
+.pm-folder__edge { fill: var(--edge); transform: translateY(var(--edge-h)); }
+.pm-folder__grain { fill: url(#pm-grain); }
+.pm-folder__hl { fill: none; stroke: var(--pm-hl); stroke-width: 2px; stroke-linejoin: round; }
+.pm-folder__rim { fill: none; stroke: var(--cream-2); stroke-width: 4px; stroke-linejoin: round; }
+.pm-folder__rim--edge { transform: translateY(var(--edge-h)); }
+.pm-folder__ring { fill: none; stroke-linejoin: round; }
+.pm-folder__ring--edge { transform: translateY(var(--edge-h)); }
+.pm-folder__ring--out { stroke: var(--focus-out); stroke-width: 8px; }
+.pm-folder__ring--in { stroke: var(--focus-in); stroke-width: 4px; }
+.pm-folder[data-rim='true'] .pm-folder__ring--out { stroke-width: 12px; }
+.pm-folder[data-rim='true'] .pm-folder__ring--in { stroke-width: 8px; }
+.pm-folder__dash { fill: none; stroke: var(--on); stroke-width: 2.5px; stroke-dasharray: 9 7; stroke-linecap: round; stroke-linejoin: round; }
+.pm-folder[data-dashed] :is(.pm-folder__fill, .pm-folder__edge, .pm-folder__grain, .pm-folder__hl, .pm-folder__rim, .pm-folder__ring--edge) { display: none; }
+.pm-folder__ringset { opacity: 0; }
+/* two-tone focus ring that follows the silhouette (the outline of a rectangle would cut through the empty corners) */
+.pm-folder:focus-visible .pm-folder__ringset { opacity: 1; }
+
+/* ---- tab + body ------------------------------------------------------------------------------------------------- */
+.pm-folder__tab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  height: var(--th);
+  padding: 0 18px;
+  border-radius: var(--fr) var(--fr) 0 0;
+  color: var(--on);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-synthesis: none;
+  pointer-events: auto;
+  user-select: none;
+  overflow: hidden;
+}
+.pm-folder__tabtext { min-width: 0; overflow: hidden; text-overflow: ellipsis; } /* a label wider than its folder is cut with an ellipsis; the count chip stays */
+.pm-chip { flex: none; }
+.pm-folder__body {
+  position: relative;
+  z-index: 1;
+  display: block;
+  box-sizing: border-box;
+  border-radius: var(--br);
+  padding: var(--fpad, clamp(14px, 1.5vw, 22px));
+  pointer-events: auto;
+}
+.pm-folder[data-tab][data-flush='left'] > .pm-folder__body { border-top-left-radius: 0; }
+.pm-folder[data-tab][data-flush='right'] > .pm-folder__body { border-top-right-radius: 0; }
+.pm-folder__body--clip { overflow: hidden; overflow: clip; }
+
+/* ---- lift: soft shadow only when the folder floats ---------------------------------------------------------------- */
+.pm-folder[data-lift='true'] { transform: translateY(-6px) rotate(-0.35deg); }
+.pm-folder[data-lift='true'] > .pm-folder__art { filter: var(--pm-float); }
+@media (hover: hover) {
+  .pm-folder[data-lift='hover']:hover,
+  .pm-folder[data-lift='hover']:focus-visible { transform: translateY(-6px) rotate(-0.35deg); }
+  .pm-folder[data-lift='hover']:hover > .pm-folder__art,
+  .pm-folder[data-lift='hover']:focus-visible > .pm-folder__art { filter: var(--pm-float); }
+}
+.pm-folder:is(button, a):active { transform: translateY(1px); transition-duration: 0.08s; }
+
+/* ---- tab chip: knocked-out numerals, e.g. "02" -------------------------------------------------------------------- */
+.pm-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 5px;
+  background: var(--on, var(--ink));
+  color: var(--c, var(--cream));
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  font-synthesis: none;
+}
+
+/* ---- STILL: no travel, no spring (colour and shadow changes stay, they carry state) --------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .pm-folder { transition: none; }
+  .pm-folder[data-lift='true'],
+  .pm-folder[data-lift='hover']:hover,
+  .pm-folder[data-lift='hover']:focus-visible,
+  .pm-folder:is(button, a):active { transform: none; }
+}
+html[data-motion='paused'] .pm-folder { transition: none; }
+html[data-motion='paused'] .pm-folder[data-lift='true'],
+html[data-motion='paused'] .pm-folder[data-lift='hover']:hover,
+html[data-motion='paused'] .pm-folder[data-lift='hover']:focus-visible,
+html[data-motion='paused'] .pm-folder:is(button, a):active { transform: none; }

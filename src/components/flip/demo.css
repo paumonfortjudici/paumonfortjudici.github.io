@@ -1,0 +1,125 @@
+/* Styles for the DEV-ONLY demo (flip.html). Not shipped with the component. */
+.demo {
+  display: grid;
+  gap: 28px;
+  padding: 20px clamp(10px, 2vw, 28px) 60px;
+  max-width: 1880px;
+  margin-inline: auto;
+}
+.demo-head h1 {
+  margin: 0 0 6px;
+  font-family: var(--font-display, serif);
+  font-size: 34px;
+  font-variation-settings: 'SOFT' 100, 'WONK' 1;
+}
+.demo-head p {
+  margin: 0 0 12px;
+  max-width: 70ch;
+}
+.demo-opts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  border: 1px solid rgb(255 242 218 / 0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.demo-opts label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+.demo-opts button,
+.demo-row button {
+  font: 700 13px/1 var(--font-label, monospace);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 2px solid currentColor;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.demo-fps {
+  font: 700 13px/1 var(--font-label, monospace);
+  min-width: 26ch;
+}
+.demo-panel {
+  position: relative;
+  border-radius: 24px;
+  padding: clamp(16px, 2.4vw, 40px);
+  overflow: clip;
+}
+.demo-panel h2 {
+  margin: 0 0 16px;
+  font: 700 16px/1.3 var(--font-label, monospace);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.demo-panel--tomato {
+  background: var(--tomato);
+  color: var(--ink);
+  --book-shadow: rgb(74 12 0 / 0.6);
+}
+.demo-panel--oxblood {
+  background: var(--oxblood);
+  color: var(--cream);
+  --book-paper: var(--paper);
+  --book-tint: rgb(240 225 190 / 0.1);
+  --book-gutter: rgb(60 40 20 / 0.28);
+  --flip-ink: var(--cream);
+  --flip-on: var(--ink);
+  --book-shadow: rgb(20 0 8 / 0.65);
+}
+.demo-panel--lilac {
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--lilac);
+  color: var(--ink);
+  display: grid;
+  justify-items: center;
+}
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+}
+.demo-cap {
+  font: 700 14px/1.2 var(--font-label, monospace);
+}
+.demo-phone {
+  width: min(390px, 100%);
+}
+.demo-circle path {
+  fill: none;
+  stroke: var(--tomato);
+  stroke-width: 3.5px;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  animation: demo-draw 1.1s 0.4s ease-out both;
+}
+@keyframes demo-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .demo-circle path {
+    animation: none;
+  }
+}
+
+.demo--bare { padding-top: 6px; gap: 10px; }
+.demo--bare .demo-head,
+.demo--bare .demo-panel h2,
+.demo--bare .demo-row { display: none; }
+.demo--bare .demo-panel { padding-block: 14px; }

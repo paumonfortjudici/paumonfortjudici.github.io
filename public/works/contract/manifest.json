@@ -1,0 +1,566 @@
+{
+  "title": "Proyecto Contract — Hotel Design 18",
+  "issue": "Hotel Design 18, bound with Proyecto Contract 223 · masthead date 09/26 · Casual Magazines",
+  "pageWidth": 1000,
+  "pageHeight": 1331,
+  "pageSizePt": [
+    593.6,
+    790.3
+  ],
+  "coverWidth": 1400,
+  "coverHeight": 1869,
+  "totalPagesInIssue": 230,
+  "readingOrder": "Page 1 is the cover and stands alone; spreads are [2,3],[4,5]... (even page left, odd page right); page 230 is the back cover and stands alone.",
+  "spreads": [
+    [
+      1
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      32,
+      33
+    ],
+    [
+      34,
+      35
+    ],
+    [
+      42,
+      43
+    ],
+    [
+      60,
+      61
+    ],
+    [
+      72,
+      73
+    ],
+    [
+      82,
+      83
+    ],
+    [
+      110,
+      111
+    ],
+    [
+      130,
+      131
+    ],
+    [
+      150,
+      151
+    ],
+    [
+      152,
+      153
+    ],
+    [
+      186,
+      187
+    ],
+    [
+      220,
+      221
+    ],
+    [
+      230
+    ]
+  ],
+  "palette": [
+    "#BF7944",
+    "#D29666",
+    "#825B48",
+    "#D6AF9B",
+    "#412318",
+    "#F0E9E5"
+  ],
+  "accents": {
+    "sectionTabRust": "#B96027",
+    "coverBandBlue": "#5098D0",
+    "mastheadPeach": "#F3DFD0",
+    "archivoOlive": "#8B7959"
+  },
+  "fonts": {
+    "cover": "Interstate (Bold, Black, Regular, Light)",
+    "interior": "Caecilia (Heavy, Bold, Light, Roman; bold small-caps for credit lines)"
+  },
+  "pages": [
+    {
+      "n": 1,
+      "file": "cover.webp",
+      "w": 1400,
+      "h": 1869,
+      "note": "Front cover. Interstate masthead over a full-bleed hotel-lobby photograph; the blue band announces the bound-in Proyecto Contract 223.",
+      "kind": "cover",
+      "side": "S",
+      "pdfPage": 1
+    },
+    {
+      "n": 2,
+      "file": "pages/p-002.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Full-page advertisement (Tecsoled lighting) facing the contents page.",
+      "kind": "ad",
+      "side": "L",
+      "pdfPage": 2,
+      "ad": true,
+      "advertiser": "Tecsoled (LST)"
+    },
+    {
+      "n": 3,
+      "file": "pages/p-003.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "SUMARIO. Rust-orange vertical tab, four numbered photo thumbnails and a seven-section contents list set in Caecilia.",
+      "kind": "toc",
+      "side": "R",
+      "pdfPage": 2
+    },
+    {
+      "n": 4,
+      "file": "pages/p-004.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "HALL editorial and masthead. 'Pau Monfort' is listed in the masthead under Redacción.",
+      "kind": "credits",
+      "side": "L",
+      "pdfPage": 3,
+      "redacted": [
+        "emails",
+        "phone numbers",
+        "street addresses (masthead contact lines)"
+      ]
+    },
+    {
+      "n": 5,
+      "file": "pages/p-005.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Full-page advertisement (Inclass furniture) facing the masthead.",
+      "kind": "ad",
+      "side": "R",
+      "pdfPage": 3,
+      "ad": true,
+      "advertiser": "Inclass"
+    },
+    {
+      "n": 32,
+      "file": "pages/p-032.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "SALA DE VISITAS opener. Rust-orange panel with a white pull-quote in Caecilia Heavy beside a portrait.",
+      "kind": "opener",
+      "side": "L",
+      "pdfPage": 25
+    },
+    {
+      "n": 33,
+      "file": "pages/p-033.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Interview portrait on a clean shelf wall; folio and running head in the margin.",
+      "kind": "photo",
+      "side": "R",
+      "pdfPage": 25
+    },
+    {
+      "n": 34,
+      "file": "pages/p-034.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Interview spread. Wide photo with an overlaid pull-quote, two-column Q&A and boxed project captions in rust type.",
+      "kind": "text-grid",
+      "side": "L",
+      "pdfPage": 26
+    },
+    {
+      "n": 35,
+      "file": "pages/p-035.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Interview continues: photo stack, serif Q&A column and a boxed caption.",
+      "kind": "text-grid",
+      "side": "R",
+      "pdfPage": 26
+    },
+    {
+      "n": 42,
+      "file": "pages/p-042.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "OPEN SPACE opener 'Madrid entre molduras' (Mercer Hotel Madrid). Rust tab, title and standfirst over a full-bleed lobby photo.",
+      "kind": "opener",
+      "side": "L",
+      "pdfPage": 30
+    },
+    {
+      "n": 43,
+      "file": "pages/p-043.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Right half of the double-page lobby photograph.",
+      "kind": "photo",
+      "side": "R",
+      "pdfPage": 30
+    },
+    {
+      "n": 60,
+      "file": "pages/p-060.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Gran Hotel Barcino opener. Portrait-crop detail photo above a centred Caecilia headline and standfirst.",
+      "kind": "opener",
+      "side": "L",
+      "pdfPage": 39
+    },
+    {
+      "n": 61,
+      "file": "pages/p-061.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Full-height photograph of the stone courtyard.",
+      "kind": "photo",
+      "side": "R",
+      "pdfPage": 39
+    },
+    {
+      "n": 72,
+      "file": "pages/p-072.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Waldorf Astoria Seychelles opener 'Santuario en el Índico'. Double-page chandelier photo with a translucent title box; byline 'Textos: Pau Monfort.'",
+      "kind": "opener",
+      "side": "L",
+      "pdfPage": 45
+    },
+    {
+      "n": 73,
+      "file": "pages/p-073.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Right half of the double-page chandelier photograph.",
+      "kind": "photo",
+      "side": "R",
+      "pdfPage": 45
+    },
+    {
+      "n": 82,
+      "file": "pages/p-082.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Les Clarisses. Panoramic double-page image under a hanging leaf installation, with a two-column caption.",
+      "kind": "photo",
+      "side": "L",
+      "pdfPage": 50
+    },
+    {
+      "n": 83,
+      "file": "pages/p-083.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Right half of the panoramic image; small caption columns set in white.",
+      "kind": "photo",
+      "side": "R",
+      "pdfPage": 50
+    },
+    {
+      "n": 110,
+      "file": "pages/p-110.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Catalonia Plaza España opener. Full-bleed reception photo spanning both pages.",
+      "kind": "opener",
+      "side": "L",
+      "pdfPage": 64
+    },
+    {
+      "n": 111,
+      "file": "pages/p-111.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Title 'Bienestar al mando' set over the counter; byline 'Textos: Pau Monfort.'",
+      "kind": "opener",
+      "side": "R",
+      "pdfPage": 64
+    },
+    {
+      "n": 130,
+      "file": "pages/p-130.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "ZONA VIP news page: rust tab, large Interstate headline and a graffiti photo for the Interihotel MAD26 fair.",
+      "kind": "news",
+      "side": "L",
+      "pdfPage": 74
+    },
+    {
+      "n": 131,
+      "file": "pages/p-131.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Cover of the bound-in Proyecto Contract 223: blue retail-interior photograph and Interstate cover lines.",
+      "kind": "cover",
+      "side": "R",
+      "pdfPage": 74
+    },
+    {
+      "n": 150,
+      "file": "pages/p-150.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "LOUNGE COLLECTION. Six mini-features in a strict grid, photos alternating left and right with hairline rules.",
+      "kind": "text-grid",
+      "side": "L",
+      "pdfPage": 84
+    },
+    {
+      "n": 151,
+      "file": "pages/p-151.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Grid continues: three more projects, text columns facing photos.",
+      "kind": "text-grid",
+      "side": "R",
+      "pdfPage": 84
+    },
+    {
+      "n": 152,
+      "file": "pages/p-152.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Lady Pipa opener 'Retail hipnótico'. Rust OPEN SPACE tab and white serif title over a blue interior.",
+      "kind": "opener",
+      "side": "L",
+      "pdfPage": 85
+    },
+    {
+      "n": 153,
+      "file": "pages/p-153.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Right half of the blue retail photograph.",
+      "kind": "photo",
+      "side": "R",
+      "pdfPage": 85
+    },
+    {
+      "n": 186,
+      "file": "pages/p-186.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Nude Project opener 'Escenografía kubrickiana'. Portrait photo over a centred headline; byline 'Textos: Pau Monfort.'",
+      "kind": "opener",
+      "side": "L",
+      "pdfPage": 102
+    },
+    {
+      "n": 187,
+      "file": "pages/p-187.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Full-height photograph of the speaker-wall arch.",
+      "kind": "photo",
+      "side": "R",
+      "pdfPage": 102
+    },
+    {
+      "n": 220,
+      "file": "pages/p-220.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "ARCHIVO opener 'Materia técnica, uso exigente'. Olive field, rust tab and an illustration by Luca Deu.",
+      "kind": "opener",
+      "side": "L",
+      "pdfPage": 119
+    },
+    {
+      "n": 221,
+      "file": "pages/p-221.webp",
+      "w": 1000,
+      "h": 1331,
+      "note": "Right half of the illustration.",
+      "kind": "photo",
+      "side": "R",
+      "pdfPage": 119
+    },
+    {
+      "n": 230,
+      "file": "pages/p-230.webp",
+      "w": 1000,
+      "h": 1335,
+      "note": "Back cover: advertisement (Roca, Kay tap collection).",
+      "kind": "ad",
+      "side": "S",
+      "pdfPage": 124,
+      "ad": true,
+      "advertiser": "Roca"
+    }
+  ],
+  "credit": {
+    "page": 4,
+    "file": "credit.webp",
+    "bboxPct": [
+      26.988,
+      71.932,
+      6.609,
+      0.99
+    ],
+    "circleBboxPct": [
+      25.472,
+      71.172,
+      8.715,
+      2.509
+    ],
+    "linePct": [
+      26.988,
+      71.932,
+      14.447,
+      0.99
+    ],
+    "roleHeadingPct": [
+      26.988,
+      69.531,
+      5.749,
+      0.987
+    ],
+    "cropPct": [
+      25.944,
+      68.704,
+      20.89,
+      5.567
+    ],
+    "text": "Redacción: Pau Monfort, Ada Marqués, Cristina Medina, Pablo Estela",
+    "role": "Redacción (editorial staff)",
+    "layoutCreditInMasthead": "Maquetación: Albert Salvatella",
+    "scale": 8,
+    "note": "credit.webp = crop of the masthead (cropPct is the real page region shown; 5pt of flat background was added below). Masthead lines with phone numbers/emails/addresses are blanked in the shipped images (privacy)."
+  },
+  "bylines": [
+    {
+      "page": 72,
+      "file": "bylines/byline-072.webp",
+      "feature": "Waldorf Astoria Seychelles Platte Island - 'Santuario en el Índico'",
+      "text": "Fotografías: Waldorf Astoria. Textos: Pau Monfort.",
+      "bboxPct": [
+        43.467,
+        41.669,
+        10.28,
+        1.532
+      ],
+      "linePct": [
+        14.073,
+        41.669,
+        39.674,
+        1.532
+      ],
+      "inFlipbook": true
+    },
+    {
+      "page": 91,
+      "file": "bylines/byline-091.webp",
+      "feature": "Palacio de Córdoba - 'Imaginario andalusí'",
+      "text": "Fotografías: Craus Fotografía. Textos: Pau Monfort.",
+      "bboxPct": [
+        80.126,
+        26.966,
+        10.657,
+        1.618
+      ],
+      "linePct": [
+        49.589,
+        26.966,
+        41.194,
+        1.618
+      ],
+      "inFlipbook": false
+    },
+    {
+      "page": 111,
+      "file": "bylines/byline-111.webp",
+      "feature": "Catalonia Plaza España - 'Bienestar al mando'",
+      "text": "Fotografías: Catalonia Hotels & Resorts. Textos: Pau Monfort.",
+      "bboxPct": [
+        47.111,
+        88.999,
+        10.28,
+        1.532
+      ],
+      "linePct": [
+        9.551,
+        88.999,
+        47.84,
+        1.532
+      ],
+      "inFlipbook": true
+    },
+    {
+      "page": 186,
+      "file": "bylines/byline-186.webp",
+      "feature": "Nude Project - 'Escenografía kubrickiana'",
+      "text": "Fotografías: Miguel Fernández-Galiano. Textos: Pau Monfort.",
+      "bboxPct": [
+        63.22,
+        91.309,
+        10.28,
+        1.532
+      ],
+      "linePct": [
+        26.758,
+        91.309,
+        46.742,
+        1.532
+      ],
+      "inFlipbook": true
+    },
+    {
+      "page": 195,
+      "file": "bylines/byline-195.webp",
+      "feature": "L'Arc - 'Vestigios bajo el cristal'",
+      "text": "Fotografías: Fragment Imatges. Textos: Pau Monfort.",
+      "bboxPct": [
+        77.291,
+        29.877,
+        10.28,
+        1.532
+      ],
+      "linePct": [
+        47.617,
+        29.877,
+        39.954,
+        1.532
+      ],
+      "inFlipbook": false
+    },
+    {
+      "page": 213,
+      "file": "bylines/byline-213.webp",
+      "feature": "Clínica ID Medicina Estética - 'Cuidado táctil'",
+      "text": "Fotografías: Amador Toril. Estilismo: Cristina Rodriguez. Textos: Pau Monfort.",
+      "bboxPct": [
+        68.401,
+        89.593,
+        10.28,
+        1.532
+      ],
+      "linePct": [
+        19.117,
+        89.593,
+        59.565,
+        1.532
+      ],
+      "inFlipbook": false
+    }
+  ],
+  "redactions": "Emails, phone numbers and street addresses printed in the masthead (page 4) were removed from the shipped images.",
+  "source": "PCHD18-223PCONTRAC.pdf (InDesign 18.1 export, Casual Magazines). All page imagery (c) Casual Magazines and the credited photographers/advertisers."
+}

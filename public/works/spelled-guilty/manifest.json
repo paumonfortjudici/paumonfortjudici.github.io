@@ -1,0 +1,1881 @@
+{
+  "slug": "spelled-guilty",
+  "generated": "2026-10-28",
+  "book": {
+    "title": "Spelled Guilty",
+    "subtitle": "Murder Mystery Word Search for Adults: 80 Whodunit Cases — Find the Words, Read the Leftover Clue, Name the Killer",
+    "series": "Spelled Guilty, Volume 1",
+    "author": "Pau Monfort",
+    "year": 2026,
+    "language": "English (US)",
+    "pages": 214,
+    "trimIn": [
+      6,
+      9
+    ],
+    "interior": "black and white, white paper",
+    "format": "Paperback (KDP)",
+    "cases": 80,
+    "suspectsPerCase": 4,
+    "illustratedSuspects": 320,
+    "grid": "13 x 13",
+    "difficulty": {
+      "easy": "cases 1-25",
+      "medium": "cases 26-55",
+      "hard": "cases 56-80"
+    },
+    "casesSetBetween": [
+      1874,
+      2026
+    ],
+    "asin": "B0HNKTP74L",
+    "amazonUrl": "https://www.amazon.com/dp/B0HNKTP74L",
+    "creditLineFromTheBookItself": "Stories written with the help of AI tools and reviewed by the author. All puzzles generated and verified by computer. Case and cover illustrations created with AI image tools.",
+    "palette": {
+      "navy": "#1C3758",
+      "cream": "#F9EED6",
+      "red": "#D52431"
+    }
+  },
+  "notes": {
+    "art": "1100 px wide, pure white background (255): place with mix-blend-mode: multiply over a paper colour. Each image is a line-up of four suspects A-D.",
+    "stickers": "Transparent WebP (alpha) with the thin white die-cut rim already included.",
+    "flipbook": "Spoiler-free: no hints (printed p168-173), no solutions (p174-213), no copyright page (p2).",
+    "marketing": "Built for Amazon A+ content (navy, cream and red brand look). Text inside the images is baked in, in English.",
+    "graphics": "Transparent WebP brand elements taken from the cover design (title lettering, taped clue note)."
+  },
+  "cover": {
+    "front": {
+      "file": "cover-front.webp",
+      "w": 933,
+      "h": 1400,
+      "bytes": 270124,
+      "alt": "Front cover of Spelled Guilty by Pau Monfort: navy cover, cream and red title, a word-search note whose leftover letters read LEFT-HANDED, and four illustrated suspects A to D under the line '80 cases, 4 suspects, 1 killer'.",
+      "source": "out/cover.pdf, front panel (6x9 in trim, bleed removed)"
+    },
+    "wrap": {
+      "file": "cover-wrap.webp",
+      "w": 2000,
+      "h": 1442,
+      "bytes": 563034,
+      "alt": "Full cover wrap of Spelled Guilty: back cover, spine and front cover side by side.",
+      "source": "out/cover.pdf, trimmed wrap (back + spine + front, 0.125 in bleed removed)",
+      "panelsPx": {
+        "back": [
+          0,
+          961
+        ],
+        "spine": [
+          961,
+          1039
+        ],
+        "front": [
+          1039,
+          2000
+        ]
+      },
+      "note": "The white rectangle bottom-right of the back cover is the empty barcode zone that KDP fills; it is NOT an ISBN."
+    },
+    "thumb": {
+      "file": "thumb.webp",
+      "w": 720,
+      "h": 900,
+      "bytes": 91094,
+      "alt": "The Spelled Guilty cover next to an open case file on kraft paper (card thumbnail).",
+      "source": "composed from the cover and case 01; see docs/api/card-art.md"
+    },
+    "back": {
+      "file": "cover-back.webp",
+      "w": 933,
+      "h": 1400,
+      "bytes": 286292,
+      "alt": "Back cover of Spelled Guilty.",
+      "source": "out/cover.pdf, back panel"
+    },
+    "spine": {
+      "file": "cover-spine.webp",
+      "w": 75,
+      "h": 1400,
+      "bytes": 12386,
+      "alt": "Spine of Spelled Guilty (spine text: SPELLED GUILTY, PAU MONFORT).",
+      "source": "out/cover.pdf, spine panel (0.4819 in wide at 214 pages)"
+    }
+  },
+  "flipbook": {
+    "pageWidth": 900,
+    "pageHeight": 1350,
+    "readingOrder": "Front cover (cover-front.webp) stands alone on the right; then 8 spreads [seq 1,2], [3,4] ... [15,16] (left, right); back cover (cover-back.webp) stands alone.",
+    "pagesPerImage": "900 x 1350 px = 6 x 9 in at 150 dpi (lossless WebP)",
+    "cover": "cover-front.webp (single, right-hand) -> then the 16 pages as 8 spreads (left, right) -> cover-back.webp",
+    "note": "Sequence is designed so that spreads pair up exactly (seq 1+2, 3+4, ...). Case files are always on the left and their word search on the right, as in the printed book. Page 1 (title) is a right-hand page in print but is shown on the left here, next to page 3, so no blank filler page is needed; the copyright page (p2) is intentionally skipped. No hints (p168-173), no solutions (p174-213).",
+    "pages": [
+      {
+        "file": "pages/p001-title.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 19588,
+        "seq": 1,
+        "spread": 1,
+        "side": "left",
+        "sourcePage": 1,
+        "printedSide": "right (odd page)",
+        "label": "Title page",
+        "kind": "front-matter",
+        "alt": "Page 1 of the book: Title page."
+      },
+      {
+        "file": "pages/p003-how-to-solve.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 62674,
+        "seq": 2,
+        "spread": 1,
+        "side": "right",
+        "sourcePage": 3,
+        "printedSide": "right (odd page)",
+        "label": "How to solve a case",
+        "kind": "front-matter",
+        "alt": "Page 3 of the book: How to solve a case."
+      },
+      {
+        "file": "pages/p004-scorecard-01-25.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 32100,
+        "seq": 3,
+        "spread": 2,
+        "side": "left",
+        "sourcePage": 4,
+        "printedSide": "left (even page)",
+        "label": "Detective's scorecard, cases 01-25",
+        "kind": "front-matter",
+        "alt": "Page 4 of the book: Detective's scorecard, cases 01-25."
+      },
+      {
+        "file": "pages/p005-scorecard-26-50.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 31590,
+        "seq": 4,
+        "spread": 2,
+        "side": "right",
+        "sourcePage": 5,
+        "printedSide": "right (odd page)",
+        "label": "Detective's scorecard, cases 26-50",
+        "kind": "front-matter",
+        "alt": "Page 5 of the book: Detective's scorecard, cases 26-50."
+      },
+      {
+        "file": "pages/p008-case-01-file.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 129546,
+        "seq": 5,
+        "spread": 3,
+        "side": "left",
+        "sourcePage": 8,
+        "printedSide": "left (even page)",
+        "label": "Case file 01: Murder at Gull Rock",
+        "kind": "case-file",
+        "case": 1,
+        "caseTitle": "Murder at Gull Rock",
+        "setting": "Gull Rock Lighthouse, Cornwall, 1923",
+        "difficulty": "easy",
+        "alt": "Case file 01 'Murder at Gull Rock' (Gull Rock Lighthouse, Cornwall, 1923): the story, four illustrated suspects A to D and their descriptions."
+      },
+      {
+        "file": "pages/p009-case-01-grid.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 27364,
+        "seq": 6,
+        "spread": 3,
+        "side": "right",
+        "sourcePage": 9,
+        "printedSide": "right (odd page)",
+        "label": "Word search 01: Murder at Gull Rock",
+        "kind": "case-grid",
+        "case": 1,
+        "caseTitle": "Murder at Gull Rock",
+        "setting": "Gull Rock Lighthouse, Cornwall, 1923",
+        "difficulty": "easy",
+        "alt": "The 13 by 13 word search for case 01 'Murder at Gull Rock', with its evidence word list and empty hidden-message boxes."
+      },
+      {
+        "file": "pages/p020-case-07-file.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 115696,
+        "seq": 7,
+        "spread": 4,
+        "side": "left",
+        "sourcePage": 20,
+        "printedSide": "left (even page)",
+        "label": "Case file 07: Cut! Murder on Stage Four",
+        "kind": "case-file",
+        "case": 7,
+        "caseTitle": "Cut! Murder on Stage Four",
+        "setting": "Stage Four, Hollywood, California, 1955",
+        "difficulty": "easy",
+        "alt": "Case file 07 'Cut! Murder on Stage Four' (Stage Four, Hollywood, California, 1955): the story, four illustrated suspects A to D and their descriptions."
+      },
+      {
+        "file": "pages/p021-case-07-grid.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 26698,
+        "seq": 8,
+        "spread": 4,
+        "side": "right",
+        "sourcePage": 21,
+        "printedSide": "right (odd page)",
+        "label": "Word search 07: Cut! Murder on Stage Four",
+        "kind": "case-grid",
+        "case": 7,
+        "caseTitle": "Cut! Murder on Stage Four",
+        "setting": "Stage Four, Hollywood, California, 1955",
+        "difficulty": "easy",
+        "alt": "The 13 by 13 word search for case 07 'Cut! Murder on Stage Four', with its evidence word list and empty hidden-message boxes."
+      },
+      {
+        "file": "pages/p096-case-45-file.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 126670,
+        "seq": 9,
+        "spread": 5,
+        "side": "left",
+        "sourcePage": 96,
+        "printedSide": "left (even page)",
+        "label": "Case file 45: Adrift Above the Atlantic",
+        "kind": "case-file",
+        "case": 45,
+        "caseTitle": "Adrift Above the Atlantic",
+        "setting": "Airship Valkyrie, over the Atlantic, 1930",
+        "difficulty": "medium",
+        "alt": "Case file 45 'Adrift Above the Atlantic' (Airship Valkyrie, over the Atlantic, 1930): the story, four illustrated suspects A to D and their descriptions."
+      },
+      {
+        "file": "pages/p097-case-45-grid.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 27250,
+        "seq": 10,
+        "spread": 5,
+        "side": "right",
+        "sourcePage": 97,
+        "printedSide": "right (odd page)",
+        "label": "Word search 45: Adrift Above the Atlantic",
+        "kind": "case-grid",
+        "case": 45,
+        "caseTitle": "Adrift Above the Atlantic",
+        "setting": "Airship Valkyrie, over the Atlantic, 1930",
+        "difficulty": "medium",
+        "alt": "The 13 by 13 word search for case 45 'Adrift Above the Atlantic', with its evidence word list and empty hidden-message boxes."
+      },
+      {
+        "file": "pages/p124-case-59-file.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 132924,
+        "seq": 11,
+        "spread": 6,
+        "side": "left",
+        "sourcePage": 124,
+        "printedSide": "left (even page)",
+        "label": "Case file 59: The Puppeteer’s Last String",
+        "kind": "case-file",
+        "case": 59,
+        "caseTitle": "The Puppeteer’s Last String",
+        "setting": "Little Lantern Puppet Theater, Prague, 1934",
+        "difficulty": "hard",
+        "alt": "Case file 59 'The Puppeteer’s Last String' (Little Lantern Puppet Theater, Prague, 1934): the story, four illustrated suspects A to D and their descriptions."
+      },
+      {
+        "file": "pages/p125-case-59-grid.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 27340,
+        "seq": 12,
+        "spread": 6,
+        "side": "right",
+        "sourcePage": 125,
+        "printedSide": "right (odd page)",
+        "label": "Word search 59: The Puppeteer’s Last String",
+        "kind": "case-grid",
+        "case": 59,
+        "caseTitle": "The Puppeteer’s Last String",
+        "setting": "Little Lantern Puppet Theater, Prague, 1934",
+        "difficulty": "hard",
+        "alt": "The 13 by 13 word search for case 59 'The Puppeteer’s Last String', with its evidence word list and empty hidden-message boxes."
+      },
+      {
+        "file": "pages/p140-case-67-file.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 115246,
+        "seq": 13,
+        "spread": 7,
+        "side": "left",
+        "sourcePage": 140,
+        "printedSide": "left (even page)",
+        "label": "Case file 67: Dealer’s Last Hand",
+        "kind": "case-file",
+        "case": 67,
+        "caseTitle": "Dealer’s Last Hand",
+        "setting": "Casino du Rocher, Monte Carlo, 1961",
+        "difficulty": "hard",
+        "alt": "Case file 67 'Dealer’s Last Hand' (Casino du Rocher, Monte Carlo, 1961): the story, four illustrated suspects A to D and their descriptions."
+      },
+      {
+        "file": "pages/p141-case-67-grid.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 26590,
+        "seq": 14,
+        "spread": 7,
+        "side": "right",
+        "sourcePage": 141,
+        "printedSide": "right (odd page)",
+        "label": "Word search 67: Dealer’s Last Hand",
+        "kind": "case-grid",
+        "case": 67,
+        "caseTitle": "Dealer’s Last Hand",
+        "setting": "Casino du Rocher, Monte Carlo, 1961",
+        "difficulty": "hard",
+        "alt": "The 13 by 13 word search for case 67 'Dealer’s Last Hand', with its evidence word list and empty hidden-message boxes."
+      },
+      {
+        "file": "pages/p156-case-75-file.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 124938,
+        "seq": 15,
+        "spread": 8,
+        "side": "left",
+        "sourcePage": 156,
+        "printedSide": "left (even page)",
+        "label": "Case file 75: The Premiere Ends in Silence",
+        "kind": "case-file",
+        "case": 75,
+        "caseTitle": "The Premiere Ends in Silence",
+        "setting": "Film festival, Cannes, 1987",
+        "difficulty": "hard",
+        "alt": "Case file 75 'The Premiere Ends in Silence' (Film festival, Cannes, 1987): the story, four illustrated suspects A to D and their descriptions."
+      },
+      {
+        "file": "pages/p157-case-75-grid.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 26736,
+        "seq": 16,
+        "spread": 8,
+        "side": "right",
+        "sourcePage": 157,
+        "printedSide": "right (odd page)",
+        "label": "Word search 75: The Premiere Ends in Silence",
+        "kind": "case-grid",
+        "case": 75,
+        "caseTitle": "The Premiere Ends in Silence",
+        "setting": "Film festival, Cannes, 1987",
+        "difficulty": "hard",
+        "alt": "The 13 by 13 word search for case 75 'The Premiere Ends in Silence', with its evidence word list and empty hidden-message boxes."
+      }
+    ],
+    "extras": [
+      {
+        "file": "pages/p214-case-closed.webp",
+        "w": 900,
+        "h": 1350,
+        "bytes": 19010,
+        "sourcePage": 214,
+        "printedSide": "left (even page; last page of the book)",
+        "label": "Case closed (last page of the book)",
+        "kind": "back-matter",
+        "extra": true,
+        "alt": "Last page of the book: a CASE CLOSED stamp, a thank-you note and the series line."
+      }
+    ],
+    "spreads": [
+      {
+        "spread": 1,
+        "left": "pages/p001-title.webp",
+        "right": "pages/p003-how-to-solve.webp",
+        "label": "Title page + How to solve a case"
+      },
+      {
+        "spread": 2,
+        "left": "pages/p004-scorecard-01-25.webp",
+        "right": "pages/p005-scorecard-26-50.webp",
+        "label": "Detective's scorecard (cases 01-50)"
+      },
+      {
+        "spread": 3,
+        "left": "pages/p008-case-01-file.webp",
+        "right": "pages/p009-case-01-grid.webp",
+        "label": "Case 01: Murder at Gull Rock"
+      },
+      {
+        "spread": 4,
+        "left": "pages/p020-case-07-file.webp",
+        "right": "pages/p021-case-07-grid.webp",
+        "label": "Case 07: Cut! Murder on Stage Four"
+      },
+      {
+        "spread": 5,
+        "left": "pages/p096-case-45-file.webp",
+        "right": "pages/p097-case-45-grid.webp",
+        "label": "Case 45: Adrift Above the Atlantic"
+      },
+      {
+        "spread": 6,
+        "left": "pages/p124-case-59-file.webp",
+        "right": "pages/p125-case-59-grid.webp",
+        "label": "Case 59: The Puppeteer’s Last String"
+      },
+      {
+        "spread": 7,
+        "left": "pages/p140-case-67-file.webp",
+        "right": "pages/p141-case-67-grid.webp",
+        "label": "Case 67: Dealer’s Last Hand"
+      },
+      {
+        "spread": 8,
+        "left": "pages/p156-case-75-file.webp",
+        "right": "pages/p157-case-75-grid.webp",
+        "label": "Case 75: The Premiere Ends in Silence"
+      }
+    ]
+  },
+  "art": [
+    {
+      "file": "art/case-01-murder-at-gull-rock.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 130244,
+      "case": 1,
+      "caseTitle": "Murder at Gull Rock",
+      "setting": "Gull Rock Lighthouse, Cornwall, 1923",
+      "year": 1923,
+      "difficulty": "easy",
+      "webpQuality": 90,
+      "sourceFile": "art/art-1.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 01, 'Murder at Gull Rock' (Gull Rock Lighthouse, Cornwall, 1923), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-02-the-last-toast-at-harrow-hall.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 88454,
+      "case": 2,
+      "caseTitle": "The Last Toast at Harrow Hall",
+      "setting": "Harrow Hall, Yorkshire, 1931",
+      "year": 1931,
+      "difficulty": "easy",
+      "webpQuality": 90,
+      "sourceFile": "art/art-2.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 02, 'The Last Toast at Harrow Hall' (Harrow Hall, Yorkshire, 1931), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-03-death-on-the-midnight-express.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 90186,
+      "case": 3,
+      "caseTitle": "Death on the Midnight Express",
+      "setting": "The Midnight Express, the Alps, 1927",
+      "year": 1927,
+      "difficulty": "easy",
+      "webpQuality": 90,
+      "sourceFile": "art/art-3.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 03, 'Death on the Midnight Express' (The Midnight Express, the Alps, 1927), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-06-the-captains-final-dinner.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 84382,
+      "case": 6,
+      "caseTitle": "The Captain’s Final Dinner",
+      "setting": "Liner Aurelia, North Atlantic, 1912",
+      "year": 1912,
+      "difficulty": "easy",
+      "webpQuality": 90,
+      "sourceFile": "art/art-6.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 06, 'The Captain’s Final Dinner' (Liner Aurelia, North Atlantic, 1912), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-07-cut-murder-on-stage-four.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 88862,
+      "case": 7,
+      "caseTitle": "Cut! Murder on Stage Four",
+      "setting": "Stage Four, Hollywood, California, 1955",
+      "year": 1955,
+      "difficulty": "easy",
+      "webpQuality": 90,
+      "sourceFile": "art/art-7.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 07, 'Cut! Murder on Stage Four' (Stage Four, Hollywood, California, 1955), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-11-the-ringmaster-vanishes.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 105078,
+      "case": 11,
+      "caseTitle": "The Ringmaster Vanishes",
+      "setting": "Merriwell Circus, Dayton, Ohio, 1938",
+      "year": 1938,
+      "difficulty": "easy",
+      "webpQuality": 90,
+      "sourceFile": "art/art-11.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 11, 'The Ringmaster Vanishes' (Merriwell Circus, Dayton, Ohio, 1938), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-16-the-sopranos-last-aria.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 139536,
+      "case": 16,
+      "caseTitle": "The Soprano’s Last Aria",
+      "setting": "Kaiserhof Opera, Vienna, 1899",
+      "year": 1899,
+      "difficulty": "easy",
+      "webpQuality": 90,
+      "sourceFile": "art/art-16.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 16, 'The Soprano’s Last Aria' (Kaiserhof Opera, Vienna, 1899), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-20-death-before-the-morning-bread.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 98612,
+      "case": 20,
+      "caseTitle": "Death Before the Morning Bread",
+      "setting": "Moreau Bakery, Paris, 1912",
+      "year": 1912,
+      "difficulty": "easy",
+      "webpQuality": 90,
+      "sourceFile": "art/art-20.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 20, 'Death Before the Morning Bread' (Moreau Bakery, Paris, 1912), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-26-paddle-wheel-peril.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 113894,
+      "case": 26,
+      "caseTitle": "Paddle Wheel Peril",
+      "setting": "Steamboat Cotton Duchess, Mississippi River, 1881",
+      "year": 1881,
+      "difficulty": "medium",
+      "webpQuality": 90,
+      "sourceFile": "art/art-26.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 26, 'Paddle Wheel Peril' (Steamboat Cotton Duchess, Mississippi River, 1881), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-36-overboard-at-the-regatta.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 107206,
+      "case": 36,
+      "caseTitle": "Overboard at the Regatta",
+      "setting": "Private yacht, Monaco, 1964",
+      "year": 1964,
+      "difficulty": "medium",
+      "webpQuality": 90,
+      "sourceFile": "art/art-36.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 36, 'Overboard at the Regatta' (Private yacht, Monaco, 1964), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-45-adrift-above-the-atlantic.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 119674,
+      "case": 45,
+      "caseTitle": "Adrift Above the Atlantic",
+      "setting": "Airship Valkyrie, over the Atlantic, 1930",
+      "year": 1930,
+      "difficulty": "medium",
+      "webpQuality": 90,
+      "sourceFile": "art/art-45.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 45, 'Adrift Above the Atlantic' (Airship Valkyrie, over the Atlantic, 1930), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-51-thin-ice.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 116216,
+      "case": 51,
+      "caseTitle": "Thin Ice",
+      "setting": "Lakeview Ice Arena, Minneapolis, 1976",
+      "year": 1976,
+      "difficulty": "medium",
+      "webpQuality": 90,
+      "sourceFile": "art/art-51.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 51, 'Thin Ice' (Lakeview Ice Arena, Minneapolis, 1976), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-54-steam-salts-and-silence.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 126896,
+      "case": 54,
+      "caseTitle": "Steam, Salts and Silence",
+      "setting": "Aranyhid Baths, Budapest, 1937",
+      "year": 1937,
+      "difficulty": "medium",
+      "webpQuality": 90,
+      "sourceFile": "art/art-54.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 54, 'Steam, Salts and Silence' (Aranyhid Baths, Budapest, 1937), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-59-the-puppeteers-last-string.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 123922,
+      "case": 59,
+      "caseTitle": "The Puppeteer’s Last String",
+      "setting": "Little Lantern Puppet Theater, Prague, 1934",
+      "year": 1934,
+      "difficulty": "hard",
+      "webpQuality": 90,
+      "sourceFile": "art/art-59.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 59, 'The Puppeteer’s Last String' (Little Lantern Puppet Theater, Prague, 1934), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-66-the-cattle-barons-last-roundup.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 129530,
+      "case": 66,
+      "caseTitle": "The Cattle Baron’s Last Roundup",
+      "setting": "Rocking B Ranch, Texas, 1895",
+      "year": 1895,
+      "difficulty": "hard",
+      "webpQuality": 90,
+      "sourceFile": "art/art-66.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 66, 'The Cattle Baron’s Last Roundup' (Rocking B Ranch, Texas, 1895), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-67-dealers-last-hand.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 79072,
+      "case": 67,
+      "caseTitle": "Dealer’s Last Hand",
+      "setting": "Casino du Rocher, Monte Carlo, 1961",
+      "year": 1961,
+      "difficulty": "hard",
+      "webpQuality": 90,
+      "sourceFile": "art/art-67.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 67, 'Dealer’s Last Hand' (Casino du Rocher, Monte Carlo, 1961), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-70-the-cruise-that-never-docked.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 123290,
+      "case": 70,
+      "caseTitle": "The Cruise That Never Docked",
+      "setting": "Cruise ship Coral Majesty, Caribbean Sea, 2004",
+      "year": 2004,
+      "difficulty": "hard",
+      "webpQuality": 90,
+      "sourceFile": "art/art-70.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 70, 'The Cruise That Never Docked' (Cruise ship Coral Majesty, Caribbean Sea, 2004), drawn as black-and-white character designs with a white background."
+    },
+    {
+      "file": "art/case-75-the-premiere-ends-in-silence.webp",
+      "w": 1100,
+      "h": 733,
+      "bytes": 124928,
+      "case": 75,
+      "caseTitle": "The Premiere Ends in Silence",
+      "setting": "Film festival, Cannes, 1987",
+      "year": 1987,
+      "difficulty": "hard",
+      "webpQuality": 90,
+      "sourceFile": "art/art-75.png (1536x1024)",
+      "alt": "Line-up of the four illustrated suspects (A to D) of case 75, 'The Premiere Ends in Silence' (Film festival, Cannes, 1987), drawn as black-and-white character designs with a white background."
+    }
+  ],
+  "marketing": [
+    {
+      "file": "marketing/hero-four-suspects.webp",
+      "w": 1940,
+      "h": 1200,
+      "bytes": 274624,
+      "label": "Hero: 3D book beside four die-cut suspects, 'Four Suspects. One Killer.'",
+      "alt": "The Spelled Guilty paperback in 3D next to four die-cut illustrated suspects A to D, with the headline Four Suspects. One Killer. and the line The leftover letters never lie.",
+      "webpQuality": 88,
+      "sourceFile": "aplus/out/module1_hero.jpg"
+    },
+    {
+      "file": "marketing/one-case-two-pages.webp",
+      "w": 1940,
+      "h": 1200,
+      "bytes": 228434,
+      "label": "Annotated open spread of case 01 (real clues, four suspects, 13x13 grid, hidden clue)",
+      "alt": "An open spread of the book: the case file with four suspects on the left and its word search on the right, with call-outs for Real Clues, Four Suspects, 13 x 13 Grid and Hidden Clue.",
+      "webpQuality": 88,
+      "sourceFile": "aplus/out/module3_spread.jpg"
+    },
+    {
+      "file": "marketing/suspects-board.webp",
+      "w": 1940,
+      "h": 1200,
+      "bytes": 229000,
+      "label": "Pinboard of eight suspects tagged with place and year (1874-2026)",
+      "alt": "Eight illustrated suspects pinned on cards with string, each labelled with a place and a year from Nevada 1874 to San Francisco 2026.",
+      "webpQuality": 88,
+      "sourceFile": "aplus/out/module4_suspects.jpg"
+    },
+    {
+      "file": "marketing/step-1-read-the-case.webp",
+      "w": 600,
+      "h": 600,
+      "bytes": 57752,
+      "label": "Step 1 card: Read the Case",
+      "alt": "Step one card: a case file page with a magnifying glass over one suspect, titled Read the Case.",
+      "webpQuality": 88,
+      "sourceFile": "aplus/out/module2_step1.jpg"
+    },
+    {
+      "file": "marketing/step-2-find-the-words.webp",
+      "w": 600,
+      "h": 600,
+      "bytes": 41674,
+      "label": "Step 2 card: Find the Words",
+      "alt": "Step two card: a word-search grid with words circled, titled Find the Words.",
+      "webpQuality": 88,
+      "sourceFile": "aplus/out/module2_step2.jpg"
+    },
+    {
+      "file": "marketing/step-3-name-the-killer.webp",
+      "w": 600,
+      "h": 600,
+      "bytes": 49922,
+      "label": "Step 3 card: Name the Killer",
+      "alt": "Step three card: a pinned note where crossed-out words leave the letters LEFT-HANDED, titled Name the Killer.",
+      "webpQuality": 88,
+      "sourceFile": "aplus/out/module2_step3.jpg"
+    }
+  ],
+  "stickers": [
+    {
+      "file": "stickers/suspect-06C.webp",
+      "w": 381,
+      "h": 726,
+      "bytes": 34674,
+      "case": 6,
+      "letter": "C",
+      "caseTitle": "The Captain’s Final Dinner",
+      "setting": "Liner Aurelia, North Atlantic, 1912",
+      "year": 1912,
+      "alt": "Die-cut illustrated suspect C from case 06 'The Captain’s Final Dinner', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_6C.png"
+    },
+    {
+      "file": "stickers/suspect-07D.webp",
+      "w": 336,
+      "h": 747,
+      "bytes": 41576,
+      "case": 7,
+      "letter": "D",
+      "caseTitle": "Cut! Murder on Stage Four",
+      "setting": "Stage Four, Hollywood, California, 1955",
+      "year": 1955,
+      "alt": "Die-cut illustrated suspect D from case 07 'Cut! Murder on Stage Four', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_7D.png"
+    },
+    {
+      "file": "stickers/suspect-10A.webp",
+      "w": 447,
+      "h": 771,
+      "bytes": 48772,
+      "case": 10,
+      "letter": "A",
+      "caseTitle": "Blue Notes and a Blackout",
+      "setting": "Blue Heron Club, New Orleans, 1934",
+      "year": 1934,
+      "alt": "Die-cut illustrated suspect A from case 10 'Blue Notes and a Blackout', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_10A.png"
+    },
+    {
+      "file": "stickers/suspect-13B.webp",
+      "w": 336,
+      "h": 681,
+      "bytes": 45730,
+      "case": 13,
+      "letter": "B",
+      "caseTitle": "Sands of the Silent Dig",
+      "setting": "Tell Hamra dig site, Transjordan, 1925",
+      "year": 1925,
+      "alt": "Die-cut illustrated suspect B from case 13 'Sands of the Silent Dig', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_13B.png"
+    },
+    {
+      "file": "stickers/suspect-16A.webp",
+      "w": 480,
+      "h": 963,
+      "bytes": 85022,
+      "case": 16,
+      "letter": "A",
+      "caseTitle": "The Soprano’s Last Aria",
+      "setting": "Kaiserhof Opera, Vienna, 1899",
+      "year": 1899,
+      "alt": "Die-cut illustrated suspect A from case 16 'The Soprano’s Last Aria', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_16A.png"
+    },
+    {
+      "file": "stickers/suspect-19C.webp",
+      "w": 342,
+      "h": 711,
+      "bytes": 44068,
+      "case": 19,
+      "letter": "C",
+      "caseTitle": "Cold Blood at Polar Station Nine",
+      "setting": "Polar Station Nine, Canadian Arctic, 1984",
+      "year": 1984,
+      "alt": "Die-cut illustrated suspect C from case 19 'Cold Blood at Polar Station Nine', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_19C.png"
+    },
+    {
+      "file": "stickers/suspect-24D.webp",
+      "w": 312,
+      "h": 876,
+      "bytes": 32430,
+      "case": 24,
+      "letter": "D",
+      "caseTitle": "Room 12 Does Not Answer",
+      "setting": "Hotel Kaiserkrone, Berlin, 1928",
+      "year": 1928,
+      "alt": "Die-cut illustrated suspect D from case 24 'Room 12 Does Not Answer', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_24D.png"
+    },
+    {
+      "file": "stickers/suspect-28D.webp",
+      "w": 417,
+      "h": 771,
+      "bytes": 73796,
+      "case": 28,
+      "letter": "D",
+      "caseTitle": "Silver and Shadows at Dry Gulch",
+      "setting": "Lucky Widow Mine, Dry Gulch, Nevada, 1874",
+      "year": 1874,
+      "alt": "Die-cut illustrated suspect D from case 28 'Silver and Shadows at Dry Gulch', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_28D.png"
+    },
+    {
+      "file": "stickers/suspect-33B.webp",
+      "w": 252,
+      "h": 768,
+      "bytes": 32200,
+      "case": 33,
+      "letter": "B",
+      "caseTitle": "Too Many Cooks",
+      "setting": "Cooking school, Lyon, 1966",
+      "year": 1966,
+      "alt": "Die-cut illustrated suspect B from case 33 'Too Many Cooks', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_33B.png"
+    },
+    {
+      "file": "stickers/suspect-35A.webp",
+      "w": 282,
+      "h": 939,
+      "bytes": 54688,
+      "case": 35,
+      "letter": "A",
+      "caseTitle": "The Last Chapter",
+      "setting": "Antiquarian bookshop, Edinburgh, 1938",
+      "year": 1938,
+      "alt": "Die-cut illustrated suspect A from case 35 'The Last Chapter', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_35A.png"
+    },
+    {
+      "file": "stickers/suspect-36C.webp",
+      "w": 381,
+      "h": 978,
+      "bytes": 49878,
+      "case": 36,
+      "letter": "C",
+      "caseTitle": "Overboard at the Regatta",
+      "setting": "Private yacht, Monaco, 1964",
+      "year": 1964,
+      "alt": "Die-cut illustrated suspect C from case 36 'Overboard at the Regatta', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_36C.png"
+    },
+    {
+      "file": "stickers/suspect-45D.webp",
+      "w": 336,
+      "h": 945,
+      "bytes": 65854,
+      "case": 45,
+      "letter": "D",
+      "caseTitle": "Adrift Above the Atlantic",
+      "setting": "Airship Valkyrie, over the Atlantic, 1930",
+      "year": 1930,
+      "alt": "Die-cut illustrated suspect D from case 45 'Adrift Above the Atlantic', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_45D.png"
+    },
+    {
+      "file": "stickers/suspect-63A.webp",
+      "w": 345,
+      "h": 963,
+      "bytes": 39114,
+      "case": 63,
+      "letter": "A",
+      "caseTitle": "Rally to the Grave",
+      "setting": "Mille Strade rally, Tuscany, Italy, 1957",
+      "year": 1957,
+      "alt": "Die-cut illustrated suspect A from case 63 'Rally to the Grave', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_63A.png"
+    },
+    {
+      "file": "stickers/suspect-70A.webp",
+      "w": 375,
+      "h": 900,
+      "bytes": 55228,
+      "case": 70,
+      "letter": "A",
+      "caseTitle": "The Cruise That Never Docked",
+      "setting": "Cruise ship Coral Majesty, Caribbean Sea, 2004",
+      "year": 2004,
+      "alt": "Die-cut illustrated suspect A from case 70 'The Cruise That Never Docked', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_70A.png"
+    },
+    {
+      "file": "stickers/suspect-74D.webp",
+      "w": 330,
+      "h": 780,
+      "bytes": 43058,
+      "case": 74,
+      "letter": "D",
+      "caseTitle": "Series A, Murder Z",
+      "setting": "Tech startup office, San Francisco, 2026",
+      "year": 2026,
+      "alt": "Die-cut illustrated suspect D from case 74 'Series A, Murder Z', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_74D.png"
+    },
+    {
+      "file": "stickers/suspect-80B.webp",
+      "w": 450,
+      "h": 807,
+      "bytes": 63258,
+      "case": 80,
+      "letter": "B",
+      "caseTitle": "Behind the Carnival Mask",
+      "setting": "Mask workshop, Venice, 1893",
+      "year": 1893,
+      "alt": "Die-cut illustrated suspect B from case 80 'Behind the Carnival Mask', transparent background with a thin white outline.",
+      "sourceFile": "aplus/assets/sus_80B.png"
+    }
+  ],
+  "graphics": [
+    {
+      "file": "graphics/title-lockup.webp",
+      "w": 1602,
+      "h": 692,
+      "bytes": 20314,
+      "alt": "The SPELLED GUILTY title lettering (cream and red with navy shadow and cream outline) on a transparent background.",
+      "sourceFile": "aplus/assets/cover_title.png"
+    },
+    {
+      "file": "graphics/clue-note.webp",
+      "w": 867,
+      "h": 610,
+      "bytes": 24592,
+      "alt": "The taped puzzle note from the cover: crossed-out words, circled leftover letters and the line Leftovers: LEFT-HANDED, on a transparent background.",
+      "sourceFile": "aplus/assets/cover_card.png"
+    }
+  ],
+  "cases": [
+    {
+      "id": 1,
+      "title": "Murder at Gull Rock",
+      "setting": "Gull Rock Lighthouse, Cornwall, 1923",
+      "year": 1923,
+      "difficulty": "easy",
+      "pages": [
+        8,
+        9
+      ]
+    },
+    {
+      "id": 2,
+      "title": "The Last Toast at Harrow Hall",
+      "setting": "Harrow Hall, Yorkshire, 1931",
+      "year": 1931,
+      "difficulty": "easy",
+      "pages": [
+        10,
+        11
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Death on the Midnight Express",
+      "setting": "The Midnight Express, the Alps, 1927",
+      "year": 1927,
+      "difficulty": "easy",
+      "pages": [
+        12,
+        13
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Curtain Call for Cora",
+      "setting": "Crescent Theater, Broadway, New York, 1948",
+      "year": 1948,
+      "difficulty": "easy",
+      "pages": [
+        14,
+        15
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Avalanche at Pinewood Lodge",
+      "setting": "Pinewood Lodge, Colorado, 1962",
+      "year": 1962,
+      "difficulty": "easy",
+      "pages": [
+        16,
+        17
+      ]
+    },
+    {
+      "id": 6,
+      "title": "The Captain’s Final Dinner",
+      "setting": "Liner Aurelia, North Atlantic, 1912",
+      "year": 1912,
+      "difficulty": "easy",
+      "pages": [
+        18,
+        19
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Cut! Murder on Stage Four",
+      "setting": "Stage Four, Hollywood, California, 1955",
+      "year": 1955,
+      "difficulty": "easy",
+      "pages": [
+        20,
+        21
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Bitter Grapes at Casa Verde",
+      "setting": "Casa Verde vineyard, Tuscany, 1978",
+      "year": 1978,
+      "difficulty": "easy",
+      "pages": [
+        22,
+        23
+      ]
+    },
+    {
+      "id": 9,
+      "title": "The Star That Never Rose",
+      "setting": "Cerro Alto Observatory, Chile, 1969",
+      "year": 1969,
+      "difficulty": "easy",
+      "pages": [
+        24,
+        25
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Blue Notes and a Blackout",
+      "setting": "Blue Heron Club, New Orleans, 1934",
+      "year": 1934,
+      "difficulty": "easy",
+      "pages": [
+        26,
+        27
+      ]
+    },
+    {
+      "id": 11,
+      "title": "The Ringmaster Vanishes",
+      "setting": "Merriwell Circus, Dayton, Ohio, 1938",
+      "year": 1938,
+      "difficulty": "easy",
+      "pages": [
+        28,
+        29
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Dust in the Egyptian Wing",
+      "setting": "Ravensworth Museum, London, 1951",
+      "year": 1951,
+      "difficulty": "easy",
+      "pages": [
+        30,
+        31
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Sands of the Silent Dig",
+      "setting": "Tell Hamra dig site, Transjordan, 1925",
+      "year": 1925,
+      "difficulty": "easy",
+      "pages": [
+        32,
+        33
+      ]
+    },
+    {
+      "id": 14,
+      "title": "The Orchard Never Forgets",
+      "setting": "Whitcomb Orchard, Vermont, 1946",
+      "year": 1946,
+      "difficulty": "easy",
+      "pages": [
+        34,
+        35
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Stop the Presses",
+      "setting": "Chicago Evening Ledger, Chicago, 1949",
+      "year": 1949,
+      "difficulty": "easy",
+      "pages": [
+        36,
+        37
+      ]
+    },
+    {
+      "id": 16,
+      "title": "The Soprano’s Last Aria",
+      "setting": "Kaiserhof Opera, Vienna, 1899",
+      "year": 1899,
+      "difficulty": "easy",
+      "pages": [
+        38,
+        39
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Trouble at the Dusty Rodeo",
+      "setting": "Dusty Rodeo, Cody, Wyoming, 1957",
+      "year": 1957,
+      "difficulty": "easy",
+      "pages": [
+        40,
+        41
+      ]
+    },
+    {
+      "id": 18,
+      "title": "The Scribe’s Secret",
+      "setting": "Hohenfels Abbey library, Austria, 1888",
+      "year": 1888,
+      "difficulty": "easy",
+      "pages": [
+        42,
+        43
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Cold Blood at Polar Station Nine",
+      "setting": "Polar Station Nine, Canadian Arctic, 1984",
+      "year": 1984,
+      "difficulty": "easy",
+      "pages": [
+        44,
+        45
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Death Before the Morning Bread",
+      "setting": "Moreau Bakery, Paris, 1912",
+      "year": 1912,
+      "difficulty": "easy",
+      "pages": [
+        46,
+        47
+      ]
+    },
+    {
+      "id": 21,
+      "title": "The Formula Dies at Midnight",
+      "setting": "Ashworth Hall Laboratory, Boston, 1957",
+      "year": 1957,
+      "difficulty": "easy",
+      "pages": [
+        48,
+        49
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Orchids and Foxglove",
+      "setting": "Royal Botanic Gardens, Kew, 1904",
+      "year": 1904,
+      "difficulty": "easy",
+      "pages": [
+        50,
+        51
+      ]
+    },
+    {
+      "id": 23,
+      "title": "Fixed at the Finish Line",
+      "setting": "Bluegrass Downs, Lexington, Kentucky, 1951",
+      "year": 1951,
+      "difficulty": "easy",
+      "pages": [
+        52,
+        53
+      ]
+    },
+    {
+      "id": 24,
+      "title": "Room 12 Does Not Answer",
+      "setting": "Hotel Kaiserkrone, Berlin, 1928",
+      "year": 1928,
+      "difficulty": "easy",
+      "pages": [
+        54,
+        55
+      ]
+    },
+    {
+      "id": 25,
+      "title": "Sale Ends in Murder",
+      "setting": "Ashgrove’s Department Store, London, 1936",
+      "year": 1936,
+      "difficulty": "easy",
+      "pages": [
+        56,
+        57
+      ]
+    },
+    {
+      "id": 26,
+      "title": "Paddle Wheel Peril",
+      "setting": "Steamboat Cotton Duchess, Mississippi River, 1881",
+      "year": 1881,
+      "difficulty": "medium",
+      "pages": [
+        58,
+        59
+      ]
+    },
+    {
+      "id": 27,
+      "title": "The Clock Struck Thirteen",
+      "setting": "Old Town Clock Tower, Prague, 1901",
+      "year": 1901,
+      "difficulty": "medium",
+      "pages": [
+        60,
+        61
+      ]
+    },
+    {
+      "id": 28,
+      "title": "Silver and Shadows at Dry Gulch",
+      "setting": "Lucky Widow Mine, Dry Gulch, Nevada, 1874",
+      "year": 1874,
+      "difficulty": "medium",
+      "pages": [
+        62,
+        63
+      ]
+    },
+    {
+      "id": 29,
+      "title": "A Stitch in Crime",
+      "setting": "Maison Roux, Paris, 1957",
+      "year": 1957,
+      "difficulty": "medium",
+      "pages": [
+        64,
+        65
+      ]
+    },
+    {
+      "id": 30,
+      "title": "The Keeper Who Never Fed the Lions",
+      "setting": "Lindenhof Zoo, Berlin, 1932",
+      "year": 1932,
+      "difficulty": "medium",
+      "pages": [
+        66,
+        67
+      ]
+    },
+    {
+      "id": 31,
+      "title": "Dead Air at WKRL",
+      "setting": "WKRL radio station, Detroit, 1958",
+      "year": 1958,
+      "difficulty": "medium",
+      "pages": [
+        68,
+        69
+      ]
+    },
+    {
+      "id": 32,
+      "title": "Going Once, Going Twice, Gone",
+      "setting": "Auction house, Geneva, 1973",
+      "year": 1973,
+      "difficulty": "medium",
+      "pages": [
+        70,
+        71
+      ]
+    },
+    {
+      "id": 33,
+      "title": "Too Many Cooks",
+      "setting": "Cooking school, Lyon, 1966",
+      "year": 1966,
+      "difficulty": "medium",
+      "pages": [
+        72,
+        73
+      ]
+    },
+    {
+      "id": 34,
+      "title": "The Blue Ribbon Murder",
+      "setting": "Cedar County Fair, Iowa, 1952",
+      "year": 1952,
+      "difficulty": "medium",
+      "pages": [
+        74,
+        75
+      ]
+    },
+    {
+      "id": 35,
+      "title": "The Last Chapter",
+      "setting": "Antiquarian bookshop, Edinburgh, 1938",
+      "year": 1938,
+      "difficulty": "medium",
+      "pages": [
+        76,
+        77
+      ]
+    },
+    {
+      "id": 36,
+      "title": "Overboard at the Regatta",
+      "setting": "Private yacht, Monaco, 1964",
+      "year": 1964,
+      "difficulty": "medium",
+      "pages": [
+        78,
+        79
+      ]
+    },
+    {
+      "id": 37,
+      "title": "The Portcullis Falls at Dawn",
+      "setting": "Highland castle, Scotland, 1889",
+      "year": 1889,
+      "difficulty": "medium",
+      "pages": [
+        80,
+        81
+      ]
+    },
+    {
+      "id": 38,
+      "title": "Checkmate in Three Moves",
+      "setting": "Chess club, Budapest, 1959",
+      "year": 1959,
+      "difficulty": "medium",
+      "pages": [
+        82,
+        83
+      ]
+    },
+    {
+      "id": 39,
+      "title": "Balloon Down",
+      "setting": "Balloon festival, Albuquerque, New Mexico, 1992",
+      "year": 1992,
+      "difficulty": "medium",
+      "pages": [
+        84,
+        85
+      ]
+    },
+    {
+      "id": 40,
+      "title": "Leaves of Poison",
+      "setting": "Tea plantation, Ceylon, 1912",
+      "year": 1912,
+      "difficulty": "medium",
+      "pages": [
+        86,
+        87
+      ]
+    },
+    {
+      "id": 41,
+      "title": "A Bottle of Betrayal",
+      "setting": "Ardan Parfums, Grasse, France, 1925",
+      "year": 1925,
+      "difficulty": "medium",
+      "pages": [
+        88,
+        89
+      ]
+    },
+    {
+      "id": 42,
+      "title": "High Noon at the Gold Dust Saloon",
+      "setting": "Gold Dust Saloon, Cinder Flats, Arizona Territory, 1883",
+      "year": 1883,
+      "difficulty": "medium",
+      "pages": [
+        90,
+        91
+      ]
+    },
+    {
+      "id": 43,
+      "title": "The Thesis Nobody Finished",
+      "setting": "University library, Oxford, England, 1976",
+      "year": 1976,
+      "difficulty": "medium",
+      "pages": [
+        92,
+        93
+      ]
+    },
+    {
+      "id": 44,
+      "title": "The Quiet Ward",
+      "setting": "Edelweiss Sanatorium, Davos, Switzerland, 1921",
+      "year": 1921,
+      "difficulty": "medium",
+      "pages": [
+        94,
+        95
+      ]
+    },
+    {
+      "id": 45,
+      "title": "Adrift Above the Atlantic",
+      "setting": "Airship Valkyrie, over the Atlantic, 1930",
+      "year": 1930,
+      "difficulty": "medium",
+      "pages": [
+        96,
+        97
+      ]
+    },
+    {
+      "id": 46,
+      "title": "The Cable Car Stops Halfway",
+      "setting": "Piz Arlas cable car, Swiss Alps, 1957",
+      "year": 1957,
+      "difficulty": "medium",
+      "pages": [
+        98,
+        99
+      ]
+    },
+    {
+      "id": 47,
+      "title": "Foam and Fury",
+      "setting": "Lindwurm Brewery, Munich, Germany, 1905",
+      "year": 1905,
+      "difficulty": "medium",
+      "pages": [
+        100,
+        101
+      ]
+    },
+    {
+      "id": 48,
+      "title": "The Vault Was Never Empty",
+      "setting": "Lakeshore Savings Bank, Chicago, 1932",
+      "year": 1932,
+      "difficulty": "medium",
+      "pages": [
+        102,
+        103
+      ]
+    },
+    {
+      "id": 49,
+      "title": "Tick, Tock, Dead",
+      "setting": "Watchmaker’s workshop, Geneva, Switzerland, 1887",
+      "year": 1887,
+      "difficulty": "medium",
+      "pages": [
+        104,
+        105
+      ]
+    },
+    {
+      "id": 50,
+      "title": "Mulled Wine and Murder",
+      "setting": "Christmas market, Vienna, Austria, 1993",
+      "year": 1993,
+      "difficulty": "medium",
+      "pages": [
+        106,
+        107
+      ]
+    },
+    {
+      "id": 51,
+      "title": "Thin Ice",
+      "setting": "Lakeview Ice Arena, Minneapolis, 1976",
+      "year": 1976,
+      "difficulty": "medium",
+      "pages": [
+        108,
+        109
+      ]
+    },
+    {
+      "id": 52,
+      "title": "A Hole in One, A Body in the Bunker",
+      "setting": "Eden Burn Golf Club, St Andrews, 1962",
+      "year": 1962,
+      "difficulty": "medium",
+      "pages": [
+        110,
+        111
+      ]
+    },
+    {
+      "id": 53,
+      "title": "The Mainsail Mystery",
+      "setting": "Sailing regatta, Newport, Rhode Island, 1958",
+      "year": 1958,
+      "difficulty": "medium",
+      "pages": [
+        112,
+        113
+      ]
+    },
+    {
+      "id": 54,
+      "title": "Steam, Salts and Silence",
+      "setting": "Aranyhid Baths, Budapest, 1937",
+      "year": 1937,
+      "difficulty": "medium",
+      "pages": [
+        114,
+        115
+      ]
+    },
+    {
+      "id": 55,
+      "title": "Salt on the Cannery Wall",
+      "setting": "Pacific Star Cannery, Monterey, California, 1948",
+      "year": 1948,
+      "difficulty": "medium",
+      "pages": [
+        116,
+        117
+      ]
+    },
+    {
+      "id": 56,
+      "title": "The Ambassador’s Last Cable",
+      "setting": "British Embassy, Cairo, 1956",
+      "year": 1956,
+      "difficulty": "hard",
+      "pages": [
+        118,
+        119
+      ]
+    },
+    {
+      "id": 57,
+      "title": "Refuge Number Seven",
+      "setting": "Refuge Number Seven, Dolomites, Italy, 1971",
+      "year": 1971,
+      "difficulty": "hard",
+      "pages": [
+        120,
+        121
+      ]
+    },
+    {
+      "id": 58,
+      "title": "Stamped for Murder",
+      "setting": "Collectors’ convention, Zurich, 1967",
+      "year": 1967,
+      "difficulty": "hard",
+      "pages": [
+        122,
+        123
+      ]
+    },
+    {
+      "id": 59,
+      "title": "The Puppeteer’s Last String",
+      "setting": "Little Lantern Puppet Theater, Prague, 1934",
+      "year": 1934,
+      "difficulty": "hard",
+      "pages": [
+        124,
+        125
+      ]
+    },
+    {
+      "id": 60,
+      "title": "Clay Hands, Cold Heart",
+      "setting": "Pottery studio, Kyoto, Japan, 1989",
+      "year": 1989,
+      "difficulty": "hard",
+      "pages": [
+        126,
+        127
+      ]
+    },
+    {
+      "id": 61,
+      "title": "Scaffolds in the Nave",
+      "setting": "Chartres Cathedral, France, 1924",
+      "year": 1924,
+      "difficulty": "hard",
+      "pages": [
+        128,
+        129
+      ]
+    },
+    {
+      "id": 62,
+      "title": "The Storm Station Goes Silent",
+      "setting": "Hekla Point weather station, Iceland, 1953",
+      "year": 1953,
+      "difficulty": "hard",
+      "pages": [
+        130,
+        131
+      ]
+    },
+    {
+      "id": 63,
+      "title": "Rally to the Grave",
+      "setting": "Mille Strade rally, Tuscany, Italy, 1957",
+      "year": 1957,
+      "difficulty": "hard",
+      "pages": [
+        132,
+        133
+      ]
+    },
+    {
+      "id": 64,
+      "title": "Brushstrokes of Guilt",
+      "setting": "Dubois art school, Paris, 1900",
+      "year": 1900,
+      "difficulty": "hard",
+      "pages": [
+        134,
+        135
+      ]
+    },
+    {
+      "id": 65,
+      "title": "Smoke on the Peat",
+      "setting": "Port Ailsa Distillery, Islay, Scotland, 1938",
+      "year": 1938,
+      "difficulty": "hard",
+      "pages": [
+        136,
+        137
+      ]
+    },
+    {
+      "id": 66,
+      "title": "The Cattle Baron’s Last Roundup",
+      "setting": "Rocking B Ranch, Texas, 1895",
+      "year": 1895,
+      "difficulty": "hard",
+      "pages": [
+        138,
+        139
+      ]
+    },
+    {
+      "id": 67,
+      "title": "Dealer’s Last Hand",
+      "setting": "Casino du Rocher, Monte Carlo, 1961",
+      "year": 1961,
+      "difficulty": "hard",
+      "pages": [
+        140,
+        141
+      ]
+    },
+    {
+      "id": 68,
+      "title": "Lost in the Files",
+      "setting": "Keizer City Archive, Amsterdam, 1946",
+      "year": 1946,
+      "difficulty": "hard",
+      "pages": [
+        142,
+        143
+      ]
+    },
+    {
+      "id": 69,
+      "title": "A Rose by Any Other Poison",
+      "setting": "Chelsea Flower Show, London, 1968",
+      "year": 1968,
+      "difficulty": "hard",
+      "pages": [
+        144,
+        145
+      ]
+    },
+    {
+      "id": 70,
+      "title": "The Cruise That Never Docked",
+      "setting": "Cruise ship Coral Majesty, Caribbean Sea, 2004",
+      "year": 2004,
+      "difficulty": "hard",
+      "pages": [
+        146,
+        147
+      ]
+    },
+    {
+      "id": 71,
+      "title": "The Verdict Was Poisoned",
+      "setting": "Courthouse, Boston, 1952",
+      "year": 1952,
+      "difficulty": "hard",
+      "pages": [
+        148,
+        149
+      ]
+    },
+    {
+      "id": 72,
+      "title": "The Members Only Murder",
+      "setting": "Private gentlemen’s club, London, 1895",
+      "year": 1895,
+      "difficulty": "hard",
+      "pages": [
+        150,
+        151
+      ]
+    },
+    {
+      "id": 73,
+      "title": "Discord at the Conservatory",
+      "setting": "Music conservatory, Vienna, 1912",
+      "year": 1912,
+      "difficulty": "hard",
+      "pages": [
+        152,
+        153
+      ]
+    },
+    {
+      "id": 74,
+      "title": "Series A, Murder Z",
+      "setting": "Tech startup office, San Francisco, 2026",
+      "year": 2026,
+      "difficulty": "hard",
+      "pages": [
+        154,
+        155
+      ]
+    },
+    {
+      "id": 75,
+      "title": "The Premiere Ends in Silence",
+      "setting": "Film festival, Cannes, 1987",
+      "year": 1987,
+      "difficulty": "hard",
+      "pages": [
+        156,
+        157
+      ]
+    },
+    {
+      "id": 76,
+      "title": "The Forgery on Gallery Wall Nine",
+      "setting": "Gallery opening, Florence, 1999",
+      "year": 1999,
+      "difficulty": "hard",
+      "pages": [
+        158,
+        159
+      ]
+    },
+    {
+      "id": 77,
+      "title": "Last Ferry to Nowhere",
+      "setting": "Car ferry, Washington State, 1974",
+      "year": 1974,
+      "difficulty": "hard",
+      "pages": [
+        160,
+        161
+      ]
+    },
+    {
+      "id": 78,
+      "title": "Lost in the Hedge Maze",
+      "setting": "Estate hedge maze, Devon, 1921",
+      "year": 1921,
+      "difficulty": "hard",
+      "pages": [
+        162,
+        163
+      ]
+    },
+    {
+      "id": 79,
+      "title": "The Ice Hotel Melts at Midnight",
+      "setting": "Ice hotel, Lapland, 2016",
+      "year": 2016,
+      "difficulty": "hard",
+      "pages": [
+        164,
+        165
+      ]
+    },
+    {
+      "id": 80,
+      "title": "Behind the Carnival Mask",
+      "setting": "Mask workshop, Venice, 1893",
+      "year": 1893,
+      "difficulty": "hard",
+      "pages": [
+        166,
+        167
+      ]
+    }
+  ],
+  "totals": {
+    "files": 64,
+    "bytes": 5976390,
+    "mb": 5.7
+  }
+}

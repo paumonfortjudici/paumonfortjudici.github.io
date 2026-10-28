@@ -117,7 +117,7 @@
 .w-sg-blurb {
   max-width: 30rem;
   margin: 0;
-  color: rgb(255 242 218 / 0.9);
+  color: rgb(255 246 226 / 0.98);
   font-size: var(--fs-lead);
   line-height: 1.45;
   position: relative;
@@ -130,7 +130,7 @@
   position: absolute;
   inset: -0.9em -1.4em;
   z-index: -1;
-  background: radial-gradient(closest-side, rgb(10 3 7 / 0.62), rgb(10 3 7 / 0));
+  background: radial-gradient(closest-side, rgb(10 3 7 / 0.3), rgb(10 3 7 / 0));
   pointer-events: none;
 }
 
@@ -393,5 +393,43 @@
 @media (min-width: 1700px) {
   .w-sg-title {
     font-size: clamp(15.5rem, 1rem + 12.6vw, 22rem);
+  }
+}
+
+/* the evidence counters: only where the wall has the room (a laptop already has the paragraph; this fills the wide wall) */
+.w-sg-facts {
+  display: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 1500px) {
+  .w-sg-blurb {
+    max-width: 40rem;
+    font-size: clamp(1.25rem, 0.7rem + 0.9vw, 1.7rem);
+  }
+  .w-sg-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(18px, 2vw, 40px);
+    margin-top: 6px;
+  }
+  .w-sg-facts__i {
+    display: grid;
+    gap: 2px;
+    padding-left: 14px;
+    border-left: 4px solid var(--sg-red);
+  }
+  .w-sg-facts__n {
+    font-family: var(--sg-title);
+    font-weight: 800;
+    font-size: clamp(3rem, 1rem + 3vw, 5rem);
+    line-height: 0.9;
+    color: var(--sg-book-cream);
+    font-variant-numeric: tabular-nums;
+  }
+  .w-sg-facts__l {
+    color: rgb(255 242 218 / 0.88);
   }
 }

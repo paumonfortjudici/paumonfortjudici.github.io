@@ -62,8 +62,8 @@ export const POSTERS: readonly PosterData[] = [
     thumb: asset('/works/space-monkey/smith-thumb.webp'),
     width: 1017,
     height: 1500,
-    alt: 'Space Monkey escape-room poster "SMITH": a stern cartoon sergeant in a royal-blue uniform with yellow epaulettes in front of a space-shuttle launch hangar, title in chrome capitals.',
-    caption: 'A stern sergeant, medals on, in the shuttle hangar.',
+    alt: 'Space Monkey escape-room poster "SMITH": a stern cartoon officer in a royal-blue uniform with yellow epaulettes in front of a space-shuttle launch hangar, title in chrome capitals.',
+    caption: 'A stern officer, medals on, in the shuttle hangar.',
     file: 'SMITH 2.jpg',
     created: '13 DEC 2017 / 16:47',
     saved: '20 DEC 2017',
@@ -96,7 +96,7 @@ export interface LogLine {
 
 /** The one line of story is paraphrased from the room's own pages (booking listing + archived site). */
 export const LOG: readonly LogLine[] = [
-  { k: 'What', v: 'The artwork for the room: TYLER, an astronaut over the Earth, and SMITH, a sergeant in a shuttle hangar.' },
+  { k: 'What', v: 'The artwork for the room: TYLER, an astronaut over the Earth, and SMITH, a uniformed officer in a shuttle hangar.' },
   { k: 'Story', v: 'A crew flies the shuttle Icarus to the station Helios, where contact has been lost.' },
   { k: 'Where', v: 'Near Barcelona, in a room built for two to six players.' },
   { k: 'When', v: 'Finished in December 2017. The room opened 61 days after the last save.' },

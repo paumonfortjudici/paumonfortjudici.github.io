@@ -3,7 +3,7 @@
 // arrange them, save the result as a PNG. Concept project: art-directed by Pau, made with AI-assisted tools.
 // The physics and pointer handling live in illustration/board.ts (no React); this file only renders and wires it up.
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
-import { Tape, WorldFacts } from '../components/primitives'
+import { Stamp, Tape, WorldFacts } from '../components/primitives'
 import { useMediaQuery } from '../lib/hooks'
 import { Board } from './illustration/board'
 import { Cast } from './illustration/Cast'
@@ -143,6 +143,7 @@ export default function IllustrationWorld() {
             </header>
             <Lid
               ref={lidRef}
+              badge={<Stamp text="Concept · AI-assisted" rotate={-3} color="var(--ink)" size="0.95rem" thump={false} />}
               tabs={narrow ? undefined : <SaveTab ui={ui} saving={saving} onSave={() => void save()} />}
               footer={<Controls board={board} ui={ui}>{narrow && <SaveTab ui={ui} saving={saving} onSave={() => void save()} short />}</Controls>}
             />
@@ -183,7 +184,7 @@ export default function IllustrationWorld() {
             </div>
             <div>
               <dt>Touch</dt>
-              <dd>Drag a sticker, double-tap to turn it, tap for its tag. The page still scrolls from anywhere that is not a sticker.</dd>
+              <dd>Drag a sticker, or tap it and choose Stick on lid. Double-tap turns it. The page still scrolls from anywhere that is not a sticker.</dd>
             </div>
           </dl>
         </aside>
@@ -195,9 +196,11 @@ export default function IllustrationWorld() {
             <Tape at="tl" color="bubblegum" pattern="dots" w="6rem" />
             <Tape at="tr" color="marigold" pattern="stripes" w="5.5rem" />
             <h3 className="w-illustration-why-title" id="w-illustration-why-h">
-              One outline weight, one halo, one flat colour each.
+              One outline, one halo, one colour each.
             </h3>
-            <p className="w-illustration-why-text">I art-directed all nine so they read as one set. They are invented characters made with AI-assisted tools, not clients or real people.</p>
+            <p className="w-illustration-why-text">
+              I art-directed all nine so they read as one set: a single outline weight, a single white halo, a single flat accent per character. They are invented characters made with AI-assisted tools, not clients or real people.
+            </p>
           </section>
           <WorldFacts work={work} tone={work.ink.toLowerCase() === '#fff2da' ? 'paper' : 'ink'} />
         </div>

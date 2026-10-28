@@ -24,6 +24,11 @@ export const SG = {
     strip: 'Four suspects. One killer.',
     blurb: 'A murder-mystery word search for adults: 80 original cases, four illustrated suspects each, art-directed and published by me.',
     open: 'Open the case',
+    facts: [
+      { n: '80', l: 'cases' },
+      { n: '320', l: 'suspects' },
+      { n: '214', l: 'pages' },
+    ],
     turn: 'Turn the book',
     poses: { front: 'Front', spine: 'Spine', back: 'Back' },
     stage: 'The Spelled Guilty paperback in 3D. Drag to turn it, use the left and right arrow keys, or press Enter to open the case.',

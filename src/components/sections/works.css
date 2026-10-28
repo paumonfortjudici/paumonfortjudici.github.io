@@ -31,7 +31,9 @@
 }
 @media (min-width: 1700px) {
   .pm-wk {
-    --wk-max: 1580px;
+    /* the cabinet is also tied to the screen's height: a featured folder (two rows) must fit a 1080p screen whole, so the width follows
+       the height between 1240px (a short screen) and 1580px (1440p and up) and the row height is capped below (--rowh) */
+    --wk-max: clamp(1240px, calc(100svh * 1.4), 1580px);
   }
 }
 .pm-wk__head,
@@ -192,8 +194,8 @@ html.js .pm-wk__ghost {
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
 }
-/* below 1340px the sub moves under the word and the card sits beside both */
-@media (max-width: 1339px) {
+/* below 1340px, and again from 1700px (where the cabinet is narrower than the sheet and the word is at its largest), the sub sits under the word and the card beside both */
+@media (max-width: 1339px), (min-width: 1700px) {
   .pm-wk__head {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas: 'title keys' 'sub keys';
@@ -568,7 +570,8 @@ html.js .pm-wk__ghost {
   --tab: 32px;
   --txt: 86px;
   --pz: calc(var(--ws) * 0.3 - 20px);
-  --rowh: calc(var(--pz) + var(--tab) + 2 * var(--pad) + (var(--ws) - 2 * var(--pad)) * 1.25 + 10px + var(--txt));
+  --rowh-nat: calc(var(--pz) + var(--tab) + 2 * var(--pad) + (var(--ws) - 2 * var(--pad)) * 1.25 + 10px + var(--txt));
+  --rowh: var(--rowh-nat);
 
   position: relative;
   display: grid;
@@ -752,6 +755,52 @@ html.js .pm-wk__ghost {
     flex: none;
   }
 }
+/* wide screens (1080p and up): the row height is capped so a featured folder (2 rows + the gap) is never taller than the screen below the nav,
+   whatever the monitor; every print then takes what the words leave (object-fit: cover, a crop chosen per folder below) */
+@media (min-width: 1700px) {
+  .pm-wk-grid {
+    --rowh: min(var(--rowh-nat), max(430px, calc((100svh - 150px - var(--g)) / 2)));
+  }
+  .pm-wk-print {
+    flex: 1 1 0;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .pm-wk-cell .pm-wk-text {
+    flex: none;
+  }
+}
+/* the crop of each print when the box is not 4:5 (a window onto the 4:5 art that keeps the recognisable part in view) */
+.pm-wk-card[data-slug='contract'] .pm-wk-print > img {
+  object-position: 50% 0%; /* the masthead of the opening page: OPEN SPACE tab, the headline, the blue shop */
+}
+.pm-wk-card[data-slug='plana'] .pm-wk-print > img {
+  object-position: 50% 18%; /* the browser-and-sun symbol */
+}
+.pm-wk-card[data-slug='fortyfour-lab'] .pm-wk-print > img {
+  object-position: 50% 62%; /* the devil and the logo */
+}
+.pm-wk-card[data-slug='spelled-guilty'] .pm-wk-print > img {
+  object-position: 50% 10%; /* the title and the cover */
+}
+.pm-wk-card[data-slug='space-monkey'] .pm-wk-print > img {
+  object-position: 50% 30%;
+}
+.pm-wk-card[data-slug='procreate'] .pm-wk-print > img {
+  object-position: 50% 38%; /* the two faces */
+}
+.pm-wk-card[data-slug='somia'] .pm-wk-print > img {
+  object-position: 50% 52%; /* the wordmark's gap and the bag */
+}
+.pm-wk-card[data-slug='concept-brand'] .pm-wk-print > img {
+  object-position: 50% 58%; /* the lower half of the 90 and the three mascots */
+}
+.pm-wk-card[data-slug='concept-portfolio'] .pm-wk-print > img {
+  object-position: 50% 62%; /* the FOLEY PORTFOLIO cover and its microphone */
+}
+.pm-wk-card[data-slug='illustration'] .pm-wk-print > img {
+  object-position: 50% 40%;
+}
 .pm-wk-print .pm-wk-tape {
   --w: 30cqw;
   --h: 6.6cqw;
@@ -913,7 +962,7 @@ html.js .pm-wk-card[data-face] .pm-wk-title {
   color: var(--paper);
   -webkit-text-stroke: 0.11em var(--ink);
   paint-order: stroke fill;
-  text-shadow: 0.07em 0.09em 0 var(--tomato);
+  filter: drop-shadow(0.07em 0.09em 0 var(--tomato));
 }
 .pm-wk-card[data-slug='spelled-guilty'] .pm-wk-title {
   --tk: 0.94;
@@ -957,7 +1006,7 @@ html.js .pm-wk-card[data-face] .pm-wk-title {
   color: var(--gotet-red);
   -webkit-text-stroke: 0.1em var(--gotet-ink);
   paint-order: stroke fill;
-  text-shadow: 0.055em 0.065em 0 var(--gotet-blue);
+  filter: drop-shadow(0.055em 0.065em 0 var(--gotet-blue));
 }
 /* the wide Anybody face wraps this title onto two lines at every width, the fallback face onto one: reserve both so the card never changes height when the face arrives */
 .pm-wk-card[data-slug='concept-portfolio'] .pm-wk-title {

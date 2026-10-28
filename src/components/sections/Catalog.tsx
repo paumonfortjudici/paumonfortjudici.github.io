@@ -193,10 +193,11 @@ export function Catalog() {
         <div className="pm-cat-top__card">
           <SearchCard value={query} onChange={changeQuery} onSubmit={submit} onArrowDown={() => focusHead(result.ranked[0] ?? WORKS[0]?.slug)} inputRef={inputRef} />
           <div className="pm-cat-note" aria-hidden="true">
-            <span className="pm-cat-note__t t-hand">{CAT_UI.note}</span>
+            {/* the arrow stands on the left, over spine 01 (the first folder), and the words run on to its right */}
             <span className="pm-cat-note__arrow">
               <Scribble kind="arrow" dir="down" w="5.2rem" color="var(--marigold)" seed="catalog-arrow" stroke={3.6} draw={still ? false : 900} />
             </span>
+            <span className="pm-cat-note__t t-hand">{CAT_UI.note}</span>
           </div>
           <Spines lit={lit} active={result.active} open={openSlug} onPick={jump} />
         </div>

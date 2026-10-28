@@ -115,8 +115,7 @@ export default function Sunrise() {
             A sunrise inside the browser<span className="w-plana-dot">.</span>
           </h4>
           <p className="w-plana-p1__lede">
-            A business coming into the light online. The three dots in the title bar are the three days, painted in sunrise colours: 72 hours, three
-            sunrises.
+            The three dots in the title bar are the three days, painted in sunrise colours: 72 hours, three sunrises.
           </p>
         </div>
 

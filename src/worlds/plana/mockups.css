@@ -37,9 +37,9 @@
   position: relative;
   display: flex;
   width: max-content;
-  align-items: flex-start;
+  align-items: stretch; /* every card is as tall as the tallest: one even band, no poppy left over under a short card */
   gap: var(--gap);
-  padding: clamp(1.1rem, 3cqw, 1.8rem) 16px clamp(0.9rem, 2.4cqw, 1.4rem);
+  padding: clamp(1.1rem, 3cqw, 1.8rem) 16px clamp(1.1rem, 3cqw, 1.8rem);
   user-select: none;
 }
 

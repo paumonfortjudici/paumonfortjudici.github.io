@@ -94,8 +94,9 @@ function JobRow({ job, index }: { job: Job; index: number }) {
         )}
       </div>
       <div className="pm-ab-job__track" aria-hidden="true">
-        <span className="pm-ab-job__y pm-ab-job__y--a">{AXIS_START}</span>
-        <span className="pm-ab-job__y pm-ab-job__y--b">{AXIS_END - 1}</span>
+        {/* the shared 2017 to 2026 axis is written once, on the first gauge; the others are the same scale */}
+        {index === 0 && <span className="pm-ab-job__y pm-ab-job__y--a">{AXIS_START}</span>}
+        {index === 0 && <span className="pm-ab-job__y pm-ab-job__y--b">{AXIS_END - 1}</span>}
         <span className="pm-ab-job__at pm-ab-job__at--s">{short(job.fromIso)}</span>
         <span className="pm-ab-job__at pm-ab-job__at--e">{job.toIso ? short(job.toIso) : TIMELINE.now.toLowerCase()}</span>
         <Clip job={{ ...job, label: 'left' }} />

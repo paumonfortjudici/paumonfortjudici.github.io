@@ -3,7 +3,7 @@
 // is lit by day), the "Pause motion" tab, "Back to cover" as a tab, and the keyboard hints.
 // Clocks: Intl with explicit IANA zones (useClock), tabular figures, not a live region.
 
-import { useRef, type CSSProperties, type MouseEvent } from 'react'
+import { useEffect, useRef, type CSSProperties, type MouseEvent } from 'react'
 import { FOOTER } from '../../lib/copy'
 import { useClock } from '../../lib/hooks'
 import { ArrowIcon, FilmPerforations, Scribble, StrokeWord, TabButton, useRevealOnce } from '../primitives'
@@ -29,7 +29,29 @@ function Clock({ label, timeZone }: { label: string; timeZone: string }) {
 
 export function Footer() {
   const creditsRef = useRef<HTMLDListElement | null>(null)
+  const markRef = useRef<HTMLDivElement | null>(null)
   useRevealOnce(creditsRef, { threshold: 0.35, rootMargin: '0px 0px -4% 0px' })
+
+  // the name is set letter by letter, every letter whole (a half-drawn outline reads as broken type). It starts while the footer is still about
+  // a screen and a half below the window, so by the time the end card arrives the word is usually complete.
+  useEffect(() => {
+    const host = markRef.current
+    if (!host) return
+    if (typeof IntersectionObserver === 'undefined') {
+      host.setAttribute('data-in', 'true')
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return
+        host.setAttribute('data-in', 'true')
+        io.disconnect()
+      },
+      { rootMargin: '0px 0px 160% 0px' },
+    )
+    io.observe(host)
+    return () => io.disconnect()
+  }, [])
 
   const backToCover = (event: MouseEvent<HTMLElement>) => {
     event.preventDefault()
@@ -50,13 +72,14 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="pm-foot__mark" aria-hidden="true">
+          <div className="pm-foot__mark" aria-hidden="true" ref={markRef}>
             <StrokeWord
               as="div"
               text="PAU MONFORT"
               size="16rem"
               stack="mobile"
               stackSize="min(21.5vw, 7.2rem)"
+              draw={false}
               fill="tint"
               shadow="var(--tomato)"
               strokeScale={1.2}

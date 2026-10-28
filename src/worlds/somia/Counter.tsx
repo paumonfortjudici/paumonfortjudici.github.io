@@ -68,9 +68,9 @@ function Receipt() {
 }
 
 // the shop's own seal pressed large into the counter top, the ring stamp around the ribbon S (the real files: they are only 351 and 189 px, so it stays under that)
-function Impression() {
+function Impression({ ghost = false }: { ghost?: boolean }) {
   return (
-    <div className="w-somia-impression" aria-hidden="true">
+    <div className={ghost ? 'w-somia-impression w-somia-impression--ghost' : 'w-somia-impression'} aria-hidden="true">
       <img className="w-somia-impression__ring" src={BRAND.ring} width={351} height={352} alt="" loading="lazy" decoding="async" />
       <img className="w-somia-impression__s" src={BRAND.ribbon} width={189} height={206} alt="" loading="lazy" decoding="async" />
     </div>
@@ -112,6 +112,7 @@ export function Counter({ work }: { work: WorkMeta }) {
               </WorldFacts>
             </div>
             <Impression />
+            <Impression ghost />
           </div>
         </div>
         {/* the site's own "Pause motion" tab, standing on the front panel: the header with the same switch is inert while a world is open,

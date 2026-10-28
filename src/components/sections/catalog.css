@@ -604,8 +604,8 @@
   top: 50%;
   right: calc(var(--cat-meta-w) + var(--cat-gapx) * 0.6);
   /* --m-room is measured in JS (useMotifRoom): the space between the end of the title's longest line and the meta column; 0 = no room */
-  width: min(var(--m-room, 0px), 31rem);
-  height: min(88%, 9.5rem);
+  width: min(var(--m-room, 0px), 38rem);
+  height: min(96%, 12rem);
   transform: translateY(-50%);
   color: color-mix(in srgb, var(--on) 20%, transparent);
   pointer-events: none;
@@ -619,7 +619,6 @@
 .pm-cat-band[data-dark] .pm-cat-motif .m-b { color: color-mix(in srgb, var(--on) 46%, transparent); }
 /* the die-cut paper edge of a sticker: a wide pale line under the drawing, with a faint paper fill */
 .pm-cat-motif .m-keyline { stroke: var(--paper); stroke-opacity: 0.85; stroke-width: 11; fill: var(--paper); fill-opacity: 0.28; }
-.pm-cat-motif .m-text { font-family: var(--font-label); font-weight: 700; font-size: 18px; }
 .pm-cat-title,
 .pm-cat-metarow { position: relative; z-index: 1; }
 @media (hover: hover) and (pointer: fine) {
@@ -966,7 +965,9 @@ html.js .pm-cat-fold[data-open] .pm-cat-cut { animation: pm-cat-stick 0.7s cubic
   letter-spacing: var(--ls-label);
   text-transform: uppercase;
   font-synthesis: none;
-  white-space: nowrap;
+  white-space: normal; /* a long "FILE 06 · EARLY WORK" wraps inside the card */
+  text-wrap: balance;
+  overflow-wrap: anywhere;
 }
 
 /* ---- the matched words: a pen line under them, drawn in ------------------------------------------------------------- */
@@ -1153,3 +1154,14 @@ html[data-motion='paused'].js .pm-cat-stack:not([data-in]) .pm-cat-item { opacit
 html[data-motion='paused'].js .pm-cat-mark::after { animation: none; }
 html[data-motion='paused'] .pm-cat-card__caret[data-on] { animation: none; }
 html[data-motion='paused'] .pm-cat-head:hover .pm-cat-title { transform: none; }
+
+/* a laptop screen (wide but under 1000px tall): the open band is compacted so its OPEN FOLDER button and the next band's tab fit in the same
+   screen as its header: a smaller taped print, a tighter blurb and kit, the file line and the button in one row */
+@media (min-width: 1001px) and (max-height: 999px) {
+  .pm-cat { --cat-print: clamp(11.5rem, min(23vw, 29vh), 32rem); }
+  .pm-cat-blurb { font-size: clamp(1.15rem, min(0.8rem + 1.2vw, 3.1vh), 2.3rem); line-height: 1.3; }
+  .pm-cat-panel { padding-top: 14px; gap: 12px clamp(24px, 4vw, 72px); }
+  .pm-cat-panel__text { gap: 14px; }
+  .pm-cat-kit { margin-top: 0.2rem; gap: 1rem clamp(1.4rem, 2.6vw, 3rem); }
+  .pm-cat-panel__art { padding-top: 1rem; padding-bottom: 0.8rem; }
+}

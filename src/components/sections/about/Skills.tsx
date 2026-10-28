@@ -5,7 +5,6 @@
 import type { CSSProperties } from 'react'
 import { ABOUT } from '../../../lib/copy'
 import { Reveal, Scribble } from '../../primitives'
-import { honest } from './text'
 import { BraceScribble, BracketsIcon, NibIcon, PencilIcon } from './marks'
 import './skills.css'
 
@@ -31,7 +30,7 @@ export default function Skills() {
             </h4>
             <ul className="pm-ab-points" role="list">
               {design.points.map((point) => (
-                <li key={point}>{honest(point)}</li>
+                <li key={point}>{point}</li>
               ))}
             </ul>
           </div>
@@ -48,7 +47,7 @@ export default function Skills() {
             </h4>
             <ul className="pm-ab-points" role="list">
               {draw.points.map((point) => (
-                <li key={point}>{honest(point)}</li>
+                <li key={point}>{point}</li>
               ))}
             </ul>
             <Scribble kind="squiggle" w="5.4rem" color="tomato" stroke={5.5} seed="pm-brush" draw={200} className="pm-ab-brush" />
@@ -69,7 +68,7 @@ export default function Skills() {
                   <span className="pm-ab-ln" aria-hidden="true">
                     {pad2(i + 1)}
                   </span>
-                  {honest(point)}
+                  {point}
                 </li>
               ))}
             </ul>

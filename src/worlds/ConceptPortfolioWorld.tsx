@@ -198,6 +198,14 @@ export default function ConceptPortfolioWorld() {
     { enabled: zoom && !overlayOpen, preventDefault: true },
   )
 
+  // Home / End jump the lane to the first / last slide while the stage is on screen (focus on the lane itself is handled there);
+  // once the page is scrolled down to the credits they scroll the page as usual
+  useKey(
+    ['Home', 'End'],
+    (e) => goTo(e.key === 'End' ? SLIDE_COUNT - 1 : 0),
+    { enabled: !overlayOpen && stageSeen, preventDefault: true },
+  )
+
   // ---- panels and the presenter ---------------------------------------------------------------------------------------------------
   const openPanel = useCallback((kind: Exclude<Panel, null>) => {
     setOpenPin(null)

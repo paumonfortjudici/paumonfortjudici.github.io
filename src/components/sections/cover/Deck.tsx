@@ -2,7 +2,7 @@
 // Each folder is a real <a href="#/work/<slug>"> (middle-click, copy link, Enter) whose body is also the shared element of the
 // folder-open transition (layoutId = folderLayoutId(slug, 'cover')). Hover or keyboard focus lifts the folder with a spring and
 // pulls the project's cut-out ("peek") up from behind its tab. Geometry lives in cover.css, hand-made offsets in ./slots.
-import { useRef, useState, type CSSProperties, type MouseEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowIcon, Folder, Stamp } from '../../primitives'
 import { COVER, pad2 } from '../../../lib/copy'
@@ -34,7 +34,7 @@ function DeckFolder({ work, index, layout, deckWidth, peek, rest, ready }: DeckF
   const slotRef = useRef<HTMLLIElement>(null)
   // cascades (tablet and phone): every cut-out stands out of its folder at all times (there is no hover on a phone), so it is
   // fetched when its folder is within a screen or so of the viewport, not all at once
-  const near = useInView(slotRef, { once: true, rootMargin: '60% 0px 90% 0px' })
+  const near = useInView(slotRef, { once: true, rootMargin: '40% 0px 60% 0px' })
   const showPeek = layout === 'wide' ? peek : ready && near
   const slot = DECK_SLOTS[index]
   const tab = layout === 'wide' ? fitTab(slot.tab.wide, deckWidth, slot.col === 4) : slot.tab[layout]
@@ -42,6 +42,17 @@ function DeckFolder({ work, index, layout, deckWidth, peek, rest, ready }: DeckF
   const label = `Open folder ${pad2(work.n)}: ${work.title}, ${work.kind}${work.years ? `, ${work.years}` : ''}`
   const art = peekFor(work.slug, work.peek)
   const size = art?.size ?? null
+
+  // The 'Open' cursor disc belongs to the tab (it carries the number and the arrow), not to the body: over the title and the
+  // blurb the ring alone grows, so the disc never sits on the folder's own words.
+  useEffect(() => {
+    slotRef.current?.querySelector('.pm-folder__body')?.setAttribute('data-cursor', 'none')
+  }, [])
+
+  // what is stuck on the lower edge: every front-row folder on the wide deck, and the last folder of each cascade (its face is
+  // shown whole there, and without a cut-out of the next folder over its corner it would be the only empty one)
+  const lastOfCascade = (layout === 'duo' && (index === 4 || index === 9)) || (layout === 'solo' && index === 9)
+  const stuck = (layout === 'wide' && !rest) || lastOfCascade
 
   const open = (event: MouseEvent<HTMLAnchorElement>) => {
     // let the browser handle new-tab and download gestures: the href is a real deep link
@@ -119,7 +130,7 @@ function DeckFolder({ work, index, layout, deckWidth, peek, rest, ready }: DeckF
           {/* what is stuck on the lower edge of the front row (the back row's lower edge is hidden behind it): a typed paper label with
               the primary category, or, for concept work, the rubber stamp it wears in its own world (ART_DIRECTION 12.1), pressed on
               after the folders land */}
-          {layout === 'wide' && !rest ? (
+          {stuck ? (
             work.concept ? (
               <span className="cv-face__concept" aria-hidden="true">
                 <Stamp text="Concept" tone="ink" rotate={-7} size="var(--cstamp)" thump={false} rough={2} decorative />

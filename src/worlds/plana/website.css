@@ -7,6 +7,7 @@
   container: w-plana-site / inline-size;
   display: flex;
   flex-direction: column;
+  justify-content: center; /* when the manual next door is taller, the spare height is shared above and below instead of piling up under the caption */
   gap: clamp(0.9rem, 2.2cqw, 1.5rem);
   padding: clamp(0.9rem, 3cqw, 1.8rem);
   padding-bottom: clamp(0.8rem, 2cqw, 1.3rem);

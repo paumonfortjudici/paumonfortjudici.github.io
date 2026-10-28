@@ -8,7 +8,16 @@
 import { useId } from 'react'
 import { PATCH_SRC } from './data'
 
-const STAR = 'M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z'
+// The cut-out is fetched and decoded as soon as the world's code arrives (not when the SVG is first painted), so the patch is whole
+// when its "pop" starts and never fills in late on a cold load.
+if (typeof Image !== 'undefined') {
+  const warm = new Image()
+  warm.decoding = 'async'
+  ;(warm as HTMLImageElement & { fetchPriority?: string }).fetchPriority = 'high'
+  warm.src = PATCH_SRC
+}
+
+const STAR ='M0 -9 L2.2 -2.2 L9 0 L2.2 2.2 L0 9 L-2.2 2.2 L-9 0 L-2.2 -2.2 Z'
 
 export function MissionPatch({ className }: { className?: string }) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '')

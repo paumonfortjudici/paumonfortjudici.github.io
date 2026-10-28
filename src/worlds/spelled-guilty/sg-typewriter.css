@@ -413,3 +413,11 @@
     width: 100%;
   }
 }
+
+/* the scorecard stays beside the machine while the long sheet and the keys scroll past, so the left column is never a dark void */
+@media (min-width: 1024px) and (min-height: 760px) {
+  .w-sg-typecol {
+    position: sticky;
+    top: 76px;
+  }
+}

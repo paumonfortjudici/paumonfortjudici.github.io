@@ -20,7 +20,7 @@ function Lever({ on, busy, onToggle }: { on: boolean; busy: boolean; onToggle: (
           </span>
         </span>
       </Tape>
-      <button type="button" className="w-illustration-lever-hit" role="switch" aria-checked={on} aria-label="Gravity" disabled={busy} onClick={onToggle} data-cursor="Flip" />
+      <button type="button" className="w-illustration-lever-hit" role="switch" aria-checked={on} aria-label="Gravity" disabled={busy} onClick={onToggle} />
     </div>
   )
 }

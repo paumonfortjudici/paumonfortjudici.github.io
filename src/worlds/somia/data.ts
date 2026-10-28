@@ -326,7 +326,7 @@ export const FRAMED: Framed[] = [
     note: 'A two-column photo gallery on the left; title, size and colour pickers and a black button on the right.',
     alt: 'A Somia product page: a two-column gallery of photographs on the left, and on the right the title, a grey bar over the price, size and colour pickers and a black add-to-basket button.',
     frame: 'white',
-    crop: { x: 0.55, y: 0.14, w: 0.43, h: 0.86, ratio: 0.8 },
+    crop: { x: 0.598, y: 0.17, w: 0.3735, h: 0.83, ratio: 0.72 },
   },
   {
     id: 'menu',
@@ -364,7 +364,7 @@ export const FRAMED: Framed[] = [
     note: 'A scroll story: a round fabric swatch and a single line about each of ten materials.',
     alt: 'The Materiales page: a round photograph of a twisted brown fabric on white, next to the title "Algodón 100%" and a short description.',
     frame: 'white',
-    crop: { x: 0.11, y: 0.2, w: 0.72, h: 0.68, ratio: 1.5 },
+    crop: { x: 0.1, y: 0.1, w: 0.74, h: 0.789, ratio: 1.5 },
   },
   {
     id: 'editorial',
@@ -389,7 +389,7 @@ export const FRAMED: Framed[] = [
     note: 'A sticky scroll story: workshop photographs collaged next to the text, with the ring stamp on top.',
     alt: 'A scene of the home page story: the headline "ropa sostenible y ecológica para vivir con estilo y consciencia", a black button and a collage of workshop photographs with the ring stamp.',
     frame: 'sage',
-    crop: { x: 0.5, y: 0.15, w: 0.4, h: 0.72, ratio: 0.8 },
+    crop: { x: 0.5, y: 0.05, w: 0.38, h: 0.895, ratio: 0.68 },
   },
   {
     id: 'cart',
@@ -402,7 +402,7 @@ export const FRAMED: Framed[] = [
     note: 'The basket drawer slides over the page: an empty basket, a few short reassurances and the motto at the bottom.',
     alt: 'The empty basket drawer sliding over a dimmed page, with a line of trust messages and a green line about supporting the job placement of women in Barcelona.',
     frame: 'white',
-    crop: { x: 0.72, y: 0, w: 0.28, h: 0.5, ratio: 0.8 },
+    crop: { x: 0.73, y: 0.02, w: 0.27, h: 0.635, ratio: 0.68 },
   },
 ]
 

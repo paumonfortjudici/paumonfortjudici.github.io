@@ -205,3 +205,10 @@ html[data-motion='paused'] .pm-ab-skill__in--design:hover .pm-ab-fan__chip { tra
   .pm-ab-skill__in--code { transform: none; }
   .pm-ab-fan { right: 54px; }
 }
+
+/* tablet: the full-width code card reads as three numbered columns with the braces beside them, not as three short lines over a bare ink slab */
+@media (min-width: 700px) and (max-width: 899px) {
+  .pm-ab-skill__in--code .pm-ab-points { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 22px; padding: 0 96px 4px 0; }
+  .pm-ab-skill__in--code .pm-ab-points li { padding-left: 30px; text-wrap: pretty; }
+  .pm-ab-braces { top: 50%; bottom: auto; right: 18px; margin-top: -1.6rem; }
+}

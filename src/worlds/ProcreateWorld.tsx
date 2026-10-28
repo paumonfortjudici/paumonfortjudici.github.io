@@ -1,5 +1,5 @@
 // World 6 · Procreate Sketchbook · "Sketchbook Wall"
-// A hand-made wall: five early drawings taped, pinned and clipped to kraft paper on a cork board. Pick a print up and drag it
+// A hand-made wall: four early drawings taped, pinned and clipped to kraft paper on a cork board. Pick a print up and drag it
 // (momentum, a soft bounce at the edges), or do it without a pointer: Tab to a print, arrows nudge it, R turns it, Enter opens
 // a close-up. "Tidy up" (the ruler) squares everything up, "Shuffle" scatters it, the eraser rubs out the handwritten notes.
 // The layout engine is in ./procreate/layout.ts, the content in ./procreate/data.ts, the objects in ./procreate/*.tsx.
@@ -8,7 +8,7 @@ import { Pin, Scribble, Stamp, Tape, TabButton, WorldFacts } from '../components
 import { usePointerFine } from '../lib/hooks'
 import { useWorld } from './WorldContext'
 import { COPY, PORTRAIT_PALETTE, PRINTS, src, type PrintId } from './procreate/data'
-import { fromNorm, kindFor, pickupSpot, planFor, scatter, toNorm, type Mode, type Plan, type Pose, type PoseMap } from './procreate/layout'
+import { CHIP_AT, fromNorm, kindFor, pickupSpot, planFor, scatter, toNorm, type Mode, type Plan, type Pose, type PoseMap } from './procreate/layout'
 import { aimBetween } from './procreate/aim'
 import { Lightbox } from './procreate/Lightbox'
 import { Line } from './procreate/Line'
@@ -33,10 +33,10 @@ if (typeof window !== 'undefined') {
   }
 }
 
-const STACK: PrintId[] = ['logo', 'crest', 'kids', 'quiff', 'cap']
+const STACK: PrintId[] = ['logo', 'crest', 'quiff', 'cap']
 
 /** the little prints of the index are glued on a touch crooked, each its own way */
-const THUMB_TILT = [-2.2, 1.6, -1.1, 2.1, -1.7]
+const THUMB_TILT = [-2.2, 1.6, 2.1, -1.7]
 
 /** the pencil marks that appear round the squared-up row (Tidy up): numbers over the prints in reading order, a measuring line under them */
 function Measure({ row, s, h }: { row: NonNullable<Plan['row']>; s: number; h: number }) {
@@ -359,7 +359,7 @@ export default function ProcreateWorld() {
               {plan?.kind === 'wide' && plan.row && <Measure row={plan.row} s={plan.s} h={plan.wallH} />}
               {plan?.kind === 'wide' && (
                 // a paint-chip card taped between the prints: the four colours of the two portraits, nothing to press
-                <span className="w-procreate-chipcard" aria-hidden="true" style={{ '--s': plan.s } as CSSProperties}>
+                <span className="w-procreate-chipcard" aria-hidden="true" style={{ '--s': plan.s, left: `${CHIP_AT.x * 100}%`, top: `${CHIP_AT.y * 100}%` } as CSSProperties}>
                   <Tape at="top" color="bubblegum" pattern="plain" rotate={-4} w="3.2rem" h="1.1rem" />
                   <span className="w-procreate-chipcard-chips">
                     {PORTRAIT_PALETTE.map((hex) => (

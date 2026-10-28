@@ -158,16 +158,46 @@ function FortyFour() {
 
 // ---------------------------------------------------------------- Spelled Guilty: a word search, the title circled ------
 const GRID = ['SPELLEDKW', 'OTBAHNVRM', 'QGUILTYJX', 'ZDCFMAOPE']
+/**
+ * The letters of the word search are strokes, not text: the motif sits inside the band's heading, and a <text> node would leak the letter
+ * grid into the heading's name, its outline and copy / paste. A 12 x 14 monoline alphabet (round caps, same weight as the rest).
+ */
+const GLYPH: Readonly<Record<string, string>> = {
+  A: 'M1 14L6 1L11 14M3 9.5H9',
+  B: 'M2 1V14M2 1H7C11 1 11 7 7 7H2M7 7C12 7 12 14 7 14H2',
+  C: 'M11 3C8 -1 1 0 1 7.5C1 14 8 15 11 12',
+  D: 'M2 1V14M2 1H5C13 1 13 14 5 14H2',
+  E: 'M11 1H2V14H11M2 7.5H9',
+  F: 'M11 1H2V14M2 7.5H9',
+  G: 'M11 3C8 -1 1 0 1 7.5C1 14 8 15 11 11V8H7',
+  H: 'M2 1V14M10 1V14M2 7.5H10',
+  I: 'M3 1H9M6 1V14M3 14H9',
+  J: 'M10 1V10C10 15 2 15 1 11',
+  K: 'M2 1V14M11 1L2 8.5M5 6L11 14',
+  L: 'M2 1V14H11',
+  M: 'M1 14V1L6 9L11 1V14',
+  N: 'M2 14V1L10 14V1',
+  O: 'M6 1C-1 1 -1 14 6 14C13 14 13 1 6 1Z',
+  P: 'M2 14V1H7C12 1 12 8 7 8H2',
+  Q: 'M6 1C-1 1 -1 14 6 14C13 14 13 1 6 1ZM7 10L12 15',
+  R: 'M2 14V1H7C12 1 12 8 7 8H2M7 8L11 14',
+  S: 'M10.5 3C8 -0.5 1.5 1 2 4.5C2.5 8 10.5 7 10.5 10.5C10.5 14.5 3 15 1 11',
+  T: 'M1 1H11M6 1V14',
+  U: 'M2 1V9C2 15 10 15 10 9V1',
+  V: 'M1 1L6 14L11 1',
+  W: 'M0.5 1L3.5 14L6 5L8.5 14L11.5 1',
+  X: 'M1 1L11 14M11 1L1 14',
+  Y: 'M1 1L6 8L11 1M6 8V14',
+  Z: 'M1 1H11L1 14H11',
+}
 function Guilty() {
   const x = (c: number): number => 201 + c * 30
   return (
     <>
-      <g className="m-a m-text" fill="currentColor" stroke="none" textAnchor="middle">
-        {GRID.map((row, r) => (
-          <text key={row} y={31 + r * 24} x={[...row].map((_, c) => f(x(c))).join(' ')}>
-            {row}
-          </text>
-        ))}
+      <g className="m-a" strokeWidth="2.2">
+        {GRID.map((row, r) =>
+          [...row].map((ch, c) => <path key={`${r}-${c}`} d={GLYPH[ch]} transform={`translate(${f(x(c) - 6)} ${f(18 + r * 24)})`} />),
+        )}
       </g>
       <g className="m-b">
         {/* a pen ring round GUILTY, drawn twice like a real one */}

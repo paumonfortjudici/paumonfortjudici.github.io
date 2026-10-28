@@ -2,13 +2,13 @@
 
 Slug `fortyfour-lab` · folder colour marigold `#FFB81C` (ink text) · files: `src/worlds/FortyFourLabWorld.tsx` (default export, lazy chunk) and `src/worlds/fortyfour-lab/**` (CSS prefix `w-fortyfour-lab-`). Nothing outside those paths was touched.
 
-The world is a **tufted rug hung from a marigold rail** (the folder's own colour, so the shell's tab strip joins it). The whole Instagram wall of the account (13 posts, 2023-03-08 to 2023-06-30) hangs on it as **tags on one vertical stitched thread**, in date order, under huge Chango month banners. A hand-drawn **devil walks the thread as you scroll** and the thread is sewn behind him. Production chunk: 15.1 KB gz JS + 7.1 KB gz CSS + a 1.1 KB worker + Chango 12 KB. No server, no network call, no third-party script.
+The world is a **tufted rug hung from a marigold rail** (the folder's own colour, so the shell's tab strip joins it). The whole Instagram wall of the account (13 posts, 2023-03-08 to 2023-06-30) hangs on it as **tags on one vertical stitched thread**, in date order, under huge Chango month banners. The **devil (the logo) walks the thread as you scroll** and the thread is sewn behind him. Production chunk: 15.1 KB gz JS + 7.1 KB gz CSS + a 1.1 KB worker + Chango 12 KB. No server, no network call, no third-party script.
 
 ## 1. File map
 
 | File | What it is |
 |---|---|
-| `FortyFourLabWorld.tsx` | composes the world: rail, wall (rug border bands, `Hero`, `Feed`, `Thread`), `Footer`. Starts the pile tiles and the hand-writing face the moment the chunk is evaluated (the folder is still opening). Owns `wide` (`min-width: 1000px`). |
+| `FortyFourLabWorld.tsx` | composes the world: rail, wall (rug border bands, `Hero`, `Feed`, `Thread`), `Footer`. Starts the pile tiles and the hand-writing face the moment the chunk is evaluated (the folder is still opening). Owns `wide` (`WIDE_QUERY` in `format.ts`: `min-width: 740px`; the hero keeps its own 1000 px breakpoint in the CSS). |
 | `fortyfour-lab/Hero.tsx` | first screen: the `44 LAB` wordmark cut-out (the heading is screen-reader only), the profile label (avatar, bio in English, Instagram ticket), the intro lines, the empty `data-ffl-slot` where the devil stands before he walks. |
 | `fortyfour-lab/Feed.tsx` | the content of the wall in reading order: month banners, key card, the 13 tags, the "30+" patch, the size chart, the end stack. Wide layout: hangs every box with `pack()` (section 3). |
 | `fortyfour-lab/pack.ts` | pure, DOM-free stacking routine for the wide layout (two columns, staggered). |
@@ -35,7 +35,7 @@ The world is a **tufted rug hung from a marigold rail** (the folder's own colour
 
 ## 3. Layout
 
-* **Narrow (< 1000 px)**: one column in DOM order; `Feed` removes its row styles. Tags are 31 to 38 rem wide, the eyelet is on the right of every tag.
+* **Narrow (< 740 px)**: one column in DOM order; `Feed` removes its row styles. Tags are 31 to 38 rem wide, the eyelet is on the right of every tag. From 740 px the feed zips in two columns (tags about 270 px at 768, a 9.5 rem spine, devil 8.8 rem wide); the hero is the two-column tablet hero up to 999 px and the poster hero from 1000 px.
 * **Wide**: the feed is a 3-column grid (left tags | spine | right tags) with `grid-auto-rows: 8px`. `Feed` measures every `[data-pack]` box (height plus margins) in a layout effect and `pack(slots, heights)` returns the top of each box; `--row` and `--span` are written as custom properties (no React state, nothing re-renders). A post goes in its own column under whatever is already there and never higher than half the previous post's height below that post's top, so the two columns interleave like a zip. A month banner goes in the column the first post of its month is not in, beside that post. The first banner spans all columns. Re-packed on width change (`ResizeObserver`), on `document.fonts` events and when `wide` changes. A CSS grid with auto rows could not do this: a row shared by a short and a tall item leaves a hole.
 * Reels are a slim film strip (0.84 of a photo tag's width) so heights match their neighbours.
 * Month banners fill their cell: font size is a fraction of the cell's container width (`cqw`), tuned per word from the measured width of Chango (APRIL 4.35 em, MAY 3.19 em, JUNE 3.39 em). The note under a side banner hangs at the end that does not touch the spine.
@@ -54,10 +54,10 @@ The world is a **tufted rug hung from a marigold rail** (the folder's own colour
 ## 5. Posts
 
 * 13 tags in the manifest's date order. Dates are the manifest strings (`2023-03-08`) formatted by hand (`8 MAR 2023` stamp, `8 March 2023` for screen readers): nothing is converted to a time zone.
-* **Carousels (6)**: a ring of tags (each slide is a tag threaded on the same eyelet, fanned out). Only the top tag, the next and the previous hold a picture, and the pictures are lazy, so a long carousel never decodes more than three images. Slide counter `01 / 05`, polite live region with the alt text. The label says `Photos`, or `Photos + clip` when one slide is a video. **Keyboard**: Tab reaches Previous and Next (two stops per carousel); ArrowLeft / ArrowRight / Home / End flip it while focus is on either button or the clip tab; plain arrows do nothing elsewhere (they scroll the world). **Touch / mouse**: swipe or drag the tag (it turns around its eyelet; a vertical swipe still scrolls the page). Reduced motion: poses are set, not animated.
+* **Carousels (6)**: a ring of tags (each slide is a tag threaded on the same eyelet, fanned out). Only the top tag, the next and the previous hold a picture, and the pictures are lazy, so a long carousel never decodes more than three images. Slide counter `01 / 05`; the Previous / Next tabs are 44 px tall and 58 px wide at every width. One polite live region speaks at a time: the carousel that was flipped last (the others stay empty). The label says `Photos`, or `Photos + clip` when one slide is a video. **Keyboard**: Tab reaches Previous and Next (two stops per carousel); ArrowLeft / ArrowRight / Home / End flip it while focus is on either button or the clip tab; plain arrows do nothing elsewhere (they scroll the world). **Touch / mouse**: swipe or drag the tag (it turns around its eyelet; a vertical swipe still scrolls the page). Reduced motion: poses are set, not animated.
 * **Reels (7)**: a strip of dark film with sprocket holes. Six are **stills** (copyright-flagged audio): the poster frame, a visible `STILL` mark and the line `Reel, still frame`; no video element exists for them. One reel, "Rug process", is a clip and its label is a timecode, `Reel, 01:14`.
 * **Clips (4)**: that reel plus the video slides of three carousels (10.8 s, 13.7 s, 13.9 s). The `<video>` is created only when the clip is within 60 % of a screen of the viewport, `preload="none"`, `muted loop playsInline`, poster = the real poster frame. Plays while at least 40 % is on screen, on top of its stack, the tab is visible and motion is allowed; pauses otherwise. A visible tab (Pause / Play, 44 px on touch) overrides; a clip the visitor paused stays paused. Under reduced motion it never autoplays but Play works. Verified: no video request until a clip nears the viewport; `muted`, `preload="none"`; paused again when scrolled away or flipped away.
-* **Copy**: titles and notes are mine (`posts.ts`). A caption that names a real person or a brand is reduced to the kind of rug ("Cut-out portrait rug", "Faceted portrait rug", "Greyscale portrait rug", "Sneaker rugs"); a third-party character is "a pink ghost rug". Nobody is named as the person tufting in the reel stills.
+* **Copy**: titles and notes are mine (`posts.ts`). A caption that names a real person or a brand is reduced to the kind of rug ("Cut-out rug", "Faceted portrait rug", "Greyscale portrait rug", "Sneaker rugs"); a third-party character is "a pink ghost rug". Nobody is named as the person tufting in the reel stills.
 
 ## 6. Other objects on the wall
 
@@ -104,3 +104,12 @@ Tools: `tools/shot.mjs` style runs through my own runner (retries when another a
 * The wall is only 16 weeks long (13 posts). The end card says the grid went quiet; there is nothing newer to show.
 * The tufted pile is generated, not photographed: it reads as rug at normal size and as a pattern if you zoom in on a 4K screen.
 * On a phone the walking devil briefly overlaps the edge of the intro text (his trident side extends left of the thread).
+
+
+## Round 1 fixes
+
+* The copy no longer says Pau drew the devil by hand (the notes do not say how the logo was made): the hero says "the mischievous devil that is its logo", and the footer slate shows Tools: Tufting gun (a local override of the registry value in `Footer.tsx`). `src/lib/works.ts`, `about/text.ts` and `catalog/strings.ts` still say hand-drawn: not mine, reported.
+* 2023 sales language is in the past tense (`posts.ts`).
+* Chango titles carry their offset shadow as `filter: drop-shadow` (not `text-shadow`); the month banner fuzz keeps `background-clip: text` (a texture tile clipped to the letter faces, marked `taste-skill-ignore`).
+* The month heading is one accessible name ("March 2023", `aria-label`); the visual word and the year badge are `aria-hidden`.
+* Mobile month banners are 12.8vw so the walking devil on the right-hand thread clears them.

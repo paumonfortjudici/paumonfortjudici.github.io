@@ -46,7 +46,7 @@
   margin: 0;
   color: var(--holm);
   font-family: var(--font-display);
-  font-size: 5.5cqw;
+  font-size: 4.4cqw;
   font-weight: 800;
   letter-spacing: -0.048em;
   line-height: 0.95;
@@ -442,13 +442,13 @@ html.js .w-plana-sticker[data-in='false'] {
 
 .w-plana-step__in[data-on='true'] {
   visibility: visible;
-  animation: w-plana-step-in 0.45s var(--ease-out) both;
+  animation: w-plana-step-in 0.16s ease-out both; /* short and opacity-led: the caption is at full contrast almost at once */
 }
 
 @keyframes w-plana-step-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(3px);
   }
   to {
     opacity: 1;
@@ -719,6 +719,9 @@ html.js .w-plana-sticker[data-in='false'] {
 
 /* ---- still: the symbol stands at day 3, nothing travels --------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+  .w-plana-step__in[data-on='true'] {
+    animation: none;
+  }
   html.js .w-plana-rise[data-risen='false'] {
     transform: none;
   }
@@ -731,6 +734,9 @@ html.js .w-plana-sticker[data-in='false'] {
   }
 }
 
+html[data-motion='paused'] .w-plana-step__in[data-on='true'] {
+  animation: none;
+}
 html[data-motion='paused'].js .w-plana-rise[data-risen='false'] {
   transform: none;
 }

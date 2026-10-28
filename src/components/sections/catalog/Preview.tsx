@@ -15,7 +15,7 @@ import { Thumb } from './Thumb'
 
 /** size of the card in css px (keep in sync with .pm-cat-peek): used to keep it inside the viewport */
 const CARD_W = 160
-const CARD_H = 226
+const CARD_H = 240
 /** how far the card keeps clear of the pointer (right of it and above it), so the band under the pointer stays readable */
 const GAP = 40
 const NAV_CLEAR = 78

@@ -29,9 +29,9 @@ export const INTRO_END = INTRO.hold + INTRO.stagger * 6 + INTRO.wipe // 1132
 const SEEN_KEY = 'pm-intro-seen'
 
 /**
- * While the site is being built, many screenshot scripts load the page and look at it a second later: they would all catch the bars.
- * So an automated browser (navigator.webdriver) does not get the intro unless the URL says `?intro=1`. Set this to `false` for a final
- * review or a QA run that should see the intro exactly as a visitor does (real browsers are not affected either way).
+ * Automated browsers (navigator.webdriver: crawlers, audit tools, screenshot scripts) load the page and look at it a second later, so
+ * they would all catch the colour bars. They skip the intro unless the URL says `?intro=1`. Real visitors always get it once per
+ * session (set this to `false` to make a QA run see the intro exactly as a visitor does).
  */
 const SKIP_FOR_AUTOMATION = true
 

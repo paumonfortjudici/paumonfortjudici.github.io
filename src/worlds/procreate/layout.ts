@@ -45,6 +45,8 @@ export interface Plan {
   tidy: PoseMap
   /** wide walls: where the squared-up row sits, so the pencil measuring marks can be drawn round it (wall pixels) */
   row?: { top: number; bottom: number; left: number; right: number; centres: { id: PrintId; cx: number; w: number }[] }
+  /** wide walls: the paint-chip card taped to the kraft (wall pixels). It is not a print, but Shuffle keeps the prints off it */
+  chip?: { x: number; y: number; w: number; h: number }
 }
 
 const PAD = 0.045
@@ -122,17 +124,18 @@ export function range(d: Dims, scale: number, W: number, H: number): { minX: num
 // ---- wide: the designed wall -----------------------------------------------------------------------------------------------
 const REF = { w: 1380, h: 520 }
 /** outer width of every print at reference scale */
-const WIDE_W: Record<PrintId, number> = { logo: 372, crest: 322, kids: 272, cap: 262, quiff: 230 }
+const WIDE_W: Record<PrintId, number> = { logo: 410, crest: 350, cap: 285, quiff: 245 }
 /** hand-hung poses at reference scale: top-left in a 1380 x 520 wall, rotation in degrees */
 const WIDE_LOOSE: Record<PrintId, Pose> = {
-  logo: { x: 20, y: 128, rot: -2.4 },
-  crest: { x: 360, y: 28, rot: 2.1 },
-  kids: { x: 668, y: 252, rot: -3.1 },
-  cap: { x: 902, y: 66, rot: 2.6 },
-  quiff: { x: 1140, y: 24, rot: -2.4 },
+  logo: { x: 18, y: 132, rot: -2.4 },
+  crest: { x: 440, y: 22, rot: 2.1 },
+  cap: { x: 840, y: 40, rot: 2.6 },
+  quiff: { x: 1115, y: 30, rot: -2.4 },
 }
+/** where the paint-chip card is taped, as a share of the wall (the world sets its left / top from the same numbers) */
+export const CHIP_AT = { x: 0.35, y: 0.74 }
 /** left-to-right order of the neat row */
-const ROW: PrintId[] = ['logo', 'crest', 'kids', 'cap', 'quiff']
+const ROW: PrintId[] = ['logo', 'crest', 'cap', 'quiff']
 
 function wideDims(s: number): DimsMap {
   const out = {} as DimsMap
@@ -164,7 +167,9 @@ function planWide(W: number, H: number): Plan {
   // tidy: one row hung on the wall's middle line, equal gaps (the edges count as gaps), the prints shrunk just enough to fit
   const total = ROW.reduce((acc, id) => acc + dims[id].w, 0)
   const minGap = 20
-  const st = clamp((W - minGap * (ROW.length + 1)) / total, 0.4, 1)
+  // the row also leaves room above (the pencil numbers) and below (the measuring line), so it never grows past the wall's height less 130 px
+  const tallest = Math.max(...ROW.map((id) => dims[id].h))
+  const st = clamp(Math.min((W - minGap * (ROW.length + 1)) / total, (H - 130) / tallest), 0.4, 1)
   const gap = (W - total * st) / (ROW.length + 1)
   const tidy = {} as PoseMap
   let left = gap
@@ -180,13 +185,14 @@ function planWide(W: number, H: number): Plan {
     centres.push({ id, cx: left + (d.w * st) / 2, w: d.w * st })
     left += d.w * st + gap
   }
-  return { kind: 'wide', s, dims, wallH: H, loose, tidy, row: { top, bottom, left: gap, right: W - gap, centres } }
+  const chip = { x: W * CHIP_AT.x, y: H * CHIP_AT.y, w: 142 * s, h: 96 * s }
+  return { kind: 'wide', s, dims, wallH: H, loose, tidy, row: { top, bottom, left: gap, right: W - gap, centres }, chip }
 }
 
 // ---- mid and narrow: stacked prints ---------------------------------------------------------------------------------------
-const MID_FR: Record<PrintId, number> = { logo: 0.98, crest: 0.88, kids: 0.7, cap: 0.8, quiff: 0.7 }
-const NARROW_FR: Record<PrintId, number> = { logo: 0.88, crest: 0.74, kids: 0.62, cap: 0.68, quiff: 0.6 }
-const NARROW_ORDER: PrintId[] = ['logo', 'crest', 'kids', 'cap', 'quiff']
+const MID_FR: Record<PrintId, number> = { logo: 0.98, crest: 0.88, cap: 0.8, quiff: 0.7 }
+const NARROW_FR: Record<PrintId, number> = { logo: 0.88, crest: 0.74, cap: 0.68, quiff: 0.6 }
+const NARROW_ORDER: PrintId[] = ['logo', 'crest', 'cap', 'quiff']
 const STACK_GAP = 26
 const STACK_PAD = 26
 
@@ -205,7 +211,7 @@ function planMid(W: number): Plan {
   // best split of the five prints into two columns (smallest taller column)
   const ids = PRINTS.map((p) => p.id)
   let best: { cols: [PrintId[], PrintId[]]; height: number } | null = null
-  for (let mask = 1; mask < 31; mask++) {
+  for (let mask = 1; mask < (1 << ids.length) - 1; mask++) {
     const a = ids.filter((_, i) => mask & (1 << i))
     const b = ids.filter((_, i) => !(mask & (1 << i)))
     const hA = a.reduce((acc, id) => acc + dims[id].h + STACK_GAP, 0)
@@ -213,7 +219,8 @@ function planMid(W: number): Plan {
     const height = Math.max(hA, hB)
     if (!best || height < best.height - 1) best = { cols: [a, b], height }
   }
-  const cols = best!.cols
+  // the first print in the reading order hangs in the left column
+  const cols = best!.cols[1].includes(ids[0]) ? ([best!.cols[1], best!.cols[0]] as [PrintId[], PrintId[]]) : best!.cols
   const loose = {} as PoseMap
   const tidy = {} as PoseMap
   let wallH = 0
@@ -292,6 +299,7 @@ function worstCover(boxes: Box[]): number {
  */
 export function scatter(plan: Plan, W: number, seed: number): PoseMap {
   const rand = rng(seed * 7919 + 17)
+  const chip = plan.chip
   // the big ones first: they are the hardest to place
   const order = [...PRINTS].sort((a, b) => plan.dims[b.id].w * plan.dims[b.id].h - plan.dims[a.id].w * plan.dims[a.id].h)
   const throws: { boxes: Box[]; worst: number }[] = []
@@ -303,7 +311,8 @@ export function scatter(plan: Plan, W: number, seed: number): PoseMap {
       let bestTotal = Infinity
       for (let tries = 0; tries < 90; tries++) {
         const box = { x: 6 + rand() * Math.max(0, W - d.w - 12), y: 6 + rand() * Math.max(0, plan.wallH - d.h - 12), w: d.w, h: d.h }
-        const total = boxes.reduce((acc, other) => acc + overlap(fat(box), fat(other)), 0)
+        // the paint-chip card counts three times: a print that lands on it hides a whole card, not a corner
+        const total = boxes.reduce((acc, other) => acc + overlap(fat(box), fat(other)), 0) + (chip ? 3 * overlap(box, chip) : 0)
         if (total < bestTotal) {
           bestTotal = total
           best = box
@@ -311,7 +320,9 @@ export function scatter(plan: Plan, W: number, seed: number): PoseMap {
       }
       boxes.push(best)
     }
-    throws.push({ boxes, worst: worstCover(boxes) })
+    // a throw that lands prints on the chip card is as bad as one that piles prints on each other
+    const onChip = chip ? Math.max(...boxes.map((b) => overlap(b, chip) / (chip.w * chip.h))) : 0
+    throws.push({ boxes, worst: worstCover(boxes) + onChip })
   }
   throws.sort((a, b) => a.worst - b.worst)
   const chosen = throws[Math.floor(rand() * 3)].boxes

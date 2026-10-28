@@ -566,21 +566,58 @@ export class Board {
       el.style.setProperty('--ex', `${Math.max(Math.abs(e.minX), Math.abs(e.maxX)).toFixed(1)}px`)
       el.style.setProperty('--ey-top', `${(-e.minY).toFixed(1)}px`)
       el.style.setProperty('--ey-bot', `${e.maxY.toFixed(1)}px`)
-      const tagW = Math.min(this.ui.tagMode === 'caption' ? 310 : 344, this.geo.stage.w - 24)
-      el.style.setProperty('--tag-dx', `${(clamp(L.x, tagW / 2 + 10, this.geo.stage.w - tagW / 2 - 10) - L.x).toFixed(1)}px`)
-      // below the sticker, unless that would hang over the controls (lid) or run off the visible area (sheet): then above it
-      const sr = this.scroller?.getBoundingClientRect()
-      const st = this.stage?.getBoundingClientRect()
-      const tagH = this.ui.tagMode === 'caption' ? 124 : 176
-      const lid = this.geo.lid
-      const visibleBottom = sr && st ? sr.bottom - st.top : this.geo.stage.h
-      const visibleTop = sr && st ? sr.top - st.top : 0
-      const bottomLimit = L.place === 'lid' && this.geo.controlsBelow ? Math.min(lid.y + lid.h + 8, visibleBottom) : visibleBottom
-      const topLimit = L.place === 'lid' ? Math.max(lid.y - 100, visibleTop) : visibleTop
-      const roomBelow = bottomLimit - (L.y + e.maxY + 20)
-      const roomAbove = L.y + e.minY - 20 - topLimit
-      el.dataset.tag = roomBelow >= tagH ? 'below' : roomAbove >= tagH ? 'above' : roomBelow >= roomAbove ? 'below' : 'above'
+      this.placeTag(el, L, e)
     }
+  }
+
+  /**
+   * Where the caption tag hangs. A tag on the lid stays inside the lid (it never covers the title, the Save tab or the control row):
+   * below the sticker, else above it, else beside it (the side with more room), else laid over the lid at the nearest legal spot.
+   * A tag of a sticker on the sheet hangs below, else above, inside the visible part of the scroller. The CSS reads data-tag
+   * ('below' | 'above' | 'free') and, for 'free', the tag's top-left corner as --tag-x / --tag-y (px from the sticker's centre).
+   */
+  private placeTag(el: HTMLElement, L: Live, e: { minX: number; maxX: number; minY: number; maxY: number }): void {
+    const caption = this.ui.tagMode === 'caption'
+    const tagW = Math.min(caption ? 310 : 344, this.geo.stage.w - 24)
+    const tagH = caption ? 124 : 176
+    const gap = 20
+    el.style.setProperty('--tag-dx', `${(clamp(L.x, tagW / 2 + 10, this.geo.stage.w - tagW / 2 - 10) - L.x).toFixed(1)}px`)
+    const sr = this.scroller?.getBoundingClientRect()
+    const st = this.stage?.getBoundingClientRect()
+    const lid = this.geo.lid
+    const visibleBottom = sr && st ? sr.bottom - st.top : this.geo.stage.h
+    const visibleTop = sr && st ? sr.top - st.top : 0
+    const onLid = L.place === 'lid'
+    // the box the tag must stay in
+    const top = onLid ? Math.max(lid.y + 4, visibleTop) : visibleTop
+    const bottom = onLid && this.geo.controlsBelow ? Math.min(lid.y + lid.h - 4, visibleBottom) : visibleBottom
+    const left = onLid ? lid.x + 4 : 8
+    const right = onLid ? lid.x + lid.w - 4 : this.geo.stage.w - 8
+    const roomBelow = bottom - (L.y + e.maxY + gap)
+    const roomAbove = L.y + e.minY - gap - top
+    let mode: 'below' | 'above' | 'free'
+    if (roomBelow >= tagH) mode = 'below'
+    else if (roomAbove >= tagH) mode = 'above'
+    else if (!onLid) mode = roomBelow >= roomAbove ? 'below' : 'above'
+    else {
+      mode = 'free'
+      const roomRight = right - (L.x + e.maxX + 14)
+      const roomLeft = L.x + e.minX - 14 - left
+      let tx: number
+      let ty: number
+      if (roomRight >= tagW || roomLeft >= tagW) {
+        // beside the sticker, level with its middle
+        tx = roomRight >= roomLeft ? L.x + e.maxX + 14 : L.x + e.minX - 14 - tagW
+        ty = clamp(L.y - tagH / 2, top, Math.max(top, bottom - tagH))
+      } else {
+        // no free side: lay it over the lid at the edge with more room, so it covers as little of the sticker as it can
+        tx = clamp(L.x - tagW / 2, left, Math.max(left, right - tagW))
+        ty = roomBelow >= roomAbove ? Math.max(top, bottom - tagH) : top
+      }
+      el.style.setProperty('--tag-x', `${(tx - L.x).toFixed(1)}px`)
+      el.style.setProperty('--tag-y', `${(ty - L.y).toFixed(1)}px`)
+    }
+    el.dataset.tag = mode
   }
 
   private renderFold(L: Live): void {

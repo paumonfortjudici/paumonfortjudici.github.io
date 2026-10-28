@@ -1731,6 +1731,24 @@ html.js .w-fortyfour-lab-intro {
   }
 }
 
+/* ---- small laptops: the label is only four columns wide, so its name and handle get a smaller avatar and never break ---- */
+@media (min-width: 1000px) and (max-width: 1279px) {
+  .w-fortyfour-lab-avatar {
+    width: 3.9em;
+    height: 3.9em;
+  }
+  .w-fortyfour-lab-who-name,
+  .w-fortyfour-lab-who-handle {
+    white-space: nowrap;
+  }
+  .w-fortyfour-lab-who-name {
+    font-size: 1.5rem;
+  }
+  .w-fortyfour-lab-who-handle {
+    letter-spacing: 0.04em;
+  }
+}
+
 /* ---- tablet, 740 to 999: the same zip with narrow tags (about 270px at 768) and a spine that is wide enough for a walking devil ---- */
 @media (min-width: 740px) and (max-width: 999px) {
   .w-fortyfour-lab {

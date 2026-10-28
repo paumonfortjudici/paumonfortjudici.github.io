@@ -82,6 +82,7 @@ export const COPY = {
     on: 'Sound board on. Press a prop to hear it.',
     off: 'Sound board off.',
     honest: 'Synthesised in your browser: no recordings',
+    honestShort: 'Synthesised here: no recordings',
     help: 'Turns the props on the slides into instruments. Off until you switch it on. Synthesised in your browser: no recordings.',
     hint: 'Tap the props on the slide',
     unavailable: 'This browser cannot make sound.',

@@ -1,6 +1,6 @@
 /* ==========================================================================
    world: procreate  -  "Sketchbook Wall"
-   A kraft-paper wall on a cork board, five prints taped / pinned / clipped to it, a ledge with a ruler, an eraser and a pencil.
+   A kraft-paper wall on a cork board, four prints taped / pinned / clipped to it, a ledge with a ruler, an eraser and a pencil.
    Faces: Gloria Hallelujah (pencil handwriting, loaded by the world host) + Karla body, Courier Prime for the small labels.
    Colour: the folder is bubblegum; the wall is kraft (#C9A778) on cork (#A8834F); bubblegum and marigold tape; ink for pencil.
    Everything is prefixed w-procreate-. Animations: transform, opacity and clip-path only; every one has a still path
@@ -313,8 +313,8 @@
 .w-procreate-chipcard {
   position: absolute;
   z-index: 0;
-  left: 51%;
-  top: 7.5%;
+  left: 35%;
+  top: 79%;
   display: grid;
   gap: calc(var(--s, 1) * 8px);
   width: calc(var(--s, 1) * 142px);
@@ -879,10 +879,10 @@
 
 .w-procreate-list-item {
   display: grid;
-  grid-template-columns: clamp(100px, 9.6vw, 138px) minmax(0, 1fr) auto;
+  grid-template-columns: clamp(112px, 11.4vw, 170px) minmax(0, 1fr) auto;
   align-items: center;
   gap: 6px clamp(16px, 2vw, 32px);
-  padding: 18px 0 19px;
+  padding: 24px 0 25px;
   border-bottom: 1.5px dashed color-mix(in srgb, var(--ink) 28%, transparent);
   cursor: pointer;
 }
@@ -1040,7 +1040,7 @@
   --font-display: 'Fraunces Variable', 'Fraunces Fallback', Georgia, 'Times New Roman', serif;
 }
 
-/* the right-hand column of the strip: the palette card, then the facts slate that ends the world. While the five rows
+/* the right-hand column of the strip: the palette card, then the facts slate that ends the world. While the four rows
    scroll past it stays in view (it is a column of paper stuck to the board), and it comes to rest with the end of the strip. */
 .w-procreate-side {
   display: grid;
@@ -1331,4 +1331,27 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px 8px;
   }
+}
+
+/* nothing in this world is read under 14 px: the shared labels (tab buttons, slate keys, stamp sub-line) go up one step here */
+.w-procreate .pm-tabbtn,
+.w-procreate-lb .pm-tabbtn,
+.w-procreate .pm-slate__k,
+.w-procreate-chip-hex,
+.w-procreate-dymo {
+  font-size: max(var(--fs-label), 14px);
+}
+
+.w-procreate .pm-stamp__sub {
+  font-size: max(0.42em, 14px);
+}
+
+/* squared up = put away: the loose paint-chip card is tidied off the wall while the prints hang in a neat row */
+.w-procreate-chipcard {
+  transition: opacity 0.4s var(--ease-out), translate 0.4s var(--ease-out);
+}
+
+.w-procreate[data-mode='tidy'] .w-procreate-chipcard {
+  opacity: 0;
+  translate: 0 10px;
 }

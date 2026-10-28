@@ -251,6 +251,18 @@
   bottom: -6px;
 }
 
+/* no free side and no room above or below on the lid: the tag lies over the lid at a spot the board computed (--tag-x, --tag-y are
+   its top-left corner measured from the sticker's centre); no string, the paper hole stays */
+.w-illustration-stk[data-tag='free'] .w-illustration-tag {
+  left: var(--tag-x, 0px);
+  top: var(--tag-y, 0px);
+  transform: rotate(-1.2deg);
+}
+
+.w-illustration-stk[data-tag='free'] .w-illustration-tag::before {
+  display: none;
+}
+
 .w-illustration-tag-close {
   position: absolute;
   right: 6px;

@@ -376,6 +376,17 @@
   color: var(--cream);
 }
 
+/* the year is a big display number at every width (on a phone the cell would otherwise be a small figure in an empty box) */
+.w-plana-foot .pm-slate__cell:nth-child(2) .pm-slate__v {
+  color: var(--poppy);
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 0.6rem + 3.6vw, 6.2rem);
+  white-space: nowrap;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 0.95;
+}
+
 /* a wide screen: the slate takes seven of the twelve columns and is set big, the ticket and the paragraph fill the other five */
 @media (min-width: 900px) {
   .w-plana-foot .pm-wf {
@@ -391,19 +402,20 @@
     grid-row: 1;
   }
 
+  /* the ticket takes the whole right column, as tall as the slate and its note together, and is set big: it is the way out to the live site */
   .w-plana-foot .pm-wf__tix {
     grid-column: 8 / -1;
-    grid-row: 1;
+    grid-row: 1 / span 2;
     align-self: center;
     align-items: stretch;
     padding-top: clamp(1.4rem, 2vw, 2.4rem);
   }
 
-  /* the sample-mockups note runs under both, as wide as the slate and most of the ticket */
+  /* the sample-mockups note sits under the slate, as wide as the slate */
   .w-plana-foot .pm-wf__note {
-    grid-column: 1 / span 10;
+    grid-column: 1 / span 7;
     grid-row: 2;
-    max-width: 52em;
+    max-width: none;
     font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.5rem);
     line-height: 1.5;
   }
@@ -457,7 +469,7 @@
     --n: 13px;
     --bite: 4px;
 
-    min-height: clamp(5.2rem, 7vw, 8.4rem);
+    min-height: clamp(6rem, 10vw, 12rem);
     width: 100%;
   }
 
@@ -471,7 +483,7 @@
   }
 
   .w-plana-foot .pm-ticket__label {
-    font-size: clamp(1.7rem, 1.1rem + 1.7vw, 3.1rem);
+    font-size: clamp(1.7rem, 1.1rem + 2vw, 3.7rem);
     letter-spacing: -0.035em;
   }
 

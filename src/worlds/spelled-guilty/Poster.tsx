@@ -28,6 +28,14 @@ export default function Poster({ titleId, still, stageRef, onOpen }: PosterProps
         <div className="w-sg-copy">
           <p className="w-sg-strip">{SG.poster.strip}</p>
           <p className="w-sg-blurb">{SG.poster.blurb}</p>
+          <ul className="w-sg-facts">
+            {SG.poster.facts.map((f) => (
+              <li key={f.l} className="w-sg-facts__i">
+                <span className="w-sg-facts__n">{f.n}</span>
+                <span className="w-sg-facts__l w-sg-type">{f.l}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 

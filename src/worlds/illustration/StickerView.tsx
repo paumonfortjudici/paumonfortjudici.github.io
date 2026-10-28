@@ -28,7 +28,7 @@ function StickerViewImpl({ n, board, selected, tagMode, held, onLid, locked, onD
   const label = `${info.caption}. Sticker ${n} of ${STICKERS.length}, ${onLid ? 'on the lid' : 'on the sheet'}.`
 
   return (
-    <div ref={attach} className="w-illustration-stk" data-stk={n} data-cursor={locked ? undefined : 'Drag'} data-locked={locked ? 'true' : undefined} style={style}>
+    <div ref={attach} className="w-illustration-stk" data-stk={n} data-locked={locked ? 'true' : undefined} style={style}>
       <button
         type="button"
         className="w-illustration-stk-btn"

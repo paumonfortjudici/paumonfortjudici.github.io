@@ -78,8 +78,8 @@ export function HoloPoster({ data, index }: { data: PosterData; index: number })
       still: stillRef.current,
       onManual: (x) => showOnGauge(x),
       onFollow: (x) => {
-        // not while the visitor holds the gauge itself
-        if (document.activeElement !== sliderRef.current) showOnGauge(x)
+        // not while the visitor holds the gauge itself, and not under still motion: the poster is flat there, so the gauge must not claim a tilt
+        if (!stillRef.current && document.activeElement !== sliderRef.current) showOnGauge(x)
       },
     })
     engineRef.current = engine

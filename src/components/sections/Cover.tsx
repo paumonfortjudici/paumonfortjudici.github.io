@@ -186,11 +186,11 @@ export function Cover() {
                 </li>
               ))}
             </ul>
-            <p className="cv__blurb t-lead">{COVER.blurb}</p>
-            {/* black ink on a round paper label (cover.css): the ring text stays legible where it overlaps the O */}
+            {/* black ink on a round paper label (cover.css); it comes before the blurb so that on a phone it floats beside the first lines: the ring text stays legible where it overlaps the O */}
             <div className="cv__stamp">
               <Stamp text="Open" ring={COVER.stamp} spin tone="ink" rotate={-9} size="var(--stamp)" />
             </div>
+            <p className="cv__blurb t-lead">{COVER.blurb}</p>
           </div>
         </div>
 

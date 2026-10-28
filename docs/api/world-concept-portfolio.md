@@ -40,7 +40,7 @@ A small **presentation room** for the portfolio deck of an invented client (Ona 
 * **Geometry (variables)**: `--cp-h` (slide height), `--cp-w`, `--cp-mw` (mount width), `--cp-gap`, `--cp-pull` (phones: neighbours overlap this much so a sliver of the next slide shows at each edge) live on `.w-cp-stage`. The lane has spacers so the first and the last slide can be centred; mounts snap with `scroll-snap-align: center` + `scroll-snap-stop: always`.
 * **Wheel**: a vertical wheel over the lane turns into one slide per gesture (a gesture ends after 150 ms of silence; a hard mouse notch may add a step every 340 ms). Sideways wheel / trackpad scrolls natively and snaps. At the first slide scrolling up and at the last slide scrolling down are **not** captured: the page scrolls on to the credits (the toolbar, the wall above and the floor always scroll the page).
 * **Drag**: mouse only (touch scrolls natively). A drag past 6 px disables snapping, writes `scrollLeft`, and on release projects the release speed about 260 ms ahead, then `scrollTo` (smooth) to the slide that throw lands on (at most two slides away). Reduced / paused motion: the throw is dropped, it jumps to the nearest slide. A drag swallows the click that follows.
-* **Keys**: `ArrowLeft` / `ArrowRight` anywhere in the world (not while typing, not under an overlay); `Home` / `End` / `Enter` only while the lane itself has focus (Enter toggles the loupe). While the loupe is on the arrows pan it (Shift = bigger steps) and `Escape` puts it away first.
+* **Keys**: `ArrowLeft` / `ArrowRight` anywhere in the world (not while typing, not under an overlay); `Enter` (loupe) only while the lane itself has focus; `Home` / `End` jump the lane while the stage is on screen (they scroll the page again once it is scrolled down to the credits). While the loupe is on the arrows pan it (Shift = bigger steps) and `Escape` puts it away first.
 * **Buttons**: Previous / Next tabs (`aria-disabled` at the ends, focus never lost), the boot-print trail (five buttons, `aria-current="step"`), a click on a neighbour (a real, un-tabbable `button` over it, cursor label Flip).
 * **Scroll frame** (rAF, direct DOM writes, no React state): `transform` (rotate + scale) and the veil's `opacity` per mount, the wall slab's `translateX` (a third of the lane's speed) and the sunburst's counter-shift (it stays behind the middle slide). `useLane` returns `{ laneRef, index, mount, scrim, goTo }`.
 * Only the slide in the middle is interactive: pins, hotspots and the loupe of the others are `inert`.
@@ -76,7 +76,7 @@ The stage is `overflow: clip` (not a scroller: focus and `scrollIntoView` can ne
 
 * >= 1180 px: toolbar floats over the wall (left: Present, Design notes, Sound; right: Sheet, About Ona); call sheet bottom left on the first slide; hint "Drag, scroll or use the arrow keys" on the floor (>= 1100).
 * 900-1179 px: no call sheet. 640-899 px: one row of smaller tabs, no hint.
-* < 640 px: the toolbar is one horizontally scrolling row (notes tab says "Notes" and drops its count so three tabs fit); Previous / Next are icon-only tabs; neighbours overlap a little (`--cp-pull`) so a sliver of the next slide shows at the edge; the About drawer is a bottom sheet (90 % high); the contact sheet is a 3-column grid; notes open above or below their pin; the CONCEPT tag shrinks.
+* < 640 px: the toolbar is two rows of tabs, nothing scrolls sideways (row 1 Present / Notes / Sound, row 2 Sheet / About Ona plus, while Sound is on, a short honest label "Synthesised here: no recordings"; the notes tab says "Notes" and drops its count; `--rsv-top` is 108px); Previous / Next are icon-only tabs; neighbours overlap a little (`--cp-pull`) so a sliver of the next slide shows at the edge; the About drawer is a bottom sheet (90 % high); the contact sheet is a 3-column grid; notes open above or below their pin; the CONCEPT tag shrinks.
 * Short screens (< 560 px high, landscape phones): the stage keeps a 560 px minimum height and the world scrolls; Present is the answer there.
 * 1920 x 1080: the slide grows to 820 px, four slides show, the wall title and rays scale with the viewport.
 
@@ -119,3 +119,12 @@ Round 4 (measured, not estimated): the five slides were overlaid with a labelled
 * **Close labels** (D8): the About drawer and the contact sheet say "Back to the deck"; in the drawer the tab has its own row above the name.
 * **Loupe hint** (D9): 1.8 s after the room opens a small tag "Tiny print? Try the loupe" points at the Loupe tab and the tab nods twice; it goes after 9 s, or as soon as the loupe or the notes are on.
 * **First paint** (D10): the first slide's image is requested as soon as the chunk is evaluated (`new Image()` in `ConceptPortfolioWorld.tsx`). The rest of the delay is the shell's loader on a cold server.
+
+
+## Mop-up round
+
+* **Phones toolbar** (D11): two rows, every tab visible at 390 (Sheet and About Ona on row 2).
+* **Loupe hint** (D12): the "Tiny print? Try the loupe" tag now sits on the wall to the right of the mount (>= 1100px) instead of across the slide; below 1100px only the tab nods (three times).
+* **Neighbour pins and hotspots** (D13): `pointer-events: none` on every mount that is not the current one.
+* **Home / End** (D14): global while the stage is in view and no overlay is open.
+* **Loupe** (D15): the glass is a clipped child (`.w-cp-loupe-glass`); the zoom readout is a sun-coloured stamp on the rim, outside the circle.

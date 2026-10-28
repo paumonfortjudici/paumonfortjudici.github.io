@@ -6,7 +6,7 @@
    Part files: about/portrait.css, about/skills.css, about/timeline.css, about/credentials.css (classes pm-ab-*).
    ========================================================================== */
 
-.pm-about { --ab-rest: clamp(46px, 5vw, 92px); }
+.pm-about { --ab-rest: clamp(40px, 3.6vw, 66px); }
 
 .pm-ab-grid {
   display: grid;
@@ -68,6 +68,10 @@
   line-height: 1.5;
   color: var(--on-sheet);
 }
+.pm-ab-bodies { display: grid; gap: 0.7em; min-width: 0; }
+.pm-ab-body--last { text-wrap: pretty; }
+/* the italic phrases must not grow the line box: even leading down the paragraph */
+.pm-ab-body .pm-ab-em { line-height: 1; }
 /* an italic phrase is one unit: it moves to the next line whole instead of splitting across two */
 .pm-ab-em { white-space: nowrap; }
 .pm-ab-em[data-long] { white-space: normal; }
@@ -116,4 +120,10 @@
   .pm-ab-head { padding-top: clamp(30px, 8vw, 44px); }
   /* a standfirst of two lines at most on a phone: a 28px display paragraph over three lines reads as a headline */
   .pm-ab-lead { font-size: clamp(1.3rem, 5.4vw, 1.6rem); line-height: 1.12; text-wrap: balance; }
+}
+
+/* tablet: the words fill the column beside the portrait */
+@media (min-width: 700px) and (max-width: 899px) {
+  .pm-ab-body { font-size: 1.2rem; }
+  .pm-ab-lead { font-size: 2rem; }
 }

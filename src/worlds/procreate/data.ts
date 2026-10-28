@@ -1,9 +1,9 @@
-// Content of the Procreate world: the five prints on the wall, their captions and how each one is held.
+// Content of the Procreate world: the four prints on the wall, their captions and how each one is held.
 // Everything here comes from public/works/procreate/manifest.json (file names, sizes, alt text, palettes) plus Pau's own
 // statement ("my beginnings as a graphic designer, made very young, always my passion"). No dates, ages, clients or names.
 import { asset } from '../../lib/asset'
 
-export type PrintId = 'kids' | 'crest' | 'logo' | 'cap' | 'quiff'
+export type PrintId = 'crest' | 'logo' | 'cap' | 'quiff'
 
 /** the paper each drawing is printed on */
 export type Stock = 'sketch' | 'photo' | 'grid' | 'card'
@@ -101,30 +101,6 @@ export const PRINTS: PrintDef[] = [
     strip: 0.17,
   },
   {
-    id: 'kids',
-    file: 'kids-portrait',
-    w: 1400,
-    h: 997,
-    tw: 600,
-    th: 427,
-    // no brand name in the picture's description: the T-shirt carries a cartoon character that is not mine
-    alt: 'Flat-colour cartoon drawing of two children: a boy in a yellow T-shirt and an older child with long hair and a grey T-shirt.',
-    title: 'Two kids, cartoon style',
-    line: 'A cartoon-style drawing of two children, chest up, in flat colour with black outlines: a boy in a yellow T-shirt next to an older child with long hair.',
-    stock: 'sketch',
-    hold: {
-      kind: 'tape',
-      pieces: [
-        { at: 'tl', color: 'marigold', rot: -34, w: '4.4rem', h: '1.45rem' },
-        { at: 'tr', color: 'marigold', rot: 31, w: '4.4rem', h: '1.45rem' },
-      ],
-    },
-    note: { text: 'made very young', x: 8, rot: -1.6, ink: 'ink', mark: { kind: 'arrow', from: [0.21, 1.03], to: [0.07, 0.82], seed: 4 } },
-    strip: 0.17,
-    // the people in this one are children: it hangs small, and its close-up stays at the size of the small file
-    closeUp: 'small',
-  },
-  {
     id: 'cap',
     file: 'portrait-cap',
     w: 990,
@@ -144,6 +120,8 @@ export const PRINTS: PrintDef[] = [
     },
     note: { text: 'four colours only', x: 9, rot: -1.8, ink: 'oxblood', mark: { kind: 'arrow', from: [0.78, 1.04], to: [0.9, 0.48], seed: 12 } },
     strip: 0.15,
+    // real person, identity unknown: the close-up stays at the size of the small file
+    closeUp: 'small',
   },
   {
     id: 'quiff',
@@ -159,6 +137,7 @@ export const PRINTS: PrintDef[] = [
     hold: { kind: 'clip', color: 'tomato', rot: 7 },
     note: { text: 'same four colours', x: 9, rot: 1.2, ink: 'ink', mark: { kind: 'underline', seed: 21 } },
     strip: 0.15,
+    closeUp: 'small',
   },
 ]
 
@@ -174,7 +153,7 @@ export const PORTRAIT_PALETTE = ['#b16022', '#dc8f43', '#f8a635', '#ffd800'] as 
 
 export const COPY = {
   title: 'Where it all started',
-  lede: 'My beginnings as a graphic designer: five early pieces from my Procreate folder, made very young. Always my passion.',
+  lede: 'My beginnings as a graphic designer: four early pieces from my Procreate folder. Always my passion.',
   pickOneUp: 'pick one up',
   hintMouse: 'Drag a print around. Double-click to look closer.',
   /** the wall's own "pick one up" note already says the first half */
@@ -185,7 +164,7 @@ export const COPY = {
   keys: 'Tab to a print. Arrows move it, R turns it, Enter opens it.',
   keysShort: 'Arrows move, R turns, Enter opens',
   boardLabel: 'The sketchbook wall',
-  wallLabel: 'Five prints you can move',
+  wallLabel: 'Four prints you can move',
   controlsLabel: 'Wall controls',
   tidy: 'Tidy up',
   shuffle: 'Shuffle',
@@ -195,13 +174,13 @@ export const COPY = {
   notesOffShort: 'Rub out',
   notesOnShort: 'Write back',
   indexTitle: 'What is on the wall',
-  indexIntro: 'The same five pieces, one by one, as they sit in my Procreate folder.',
+  indexIntro: 'The same four pieces, one by one, as they sit in my Procreate folder.',
   whenTitle: 'Which came first?',
   whenBody: 'The files carry no dates, so this line stays a question.',
   lookCloser: 'Look closer',
   paletteTitle: 'Four colours, twice',
   paletteBody: 'Both portrait studies use the same four flat colours. The dots beside each head are the whole palette.',
-  facts: 'Early work, shown as it is. Made very young, always my passion.',
+  facts: 'Early work, shown as it is. Always my passion.',
   lightbox: {
     label: 'Close-up of a print',
     back: 'Back to the wall',

@@ -65,6 +65,12 @@ export function Bar({ notes, sound, pins, onPresent, onNotes, onSound, onSheet, 
         <TabButton color="var(--cp-ink)" ink="var(--cp-butter)" aria-haspopup="dialog" onClick={onAbout}>
           {COPY.bar.about}
         </TabButton>
+        {/* phones only: the honest label of the sound board rides on the second row (the full note is hidden there; the Sound tab's description says the same) */}
+        {sound && (
+          <p className="w-cp-soundnote-m" aria-hidden="true">
+            {COPY.sound.honestShort}
+          </p>
+        )}
       </div>
     </div>
   )

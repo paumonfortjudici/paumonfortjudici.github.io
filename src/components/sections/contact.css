@@ -211,6 +211,23 @@
    or, when the card re-flows to one column (the slot is under 420px wide), the height of that column. The card lies over the reserved box. */
 .pm-ct-cardslot::before { content: ''; display: block; padding-top: calc(100% * 260 / 480); }
 .pm-ct-cardslot > .pm-ct-card { position: absolute; left: 0; top: 0; }
+/* the empty beat: until the card's chunk, fonts and reveal are in, a sheet of paper is pencilled where it will lie (it is behind the card, and gone when the card is there) */
+.pm-ct-cardslot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 3px dashed color-mix(in srgb, var(--cream) 62%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--cream) 12%, transparent);
+  transform: rotate(3.2deg);
+  pointer-events: none;
+}
+.pm-ct-cardslot:has(.pm-ct-card[data-ready][data-in])::after,
+html[data-motion='paused'] .pm-ct-cardslot:has(.pm-ct-card[data-ready])::after { opacity: 0; transition: opacity 0.3s; }
+@media (prefers-reduced-motion: reduce) {
+  .pm-ct-cardslot:has(.pm-ct-card[data-ready])::after { opacity: 0; transition: none; }
+}
 @container pmslot (max-width: 419px) {
   .pm-ct-cardslot::before { padding-top: 0; height: 393px; }
 }
@@ -314,6 +331,8 @@ html.js .pm-ct-card[data-ready][data-in] .pm-ct-card__tilt { animation: pm-ct-la
   touch-action: manipulation; /* a tap is a tap: no double-tap zoom delay */
   -webkit-tap-highlight-color: transparent;
 }
+/* the only part of the button that carries the cursor's "Flip" disc: the strip over the tape (nothing to read there) */
+.pm-ct-card__hit-tape { position: absolute; top: 0; left: 50%; width: 9rem; height: 1.3rem; transform: translateX(-50%); }
 
 /* -- front -------------------------------------------------------------------------------------------------------------- */
 .pm-ct-face--front {
@@ -435,8 +454,8 @@ html.js .pm-ct-card:not([data-ready]) .pm-ct-sun { transform: translateY(100%); 
 /* RECEIVED: a rubber stamp in paper-white ink, thumped on when the card is turned for the first time (ink spreads as it lands) */
 .pm-ct-received {
   position: absolute;
-  right: calc(var(--u) * 26);
-  bottom: calc(var(--u) * 52);
+  left: calc(var(--u) * 30);
+  bottom: calc(var(--u) * 22); /* under the horizon, across the green band: never on the sun or on the handwriting */
   z-index: 2;
   padding: calc(var(--u) * 5) calc(var(--u) * 12) calc(var(--u) * 4);
   border: calc(var(--u) * 3.2) solid var(--pd-paper);
@@ -574,7 +593,10 @@ html.js .pm-ct-card:not([data-ready]) .pm-ct-sun { transform: translateY(100%); 
 
 /* the playhead */
 .pm-ct-playhead { position: absolute; z-index: 1; top: 0; bottom: 42px; left: calc(var(--now) * 100%); width: 0; pointer-events: none; }
-.pm-ct-playhead::before { content: ''; position: absolute; left: -1px; top: 24px; bottom: 0; width: 2px; background: var(--cream); }
+/* the needle is only a stem from the flag down to the lanes: it stops above the digits, and the slot it points at is outlined instead */
+.pm-ct-playhead::before { content: ''; position: absolute; left: -1px; top: 24px; height: 16px; width: 2px; background: var(--cream); }
+.pm-ct-cell[data-now] { z-index: 1; box-shadow: 0 0 0 2px var(--cream), 0 0 0 4px var(--ink); }
+.pm-ct-cell[data-now][data-state='work'] { box-shadow: inset 0 0 0 2px var(--lane), 0 0 0 2px var(--cream), 0 0 0 4px var(--ink); }
 .pm-ct-playhead__flag { position: absolute; left: 0; top: 0; transform: translateX(-50%); padding: 4px 9px 3px; border-radius: 5px; background: var(--cream); color: var(--ink); font-family: var(--font-label); font-size: var(--fs-label); font-weight: 700; line-height: 1; letter-spacing: 0.1em; text-transform: uppercase; }
 
 /* the sentence */

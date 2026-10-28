@@ -88,6 +88,8 @@ function slotState(slot: Slot, side: 'home' | 'away'): 'both' | 'work' | 'off' {
 }
 
 function Lane({ plan, side }: { plan: DayPlan; side: 'home' | 'away' }) {
+  // the slot the playhead stands in: it is outlined (the needle itself never crosses the digits)
+  const nowIndex = Math.min(plan.slots.length - 1, Math.floor(plan.playhead * plan.slots.length))
   const ticks = plan.slots.filter((s) => (side === 'home' ? s.hourA : s.hourB) % 6 === 0)
   return (
     <div className="pm-ct-lane" data-side={side}>
@@ -95,7 +97,7 @@ function Lane({ plan, side }: { plan: DayPlan; side: 'home' | 'away' }) {
         {plan.slots.map((slot) => {
           const hour = side === 'home' ? slot.hourA : slot.hourB
           return (
-            <span key={slot.index} className="pm-ct-cell" data-state={slotState(slot, side)} data-mid={side === 'away' && hour === 0 ? '' : undefined}>
+            <span key={slot.index} className="pm-ct-cell" data-state={slotState(slot, side)} data-mid={side === 'away' && hour === 0 ? '' : undefined} data-now={slot.index === nowIndex ? '' : undefined}>
               <span className="pm-ct-cell__n">{pad2(hour)}</span>
               {/* the day changes here: name the day that starts (Sydney's midnight) */}
               {side === 'away' && hour === 0 && slot.index > 0 && <span className="pm-ct-cell__day">{weekdayIn(AWAY.timeZone, plan.midnightMs + slot.index * HOUR_MS)}</span>}

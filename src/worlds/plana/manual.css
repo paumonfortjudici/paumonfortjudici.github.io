@@ -135,9 +135,9 @@
   transition-delay: calc((16 - var(--i)) * 7ms), 0s;
 }
 
-/* open: 17 pages over a 72 degree arc, centred on the middle page */
+/* open: 17 pages over a 58 degree arc, centred on the middle page */
 .w-plana-manual[data-open='true'] .w-plana-leaf {
-  --r: calc((var(--i) - 8) * 4.5deg);
+  --r: calc((var(--i) - 8) * 3.6deg);
   --lift: 0%;
   --sc: 1;
 

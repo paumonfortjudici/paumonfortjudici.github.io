@@ -5,7 +5,7 @@ Read this instead of the source. Nothing outside those paths was touched; the sh
 
 ## What it is
 
-A hand-made wall. Five early pieces (public/works/procreate: the Vértice logo idea, the Yakisoba crest, a cartoon-style drawing of two kids, the two portrait studies in four warm colours) hang on a sheet of kraft paper pinned to a cork board. Each print is a real `<button>` you can **drag** (framer-motion drag, momentum, soft bounce at the edges, it sways with the speed of the hand and settles), or move **without a pointer**. A tool tray holds a ruler, a pencil, an eraser and three tab buttons: **Tidy up** (the ruler), **Shuffle**, **Rub out the notes** (the eraser). Open a print in a **close-up** with its one-line description. Below the wall: an index card (the five, each with a little glued-on print, its description and a "Look closer" tab; the whole row is clickable), a palette card (the four colours the two portraits share) and the `WorldFacts` slate (the right-hand column is sticky while the five rows scroll past).
+A hand-made wall. Four early pieces (public/works/procreate: the Vértice logo idea, the Yakisoba crest, the two portrait studies in four warm colours) hang on a sheet of kraft paper pinned to a cork board. Each print is a real `<button>` you can **drag** (framer-motion drag, momentum, soft bounce at the edges, it sways with the speed of the hand and settles), or move **without a pointer**. A tool tray holds a ruler, a pencil, an eraser and three tab buttons: **Tidy up** (the ruler), **Shuffle**, **Rub out the notes** (the eraser). Open a print in a **close-up** with its one-line description. Below the wall: an index card (the five, each with a little glued-on print, its description and a "Look closer" tab; the whole row is clickable), a palette card (the four colours the two portraits share) and the `WorldFacts` slate (the right-hand column is sticky while the five rows scroll past).
 
 First screen (1280 x 720 and up): the hand-lettered title on the folder's bubblegum, the lede, then the wall filling the rest of the screen with the tool tray at its foot; a 36 px sliver of the next strip's cork rail shows under it, so the board plainly goes on. The wall is the one dominant thing.
 
@@ -19,7 +19,7 @@ First screen (1280 x 720 and up): the hand-lettered title on the folder's bubble
 | Press (no drag) on a print that is still travelling (entrance, Tidy, Shuffle) | framer stops the glide on pointer down; the click that follows lets it finish the trip (`resume()` in Print.tsx) |
 | Double-click a print (mouse) | opens the close-up. A single click only raises it |
 | Tap a print (touch, pen) | opens the close-up |
-| Tab | prints (reading order: logo, crest, kids, cap, quiff), then Tidy up / Shuffle / Rub out the notes, then the five "Look closer" tabs |
+| Tab | prints (reading order: logo, crest, cap, quiff), then Tidy up / Shuffle / Rub out the notes, then the four "Look closer" tabs |
 | Arrow keys on a focused print | nudge 12 px (Shift: 48 px), clamped to the wall; the page does not scroll |
 | R / Shift+R on a focused print | turn it by +6 / -6 degrees (wraps at 36) |
 | Enter / Space on a print | opens the close-up |
@@ -55,7 +55,7 @@ The wall is measured (ResizeObserver on the wall and on the world's scroller) an
 
 | File | Role |
 |---|---|
-| `ProcreateWorld.tsx` | state (geometry, mode, z-order, notes on/off, "touched", close-up), tools, sections, WorldFacts; preloads the five small pictures when the chunk loads |
+| `ProcreateWorld.tsx` | state (geometry, mode, z-order, notes on/off, "touched", close-up), tools, sections, WorldFacts; preloads the four small pictures when the chunk loads |
 | `procreate/Print.tsx` | one draggable / keyboard-operable print; motion values x, y, base rotation, sway, lift, scale; `PrintHandle { pose, moveTo, focus }`; `heading` (where a programmed move is going) lets a plain press finish an interrupted trip |
 | `procreate/PrintFace.tsx` | what a print looks like (paper, drawing, note, arrow, holders); used by the wall and the close-up at any size |
 | `procreate/Holders.tsx`, `Scars.tsx` | tape / pin / clip; the pin hole and tape ghosts left on the wall |
@@ -77,18 +77,18 @@ The wall is measured (ResizeObserver on the wall and on the world's scroller) an
 
 ## Accessibility
 
-* Prints are `<button>`s named with the manifest `alt` + "Print n of 5", described by their note and by a visually hidden key hint. The decoration inside is `aria-hidden`.
+* Prints are `<button>`s named with the manifest `alt` + "Print n of 4", described by their note and by a visually hidden key hint. The decoration inside is `aria-hidden`.
 * Headings: `h2` title, `h3` "What is on the wall" / "Four colours, twice", `h4` per print. The close-up is `role="dialog" aria-modal`, labelled by the print's title, with a polite live caption; the world's own content is `inert` behind it.
 * Focus uses the global two-tone ring (the rotated print shows it round its box). Touch: `touch-action: none` only on the prints (and `pan-y` on the close-up's print); the wall and everything else scroll the page, so on phones the prints are narrower than the board and leave a scrolling gutter on one side. Verified with CDP touch events: a swipe on the lede or in the gutter scrolls the page, a touch drag on a print moves it with no page scroll, a tap opens the close-up, a horizontal swipe in the close-up changes print.
-* Contrast: ink on bubblegum, kraft, paper; oxblood on paper; cream on ink (close-up, key label); all above 4.5:1. Nothing under 13 px (notes are `max(14.5px, 7.8 % of the print's width)`; the tray tabs are 13 px).
+* Contrast: ink on bubblegum, kraft, paper; oxblood on paper; cream on ink (close-up, key label); all above 4.5:1. Nothing in the world under 14 px (notes are `max(14.5px, 7.8 % of the print's width)`; tab labels, slate keys, stamp sub-line and hex values are raised to 14 px here).
 * Index rows: a click handler on the `<li>` is a pointer convenience only; each row has a real `<button>` (the tab) for keyboard and assistive tech.
 
 ## Honesty decisions
 
 * Early work, no dates, ages or clients are claimed. The crest and the logo are described as drawings ("A football crest drawing", "A logo idea"); nobody portrayed is named.
 * The brief's annotation "first crest" is written "a crest idea" (round 1: "early" implied an earlier crest, and the noodle bowl may be a stock icon, origin unknown). The index line says "A crest layout", never "my drawing".
-* The two-kids piece (minors, probably family, a licensed cartoon on the T-shirt) is third in the order, the smallest print, titled "Two kids, cartoon style", described without the brand name, and its close-up never loads the full-size file (`closeUp: 'small'` in data.ts caps the paper at 560 px). It is still on the wall: the lead decides whether it stays (see the report).
-* No timeline: the notes hold no dates for these files. The "Which came first?" card shows five question marks on a blank pencil line to say exactly that.
+* The kids print (minors, a licensed cartoon on a T-shirt) is HELD BACK: removed from the world and its two files moved out of `public/` (see Round 3). Do not restore it before Pau confirms in writing.
+* No timeline: the notes hold no dates for these files. The "Which came first?" card shows four question marks on a blank pencil line to say exactly that.
 * Procreate: the folder is "Procreate sketchbook" by Pau's own naming and the registry lists the tool; the copy says "my Procreate folder", it does not date or certify anything.
 * The group portrait with a third-party logo is not in the repo and is not referenced.
 
@@ -106,7 +106,7 @@ The wall is measured (ResizeObserver on the wall and on the world's scroller) an
 
 * **Order and honesty**: PRINTS is now logo, crest, kids, cap, quiff (tab order, close-up order, index order). The wall's "pick one up" note (`pickupSpot`, `LEAD` in layout.ts) points at the logo sheet. Captions: "Portrait study, cap / quiff", "a crest idea", "same four colours"; the lede says "five early pieces from my Procreate folder, made very young. Always my passion." (Pau's own statement); "always the passion" is no longer written on a portrait.
 * **Tap targets**: every `.pm-tabbtn` inside the world and the close-up is at least 44 px high (CSS only; the shared tab button only grows on coarse pointers). Index lines and the lede hint are 17 px (`--fs-body`).
-* **Pictures**: all five on-wall thumbnails are `loading="eager"` (they are 20-40 KB and are also pre-fetched when the chunk loads); the index thumbs stay lazy.
+* **Pictures**: all four on-wall thumbnails are `loading="eager"` (they are 20-40 KB and are also pre-fetched when the chunk loads); the index thumbs stay lazy.
 * **Instructions, once**: the lede keeps only "Double-click a print to look closer." when the wall shows its own "pick one up" note; the label-maker strip on the ledge reads "Procreate folder · early work · undated" and turns into the key hints (Arrows move, R turns, Enter opens) only while a print has keyboard focus (`:has(.w-procreate-print:focus-visible)`).
 * **Tidy up** draws pencil marks round the row (`Measure` in ProcreateWorld.tsx, `plan.row` from layout.ts): a number over each print in reading order and a measuring line with ticks and "hung level" under it, drawn left to right with a clip-path. A wooden rule is stuck along the foot of a wide wall (CSS `::after`).
 * **Shuffle** (`scatter`): 140 complete throws, each print going to the free-est of 90 random spots (neighbours are kept 9 px clear for tape and tilt); one of the three least-overlapping throws is kept. Measured over 7 shuffles at 1440 x 900 on rotated bounding boxes: worst cover 9-19 percent of the smaller print, never a pile.
@@ -114,3 +114,13 @@ The wall is measured (ResizeObserver on the wall and on the world's scroller) an
 * **New small objects**: a paint-chip card taped between the prints on a wide wall (the four portrait colours, decorative), a "Which came first?" timeline card of five question marks beside the facts slate, and a FILED stamp that lands on a print when its close-up is put away (wide walls, full motion only, 1.9 s, opacity only).
 * **Title**: a little air above the hand-lettering (padding / negative margin 0.1em) and a roomier clip for the write-on animation. The taste inspector's `clipped-text` at 768 / 390 comes from the glyph box crossing the folder strip while the page is scrolled in its sampling; at rest the title is whole (shots t0 and t9).
 * The dashed rules between the index items are the pencil rules of an index card; the dashed / hairline / shadow / gradient items of the taste lint are the paper, tape and board of the world (allowed list).
+
+
+## Round 3 (mop-up): kids print held back, four prints
+
+* **Removed**: the kids print (`PrintId 'kids'`, its entry in `PRINTS`, the `Record<PrintId,...>` tables in layout.ts, `NARROW_ORDER`, `STACK`, the index thumb tilts, chips, close-up, alt and copy). `kids-portrait.webp` and `kids-portrait-thumb.webp` were moved out of `public/works/procreate/` to `scratchpad/held-back/procreate/` (so they are not shipped; nothing references them). `public/works/procreate/manifest.json` no longer lists the kids file nor the `held_back` entry (an unrelated group portrait with private notes); the untouched original is saved next to the held-back files as `manifest.original.json`. The card art `thumb.webp` and `peek.webp` use the orange portraits and are unchanged.
+* **Order now**: logo, crest, cap, quiff (tab order, close-up order, index order, "3 of 4"). Both portraits carry `closeUp: 'small'` (the close-up never loads the full-size file). Copy says "four": lede "four early pieces from my Procreate folder. Always my passion.", "Four prints you can move", "The same four pieces". "made very young" is no longer attached to any piece, and nothing says "early", "first" or "my drawing" about the crest ("a crest idea", "A crest layout").
+* **Wall retuned for four** (`WIDE_W` 410 / 350 / 285 / 245, new `WIDE_LOOSE`): the prints are larger and fill the board at 1440 and 1920 with no bare cork; the paint-chip card sits under the crest (`CHIP_AT` in layout.ts, 35 % / 74 % of the wall; the world reads left / top from the same constant). Mid walls put the first print in the left column; narrow walls stack logo, crest, cap, quiff.
+* **Shuffle keeps off the paint chip** (`Plan.chip`, wide walls): the chip card counts three times in the placement score and a throw that lands on it is ranked as badly as a pile. Tidy up now keeps the row at most the wall height minus 130 px tall (room for the pencil numbers and the "hung level" line, which the ruler no longer covers) and puts the chip card away (opacity) while squared up.
+* **Index** thumbs and row padding are bigger (`clamp(112px, 11.4vw, 170px)`), so the four-row card matches the height of the right column.
+* **Labels**: tab buttons, slate keys, the ledge strip, hex values and the stamp sub-line are at least 14 px inside this world.

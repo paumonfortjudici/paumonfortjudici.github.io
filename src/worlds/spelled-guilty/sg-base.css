@@ -125,9 +125,9 @@
       circle var(--sg-beam) at var(--bx) var(--by),
       rgb(6 2 4 / 0) 0%,
       rgb(6 2 4 / 0) 28%,
-      rgb(6 2 4 / 0.2) 52%,
-      rgb(6 2 4 / 0.46) 78%,
-      rgb(6 2 4 / 0.68) 100%
+      rgb(6 2 4 / 0.14) 52%,
+      rgb(6 2 4 / 0.32) 78%,
+      rgb(6 2 4 / 0.5) 100%
     );
   transition: opacity 0.45s var(--ease-out);
 }
@@ -227,7 +227,19 @@
 }
 
 .w-sg[data-calm] .w-sg-rail:not(:hover):not(:focus-within) > * {
-  opacity: 0.72;
+  opacity: 0.78;
+}
+
+/* away from the poster the plate turns to frosted glass: whatever scrolls under it is blurred out, so it never reads as an overlap,
+   and it goes solid again the moment the pointer or the keyboard comes to it */
+.w-sg-rail {
+  transition: background-color 0.3s var(--ease-out), backdrop-filter 0.3s var(--ease-out);
+}
+
+.w-sg[data-calm] .w-sg-rail:not(:hover):not(:focus-within) {
+  background: linear-gradient(180deg, rgb(26 8 16 / 0.62), rgb(21 9 16 / 0.5));
+  -webkit-backdrop-filter: blur(14px) saturate(0.7);
+  backdrop-filter: blur(14px) saturate(0.7);
 }
 
 .w-sg-lights {
@@ -358,7 +370,7 @@
 .w-sg-sub {
   margin: 0;
   max-width: 38rem;
-  color: rgb(255 242 218 / 0.88);
+  color: rgb(255 246 226 / 0.96);
   font-size: var(--fs-lead);
   line-height: var(--lh-lead);
 }
@@ -373,7 +385,7 @@
 /* the keyboard hint for the board and the book: typed, small, never hidden from sight */
 .w-sg-keys {
   margin: 0;
-  color: rgb(255 242 218 / 0.76);
+  color: rgb(255 242 218 / 0.92);
   font-family: var(--sg-type);
   font-size: var(--fs-caption);
   line-height: 1.45;

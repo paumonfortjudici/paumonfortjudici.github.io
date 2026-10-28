@@ -4,7 +4,7 @@
 // window: hero (spine title, two posters, rail with the patch and the brief) -> the mission tape -> the typed log + facts.
 // Docs: docs/api/world-space-monkey.md
 import { useEffect, useId, useRef, useState } from 'react'
-import { ArrowIcon, Folder, Reveal, Scribble, TabButton, Tape, WorldFacts } from '@/components/primitives'
+import { ArrowIcon, Folder, Scribble, TabButton, Tape, WorldFacts } from '@/components/primitives'
 import { pad2 } from '@/lib/copy'
 import { loadHandFonts, whenFontsLoaded } from '@/styles/fonts'
 import { useWorld } from './WorldShell'
@@ -14,7 +14,7 @@ import { MissionPatch } from './space-monkey/MissionPatch'
 import { MissionTape } from './space-monkey/MissionTape'
 import { Starfield } from './space-monkey/Starfield'
 import { useStill } from './space-monkey/useStill'
-import { LEAD, POSTERS } from './space-monkey/data'
+import { LEAD, POSTERS, TAPE_GAP_DAYS } from './space-monkey/data'
 import './space-monkey/space-monkey.css'
 
 /** The margin note beside the posters. Wide layouts only: below that every poster has its own labelled Flip tab. */
@@ -32,11 +32,28 @@ function Hint() {
 function Seal() {
   return (
     <figure className="w-space-monkey-seal">
-      <Reveal kind="pop" delay={650}>
+      <div className="w-space-monkey-seal-pop">
         <MissionPatch className="w-space-monkey-patch" />
-      </Reveal>
+      </div>
       <figcaption className="w-space-monkey-seal-note">the room’s own patch, cut from SMITH’s sleeve</figcaption>
     </figure>
+  )
+}
+
+/** A countdown slate in the rail (wide layouts only): the one number of the story, pulled up from the log so the first screen has a reason to scroll. */
+function Gauge() {
+  return (
+    <div className="w-space-monkey-gauge" role="group" aria-label={`${TAPE_GAP_DAYS} days from the last save of SMITH to opening day`}>
+      <span className="w-space-monkey-gauge-head" aria-hidden="true">
+        T-minus
+      </span>
+      <span className="w-space-monkey-gauge-num" aria-hidden="true">
+        {TAPE_GAP_DAYS}
+      </span>
+      <span className="w-space-monkey-gauge-note" aria-hidden="true">
+        days from the last save to opening day
+      </span>
+    </div>
   )
 }
 
@@ -150,6 +167,7 @@ export default function SpaceMonkeyWorld() {
             <div className="w-space-monkey-rail">
               <Hint />
               <Seal />
+              <Gauge />
               <Brief n={work.n} />
             </div>
           </div>

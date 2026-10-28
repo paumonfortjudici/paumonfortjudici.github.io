@@ -177,7 +177,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: clamp(0.8rem, 1.1cqw, 1.4rem);
+  gap: clamp(0.7rem, 0.85cqw, 1.2rem);
   min-width: 0;
 }
 .cv__chip { align-self: flex-start; }
@@ -275,18 +275,13 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
 .cv[data-layout='solo'] .cv__row { row-gap: 0.9rem; margin-top: 1.1rem; }
 .cv[data-layout='solo'] .cv__quick .pm-chip { display: none; }
 .cv[data-layout='solo'] .cv__blurb { line-height: 1.42; }
-/* the stamp sits beside the quick tabs (they wrap to two rows next to it), not in a row of its own */
-.cv[data-layout='solo'] .cv__side {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: 'chip chip' 'quick stamp' 'blurb blurb';
-  align-items: center;
-  gap: 0.8rem 0.4rem;
-}
-.cv[data-layout='solo'] .cv__chip { grid-area: chip; justify-self: start; }
-.cv[data-layout='solo'] .cv__quick { grid-area: quick; }
-.cv[data-layout='solo'] .cv__blurb { grid-area: blurb; }
-.cv[data-layout='solo'] .cv__stamp { position: relative; grid-area: stamp; inset: auto; margin: -0.4rem 0.2rem -0.4rem 0; }
+/* phone: the chip, then the three tabs in ONE row (short shoulders), then the blurb with the stamp floated beside its first lines */
+.cv[data-layout='solo'] .cv__row { --stamp: 10rem; }
+.cv[data-layout='solo'] .cv__side { display: block; }
+.cv[data-layout='solo'] .cv__chip { display: flex; width: fit-content; margin-bottom: 0.8rem; }
+.cv[data-layout='solo'] .cv__quick { flex-wrap: wrap; margin-bottom: 0.7rem; }
+.cv[data-layout='solo'] .cv__quick .pm-tabbtn { --fr: 7px; padding-inline: 5px; letter-spacing: 0.05em; }
+.cv[data-layout='solo'] .cv__stamp { position: relative; float: right; inset: auto; margin: -0.5rem 0.1rem -2.2rem 0.3rem; shape-outside: circle(50%); }
 .cv:not([data-layout='wide']) :is(.cv__title, .cv__side) { grid-column: 1 / -1; }
 .cv:not([data-layout='wide']) .cv__note { grid-column: 1; grid-row: 3; flex-direction: column; align-items: flex-start; gap: 0; }
 .cv[data-layout='solo'] .cv__note { flex-direction: row; gap: 0.3rem; margin-left: 0.2rem; }
@@ -329,7 +324,7 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
   position: relative;
   z-index: 2;
   height: calc(var(--tier) + var(--front) + 1.5cqw);
-  margin: clamp(2.4rem, 4.6cqw, 6rem) calc(14px - var(--sheet-pad)) calc(14px - var(--sheet-pad));
+  margin: clamp(2.4rem, 3.4cqw, 4.6rem) calc(14px - var(--sheet-pad)) calc(14px - var(--sheet-pad)); /* the back row's cut-outs rise about 3.3cqw above it: that is the gap's floor */
   padding: 0;
   list-style: none;
 }
@@ -349,11 +344,15 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
     opacity 0.28s ease calc(var(--i) * 50ms);
 }
 .cv-slot[data-edge] { --ov: 0%; }
-/* the hovered or focused folder comes forward of its right-hand neighbour, never of the other tier */
+/* Only a FRONT-row folder comes forward of its right-hand neighbour when it is hovered or focused: its cut-out is stuck on the corner
+   that the neighbour covers, so it has to paint over it. The folder's own face is cut where the neighbour would have covered it
+   (clip-path, below the neighbour's top edge), so the neighbour's number and title stay readable. A back-row folder just lifts in place. */
 @media (hover: hover) {
-  .cv-slot:hover { z-index: calc(var(--row) * 20 + var(--col) + 6); }
+  .cv-slot:not([data-rest]):hover { z-index: calc(var(--row) * 20 + var(--col) + 6); }
+  .cv-deck[data-layout='wide'] .cv-slot:not([data-rest]):hover .cv-folder { clip-path: var(--under-next); }
 }
-.cv-slot:has(.cv-folder:focus-visible) { z-index: calc(var(--row) * 20 + var(--col) + 6); }
+.cv-slot:not([data-rest]):has(.cv-folder:focus-visible) { z-index: calc(var(--row) * 20 + var(--col) + 6); }
+.cv-deck[data-layout='wide'] .cv-slot:not([data-rest]):has(.cv-folder:focus-visible) .cv-folder { clip-path: var(--under-next); }
 
 .cv-lift {
   position: absolute;
@@ -362,6 +361,8 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
   transition: transform 0.5s var(--spring-lift);
 }
 .cv-folder.pm-folder {
+  /* the face minus the strip the right-hand neighbour covers (below that neighbour's top edge); the margins leave the ring and shadows alone */
+  --under-next: polygon(-60px -60px, calc(100% + 60px) -60px, calc(100% + 60px) calc(var(--tab-h) + var(--lift)), calc(100% - var(--ov)) calc(var(--tab-h) + var(--lift)), calc(100% - var(--ov)) calc(100% + 60px), -60px calc(100% + 60px));
   position: absolute;
   inset: 0;
   width: 100%;
@@ -523,12 +524,12 @@ html.js .cv-deck[data-in] .cv-face__concept {
    and label sit on the left), so it can never cover the back row's titles. It slaps on with a spring when the folder is hovered
    or focused. Height is capped by width so a landscape sticker (Gotet) never reaches the kind line. */
 .cv-deck[data-layout='wide'] .cv-slot:not([data-rest]) .cv-peek {
-  --ph: min(calc(clamp(6rem, 9.6cqw, 12.5rem) * var(--pk, 1)), calc(7.6cqw / var(--ar, 0.75)));
+  --ph: min(calc(clamp(5rem, 6cqw, 8.4rem) * var(--pk, 1)), calc(5.8cqw / var(--ar, 0.75)));
   z-index: 3;
   left: auto;
-  right: 4.5%;
+  right: calc(var(--ov) + 2.5%); /* on the part of the face the neighbour does not cover, so it never lands on the neighbour's words */
   top: auto;
-  bottom: 7%;
+  bottom: 4%;
   transform: translateY(16%) rotate(0deg) scale(0.86);
 }
 
@@ -579,9 +580,10 @@ html.js .cv-deck[data-in] .cv-face__concept {
   height: calc(4 * var(--step) + var(--fh) + 4rem);
   margin-top: 3.4rem;
 }
+.cv-deck[data-layout='solo'] { margin-top: 2.6rem; }
 .cv-deck:not([data-layout='wide']) .cv-slot {
   left: calc(var(--c2) * 51%);
-  top: calc(var(--r2) * var(--step) + var(--c2) * 3.6rem);
+  top: calc(var(--r2) * var(--step) + var(--c2) * 2.8rem);
   width: 49%;
   height: var(--fh);
   z-index: calc(var(--i) + 1);

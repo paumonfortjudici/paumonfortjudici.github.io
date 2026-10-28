@@ -7,19 +7,22 @@ import { SHAPES } from './shapes.generated'
 /**
  * The ref goes to the frame: it is the box the board measures AND the box that tips when Gravity is on (lid and hinge together).
  * `tabs` are real controls that stand on the lid's top edge like folder tabs ("Save my laptop"); `footer` is the control row under
- * the lid (it is exactly as wide as the lid). Both live outside the aria-hidden frame.
+ * the lid (it is exactly as wide as the lid); `badge` is the stamp that stands on the lid's top edge at the left. All three live outside the aria-hidden frame.
  */
-export const Lid = forwardRef<HTMLDivElement, { tabs?: ReactNode; footer?: ReactNode }>(function Lid({ tabs, footer }, ref) {
+export const Lid = forwardRef<HTMLDivElement, { tabs?: ReactNode; footer?: ReactNode; badge?: ReactNode }>(function Lid({ tabs, footer, badge }, ref) {
   return (
     <div className="w-illustration-lidwrap">
       <div className="w-illustration-lidbox">
+        {badge && <div className="w-illustration-lidbadge">{badge}</div>}
         {tabs && <div className="w-illustration-lidtabs">{tabs}</div>}
         <div className="w-illustration-lidframe" data-frame="lid" aria-hidden="true" ref={ref}>
           <div className="w-illustration-lid">
             <span className="w-illustration-sheen" />
-            <span className="w-illustration-engrave">Art-directed by Pau. Stickered in the browser.</span>
           </div>
-          <div className="w-illustration-hinge" />
+          <div className="w-illustration-hinge">
+            <span className="w-illustration-hinge-long">Concept: invented characters, AI-assisted</span>
+            <span className="w-illustration-hinge-short">Concept: invented, AI-assisted</span>
+          </div>
         </div>
       </div>
       {footer}

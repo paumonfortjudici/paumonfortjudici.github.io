@@ -107,15 +107,18 @@ Hidden initial states exist only under `html.js` (clip-path of the clips, `opaci
 - The About paragraph in `copy.ts` still has its em dash; `About.tsx` shows it as two sentences (see section 1), so the About sheet itself prints none. The whole page still has about seven more (catalog sub, search placeholder, two Process steps, Contact, toast, the browser title): the quality bar says two. Suggested fix in `copy.ts`: a full stop after "never really stopped" and a capital N, and then the `sentences()` helper in `About.tsx` can go.
 - The Gochi Hand face loads late (`loadHandFonts` at idle); the layout does not move (two lines are reserved) but the handwriting swaps from the fallback once.
 - Safari and Firefox were not tested (webm VP9 scrub, container queries, `:has()`, `mask-composite`); the mp4 and poster fallbacks and the `-webkit-mask-composite` twin are in place.
-- Between 1100 and about 1250px the clips are narrow: the short ones are labelled with the narrow names and the 4mation label touches the right edge of the plane.
+- Between 1040 and 1290px the 4mation flag sits to the LEFT of its clip (same side as PLANA, in the free gap after the Connecor clip); under 1040px both short flags are dropped together and the reel numerals name the clips.
 - The Plana credit line is derived from the registry (section 9 has no CV text for it).
 - Plana's start month is not known (the CV says "2026"), so its clip starts on 1 January 2026 and overlaps 4mation by two months; that is why it sits on the second track.
 
 ## Round 1 fixes (critic pass)
-- Honesty (ART_DIRECTION 12.1): `honest()` in `about/text.ts` rewrites the copy.ts strings at render time ("lay out magazines" becomes "edit magazines"; the skill bullet becomes "Editorial direction, and layout of my own books"). copy.ts itself still holds the old words: ask the lead to reword it, after which `honest()` is a no-op.
+- Honesty (ART_DIRECTION 12.1): copy.ts itself now says "edit magazines" and "Editorial direction, and layout of my own books"; the old render-time `honest()` patch is removed from about/text.ts. Ask Pau which magazines he actually laid out before any wording goes further.
 - Type: standfirst is capped at 36px (2 lines at 390 via `clamp(1.3rem, 5.4vw, 1.6rem)`); the body grows to 1.7rem on wide screens; the credit lines are 16 to 20px at 90% ink. Long italic phrases may wrap (`data-long`); the year range no longer glues to the next word.
 - Skills: under 900px (tablet) two columns with the code card spanning.
-- Timeline: lane heading scales up to 4.6rem and, on a ruler 1250px or wider, a second hand note ("Feb 2018: the escape room opens in Granollers", `TIMELINE.escapeRoom`) fills the gap beside the first folder. The 4mation name is hidden when the ruler is under 1290px wide (it would touch the NOW line; the reel number III and the credit above name it).
-- Phone gauge: 92px column, 26px ribbons, each ribbon writes its own start and end year beside it (`.pm-ab-job__at`).
+- Timeline: lane heading scales up to 4.6rem and, on a ruler 1250px or wider, a second hand note ("Feb 2018: the escape room opens in Granollers", `TIMELINE.escapeRoom`) fills the gap beside the first folder. 
+- Phone gauge: 92px column, 26px ribbons, each ribbon writes its own start and end year beside it (`.pm-ab-job__at`). The 2017 and 2026 end years are written once, on the first gauge only (the others share the scale).
 - Slate: a 3, 2, 1 countdown plays once on the slate when the scrub engine becomes ready (not under reduced or paused motion).
 - Education strips: the raised letters are a pseudo-element copy (`data-t`), not a text-shadow. Paper-object shadows and gradients carry `taste-skill-ignore`.
+
+
+- Round 3: the body copy is two paragraphs (the Sydney sentence opens its own, 0.7em gap); credit text is full ink; wide screens set the Elsewhere tickets in two columns (first left, second right); tablet (700-899px) sets the code card as three numbered columns with the braces beside them and bigger body text.

@@ -81,6 +81,8 @@
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
+/* a 44px hit area around the 33px label, without changing how it looks */
+.pm-meta__cat::before { content: ''; position: absolute; inset: -6px -6px; }
 .pm-meta__cat::after {
   content: '';
   position: absolute;

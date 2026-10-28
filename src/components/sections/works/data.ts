@@ -232,7 +232,7 @@ export const FALLBACK: Record<string, FallbackArt> = {
   },
 }
 
-/** "01 · 04 · 09" / "02–03 · 07–08": the file numbers of the folders on show, runs of two or more collapsed into ranges */
+/** "01 · 04 & 09" / "02–03 & 07–08": the file numbers of the folders on show, runs of two or more collapsed into ranges */
 export function fileNumbers(nums: number[]): string {
   const pad = (n: number) => String(n).padStart(2, '0')
   const sorted = [...nums].sort((a, b) => a - b)
@@ -244,7 +244,8 @@ export function fileNumbers(nums: number[]): string {
     parts.push(j > i ? `${pad(sorted[i])}–${pad(sorted[j])}` : pad(sorted[i]))
     i = j + 1
   }
-  return parts.join(' · ')
+  // two or more groups: the last one is joined with an ampersand ("02 & 07"), so it reads as two folders, not as a range
+  return parts.length > 1 ? `${parts.slice(0, -1).join(' · ')} & ${parts[parts.length - 1]}` : parts[0] ?? ''
 }
 
 /**

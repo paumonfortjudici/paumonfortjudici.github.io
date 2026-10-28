@@ -23,6 +23,7 @@ const LABELS = {
   group: 'Business card of Pau Monfort',
   flip: 'Flip the business card',
   tape: 'flip me',
+  tapeBack: 'flip back',
   received: 'Received',
 } as const
 
@@ -86,7 +87,7 @@ export default function SignatureCard() {
       <div className="pm-ct-card__tilt">
         {/* the tape is a pivot: it stays put while the card turns under it */}
         <Tape at="top" color="butter" pattern="stripes" rotate={-4} w="9rem" h="2.3rem">
-          <span aria-hidden="true">{LABELS.tape}</span>
+          <span aria-hidden="true">{flipped ? LABELS.tapeBack : LABELS.tape}</span>
         </Tape>
 
         <div className="pm-ct-card__flipper">
@@ -140,7 +141,11 @@ export default function SignatureCard() {
           </div>
         </div>
 
-        <button type="button" className="pm-ct-card__hit" aria-pressed={flipped} aria-label={LABELS.flip} data-cursor="Flip" onClick={toggle} />
+        {/* the whole card is the button, but the cursor's "Flip" disc is only shown over the tape strip: anywhere else it would sit on the
+            handwriting (back) or the numbers (front) the pointer is there to read */}
+        <button type="button" className="pm-ct-card__hit" aria-pressed={flipped} aria-label={LABELS.flip} data-cursor="none" onClick={toggle}>
+          <span className="pm-ct-card__hit-tape" data-cursor="Flip" aria-hidden="true" />
+        </button>
       </div>
     </div>
   )

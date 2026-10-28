@@ -139,7 +139,9 @@ function Loupe({ frameRef, src, active }: { frameRef: RefObject<HTMLDivElement>;
   if (!active) return null
   return (
     <div ref={lensRef} className="w-cp-loupe" data-on={visible ? 'true' : 'false'} data-fixed={deck.zoom ? 'true' : undefined} aria-hidden="true">
-      <img ref={imgRef} src={src} alt="" width={SLIDE_W} height={1920} decoding="async" draggable={false} />
+      <span className="w-cp-loupe-glass">
+        <img ref={imgRef} src={src} alt="" width={SLIDE_W} height={1920} decoding="async" draggable={false} />
+      </span>
       <span ref={tagRef} className="w-cp-loupe-tag" />
     </div>
   )

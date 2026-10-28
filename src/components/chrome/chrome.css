@@ -802,7 +802,8 @@ html.js .pm-mast__stamp {
   .pm-nav__pin::before { top: -2px; width: 7px; height: 7px; margin-left: -3.5px; }
   .pm-nav__tabs {
     left: 0;
-    right: 52px;
+    /* the pause tab has its own slot at the right end (48px and a 10px gap): the tabs scroll away under a soft edge before it, never under it */
+    right: 60px;
     gap: 5px;
     padding: 8px 14px 0 4px;
     overflow-x: auto;
@@ -810,11 +811,13 @@ html.js .pm-mast__stamp {
     scroll-snap-type: x proximity;
     scrollbar-width: none;
     transform: none;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent);
   }
   .pm-nav__tabs::-webkit-scrollbar { display: none; }
   .pm-nav__item { flex: none; scroll-snap-align: center; }
   .pm-nav__tab { padding-inline: 1.15em; min-width: 44px; }
-  .pm-nav__inner > .pm-mt { right: 0; }
+  .pm-nav__inner > .pm-mt { right: 2px; }
 }
 
 /* ---- the pause-motion tab (rail and footer) ------------------------------------------------------------------------------ */
@@ -963,6 +966,17 @@ html.js .pm-mast__stamp {
 
 .pm-foot__mark { line-height: 0; }
 .pm-foot__mark .pm-sw { width: 100%; }
+/* the name is set like end titles: letter after letter, each one whole (opacity and a short rise, no stroke drawing: a half-drawn outline
+   reads as broken type). html.js only; still and paused motion show the word at once. */
+html.js .pm-foot__mark:not([data-in]) .pm-sw__gl { opacity: 0; transform: translateY(26px); }
+html.js .pm-foot__mark[data-in] .pm-sw__gl {
+  transition: opacity 0.38s linear, transform 0.62s cubic-bezier(0.3, 1.45, 0.5, 1);
+  transition-delay: calc(var(--i, 0) * 85ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  html.js .pm-foot__mark .pm-sw__gl { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+html[data-motion='paused'].js .pm-foot__mark .pm-sw__gl { opacity: 1 !important; transform: none !important; transition: none !important; }
 
 .pm-foot__bottom {
   display: flex;

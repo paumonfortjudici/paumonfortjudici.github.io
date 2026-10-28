@@ -75,7 +75,7 @@
   text-wrap: balance;
 }
 .pm-ab-job__place { margin: 5px 0 0; font-family: var(--font-body); font-size: clamp(1.0625rem, 0.85rem + 0.4vw, 1.3rem); line-height: 1.3; font-weight: 600; }
-.pm-ab-job__cv { margin: 10px 0 0; max-width: 52ch; font-family: var(--font-body); font-size: clamp(1rem, 0.7rem + 0.45vw, 1.25rem); line-height: 1.48; color: color-mix(in srgb, var(--ink) 90%, var(--paper)); text-wrap: pretty; }
+.pm-ab-job__cv { margin: 10px 0 0; max-width: 52ch; font-family: var(--font-body); font-size: clamp(1rem, 0.7rem + 0.45vw, 1.25rem); line-height: 1.48; color: var(--ink); text-wrap: pretty; }
 .pm-ab-job__link {
   display: inline-flex;
   align-items: center;
@@ -225,10 +225,14 @@
 .pm-ab-bar[data-label='right'] .pm-ab-bar__out { left: calc(var(--e) * 1% + 7px); }
 .pm-ab-bar[data-label='left'] .pm-ab-bar__out { right: calc((100 - var(--s)) * 1% + 7px); }
 .pm-ab-bar__narrow { display: none; }
-/* on a narrow ruler the 4mation name would run into the NOW line: the reel number on the clip and its colour name it (credit III above carries the same chip), and
-   the label comes back as soon as there is room beyond the clip */
+/* on a narrow ruler the 4mation name would run into the NOW line, so it flips to the free gap on the left of its clip (the same side as PLANA), the two short clips named alike;
+   below 1040px the gap is too small, so both short clips drop their flag together and the reel number on the clip names it (credit III above carries the same chip) */
 @container ab-tl (max-width: 1290px) {
-  .pm-ab-bar[data-job='fourmation'] .pm-ab-bar__out { display: none; }
+  .pm-ab-bar[data-job='fourmation'] .pm-ab-bar__out { left: auto; right: calc((100 - var(--s)) * 1% + 5px); padding-inline: 4px; letter-spacing: 0.02em; }
+}
+@container ab-tl (max-width: 1040px) {
+  .pm-ab-bar[data-job='fourmation'] .pm-ab-bar__out,
+  .pm-ab-bar[data-job='plana'] .pm-ab-bar__out { display: none; }
 }
 /* a note in my hand on the free track before the upper clip, with an arrow that points at where the two overlap */
 .pm-ab-bar__note {

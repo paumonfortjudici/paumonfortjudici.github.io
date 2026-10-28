@@ -8,7 +8,6 @@ import CareerTimeline from './about/CareerTimeline'
 import Credentials, { Education } from './about/Credentials'
 import Portrait from './about/Portrait'
 import Skills from './about/Skills'
-import { honest } from './about/text'
 import { useNarrow } from './about/useNarrow'
 import './about.css'
 
@@ -57,13 +56,26 @@ function emphasise(text: string): ReactNode[] {
  * and the voice rule is short sentences, so this section sets it as two sentences. If copy.ts changes, this is a no-op.
  */
 function sentences(text: string): string {
-  return honest(text).replace(new RegExp(' ' + String.fromCharCode(0x2014) + ' ([a-z])'), (_all, letter: string) => '. ' + letter.toUpperCase())
+  return text.replace(new RegExp(' ' + String.fromCharCode(0x2014) + ' ([a-z])'), (_all, letter: string) => '. ' + letter.toUpperCase())
 }
 
 /** the first sentence is the standfirst, the rest is the body */
 function splitParagraph(text: string): { lead: string; rest: string } {
   const cut = text.indexOf('. ')
   return cut === -1 ? { lead: text, rest: '' } : { lead: text.slice(0, cut + 1), rest: text.slice(cut + 2) }
+}
+
+/** the body is two paragraphs: the closing sentence (Sydney) opens its own, with a clear break before it */
+function Body({ text }: { text: string }) {
+  const cut = text.lastIndexOf('. ', text.length - 3)
+  const first = cut === -1 ? text : text.slice(0, cut + 1)
+  const last = cut === -1 ? '' : text.slice(cut + 2)
+  return (
+    <div className="pm-ab-bodies">
+      <p className="pm-ab-body t-body">{emphasise(first)}</p>
+      {last && <p className="pm-ab-body pm-ab-body--last t-body">{emphasise(last)}</p>}
+    </div>
+  )
 }
 
 export function About() {
@@ -104,8 +116,8 @@ export function About() {
           </div>
 
           <Reveal className="pm-ab-copy">
-            <p className="pm-ab-lead">{bind(honest(lead))}</p>
-            {rest && <p className="pm-ab-body t-body">{emphasise(sentences(rest))}</p>}
+            <p className="pm-ab-lead">{bind(lead)}</p>
+            {rest && <Body text={sentences(rest)} />}
           </Reveal>
         </div>
 

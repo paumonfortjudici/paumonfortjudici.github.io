@@ -35,20 +35,6 @@
   transition: transform 0.38s var(--ease-spring);
 }
 
-/* the ribbon with the tool's name along its curve (tokens.tsx writes the text on a path measured on the drawing): the box is placed and tilted
-   by the component, the picture fills it and the SVG text sits exactly over it. The type is the label face in ink, as big as the band allows. */
-.pm-tk-rb { position: absolute; display: block; pointer-events: none; }
-.pm-tk-rb__img { display: block; width: 100%; height: auto; user-select: none; }
-.pm-tk-rb__txt { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.pm-tk-rb__txt text {
-  fill: var(--ink);
-  font-family: var(--font-label);
-  font-weight: 700;
-  font-synthesis: none;
-  letter-spacing: 0;
-  text-transform: uppercase;
-}
-
 /* paint-chip fan: opens up around the rivet */
 .pm-tk-svg .tk-fl { transform: rotate(-28deg); }
 .pm-tk-svg .tk-fr { transform: rotate(28deg); }
@@ -62,10 +48,10 @@
 .pm-proc-tk[data-hot] .tk-pen { animation: pm-tk-write 0.9s ease-in-out both; }
 @keyframes pm-tk-reveal { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 @keyframes pm-tk-write {
-  0% { transform: translate(calc(var(--u) * -62), calc(var(--u) * -1)); }
-  25% { transform: translate(calc(var(--u) * -46), calc(var(--u) * 2)); }
-  50% { transform: translate(calc(var(--u) * -31), calc(var(--u) * -2)); }
-  75% { transform: translate(calc(var(--u) * -15), calc(var(--u) * 2)); }
+  0% { transform: translate(calc(var(--u) * -66), calc(var(--u) * -1)); }
+  25% { transform: translate(calc(var(--u) * -49), calc(var(--u) * 2)); }
+  50% { transform: translate(calc(var(--u) * -33), calc(var(--u) * -2)); }
+  75% { transform: translate(calc(var(--u) * -16), calc(var(--u) * 2)); }
   100% { transform: none; }
 }
 
@@ -95,9 +81,9 @@
 .pm-proc-tk[data-hot] .tk-pin { transform: translateY(calc(var(--u) * 2)) scale(0.88); }
 .pm-proc-tk[data-hot] .tk-pcard { transform: rotate(-3deg); }
 
-/* key: the cap is pressed down onto its base, the braces pop */
-.pm-proc-tk[data-hot] .tk-top { transform: translateY(calc(var(--u) * 7)); }
-.pm-proc-tk[data-hot] .tk-br { transform: scale(1.12); }
+/* key: the whole key is pressed (it dips and squashes against the shelf) and the braces pop */
+.pm-proc-tk[data-hot] .tk-top { transform: translateY(calc(var(--u) * 3)) scale(1.02, 0.93); }
+.pm-proc-tk[data-hot] .tk-br { transform: scale(1.14); }
 
 /* ---- STILL: no motion; the object keeps one still pose ------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {

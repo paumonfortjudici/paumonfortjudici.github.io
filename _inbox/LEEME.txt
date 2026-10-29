@@ -1,3 +1,4 @@
 Drop the images generated in ChatGPT here, named with their ID (CAT-01.png, PF-03.png, ST-07.png, PR-02.png ...).
-refs/STYLE-MASTER.jpg is the style master for the Catalog sketches. _old/ holds the discarded graphite experiments.
+refs/STYLE-MASTER.jpg is the style master for the Catalog friezes (filed). refs/STYLE-PROCESS.jpg is the style reference for the Process scenes (PR-01 .. PR-04).
+_old/ holds the discarded graphite experiments.
 See docs/image-prompts.md. This folder is ignored by git.

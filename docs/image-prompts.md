@@ -7,7 +7,7 @@ Version 4 (2026-10-29), the definitive Catalog set. Pau threw away three earlier
 - No character is required, and the ten do **not** share a structure: same artistic hand, a different idea and composition each, "as if one artist had designed each folder one by one".
 - They are not a small motif any more: each is a **wide frieze behind the title of its folder**, at low opacity, filling much of the horizontal band.
 
-Version 6 adds PR (the four Process scenes: a restyle of the scenes already on the site, two references per prompt: see the PR section). PF and ST are still open: they get their prompts when Pau gives the direction for each category.
+Version 7 adds TK (the seven "On my desk" icons as animatable parts sheets, plus the bin, in blackwork tattoo style: see the TK section). Version 6 added PR (the four Process scenes: a restyle of the scenes already on the site, two references per prompt). PF and ST are still open: they get their prompts when Pau gives the direction for each category.
 
 ## The system
 
@@ -18,7 +18,8 @@ Every image has an ID: `AREA-NN`. Save the result with the ID as its name in `C:
 | `CAT` | CAT-01 .. CAT-10 | the grey sketch next to each name in the Catalog, now a faint full-width background of the folder | **defined below (v4)** |
 | `PF` | PF-01 .. PF-05 | the five slides of folder 09 (A Portfolio for a Client) | waiting for Pau's direction |
 | `ST` | ST-01 .. ST-09 | the nine stickers of folder 10 (Sticker Sheet) | waiting for Pau's direction |
-| `PR` | PR-01 .. PR-04 | the four big scenes of the Process film (section 05): COLLECT, SKETCH, MAKE, DELIVER | **defined below (v5)** |
+| `PR` | PR-01 .. PR-04 | the four big scenes of the Process film (section 05): COLLECT, SKETCH, MAKE, DELIVER | **filed and live** |
+| `TK` / `BIN` | TK-01 .. TK-07, BIN-01 | the seven tool icons of "On my desk" (animated parts sheets) and the bin | **defined below (v7)** |
 
 `_inbox/refs/STYLE-PROCESS.jpg` (the "Small objects in time" poster grid) is the style reference for every PR prompt, and `_inbox/refs/ELEM-01.png` .. `ELEM-04.png` (the current scenes of the site) are the "what to draw" references. `_inbox/refs/STYLE-MASTER.jpg` is the reference for every CAT prompt. `REF-2` .. `REF-5` (the crayon, ink and pen references) are kept for the other categories. The graphite experiments are archived in `_inbox/_old/` and are not used.
 
@@ -346,6 +347,211 @@ Format: the proportions of IMAGE 1, flat teal #0F9AA8 background, no text.
 - Text appeared: `Remove all lettering: no letters, numbers or logos anywhere; captions become scribbled lines.`
 - The background is wrong: `The background is one perfectly flat fill of the same colour as IMAGE 1, no pattern, no vignette, no texture.`
 - If Pau wants it softer after seeing a result: `A little softer: chalkier tones, same hand.`
+
+## TK: the seven tool icons of "On my desk" and the bin (old-school blackwork tattoo flash)
+
+**v7 (2026-10-29).** Pau wants the seven small tool icons and the waste-paper basket redrawn in an old-school blackwork tattoo-flash style (reference: `_inbox/refs/STYLE-TATTOO.jpg`, a poster with a tiger, a cat, a skull, a cobra, heavy black outlines and solid black shapes over four flat colours on jade). **The icons must keep their little hover animations**, so each icon is drawn as a **parts sheet**: its moving parts as separate pieces, which are cut out and re-assembled in code.
+
+### Files and IDs
+
+| ID | Object | Reference to attach as IMAGE 1 | Result file |
+|---|---|---|---|
+| TK-01 | The whole Adobe suite (fan of paint chips) | `OBJ-01.png` | `TK-01.png` |
+| TK-02 | Pencil and paper | `OBJ-02.png` | `TK-02.png` |
+| TK-03 | Procreate (index tab on a canvas card) | `OBJ-03.png` | `TK-03.png` |
+| TK-04 | Nomad Sculpt (clay, loop tool, flag) | `OBJ-04.png` | `TK-04.png` |
+| TK-05 | AI tools (luggage tag) | `OBJ-05.png` | `TK-05.png` |
+| TK-06 | Pinterest (card and push pin) | `OBJ-06.png` | `TK-06.png` |
+| TK-07 | VS Code (keyboard key and braces) | `OBJ-07.png` | `TK-07.png` |
+| BIN-01 | The bin of discarded thumbnails (bottom right of the desk) | `OBJ-BIN.png` | `BIN-01.png` |
+
+The `OBJ-*.png` files are the current objects exported from the site (1240 x 1240, flat cream, no lettering). `STYLE-TATTOO.jpg` is IMAGE 2 for every prompt.
+
+### What is animated today (the new parts must allow the same moves)
+
+- TK-01: three chips fan open on a rivet (about -30 / 0 / +30 degrees, opening to -46 / +46).
+- TK-02: the scribble is drawn again while the pencil rides along it.
+- TK-03: the index tab slides up out of the card and the brush stroke is painted again.
+- TK-04: the clay squashes under a thumb, the flag waves, the loop tool nudges in.
+- TK-05: the tag swings from its string and the tick is drawn again.
+- TK-06: the pin is pressed in and the card flutters.
+- TK-07: the key cap is pressed down and the braces pop.
+- BIN-01: static (as now).
+
+### What happens after the images arrive
+
+`tools/ingest_tokens.py` keys the jade out (as for the Catalog and Process), splits every sheet into its separate pieces, and a manifest per icon (written by looking at the pieces) says which piece is which part, where it sits in the 150-unit token box and where its pivot is. `TOKEN_ART` then draws the pieces as sprites with the same `tk-*` classes and the same keyframes (`tokens.css`); the tool names the old drawings carried are written in real type on each icon's blank ribbon banner; the hard offset shadow stays a CSS `drop-shadow`. Still path for reduced motion and "Pause motion" as now. If a sheet comes back with touching parts, that icon moves as one piece.
+
+### Chat opening message (new chat, paste first, attach `STYLE-TATTOO.jpg`)
+
+```text
+You will make EIGHT small illustrations for a portfolio website: seven tool icons and one waste-paper basket, all in the style of the STYLE REFERENCE attached now: an old-school blackwork tattoo flash poster. With every request I will attach TWO images: IMAGE 1 is the current object (it tells you WHAT to draw) and IMAGE 2 is the style reference (it tells you HOW to draw it). Do not draw anything yet. Study the style reference, reply "ready" and describe back to me, in six lines, what makes its style.
+
+THE STYLE (copy the way it is drawn, never its subjects, never its lettering):
+- TRADITIONAL TATTOO FLASH. Heavy black outlines with a bold thick-and-thin weight, rounded joints, confident and slightly rough. Big SOLID BLACK shapes carry the shadows and the patterns (stripes, silhouettes, a shadow side). Every object is iconic, simplified and readable as a silhouette even when tiny.
+- FLAT SPOT COLOUR. Only a few flat, opaque colours laid under the black linework, not perfectly in register: a fill may stop short of the line or spill a little over it, like a screen print. A fine print grain. No gradients, no soft shading, no 3D, no glossy shine.
+- LIGHT IS CREAM. Highlights, eyes and small details are flat cream shapes, never white and never shiny.
+- ORNAMENT. Small tattoo symbols decorate the objects: four-point stars, eyes, suns with rays, lightning bolts, hearts, sparkle ticks. Small wisps, dashes and rays float near them.
+- CHUNKY, ORIGINAL, A LITTLE ODD. Proportions are exaggerated, shapes are bold and a touch strange, each object has one witty tattoo-flash twist, nothing looks like clip art.
+
+THE COLOURS. Exactly four: ink black #17101B, tomato #FF4B2B, marigold #FFB81C and cream #FFF2DA. Nothing else, no tints.
+
+THE BACKGROUND. One perfectly flat, uniform fill of jade green #4F9C80, edge to edge (it is only a working colour: I will remove it). No object may use jade. No ground, no shadow, no frame, no paper texture, no vignette. NO TEXT of any kind: no letters, no numbers, no logos.
+
+THE KEY RULE FOR THE SEVEN TOOL ICONS: A PARTS SHEET. Each icon will be animated, so I need its moving parts as SEPARATE pieces. Draw every part complete (also the sides that would be hidden when assembled), upright and square-on to the viewer, with no tilt and no perspective, never touching or overlapping another part, with at least 6% of the canvas width of empty background between any two parts. Keep the parts at the scale they have in IMAGE 1, so that if I put them together they form that object. Add a blank ribbon banner (empty, no text) as one more part: a long ribbon with folded swallow-tail ends, about as wide as the widest part; I will write the name on it myself.
+The waste-paper basket is the exception: it is ONE single drawing, with no parts sheet and no banner.
+
+THE FORMAT. Square, 1024x1024. Arrange the parts in a loose, balanced layout filling about 90% of the canvas.
+
+With every request I will attach the current object (IMAGE 1) and the style reference (IMAGE 2).
+```
+
+### The eight prompts (one message each: attach the object as IMAGE 1 and `STYLE-TATTOO.jpg` as IMAGE 2)
+
+**TK-01 The whole Adobe suite. IMAGE 1 = `OBJ-01.png`**
+
+```text
+IMAGE 1 is attached first (OBJ-01.png, the current object) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1 as a PARTS SHEET in the blackwork tattoo-flash style of IMAGE 2. The object: the whole Adobe suite, shown as a fan of three paint chips joined by one rivet.
+BACKGROUND: perfectly flat jade #4F9C80, edge to edge. PALETTE: ink #17101B, tomato #FF4B2B, marigold #FFB81C, cream #FFF2DA, nothing else.
+PARTS (each one separate, complete, upright, at least 6% of empty background between all of them):
+1. A tall paint chip: a rounded-rectangle card (about 2:5), cream with a thick black outline, with three stacked colour blocks (tomato, marigold, ink black), a small tattoo star in the top block, and one small round hole near the bottom end where the rivet goes.
+2. A second paint chip, identical in size and layout, with the blocks in a different order (marigold, ink black, tomato) and a small eye in the top block.
+3. A third paint chip, identical in size and layout (ink black, tomato, marigold) with a small sun with rays in the top block.
+4. The rivet: a round disc with a thick black outline, a four-point star on its cap and a cream highlight blob.
+5. The blank ribbon banner, completely empty.
+Original twist: the three chips look like three tattoo flash cards, each carrying one symbol.
+Must read at a glance: three paint chips, a rivet and a ribbon.
+Add nothing else. Square 1024x1024, flat jade background, no text.
+```
+
+**TK-02 Pencil and paper. IMAGE 1 = `OBJ-02.png`**
+
+```text
+IMAGE 1 is attached first (OBJ-02.png, the current object) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1 as a PARTS SHEET in the blackwork tattoo-flash style of IMAGE 2. The object: a stub of pencil mid-scribble on a scrap of paper.
+BACKGROUND: perfectly flat jade #4F9C80, edge to edge. PALETTE: ink #17101B, tomato #FF4B2B, marigold #FFB81C, cream #FFF2DA, nothing else.
+PARTS (each one separate, complete, upright, at least 6% of empty background between all of them):
+1. A sheet of paper: a landscape rectangle (about 4:3) in cream with a thick black outline, one folded corner, and three ruled lines in black.
+2. A scribble: ONE continuous thick black marker line in a loose wave with two small loops, about as wide as the sheet, drawn alone on the background.
+3. A stub of pencil lying horizontally with its sharpened tip pointing right: a marigold body with bold black tiger-style stripes, a cream ferrule band with a zigzag, a tomato eraser at the left end, a sharpened cream wooden cone with a solid black graphite tip.
+4. The blank ribbon banner, completely empty.
+Original twist: the pencil's stripes are tiger stripes, like the tiger of the reference.
+Must read at a glance: paper, a scribble and a pencil.
+Add nothing else. Square 1024x1024, flat jade background, no text.
+```
+
+**TK-03 Procreate. IMAGE 1 = `OBJ-03.png`**
+
+```text
+IMAGE 1 is attached first (OBJ-03.png, the current object) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1 as a PARTS SHEET in the blackwork tattoo-flash style of IMAGE 2. The object: Procreate, shown as an index tab sticking out of the top of a canvas card that carries one painted brush stroke.
+BACKGROUND: perfectly flat jade #4F9C80, edge to edge. PALETTE: ink #17101B, tomato #FF4B2B, marigold #FFB81C, cream #FFF2DA, nothing else.
+PARTS (each one separate, complete, upright, at least 6% of empty background between all of them):
+1. A canvas card: a blank landscape card (about 5:4) in cream with a thick black outline, a thin second black frame line inside it and rounded corners; nothing painted on it.
+2. A brush stroke: one thick, wavy S-shaped paint stroke in tomato with a thick black outline and a cream highlight streak, round ends, one end finishing in a small teardrop splatter, about 70% of the card's width, drawn alone.
+3. An index tab: a rounded plastic tab (about 60% of the card's width and a quarter of its height) in marigold with a thick black outline, flat at the bottom, with a small four-point star on it.
+4. The blank ribbon banner, completely empty.
+Original twist: the brush stroke is as bold as a tattoo line.
+Must read at a glance: a card, a painted stroke and a tab.
+Add nothing else. Square 1024x1024, flat jade background, no text.
+```
+
+**TK-04 Nomad Sculpt. IMAGE 1 = `OBJ-04.png`**
+
+```text
+IMAGE 1 is attached first (OBJ-04.png, the current object) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1 as a PARTS SHEET in the blackwork tattoo-flash style of IMAGE 2. The object: Nomad Sculpt, shown as a lump of clay with thumbprints, a wire loop sculpting tool and a little flag on a toothpick.
+BACKGROUND: perfectly flat jade #4F9C80, edge to edge. PALETTE: ink #17101B, tomato #FF4B2B, marigold #FFB81C, cream #FFF2DA, nothing else.
+PARTS (each one separate, complete, upright, at least 6% of empty background between all of them):
+1. The clay lump: a fat, rough, rounded blob in tomato with a thick black outline, three thumbprint dents drawn as solid black ovals with a cream rim, a cream highlight streak and a flat base.
+2. The wire loop tool, lying horizontally: a long rounded marigold wooden handle with black stripes on the left and a black wire oval loop at the right end.
+3. The flag: a thin upright toothpick (marigold, thick black outline) carrying a small triangular cream flag with a black star on it.
+4. The blank ribbon banner, completely empty.
+Original twist: the clay has a tiny black tattoo-style swirl scar on one side.
+Must read at a glance: clay, a sculpting tool and a flag.
+Add nothing else. Square 1024x1024, flat jade background, no text.
+```
+
+**TK-05 AI tools. IMAGE 1 = `OBJ-05.png`**
+
+```text
+IMAGE 1 is attached first (OBJ-05.png, the current object) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1 as a PARTS SHEET in the blackwork tattoo-flash style of IMAGE 2. The object: AI tools, shown as a luggage tag with a grid of four variations, one of them picked with a tick.
+BACKGROUND: perfectly flat jade #4F9C80, edge to edge. PALETTE: ink #17101B, tomato #FF4B2B, marigold #FFB81C, cream #FFF2DA, nothing else.
+PARTS (each one separate, complete, upright, at least 6% of empty background between all of them):
+1. The luggage tag with its string, as one piece: a cream tag with clipped top corners and a round hole, a thick black outline, and a loop of black string through the hole; inside the tag a 2 by 2 grid of four small framed squares, each with its own tattoo symbol: a tomato heart, a marigold star, a cream eye on black, an ink-black lightning bolt on marigold. The tag has no tick on it.
+2. A tick: one bold hand-drawn check mark with a thick black outline and a marigold fill, drawn alone.
+3. The blank ribbon banner, completely empty.
+Original twist: the four symbols read like four tattoo flash options to pick from.
+Must read at a glance: a tag with four options and a tick.
+Add nothing else. Square 1024x1024, flat jade background, no text.
+```
+
+**TK-06 Pinterest. IMAGE 1 = `OBJ-06.png`**
+
+```text
+IMAGE 1 is attached first (OBJ-06.png, the current object) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1 as a PARTS SHEET in the blackwork tattoo-flash style of IMAGE 2. The object: Pinterest, shown as a reference card held up with a push pin.
+BACKGROUND: perfectly flat jade #4F9C80, edge to edge. PALETTE: ink #17101B, tomato #FF4B2B, marigold #FFB81C, cream #FFF2DA, nothing else.
+PARTS (each one separate, complete, upright, at least 6% of empty background between all of them):
+1. The reference card: an upright photo card (about 4:5) with a thick cream border and a thick black outline, and a flash scene in the picture: a big tomato sun over a solid black mountain, a marigold sky and cream wave lines at the bottom.
+2. The push pin: a round-headed pin seen from above at a slight angle, a tomato head with a cream highlight blob and a thick black outline, and a short black needle; drawn alone.
+3. The blank ribbon banner, completely empty.
+Original twist: the sun and the mountain are a nod to the reference poster, simple and bold.
+Must read at a glance: a photo card and a push pin.
+Add nothing else. Square 1024x1024, flat jade background, no text.
+```
+
+**TK-07 VS Code. IMAGE 1 = `OBJ-07.png`**
+
+```text
+IMAGE 1 is attached first (OBJ-07.png, the current object) and IMAGE 2 second (the style reference). In IMAGE 1 the curly braces and the lettering were removed; the key carries a pair of curly braces.
+
+Redraw IMAGE 1 as a PARTS SHEET in the blackwork tattoo-flash style of IMAGE 2. The object: VS Code, shown as a keyboard key with a pair of curly braces on it.
+BACKGROUND: perfectly flat jade #4F9C80, edge to edge. PALETTE: ink #17101B, tomato #FF4B2B, marigold #FFB81C, cream #FFF2DA, nothing else.
+PARTS (each one separate, complete, upright, at least 6% of empty background between all of them):
+1. The key base: the chunky lower body of a keyboard key seen from the front, a wide rounded block in solid ink black with a thin cream edge line and two small cream highlight dashes.
+2. The key cap: a rounded-square key top in cream with a thick black outline and a thin inner frame line, completely blank.
+3. The curly braces: a pair of bold hand-drawn curly braces, two separate shapes, in tomato with a thick black outline and a cream highlight streak.
+4. The blank ribbon banner, completely empty.
+Original twist: a few small marigold sparkle ticks on the key base.
+Must read at a glance: a key and two curly braces.
+Add nothing else. Square 1024x1024, flat jade background, no text.
+```
+
+**BIN-01 The bin of discarded thumbnails. IMAGE 1 = `OBJ-BIN.png`**
+
+```text
+IMAGE 1 is attached first (OBJ-BIN.png, the current object) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1 as ONE single illustration (not a parts sheet, no banner) in the blackwork tattoo-flash style of IMAGE 2. The object: a small wire waste-paper basket full of discarded thumbnails.
+BACKGROUND: perfectly flat jade #4F9C80, edge to edge. PALETTE: ink #17101B, tomato #FF4B2B, marigold #FFB81C, cream #FFF2DA, nothing else.
+WHAT TO DRAW (keep the layout of IMAGE 1):
+- The basket as a solid ink-black trapezoid with a thick cream rim and a cream wire mesh grid.
+- Three crumpled paper balls sitting above the rim (cream, marigold and cream) with black crease lines.
+- A sheet of paper leaning on the rim, with a devil-head sketch on it (a round head with two horns) crossed out by a big tomato X.
+- A few small cream wisps and a four-point star flying out of the basket.
+Original twist: one of the crumpled balls shows a tiny skull doodle.
+Must read at a glance: a basket of rejected sketches.
+Fill about 90% of the canvas, centred. Add nothing else. Square 1024x1024, flat jade background, no text.
+```
+
+### One-line fixes to paste when a result is off
+
+- Parts touch or overlap: `Redraw it as a parts sheet: every part fully separate and complete, with at least 6% of the canvas width of empty background between any two parts and from the edges.`
+- A part is missing or extra: `Exactly the parts listed, nothing else, and the blank ribbon banner.`
+- Parts are tilted: `Every part upright and square-on to the viewer, no tilt and no perspective.`
+- Not tattoo enough: `More old-school tattoo flash: heavier black outlines with a thick-and-thin weight, big solid black shapes, flat colour slightly out of register, no gradients.`
+- Colours drifted: `Only ink black, tomato, marigold and cream on the jade background, nothing else.`
+- Text appeared (the banner or a part): `Remove all lettering: the ribbon banner must be completely empty.`
+- Wrong scale between parts: `Keep the parts at the scale they have in IMAGE 1, so that together they form that object.`
 
 ## PF and ST
 

@@ -63,7 +63,8 @@ export const ScrubVideo = forwardRef<ScrubHandle, ScrubVideoProps>(function Scru
   }, [ready, still])
   const pointerScrub = fine && !still
   const wantScrub = near && !failed && (pointerScrub || armed)
-  const wantLoop = near && tap
+  // the gapless loop is available to every pointer: touch taps the frame, a mouse presses the Play tab
+  const wantLoop = near && !still
 
   // ---- painting: the timecode lives here, the strip and the printed frame number live outside -------------------------------
   const showInterim = useCallback((frame: number) => {
@@ -254,7 +255,7 @@ export const ScrubVideo = forwardRef<ScrubHandle, ScrubVideoProps>(function Scru
 
   // ---- the pointer ------------------------------------------------------------------------------------------------------------
   const onPointerMove = (event: ReactPointerEvent<HTMLElement>) => {
-    if (!pointerScrub || event.pointerType === 'touch') return
+    if (!pointerScrub || event.pointerType === 'touch' || playing) return
     const box = frameRef.current?.getBoundingClientRect()
     if (!box || box.width === 0) return
     engineRef.current?.drive((event.clientX - box.left) / box.width, 'pointer')
@@ -264,7 +265,7 @@ export const ScrubVideo = forwardRef<ScrubHandle, ScrubVideoProps>(function Scru
     if (pointerScrub && engine && engine.source() === 'pointer') engine.drive(0, 'pointer')
   }
 
-  const layer = wantScrub && ready ? 'scrub' : wantLoop && loopShown ? 'loop' : 'poster'
+  const layer = playing ? 'loop' : wantScrub && ready ? 'scrub' : wantLoop && loopShown ? 'loop' : 'poster'
 
   const inside = (
     <>
@@ -368,6 +369,17 @@ export const ScrubVideo = forwardRef<ScrubHandle, ScrubVideoProps>(function Scru
   ) : (
     <div ref={setFrame} className="pm-ab-frame" data-layer={layer} onPointerMove={onPointerMove} onPointerLeave={onPointerLeave}>
       {inside}
+      {!still && (
+        <button type="button" className="pm-ab-play" aria-pressed={playing} aria-label={playing ? PORTRAIT.pause : PORTRAIT.play} data-cursor="none" onClick={toggleLoop}>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            {playing ? (
+              <path d="M7 5v14M17 5v14" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" />
+            ) : (
+              <path d="M8 4.6v14.8L19.6 12z" fill="currentColor" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+            )}
+          </svg>
+        </button>
+      )}
     </div>
   )
 })

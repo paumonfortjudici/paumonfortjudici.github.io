@@ -7,7 +7,7 @@ Version 4 (2026-10-29), the definitive Catalog set. Pau threw away three earlier
 - No character is required, and the ten do **not** share a structure: same artistic hand, a different idea and composition each, "as if one artist had designed each folder one by one".
 - They are not a small motif any more: each is a **wide frieze behind the title of its folder**, at low opacity, filling much of the horizontal band.
 
-Version 8 adds ST (the nine Sticker Sheet characters restyled like Pau's lilac selfie sticker, two references per prompt). Version 7 added TK (the seven "On my desk" icons as animatable parts sheets, plus the bin, in blackwork tattoo style: see the TK section). Version 6 added PR (the four Process scenes: a restyle of the scenes already on the site, two references per prompt). PF and ST are still open: they get their prompts when Pau gives the direction for each category.
+Version 9 adds PF (the five slides of folder 09 redrawn as an indie comic, with a character model sheet ONA-00). Version 8 added ST (the nine Sticker Sheet characters restyled like Pau's lilac selfie sticker, two references per prompt). Version 7 added TK (the seven "On my desk" icons as animatable parts sheets, plus the bin, in blackwork tattoo style: see the TK section). Version 6 added PR (the four Process scenes: a restyle of the scenes already on the site, two references per prompt). PF and ST are still open: they get their prompts when Pau gives the direction for each category.
 
 ## The system
 
@@ -16,7 +16,7 @@ Every image has an ID: `AREA-NN`. Save the result with the ID as its name in `C:
 | Area | IDs | What it replaces | Status |
 |---|---|---|---|
 | `CAT` | CAT-01 .. CAT-10 | the grey sketch next to each name in the Catalog, now a faint full-width background of the folder | **defined below (v4)** |
-| `PF` | PF-01 .. PF-05 | the five slides of folder 09 (A Portfolio for a Client) | waiting for Pau's direction |
+| `PF` | ONA-00, PF-01 .. PF-05 | the five slides of folder 09 (A Portfolio for a Client) as an indie comic, plus the character model sheet | **defined below (v9)** |
 | `ST` | ST-01 .. ST-09 | the nine stickers of folder 10 (Sticker Sheet), same characters restyled | **filed and live** (`python tools/ingest_stickers.py _inbox/refs`) |
 | `PR` | PR-01 .. PR-04 | the four big scenes of the Process film (section 05): COLLECT, SKETCH, MAKE, DELIVER | **filed and live** |
 | `TK` / `BIN` | TK-01 .. TK-07, BIN-01 | the seven tool icons of "On my desk" (animated parts sheets) and the bin | **filed and live** (`python tools/ingest_tokens.py _inbox/refs`) |
@@ -722,8 +722,179 @@ Format: portrait, flat cream #FFF0E0 background, the sticker with its halo about
 - Text appeared: `Remove all lettering: no letters, numbers or logos anywhere.`
 - Sticker cut at the edge or too small: `The whole sticker with its halo fully inside the picture, about 85% of the height, at least 8% of empty cream margin on every side.`
 
-## PF
+## PF: the five slides of "A Portfolio for a Client" (comic-cover restyle, Ona Ribas)
 
-Open. Pau gives the art direction and references, then the prompts are written like the CAT, PR, TK and ST sets. The IDs, the file names and the filing procedure stay as before:
+**v9 (2026-10-29).** Pau wants folder 09 to be a showpiece (he is starting a freelance business of making portfolios): the same five slides, the same layouts, the same copy, but drawn like an indie comic: hand-inked, scratchy, crowded with meaningful detail and small easter eggs, as if an artist had drawn it on paper and then painted it digitally. References: three hand-drawn gig posters (`_inbox/refs/STYLE-COMIC-1.jpg`, `-2.jpg`, `-3.jpg`). The prompts describe how they are drawn and never name or copy their subjects, characters, compositions or lettering.
 
-- `PF-NN` becomes `public/works/concept-portfolio/art/slide-N.webp` (1080x1920) plus the derived sheet, contact sheet, thumb, peek and card art.
+### Strategy
+
+- **The deck's own palette stays** (teal / butter / deep teal fields, tomato, sun yellow, lilac, periwinkle, celery, steel, salmon, paper, ink `#101820`), so the palette card of the "About Ona" panel, the design notes and the folder colour stay true. What changes is how the palette is used (flat, off-register, halftone, hatching).
+- **Per prompt, attach**: IMAGE 1 = the current slide (`SLD-01.png` .. `SLD-05.png`: layout and content to keep), the three style references, and for slides 02, 04 and 05 Ona's model sheet (`ONA-00.png`, generated first).
+- **Text (hybrid).** ChatGPT cannot be trusted with the bio, the timeline or the contact card. So it draws only (a) the huge hand-cut **titles**, spelled exactly, and (b) the short **sound words** (SNAP!, CRUNCH!, CLIP-CLOP!, WHEEE!, CREAK, THUMP!, BYE!) in bursts. Every other text container (caption boxes, tags, strips, the contact card) is drawn **completely empty**, and the real copy is set by us afterwards, in real type, so it is exact and sharp. The header and footer bands are left clean for the small header and footer rows.
+- **Format**: 9:16, 1080 x 1920. If ChatGPT can only give 2:3, the ingest pads the field top and bottom (the bands are clean for that).
+- **Ona is fixed by a model sheet** (`ONA-00`: Ona in three poses, expressions, hands, boots, the furry mic ("dead cat"), the black cat, the duffel, the neighbour). Generate it first, approve it, then attach it to slides 02, 04 and 05.
+- **Recurring easter-egg system** (it makes the deck one story): the black cat appears in every slide (alive inside the mic's fur on 01, a tail and eyes on 02, a tiny watcher on 03, asleep on a speaker on 04, riding the duffel on 05); the patient neighbour (a tiny man in a dressing gown with ear muffs) appears on 02 and 05; "ona" means wave in Catalan, so tiny wave curls hide in the art; numbers that mean something (six kilos of salt, eight episodes, sixteen titles, 22 films); objects that connect slides (the three project polaroids on the wall of slide 04). The world's Loupe tool ("Tiny print? Try the loupe") is how a visitor finds them.
+
+### What happens after the images arrive
+
+`tools/ingest_slides.py` fits each image to 1080 x 1920 (padding the clean bands if needed), I compose the real text into the empty containers with Chrome (comic-lettering faces for titles of small print, to be chosen with Pau: the deck's Syne / DM Sans / Anybody are replaced and the fonts card of the "About Ona" panel is updated), save `slide-N.webp`, rebuild `sheet.webp`, `contact-sheet.webp`, `thumb.webp`, `art/thumb.webp`, the Works / cover card art and `peek.webp`, and **re-measure every pin and every sound hotspot on the new art** (`src/worlds/concept-portfolio/data.ts`), rewriting the design notes and the alt texts so they describe what is drawn.
+
+### Files
+
+| ID | What | Reference as IMAGE 1 | Also attach | Result file |
+|---|---|---|---|---|
+| ONA-00 | Model sheet: cast and props | none | the 3 posters | `ONA-00.png` |
+| PF-01 | Cover (teal): FOLEY PORTFOLIO | `SLD-01.png` | the 3 posters | `PF-01.png` |
+| PF-02 | About (butter): I'M ONA RIBAS | `SLD-02.png` | the 3 posters + `ONA-00.png` | `PF-02.png` |
+| PF-03 | Projects (deep teal): SELECTED PROJECTS | `SLD-03.png` | the 3 posters | `PF-03.png` |
+| PF-04 | Experience (butter): EXPERIENCE & EDUCATION | `SLD-04.png` | the 3 posters + `ONA-00.png` | `PF-04.png` |
+| PF-05 | Contact (teal): THANKS FOR LISTENING | `SLD-05.png` | the 3 posters + `ONA-00.png` | `PF-05.png` |
+
+### Chat opening message (new chat, paste first, attach the three posters `STYLE-COMIC-1.jpg`, `-2.jpg`, `-3.jpg`)
+
+```text
+You will illustrate FIVE portrait slides (9:16) for a portfolio deck of an invented client: Ona Ribas, a foley artist and sound designer from Girona. Together they must read as the pages of one indie comic, a comic cover and four comic pages, drawn by one artist. With every request I will attach IMAGE 1 (the current slide: the layout, the content and the composition to keep) and the THREE STYLE REFERENCES (hand-drawn gig posters: they tell you HOW to draw). The three images attached now are the STYLE REFERENCES. Do not draw anything yet. Study them, reply "ready" and describe back to me, in eight lines, what makes their style.
+
+THE STYLE OF THE POSTERS (copy how they are drawn; never their subjects, characters, compositions, texts or signatures):
+1. HAND-INKED LINEWORK. Everything is drawn with a lively dip-pen or brush-pen line of changing weight: thick (about 8 to 14 px on a 1080 x 1920 slide) on outer silhouettes and on the shadow side, thin (2 to 4 px) for inner details. Lines wobble a little, overshoot corners, cross, double up where the artist corrected them and end in tapered flicks. Never vector-clean. A few thin leftover pencil construction lines (blue-grey or pink) may show under the colour here and there.
+2. SCRATCHY SHADING. Shadows are dense hatching, cross-hatching and short speed strokes in the ink colour, plus patches of coarse halftone dots (Ben-Day) in a darker or lighter tone of the local colour, on the shadow side of objects and across large background areas. No smooth gradients, no airbrush, no 3D-render look.
+3. FLAT COLOUR PAINTED UNDER THE LINES, SLIGHTLY OFF-REGISTER. Flat opaque fills, two or three tones per object (a base, one darker shade, one light highlight shape), deliberately not aligned with the linework: a fill may stop short of a line or spill over it, like a risograph print or a digital paint layer under a scanned drawing. A fine paper grain and dry-brush speckle over everything.
+4. A LIMITED PALETTE USED BOLDLY. Each slide uses 5 or 6 of these colours plus ink, in big flat fields with strong value contrast, one dominant field colour and one hot accent: teal #007E9B, deep teal #1B6885, butter #FDEFAF, steel #63A0AC, paper #F6F0DC, sun yellow #F2C62F, tomato #E8553E, salmon #F2A29A, lilac #B58AD6, periwinkle #7A8CE8, celery #9CCF9A. The ink is blue-black #101820, never pure black.
+5. HAND-CUT TITLE LETTERING. Titles are huge chunky hand-lettered capitals, as if cut from paper or painted with a fat brush: letters of different widths and slightly different heights, a wobbling baseline, rough notched edges, lines stacked tightly so the title runs margin to margin. Every letter has a thick ink outline and a hard solid extruded shadow in ink going down and to the right, and sometimes a second offset colour behind it. Small sound words are lettered the same way, smaller, inside spiky comic bursts.
+6. DENSE BUT ORGANISED, FULL OF CLUES. The pictures are crowded with information, and all of it has a reason: a clear hierarchy (title, hero scene, secondary scenes, quiet areas for small text), overlapping shapes at different scales, small props, four-point sparkles in ink and in sun yellow, music-note and sound-wave shapes, speed lines, sweat drops. Each slide hides small easter eggs: tiny funny details that make sense in foley work and in Ona's story (listed in each request). They are drawn small, with no caption.
+7. COMIC-COVER ENERGY. Dramatic camera angles (low angle, foreshortening, big hands and boots near the viewer), characters breaking out of their frames, irregular hand-drawn panel borders, sound words, expressive faces with huge eyes and tiny pupils, sweat drops, band-aids. Playful, a little anarchic, warm.
+
+WHAT IS NOT THE STYLE: clean vector illustration, flat sticker or app-icon art, smooth gradients, 3D renders, glossy or plastic shine, symmetrical corporate layouts, a stock-photo look, perfectly straight and even lines, pastel one-hue palettes.
+
+THE FIXED CAST AND THE RECURRING MOTIFS (the same in every slide):
+- ONA RIBAS, a young woman: dark curly hair as one big wavy ink mass with a few curls escaping, a small gold hoop earring, round cheeks with a blush, a big expressive mouth. She wears a LILAC sweater (#B58AD6) with big puffy sleeves, TOMATO dungarees (#E8553E) with a chest pocket and a rolled hem, ODD SOCKS (one celery green, one salmon pink), chunky black boots with cream soles, and yellow (#F2C62F) over-ear headphones. Comic proportions: a slightly big head, long legs, big expressive hands. She must look identical in every slide (her model sheet is attached when she appears).
+- THE DEAD CAT: foley people call a furry microphone windscreen a "dead cat". It is a big cream-butter furry boom-microphone windscreen with two periwinkle straps. Its living joke: a small BLACK CAT with yellow eyes and a pink nose, who appears in every slide.
+- FOOTPRINTS: boot prints with a wavy-line sole on every slide (steel, celery or butter, depending on the field).
+- ONE YELLOW SUNBURST (#F2C62F) on every slide: hand-drawn spiky rays.
+- SOUND BURSTS: spiky starburst balloons with short sound words.
+- "ONA" means "wave" in Catalan: tiny wave curls hide in the art.
+- THE PATIENT NEIGHBOUR: a tiny man in a dressing gown with ear muffs and bags under his eyes, who appears small in some slides.
+
+TEXT RULES (very important): I will add all small and medium text myself, in real type.
+- Draw the HUGE TITLE of each slide as hand-cut lettering, spelled EXACTLY as given in the request, with nothing added. Check every letter.
+- Draw the short SOUND WORDS a request lists (SNAP!, CRUNCH!, CLIP-CLOP!, WHEEE!, CREAK, THUMP!, BYE!), spelled exactly, in comic lettering inside spiky bursts.
+- Everything else is NOT text: caption boxes, paper strips, tags, ribbons, tickets, cards and speech bubbles are drawn COMPLETELY EMPTY (no letters, no numbers, no scribbles, no lines imitating writing), because I will write in them. Keep them large, flat and uncluttered, with a hand-inked border, so text can sit on them. The only exceptions are the tiny words a request names on a prop.
+- Never invent words, labels, logos, brand names, signatures or watermarks.
+
+LAYOUT RULES: 9:16, 1080 x 1920 px (if you cannot output 9:16, make it as tall as you can with the same proportions and never crop the lettering). The art runs edge to edge. Keep a clean HEADER BAND (the top 6%) and a clean FOOTER BAND (the bottom 7%) in the field colour with paper grain and halftone only, for my small header and footer text (only footprints may run along the very bottom edge).
+
+THE RULE FOR EVERY REQUEST: IMAGE 1 is the layout to keep: the same field colour, the same title position and size (margin to margin), the same elements in roughly the same zones, the same reading order and hierarchy. You are redrawing it as a comic cover or a comic page. Do NOT copy how IMAGE 1 is drawn (it is a clean flat slide): draw everything in the hand-inked comic style above. Keep its characters, props and story, and add the hidden details I list.
+
+With every request I will attach the current slide (IMAGE 1), the three style references and, when Ona appears, her model sheet.
+```
+
+### The six prompts
+
+**ONA-00 The cast and props model sheet (generate this first, same chat, attach the three posters)**
+
+```text
+Attach the three style references. Draw a MODEL SHEET of the cast and props of the deck, in the hand-inked comic style of the references (scratchy ink line, hatching, halftone, off-register flat colour, paper grain).
+FORMAT: landscape 3:2 (1536 x 1024), flat paper background #F6F0DC with paper grain, no frame. NO TEXT of any kind: no labels, no names, no numbers.
+LAYOUT OF THE SHEET:
+1. LEFT HALF, ONA RIBAS full body, three poses side by side, each about 75% of the sheet height: (a) front view, standing, hands on hips, a cheerful grin; (b) three-quarter view mid-step walking away, looking back over her shoulder, one hand waving, a big smile; (c) a low-angle, foreshortened comic pose: right knee kicked up towards the viewer (a huge boot in the foreground), clapping two coconut halves together, mouth wide open laughing, eyes squeezed shut.
+   ONA: a young woman, dark curly hair drawn as one big wavy solid-ink mass with a few curls escaping, a small gold hoop earring, round cheeks with a salmon blush, big expressive mouth, a tiny nose. Comic proportions: a slightly big head, long legs, big expressive hands with four fingers and a thumb. LILAC sweater #B58AD6 with big puffy sleeves and ribbed cuffs. TOMATO dungarees #E8553E with a chest pocket with a button, rolled hems and a visible side stitch line. ODD SOCKS: one celery green #9CCF9A, one salmon #F2A29A. Chunky black boots with cream soles, thick laces, a scuffed toe. Yellow #F2C62F over-ear headphones (around her neck in a, on her head in c).
+2. TOP RIGHT, a row of six heads of Ona with six expressions: laughing, gasping with a sweat drop, concentrating with her tongue out, sleepy, a mischievous grin, a goodbye smile.
+3. MIDDLE RIGHT, four hands: clapping two coconut halves, holding a boom pole, waving, one flat on a mixing-console fader. And one boot and odd sock close-up, stomping.
+4. THE DEAD CAT: a big furry boom-microphone windscreen in cream-butter, drawn with hundreds of ink-edged tufts and hatched shadows, two periwinkle #7A8CE8 straps with rivets, a deep-teal shock-mount handle, a short boom pole and a braided cable ending in a plug. Next to it a small version of the same.
+5. THE BLACK CAT: a small black cat with big yellow eyes with slit pupils, a pink nose, white whisker lines, in three poses (sitting, asleep curled up, peeking over an edge with only its eyes and ears showing).
+6. THE DUFFEL: a periwinkle duffel bag with buckled straps, a celery stalk and a coconut half sticking out of it.
+7. THE PATIENT NEIGHBOUR: a tiny man in a striped dressing gown and slippers, big ear muffs, bags under his eyes, holding a steaming mug, a tired smile.
+8. BOTTOM EDGE, a row of 12 round colour swatches of the deck palette (no text), and one boot-print trail with wavy-line soles.
+Everything separate with clear space, nothing overlapping.
+```
+
+**PF-01 Cover. IMAGE 1 = `SLD-01.png`, plus the three posters**
+
+```text
+IMAGE 1 is attached first (SLD-01.png, the current cover). The three style references follow.
+
+Redraw IMAGE 1 as the COVER of an indie comic, in the hand-inked comic style of the references. Slide 1 of 5, teal field #007E9B with halftone patches in deep teal #1B6885 and steel #63A0AC. 9:16.
+ZONES (percent of the height): 0 to 6 clean header band; 6 to 31 the title; 31 to 82 the hero scene; 82 to 93 the caption box and the seal; 93 to 100 clean footer band with footprints along the very bottom edge.
+TITLE: two lines of huge hand-cut capitals, exactly "FOLEY" and then "PORTFOLIO", each line running margin to margin. Letters of different widths and heights (the F very wide, the O narrower, the L tall and narrow, the E medium, the Y wide), a wobbling baseline, rough notched edges. Butter fill #FDEFAF, thick ink outline, a hard solid ink extruded shadow down-right, and a thin tomato offset behind it.
+HERO (the middle of the cover): a GIANT FURRY BOOM-MICROPHONE WINDSCREEN (the dead cat) bursting towards the viewer along a diagonal, seen from a low angle with strong foreshortening, filling about 60% of the width. Hundreds of spiky ink-edged tufts in butter and cream, shadow side hatched in deep teal and halftone-dotted in salmon, a lit side with white-cream highlight tufts. Two periwinkle straps with rivets, a deep-teal shock-mount handle, a thick braided cable looping out to the lower right and ending in a plug. Behind it a big hand-drawn yellow sunburst with long irregular rays, and deep-teal waveform bars radiating like the stripes of a road in perspective. Speed lines and four-point sparkles in ink and sun yellow. Entering from the bottom-right edge, Ona's two forearms in lilac puffy sleeves with ribbed cuffs, gripping the boom pole (hands only, comic off-panel).
+SOUND BURSTS (spiky balloons with hard shadows): "SNAP!" in a sun-yellow burst at the top right (x 72 to 95%, y 33 to 41%); "CRUNCH!" in a tomato burst at the bottom left (x 6 to 32%, y 74 to 84%). Letters in ink with a cream offset.
+EMPTY TEXT CONTAINERS: (a) a comic caption box, cream paper with a hand-inked tilted border, bottom left (x 5 to 62%, y 85 to 93%), COMPLETELY EMPTY; (b) a round tomato seal like a sticker at the bottom right (x 74 to 96%, y 82 to 93%) with a cream inner disc and an empty cream ring band round it (I will write on the ring) and the number "2026" lettered large in ink in the centre.
+HIDDEN DETAILS (tiny, no captions): (1) two small yellow cat eyes with slit pupils, a pink nose and whiskers peeking out of the fur on the upper side of the windscreen, the dead cat is alive; (2) in the steel hardware of the clamp, a tiny reflection of Ona waving with her yellow headphones; (3) a snapped celery stick with crumbs flying out of the SNAP! burst; (4) cereal flakes and gravel bits flying out of the CRUNCH! burst; (5) the tallest waveform bars curl into a breaking wave shape; (6) a tiny blank clapperboard half hidden under the CRUNCH! burst; (7) in the footprint trail one print wears an odd sock, one is a bare foot with a plaster.
+Do not write any other text. Keep the header and footer bands clean. Full 9:16 portrait, edge to edge.
+```
+
+**PF-02 About. IMAGE 1 = `SLD-02.png`, plus the three posters and `ONA-00.png`**
+
+```text
+IMAGE 1 is attached first (SLD-02.png, the current About slide). The three style references and Ona's model sheet follow.
+
+Redraw IMAGE 1 as an inside page of an indie comic, in the hand-inked comic style of the references. Slide 2 of 5, butter field #FDEFAF with salmon halftone dots and paper grain. 9:16. Ona must match her model sheet exactly.
+ZONES (percent of the height): 0 to 6 clean header band; 6 to 25 the title over a giant sunburst; 25 to 30 a small quiet strip; 30 to 62 on the left (x 5 to 50%) the empty caption panels; 28 to 88 on the right and centre (x 30 to 100%) Ona and the props; 88 to 100 a teal #007E9B floor with halftone and butter footprints.
+TITLE: two lines of huge hand-cut capitals, exactly "I'M ONA" and then "RIBAS" (with a straight apostrophe), each line margin to margin. Deep teal #1B6885 fill, thick ink outline, hard solid ink extruded shadow down-right, a tomato offset behind it, letters of very different widths. Behind the title a giant hand-drawn sun-yellow sunburst with long irregular rays running across the name.
+HERO: Ona in an extreme, low-angle comic pose at the centre right (x 30 to 90%, y 36 to 88%): her right knee kicked up towards the viewer with a huge foreshortened boot in the foreground, clapping two coconut halves in front of her chest, mouth wide open laughing, eyes squeezed shut, joy drops flying, curls bouncing, her headphones bouncing round her neck, a dungaree strap flapping, motion lines round the knee and boot, her hatched ink shadow on the floor. A sun-yellow "CLIP-CLOP!" burst in front of the coconuts (centre near x 65%, y 58%).
+THE FIVE PROPS, taped to the page on paper sketch frames with tape strips, stepping down from the top right to the bottom left, each bursting a little out of its frame like a comic panel: celery bunch (x 48 to 95%, y 34 to 53%), cellophane candy wrapper beside it, a cabbage (x 30 to 62%, y 58 to 76%), a blue periwinkle umbrella (x 8 to 36%, y 67 to 85%), a watermelon half with a mallet (x 82 to 100%, y 63 to 79%). Each prop has an EMPTY arrow-shaped paper tag tied to it with string: top of the cluster (x 50 to 96%, y 29 to 34%) two tags, one under the cabbage (x 29 to 58%, y 77 to 81%), one under the umbrella (x 9 to 40%, y 87 to 91%), one vertical on the right edge (x 89 to 95%, y 74 to 89%).
+EMPTY TEXT CONTAINERS: (a) a long thin paper strip under the title (x 5 to 50%, y 26 to 29%); (b) a small empty strip for a role line (x 5 to 50%, y 33 to 41%); (c) a large caption panel of cream paper with a hand-inked slightly tilted border and torn corners (x 5 to 50%, y 42 to 62%), COMPLETELY EMPTY.
+HIDDEN DETAILS (tiny, no captions): (1) the celery stalks are arranged like a skeleton forearm and hand (bones); (2) the cellophane wrapper twists end in tiny flames (fire); (3) a small kitchen knife stuck in the cabbage with a band-aid on it (stabs); (4) tiny feathers along the umbrella ribs (wings); (5) the watermelon has a band-aid and a tiny crack beside the mallet (heads); (6) in the corner of every frame a small wave curl ("ona" means wave); (7) the patient neighbour, a tiny man in a dressing gown with ear muffs, bags under his eyes and a mug, peeking from behind the edge of the teal floor at the bottom left (x 3 to 12%, y 90 to 97%); (8) the black cat's tail and two yellow eyes in the dark shadow behind the cabbage frame; (9) Ona's headphone cable ends plugged into the cabbage, as if she were listening to it; (10) a bucket of gravel and a shovel behind the umbrella frame; (11) the footprint trail on the floor: butter boot prints, one pair is a pair of odd socks.
+Do not write any other text. Keep the header band clean. Full 9:16 portrait, edge to edge.
+```
+
+**PF-03 Projects. IMAGE 1 = `SLD-03.png`, plus the three posters**
+
+```text
+IMAGE 1 is attached first (SLD-03.png, the current Projects slide). The three style references follow.
+
+Redraw IMAGE 1 as a comic PAGE with three panels, in the hand-inked comic style of the references. Slide 3 of 5, deep teal field #1B6885 with halftone patches in teal and steel. 9:16.
+ZONES (percent of the height): 0 to 6 clean header band; 7.5 to 9.5 the small word "SELECTED"; 9.5 to 19 the title; then three rows that zigzag: row 1 picture on the left (x 6 to 45%, y 22 to 42%) and an EMPTY text area on the right (x 47 to 94%, y 22 to 41%); row 2 picture on the right (x 58 to 94%, y 44 to 64%) and an empty text area on the left (x 6 to 55%, y 44 to 62%); row 3 picture on the left (x 6 to 46%, y 67 to 89%) and an empty text area on the right (x 47 to 94%, y 67 to 88%); 94 to 100 clean footer band. A trail of steel boot prints zigzags down the page from panel to panel.
+TITLE: "SELECTED" small in sun-yellow hand-cut capitals, then "PROJECTS" huge, margin to margin, butter-cream fill, a wide P and a wide E and a narrow J, thick ink outline, a hard solid ink extruded shadow down-right.
+THE EMPTY TEXT AREAS stay plain deep-teal field with halftone and grain only, nothing drawn in them (I will set a year, a title, a line and a blurb there).
+THE THREE PANELS: each is an irregular, hand-inked, slightly tilted panel with rough edges and something breaking out of the border.
+PANEL 1, "SALT SEASON": a low-angle ground-level shot, a desert of cracked white salt flat under a big low sun, two giant tomato-red boots #E8553E mid-stomp towards the viewer kicking up halftone-dotted salt spray, the far horizon with dunes; in the foreground the edge of a kitchen table with a baking tray of salt, a small microphone on a stand pointing at it and six one-kilo salt bags piled at the left. A sun-yellow "CRUNCH!" burst at the top right of the panel. Butter, cream, sky-blue steel and tomato.
+PANEL 2, "KETTLE & CROW": a black ink crow whose two wings are open periwinkle umbrellas (#7A8CE8), flying and never landing, its feet dangling, above a tomato kettle on a stove with a panicked screaming face, its spout jetting steam, flames under it, rain falling off the umbrellas, a lightning flash; the panel is a periwinkle-lilac disc with halftone. A sun-yellow "WHEEE!" burst at the bottom right.
+PANEL 3, "THE UNDERSTUDY MOON": a stop-motion set: a smiling crescent moon made of layered cut paper in butter and sun yellow, with a visible hinge at its jaw, tape pieces and paper wings glued on, hanging by threads against a lilac #B58AD6 paper sky with wavy deep-teal paper hills; cardboard cut-out boots on sticks walk along the bottom; a pair of scissors and a craft knife in the corner; a lilac sleeve and hand entering from the side holding tweezers that pin a star. A salmon "CREAK" burst at the top left of the panel.
+HIDDEN DETAILS (tiny, no captions): (1) exactly six salt bags (six kilos); (2) exactly eight small paper stars hanging by threads in panel 3 (eight episodes); (3) a tiny black cat's two yellow eyes in a window behind the stove in panel 2, and a tiny paper cat silhouette peeking behind a hill in panel 3; (4) a small kitchen clock stopped at three in panel 1; (5) a tiny camera on a tripod and a sprocket frame counter in the corner of panel 3; (6) a tiny wave curl in the corner of each panel; (7) the crow wears one tiny yellow headphone; (8) the steel footprints end at the third panel with one print of an odd sock.
+Do not write any other text. Keep the header and footer bands clean. Full 9:16 portrait, edge to edge.
+```
+
+**PF-04 Experience. IMAGE 1 = `SLD-04.png`, plus the three posters and `ONA-00.png`**
+
+```text
+IMAGE 1 is attached first (SLD-04.png, the current Experience slide). The three style references and Ona's model sheet follow.
+
+Redraw IMAGE 1 as an inside page of an indie comic with one big splash panel, in the hand-inked comic style of the references. Slide 4 of 5, butter field #FDEFAF with salmon halftone and paper grain. 9:16. Ona must match her model sheet exactly.
+ZONES (percent of the height): 0 to 6 clean header band; 7 to 23 the title; 23 to 58 the splash panel (x 5 to 95%); 58 to 93 the timeline: a boot-print trail with four sun-yellow stop markers on the left (x 5 to 16%) and an EMPTY text area on the right (x 17 to 94%); 93 to 100 a clean footer band.
+TITLE: two lines of huge hand-cut capitals, exactly "EXPERIENCE" and then "& EDUCATION", each line margin to margin, deep teal #1B6885 fill with thick ink outline, hard solid ink extruded shadow down-right and a tomato offset, letters of very different widths and heights (the P of EXPERIENCE taller and wider).
+THE SPLASH PANEL: an irregular hand-inked, slightly tilted panel with a rough edge, deep teal #1B6885 inside, with some rays and one corner of the scene breaking out of the border. Inside, a crowded sound studio seen at a slightly tilted angle: on the left a wall of pinned memories (a call sheet with "SC 24" circled in tomato, a printed waveform strip, a film strip, a ticket "ADMIT ONE", a ticket "TAKE 12", a cassette, a film reel, a cork edge); at the centre right, Ona seated side-on at a mixing desk full of faders and knobs with a screen showing a green waveform, a big sun-yellow spiky sunburst behind her head like a studio lamp, her yellow headphones ON her head, concentrating with the tip of her tongue out, one hand on a fader, the other holding a celery stalk like a microphone; at the right edge a boom-microphone stand with a pink pop filter; her boots and odd socks foreshortened in the foreground.
+THE TIMELINE: boot prints, toes up, climbing the left side from the bottom to the panel, with four sun-yellow spiky suns each with a black dot in the middle (like eyes) as stop markers at y 59%, 68%, 76% and 84.5%. The right area stays plain butter field with grain only (I will set the four entries there).
+HIDDEN DETAILS (tiny, no captions): (1) three small pinned polaroids on the wall that match slide 3: red boots on a salt flat, a screaming kettle, a smiling paper moon; (2) the black cat asleep curled up on top of a speaker, wearing one tiny headphone; (3) a postcard of the coloured houses of the Onyar river in Girona, a blue and white tile from Lisbon, a moth on the lampshade; (4) a cereal box with a cartoon face on a shelf (too many cereal ads); (5) a row of exactly sixteen small pushpins on the wall (sixteen titles); (6) a tin tray of gravel with boots beside the desk, and a pile of old shoes; (7) a red "REC" lamp lit and a clock; (8) a coffee mug with a wave curl on it; (9) twenty-two tiny tally marks scratched on the edge of the desk (22 films); (10) the footprint trail ends in the gravel tray.
+Do not write any other text. Keep the header and footer bands clean. Full 9:16 portrait, edge to edge.
+```
+
+**PF-05 Contact. IMAGE 1 = `SLD-05.png`, plus the three posters and `ONA-00.png`**
+
+```text
+IMAGE 1 is attached first (SLD-05.png, the current Contact slide). The three style references and Ona's model sheet follow.
+
+Redraw IMAGE 1 as the LAST PAGE of an indie comic, in the hand-inked comic style of the references. Slide 5 of 5, teal field #007E9B with deep-teal and steel halftone and paper grain. 9:16. Ona and the black cat must match her model sheet exactly.
+ZONES (percent of the height): 0 to 6 clean header band; 6 to 23 the title; 24 to 28 an EMPTY quiet strip; 29 to 67 the hero scene; 69 to 90 a torn-paper card, EMPTY; 91 to 95 an EMPTY yellow luggage tag (x 6 to 62%); 92 to 96 a quiet area on the right (x 66 to 94%); 96 to 100 clean footer band.
+TITLE: two lines of huge hand-cut capitals, exactly "THANKS FOR" and then "LISTENING", each margin to margin, butter-cream fill, thick ink outline, hard solid ink extruded shadow down-right, a tomato offset, letters of very different widths (a very wide H, a narrow I).
+HERO: Ona walking away from the viewer towards a big rising sun, in a long energetic mid-stride, seen from behind and a little below, her head turned back over her shoulder with a huge delighted grin, her free hand waving goodbye at the viewer (the hand near x 44%, y 36%), the other hand holding up a boom pole with a small furry windscreen at its top; yellow headphones round her neck, lilac sweater, tomato dungarees, odd socks, chunky boots; on her back the periwinkle duffel with a celery stalk and a coconut sticking out and the BLACK CAT riding on top with a sly grin, its yellow eyes on the viewer. Behind her a big sun-yellow rising sun with long hand-drawn rays cut in half by the ground line (y 62%), halftone, speed lines. A tomato "BYE!" burst next to her waving hand (x 33 to 47%, y 33 to 40%). A trail of steel boot prints along the horizon, toes pointing right, the way she walks.
+THE HORIZON: tiny in the far background, in deep teal and steel silhouettes with halftone, the skyline of Girona: the colourful houses along the Onyar river, an iron footbridge and the cathedral bell tower above its long stairs.
+EMPTY TEXT CONTAINERS: (a) the torn-paper card (x 6 to 94%, y 69 to 90%): deep teal #1B6885 paper with torn edges, two strips of masking tape on the top corners and a hand-inked border, COMPLETELY EMPTY; (b) a yellow #F2C62F luggage tag with a hole and a loop of string, tilted, COMPLETELY EMPTY; (c) the strip under the title, empty.
+HIDDEN DETAILS (tiny, no captions): (1) the patient neighbour, a tiny man in a dressing gown with ear muffs, far right on the horizon, waving a white handkerchief with a huge relieved smile; (2) a tiny wave curl inside the sun; (3) the cat's tail ends in a small wave curl; (4) a small "foley" cassette tape unspooling in her pocket; (5) a tiny coconut half and a celery stalk have dropped into the footprint trail; (6) one of the boot prints is a pair of odd socks; (7) her duffel's buckle is shaped like a tiny cat head.
+Do not write any other text. Keep the header and footer bands clean. Full 9:16 portrait, edge to edge.
+```
+
+### One-line fixes to paste when a result is off
+
+- Not comic enough (too clean): `Too clean and vector-like. Redraw it hand-inked like the three style references: a lively dip-pen line of changing weight with overshoots and doubled lines, scratchy hatching, halftone dots, flat colour slightly off-register with the lines, paper grain.`
+- The title is misspelled: `The title must read exactly: [WORD ONE] / [WORD TWO]. Check every letter: [F-O-L-E-Y / P-O-R-T-F-O-L-I-O]. Same lettering style, nothing else changes.`
+- A text container has writing in it: `Every caption box, strip, tag, card and ribbon must be completely empty: no letters, no numbers, no scribbles. Remove all the writing from them, change nothing else.`
+- Too many random words: `Remove every word that is not the title or a listed sound word. No invented labels, no signature, no watermark.`
+- Ona looks different: `Ona must match the attached model sheet exactly: the same face, hair, earring, lilac sweater, tomato dungarees, odd socks, boots and headphones.`
+- It copies IMAGE 1's drawing: `Do not copy how IMAGE 1 is drawn. Keep its layout and content but redraw everything as a hand-inked comic page.`
+- Easter eggs missing or too big: `Add the listed hidden details, each one tiny (about 2% of the slide), drawn into the scene, with no caption.`
+- The bands are used: `Keep the top 6% and the bottom 7% clean: field colour with paper grain and halftone only.`
+- A colour is off: `Use only the deck palette; the field of this slide is [teal #007E9B / butter #FDEFAF / deep teal #1B6885].`
+- Too dark: `Lighter: more flat colour and white-cream highlights, less black hatching.`
+
+Work order that saves retries: ONA-00 first (approve her), then PF-02 (the hardest), then PF-01, PF-04, PF-05 and PF-03.

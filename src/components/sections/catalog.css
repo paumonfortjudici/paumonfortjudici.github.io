@@ -636,7 +636,14 @@
   opacity: var(--art-o);
   pointer-events: none;
   user-select: none;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.35s ease, height 0.35s var(--ease-out);
+}
+/* a closed band's picture also runs over the strip of the body under the header (the landing zone of the next band's tab), so the folder is
+   filled to its bottom edge with no bare colour; the open band keeps it on the header only (its panel below is for the text).
+   It is a height, not a `bottom`: an image with an explicit height ignores the bottom inset. */
+.pm-cat-band:not([data-state='open']) .pm-cat-art {
+  height: calc(100% + var(--cat-th) + 6px);
+  border-radius: var(--br);
 }
 /* where the crop falls on each picture: the part that says what the folder is (the ground line of the skyline, the fedora, the awning) */
 .pm-cat-band[data-slug='plana'] .pm-cat-art { object-position: 50% 64%; }

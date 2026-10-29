@@ -18,7 +18,7 @@ import { Inside } from './Inside'
 import { Marked } from './Marked'
 import { Motif, useMotifRoom } from './Motif'
 import type { WorkHit } from './search'
-import { CATALOG_SKETCH, SKETCH_SIZE, sketchPath } from './sketches'
+import { CATALOG_SKETCH, sketchPath } from './sketches'
 import { CAT_UI, PRINT_ALT, PRINT_CAPTION } from './strings'
 import { prefetchThumb, Thumb } from './Thumb'
 import { rememberOpen } from './useReturn'
@@ -196,7 +196,7 @@ function BandImpl({ work, index, state, words, hint, mounted, plays, inlineThumb
             onFocus={() => prefetchThumb(work)}
           >
             {CATALOG_SKETCH.has(work.slug) && (
-              <img className="pm-cat-art" src={sketchPath(work.slug)} width={SKETCH_SIZE.width} height={SKETCH_SIZE.height} alt="" loading="lazy" decoding="async" draggable={false} aria-hidden="true" />
+              <img className="pm-cat-art" src={sketchPath(work.slug)} alt="" loading="lazy" decoding="async" draggable={false} aria-hidden="true" />
             )}
             <span className="pm-cat-no" aria-hidden="true">
               {pad2(work.n)}

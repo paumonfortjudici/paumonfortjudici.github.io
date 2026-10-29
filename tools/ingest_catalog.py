@@ -1,7 +1,8 @@
 """Files the ten Catalog friezes (CAT-01..CAT-10, drawn on the flat colour of their folder) into the site.
 
 For each image: find the flat background colour, key it out with a soft edge (so the drawing sits on the real band colour, grain and all),
-and save public/works/<slug>/catalog-sketch.webp (transparent). The page shows it behind the title of the band (see catalog.css, .pm-cat-art).
+trim the empty margins to the drawing, and save public/works/<slug>/catalog-sketch.webp (transparent, about 2100 x 700, the exact size depends on the
+drawing). The page shows it behind the title of the band, cropped to fill the whole folder (see catalog.css, .pm-cat-art).
 
     python tools/ingest_catalog.py <folder holding CAT-01.png .. CAT-10.png>
 
@@ -40,7 +41,6 @@ BAND = {
     'illustration': '#B79CFF',
 }
 D0, D1 = 16.0, 46.0  # colour distance under D0 is background, over D1 is drawing, in between is the soft edge
-WIDTH = 2172  # the sources are 2172 x 724 (3:1): kept at full size, the band shows them up to ~1500 css px wide
 
 
 def hex_rgb(h):
@@ -81,8 +81,11 @@ def run(src_dir):
         rgb = np.where(alpha[..., None] < 0.05, a, rgb)
         out = np.dstack([rgb, alpha * 255]).astype(np.uint8)
         im = Image.fromarray(out, 'RGBA')
-        if im.width != WIDTH:
-            im = im.resize((WIDTH, round(im.height * WIDTH / im.width)), Image.LANCZOS)
+        # trim the empty flat margins: the band shows the picture cropped to fill the whole folder, so no strip of bare colour may be left
+        # at any edge (anything fainter than 35% alpha, a speck of grain, does not count as drawing)
+        box = Image.fromarray((alpha > 0.35).astype(np.uint8) * 255).getbbox()
+        if box:
+            im = im.crop(box)
         dst_dir = os.path.join(ROOT, 'public', 'works', slug)
         os.makedirs(dst_dir, exist_ok=True)
         dst = os.path.join(dst_dir, 'catalog-sketch.webp')

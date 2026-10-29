@@ -7,7 +7,7 @@ Version 4 (2026-10-29), the definitive Catalog set. Pau threw away three earlier
 - No character is required, and the ten do **not** share a structure: same artistic hand, a different idea and composition each, "as if one artist had designed each folder one by one".
 - They are not a small motif any more: each is a **wide frieze behind the title of its folder**, at low opacity, filling much of the horizontal band.
 
-Version 9 adds PF (the five slides of folder 09 redrawn as an indie comic, with a character model sheet ONA-00). Version 8 added ST (the nine Sticker Sheet characters restyled like Pau's lilac selfie sticker, two references per prompt). Version 7 added TK (the seven "On my desk" icons as animatable parts sheets, plus the bin, in blackwork tattoo style: see the TK section). Version 6 added PR (the four Process scenes: a restyle of the scenes already on the site, two references per prompt). PF and ST are still open: they get their prompts when Pau gives the direction for each category.
+Version 12 adds the PF plan B (the five slides built from separate hand-made pieces, 29 prompts, composed here). Version 9 added PF (the five slides of folder 09 redrawn as an indie comic, with a character model sheet ONA-00). Version 8 added ST (the nine Sticker Sheet characters restyled like Pau's lilac selfie sticker, two references per prompt). Version 7 added TK (the seven "On my desk" icons as animatable parts sheets, plus the bin, in blackwork tattoo style: see the TK section). Version 6 added PR (the four Process scenes: a restyle of the scenes already on the site, two references per prompt). PF and ST are still open: they get their prompts when Pau gives the direction for each category.
 
 ## The system
 
@@ -915,3 +915,355 @@ Changes of method, valid for every remaining slide and every retry:
 The second PF-02 fixed the content (one pair of headphones, two coconut halves, no containers, fewer objects) but still read as generated because **everything is drawn by the same hand**: one line weight, one finish, every object equally polished, perfect registration, nothing overlapping, a clean even title. Pau asks for the opposite: different illustration styles on one page (as if several artists worked on a zine), strokes out of place, things overlapping, much more raw than clean, letters of different sizes, a bit bizarre. Saved: `_inbox/_old/PF-02_v2.webp`, `PF-02_v2b.webp`.
 The prompt below is pasted in the same chat with the v2 image attached. It keeps the content and layout and changes only the hand. The same rules apply to PF-01, 03, 04 and 05 (paste the "ROUGH, MANY HANDS" block in the chat before asking for them).
 If ChatGPT keeps re-polishing, the fallback is a **parts sheet drawn with a different technique per object** (linocut celery, crayon cabbage, brush umbrella, stamped footprints, ballpoint neighbour, ink-brush Ona), composed here in code with real paper, print and ink textures.
+
+## PF plan B (v12): the five slides built from separate hand-made pieces (2026-10-29)
+
+Pau's verdict on the one-shot PF-02 (v1 and v2): the content is fine but "everything is too equal, too perfect", it reads as generated. Plan B: **ChatGPT draws one object at a time, each with a different real technique** (ink brush, linocut, wax crayon, felt-tip, photocopy, cut paper, ballpoint, rubber stamp). **I assemble them** with overlaps, tape, torn paper, misregistration and paper/ink textures, and I set all the real text (bio, timeline, contact, tags). ChatGPT only draws what it does best: the big titles, the sound bursts and the artworks.
+
+### Folders and names
+- Results go to `C:\Users\User\Documents\Portofolio\_inbox\pf\` named with their ID (`K-01.png`, `T-03.png`, `S2-04.png`...). Several versions: add a letter (`S2-04b.png`).
+- References are in `C:\Users\User\Documents\Portofolio\_inbox\refs\`:
+  - `STYLE-COMIC-1.jpg` red truck poster: chunky ragged title, ink, halftone
+  - `STYLE-COMIC-2.jpg` 25 DEC poster: scratchy pen, jagged lettering, hatching
+  - `STYLE-COMIC-3.jpg` 12 MAY poster: loose pen, marker lettering, panels
+  - `STYLE-COMIC-4.jpg` Summer Crawl poster: puffy bubble lettering, flat blobby colour, thick outline
+  - `ONA-REF.png` Ona cropped from the v2 slide (look only at the girl)
+  - `TITLE-REF.png` the v2 title "I'M ONA RIBAS" that Pau likes
+
+### The five chats (one chat per group, paste the RULES block first in each)
+1. **ONA**: K-01, then S2-01, S4-01, S5-01 (same chat, so she stays the same person)
+2. **KIT**: K-02 to K-07 (sunbursts, sound bursts, footprints, marks, sparks, neighbour)
+3. **TITLES**: T-01 to T-05
+4. **OBJECTS**: S1-01, S2-02 to S2-06, S4-02 to S4-05, S5-02
+5. **PANELS**: S3-01 to S3-03
+
+### RULES block (paste first in every chat, reply "ready")
+```text
+RULES FOR EVERY IMAGE IN THIS CHAT. They apply to all my requests until I say otherwise. Reply "ready" and nothing else.
+
+WHAT THIS IS. I am building a hand-made zine-style poster deck by cutting out separate artworks and pasting them together myself. So every request asks for ONE object, or one sheet of separate objects. Draw only that. Never draw a scene around it, a frame, a border, a table, a floor, a ground shadow or a background.
+
+BACKGROUND. Perfectly flat hot magenta #FF00FF over the whole image, edge to edge (a working colour I will remove). No gradient, no texture, no shadow on it. Nothing in the artwork may use magenta, hot pink or purple-pink. Leave at least 6% of empty magenta all round the artwork and between separate items.
+
+IT MUST LOOK HAND-MADE, NOT GENERATED. Each request names a real technique and real materials (pen, linocut, crayon, felt-tip, stamp, torn paper...). Draw as if a human did it quickly with those materials and then scanned it: uneven line weight, lines that overshoot or stop short, a redrawn contour left beside the first, ink starved or pooled in places, paper showing through, colour not quite inside the outline, asymmetry. Leave a few things rough or unfinished. Put detail ONLY where the request says; keep everything else simple and bold. Do NOT make it clean, even, symmetrical, glossy or perfect; do not smooth it.
+FORBIDDEN: gradients, soft shading, airbrush, glossy highlights, 3D-render look, photorealism, blur, vector-clean outlines, pencil construction lines, sketch lines under the colour.
+
+COLOUR. Flat opaque colour, two or three tones per object, hard-edged shadows. Ink is blue-black #101820, never pure black. Palette when a request names no colour: teal #007E9B, deep teal #1B6885, butter #FDEFAF, steel #63A0AC, paper #F6F0DC, sun yellow #F2C62F, tomato #E8553E, salmon #F2A29A, lilac #B58AD6, periwinkle #7A8CE8, celery #9CCF9A.
+
+TEXT. No text of any kind unless a request puts a word in capitals between quotes; then spell it EXACTLY and write nothing else. No signature, watermark, logo or numbers.
+```
+
+### Order of work
+Do K-01 first (approve Ona). Then the titles (quick to judge), then everything else in any order. You can send me files in batches: I start composing as soon as I have a slide's pieces.
+
+---
+
+### CHAT 1: ONA (all her images)
+
+**K-01 Ona model sheet.** Attach `ONA-REF.png`, `STYLE-COMIC-2.jpg`, `STYLE-COMIC-3.jpg`.
+```text
+Attach ONA-REF.png (look ONLY at the girl, ignore every object around her) and the two poster references STYLE-COMIC-2 and STYLE-COMIC-3 (loose pen-and-ink comic drawing).
+
+Draw a MODEL SHEET of ONA RIBAS, the same character as in ONA-REF: keep her face, her dark-brown curly hair, small gold hoop earring, lilac sweater with big puffy sleeves, tomato dungarees with a strap and rolled hems, one green sock and one pink sock, chunky black boots with cream soles and a wavy-line sole print, yellow over-ear headphones. Redraw her in a different hand: a loose, fast pen-and-ink comic drawing.
+TECHNIQUE: dip pen and brush pen on paper, scanned, then painted flat in a layer under the lines. Thick-and-thin line (thick on the shadow side and silhouette, hair-thin inside), lines that overshoot and cross, a few doubled contours, spotted solid blacks in boots and hair, quick hatching strokes in sleeve and dungaree folds, a second darker flat tone in hard-edged shapes, the flat colour shifted 4 to 8 px from the lines so it spills over or stops short, ink spots and dry-brush gaps. Her face is simple: round cheeks with a flat salmon blush, big eyes with tiny pupils, a big mouth. Comic proportions: slightly big head, long legs, big hands with four fingers and a thumb.
+LAYOUT (landscape 3:2, everything separate): five full-body poses in a row, each about 70% of the height: (1) front view standing, hands on hips, grinning; (2) back view, headphones round her neck, a periwinkle #7A8CE8 duffel bag on her back with a celery stalk and a coconut half sticking out; (3) side view sitting on a chair, headphones ON her head, tongue out in concentration; (4) three-quarter view mid-stride, looking back and waving; (5) low-angle view kicking one knee up with a huge boot in the foreground. Under them a row of six heads: laughing, gasping with a sweat drop, concentrating, sleepy, mischievous, a goodbye smile. EXACTLY ONE pair of headphones per drawing.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S2-01 Ona kicking and clapping coconuts** (slide 2). Attach `K-01.png`, `ONA-REF.png`, `STYLE-COMIC-2.jpg`.
+```text
+Attach K-01.png (Ona's model sheet), ONA-REF.png and STYLE-COMIC-2.jpg.
+
+Draw ONE character: Ona, exactly as in the model sheet, in this pose: low-angle comic view, her right knee kicked up towards the viewer with a huge foreshortened chunky boot in the foreground (the wavy-line sole facing us), clapping TWO separate coconut halves (brown hairy shell outside, white flesh inside), one in each hand, an inch apart, about to hit; mouth wide open laughing, eyes squeezed shut, curls bouncing, a few joy drops flying, a dungaree strap flapping, 3 or 4 motion lines round the knee. The yellow headphones hang round her neck: EXACTLY ONE pair, none on her head.
+TECHNIQUE: dip pen and brush pen on paper, scanned, then painted flat in a layer under the lines. Thick-and-thin line, overshoots, doubled contours, spotted solid blacks in the boots and hair, hatching in the sleeve and dungaree folds, a second darker flat tone in hard-edged shapes, flat colour shifted 4 to 8 px off the lines, ink spots and dry-brush gaps, coarse halftone dots on at most two areas (the dungaree shadow, the sole). Simple face. Keep detail in her face, hands and boots; the rest simple.
+Format: portrait 2:3, the figure filling 90% of the height, flat hot magenta #FF00FF background, 6% margin, no cast shadow, no ground, no text.
+```
+
+**S4-01 Ona at the mixing desk** (slide 4). Attach `K-01.png`, `ONA-REF.png`, `STYLE-COMIC-3.jpg`.
+```text
+Attach K-01.png (Ona's model sheet), ONA-REF.png and STYLE-COMIC-3.jpg.
+
+Draw ONE character: Ona, exactly as in the model sheet, sitting side-on on a simple swivel office chair (seat, back, stem, five wheel legs: the chair is part of the drawing), leaning forward in concentration, the yellow headphones ON HER HEAD (none round her neck: EXACTLY ONE pair), the tip of her tongue sticking out, one hand stretched forward flat as if on a fader, the other hand holding a celery stalk like a microphone, knees bent, odd socks, chunky boots foreshortened in the foreground. No desk, nothing in front of her.
+TECHNIQUE: dip pen and brush pen on paper, scanned, then painted flat under the lines: thick-and-thin line, overshoots, doubled contours, spotted blacks, hatching in the folds, flat colour shifted 4 to 8 px off the lines, ink spots, dry-brush gaps, halftone dots on at most two areas.
+Format: portrait 3:4, the figure filling 90% of the height, flat hot magenta #FF00FF background, 6% margin, no ground shadow, no text.
+```
+
+**S5-01 Ona walking away** (slide 5). Attach `K-01.png`, `ONA-REF.png`, `STYLE-COMIC-3.jpg`.
+```text
+Attach K-01.png (Ona's model sheet), ONA-REF.png and STYLE-COMIC-3.jpg.
+
+Draw ONE character: Ona, exactly as in the model sheet, walking away from the viewer in a long energetic stride, seen from behind and a little from below, her head turned back over her shoulder (three-quarter face) with a huge delighted grin, her free hand waving goodbye, the other hand holding up a boom pole with a small furry microphone windscreen on top. Yellow headphones round her neck (EXACTLY ONE pair). Lilac sweater, tomato dungarees, odd socks, chunky boots. On her back the periwinkle #7A8CE8 duffel bag with a celery stalk and a coconut half sticking out of the top, and the BLACK CAT riding on top of the duffel, looking at the viewer with a sly grin, its tail ending in a small wave curl; the duffel's buckle is shaped like a tiny cat head.
+TECHNIQUE: dip pen and brush pen on paper, scanned, then painted flat under the lines: thick-and-thin line, overshoots, doubled contours, spotted blacks (boots, hair, cat), hatching in the folds, flat colour shifted 4 to 8 px off the lines, ink spots, dry-brush gaps, halftone dots on at most two areas.
+Format: portrait 3:4, the figure filling 90% of the height, flat hot magenta #FF00FF background, 6% margin, no ground shadow, no text.
+```
+
+---
+
+### CHAT 2: KIT (reusable pieces; paste RULES first)
+
+**K-02 Sunbursts.** Attach `STYLE-COMIC-4.jpg` (only to see how spiky edges are cut by hand).
+```text
+Attach STYLE-COMIC-4.jpg (look only at how its spiky shapes have hand-cut, irregular edges).
+Draw a SHEET of hand-made sunbursts and spiky shapes, in sun yellow #F2C62F, each separate:
+1. (big, about 60% of the sheet) a sunburst of 18 to 22 rays of different lengths, widths and angles, some slightly curved, painted with a dry, loaded flat brush: ragged edges, dry-brush gaps and streaks, uneven solid yellow, no centre circle, no outline.
+2. a half sunburst (the lower half cut flat), rays fanning up, same brush.
+3. a spotlight: a long ragged yellow cone.
+4. a row of FOUR small spiky suns, each with a round black dot in the middle like an eye, different sizes, drawn with a marker: ink outline of changing weight, flat yellow slightly off-register.
+5. five small hand-cut starbursts of 7 to 12 points, one with an ink outline.
+TECHNIQUE: gouache with a dry brush, and a marker for the small ones. Uneven, asymmetric. No gradients, no glow, no perfect radial symmetry.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% gap between items, no text.
+```
+
+**K-03 Sound bursts.** Attach `STYLE-COMIC-1.jpg` and `STYLE-COMIC-4.jpg` (look only at their hand lettering).
+```text
+Attach STYLE-COMIC-1.jpg and STYLE-COMIC-4.jpg (look only at how their short words are hand-lettered).
+Draw a SHEET of 7 comic sound bursts (spiky balloons), each separate, with this word inside in hand-lettered capitals, spelled EXACTLY:
+1. "SNAP!" sun-yellow #F2C62F burst, small
+2. "CRUNCH!" tomato #E8553E burst, medium
+3. "CLIP-CLOP!" sun-yellow burst: CLIP small, CLOP huge, letters tilted
+4. "WHEEE!" sun-yellow burst, each E bigger than the one before
+5. "CREAK" salmon #F2A29A burst, letters stretched thin and tall
+6. "THUMP!" celery #9CCF9A burst, letters fat and heavy
+7. "BYE!" tomato burst, letters leaning and waving
+Each burst has a different silhouette (round-spiky, jagged, lopsided, with a little tail) and a different size.
+TECHNIQUE: cut out of paper with scissors and lettered with a brush pen: asymmetric edges, ink outline of changing weight, a hard solid ink shadow offset down-right, flat colour a few pixels off the outline, dry-brush gaps. The lettering wobbles, letters of different sizes, a thin cream offset line behind the ink letters.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% gap between bursts, no other text.
+```
+
+**K-04 Footprints (rubber stamp).**
+```text
+Draw a SHEET of RUBBER-STAMP PRINTS in blue-black ink #101820 only:
+- 8 prints of a chunky boot sole (left and right): thick wavy-line tread, a heel block, a toe; different sizes; each stamped with uneven pressure: heavy in the toe, faded in the heel, ink gaps and speckle, blotchy edges.
+- 3 half-printed boot prints (only the toe or only the heel, as if the stamp slipped) and 2 double-stamped prints (a ghost copy shifted 10 px).
+- 2 pairs of prints of feet in odd socks (one sock with wavy stripes, the other with dots) and 1 bare foot with a plaster on the heel.
+- 2 cat paw prints.
+TECHNIQUE: a carved rubber stamp, inked on a pad, pressed on paper, scanned. No two prints alike, each slightly rotated, ink halos at the edges.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% gap between prints, no text.
+```
+
+**K-05 Marks (brush pen and marker).**
+```text
+Draw a SHEET of hand-drawn MARKS in blue-black ink #101820 only, each separate, as drawn fast with a brush pen and a thick marker:
+- 6 arrows of different kinds (curved, straight, zigzag, looping, double-headed, tiny)
+- 4 underlines (single, double, wavy, scribbled)
+- 3 punctuation marks drawn large: "!!", "?!", "?"
+- 4 loose rings and ovals for circling things (one open, one overlapping itself)
+- 5 groups of motion lines (3 to 7 strokes each)
+- 3 crossed-out scribble patches and 3 hatching patches (random directions)
+- 8 sweat or joy drops (single and in sprays)
+TECHNIQUE: a marker running dry, thick-and-thin by pressure, strokes ending in flicks, a few overdrawn. Nothing symmetrical, no perfect circles, no straight ruled lines.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% gap between items, no letters other than the three punctuation groups.
+```
+
+**K-06 Sparks, curls and splats.**
+```text
+Draw a SHEET of small hand-made decorations, each separate:
+- 8 four-point sparkles of different sizes and proportions (4 in sun yellow #F2C62F, 4 in blue-black ink #101820; two with an offset ink outline)
+- 6 little wave curls: spirals and breaking-wave doodles in ink
+- 4 music notes (a single, a double beamed, a loose one, a tiny one) in ink
+- 5 ink splatters and sprays (a big blot with drops, a flick, a spray of dots)
+- 2 thumbprints in ink and 1 coffee-cup ring in thin brown (#8A5A3C) with two drips
+- 4 white correction-fluid brush strokes (opaque white, thick, streaky, dried)
+- 3 smudges of grey ink
+TECHNIQUE: brush pen, marker, a real ink splatter from a loaded brush, white-out fluid. Irregular, uneven, nothing symmetrical.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% gap between items, no text.
+```
+
+**K-07 The patient neighbour.**
+```text
+Draw a SHEET of THE PATIENT NEIGHBOUR, a tired middle-aged man with messy hair, stubble, bags under his eyes and big grey-steel ear muffs, wearing a striped dressing gown (tomato and cream stripes) and slippers. Four separate drawings:
+(1) head and shoulders peeking over an edge, holding a steaming mug;
+(2) full body standing with the mug, a tired side-eye;
+(3) full body waving a white handkerchief with a huge relieved grin;
+(4) head only, asleep, a snore cloud made of three small bubbles (no letters).
+TECHNIQUE: a naive doodle drawn with a cheap blue-black ballpoint pen: a thin, shaky, slightly childlike line that wobbles and scribbles, hatching made of scribbled loops, with flat felt-tip colour scribbled loosely over it that goes outside the line. Face: dot eyes, one eyebrow higher than the other, a lopsided mouth. Clumsy proportions on purpose, charming; not manga, not polished.
+Palette: ballpoint #101820, salmon #F2A29A skin, tomato #E8553E stripes, steel #63A0AC ear muffs, paper #F6F0DC for the mug and handkerchief.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% gap, no text.
+```
+
+---
+
+### CHAT 3: TITLES (paste RULES first)
+
+**T-01 "FOLEY / PORTFOLIO"** (cover, bubble letters). Attach `STYLE-COMIC-4.jpg`.
+```text
+Attach STYLE-COMIC-4.jpg (look at its puffy bubble lettering: how the letters swell, merge and wobble).
+Draw a title in two stacked lines, spelled EXACTLY: line 1 "FOLEY", line 2 "PORTFOLIO". Nothing else.
+STYLE: puffy bubble capitals, like fat balloons or melted wax: every letter swollen and rounded, a different size and width from its neighbours (some huge, some squeezed), tilted at different angles (about -8 to +10 degrees), jumping off the baseline, letters touching and partly merging. The round letters are lumpy, not perfect circles. FOLEY is very wide and big; PORTFOLIO is tighter, with a huge first P and a small second O.
+PAINT: butter #FDEFAF fill with one lighter cream highlight blob inside each letter (flat, hard-edged), a thick blue-black ink outline #101820 of changing weight, a second thick outline in tomato #E8553E behind it shifted 12 px down-right, and a hard solid ink shadow beyond that. Everything slightly out of register: the butter stops short of the ink in places and spills over in others; dry-brush gaps and ink speckle. As if cut out of paper and inked with a fat brush by a human in a hurry.
+Format: landscape 3:2, the title filling 92% of the width, flat hot magenta #FF00FF background, no other text.
+```
+
+**T-02 "I'M ONA / RIBAS"** (About; the lettering Pau likes, with size variation). Attach `TITLE-REF.png`, `STYLE-COMIC-1.jpg`.
+```text
+Attach TITLE-REF.png (the lettering I want to keep) and STYLE-COMIC-1.jpg.
+Draw a title in two stacked lines, spelled EXACTLY: line 1 "I'M ONA" (a plain straight apostrophe), line 2 "RIBAS". Nothing else.
+KEEP the look of TITLE-REF: hand-cut chunky capitals, the same blue-teal fill as in TITLE-REF, a thick ink outline, a tomato #E8553E offset behind, a hard ink extruded shadow down-right, rough notched edges and uneven ink coverage with starved speckles.
+CHANGE: much more variation between letters: different sizes and heights (a huge M, a tiny apostrophe pushed against the I, a tall narrow I, an enormous R, a squeezed B), tilted at different angles (about -8 to +10 degrees), a wobbling baseline, letters overlapping each other's shadows. Both lines still run edge to edge.
+Format: landscape 3:2, the title filling 92% of the width, flat hot magenta #FF00FF background, no other text.
+```
+
+**T-03 "SELECTED / PROJECTS"** (Projects, jagged scratchy). Attach `STYLE-COMIC-2.jpg`.
+```text
+Attach STYLE-COMIC-2.jpg (look at the jagged, scratchy lettering of its big title).
+Draw a title in two lines, spelled EXACTLY: line 1 small "SELECTED", line 2 huge "PROJECTS". Nothing else.
+STYLE: sharp jagged capitals drawn with a dry marker and trimmed with a knife: spiky corners, notched edges, strokes of uneven thickness, letters leaning on each other; widths and heights vary wildly (a very wide P, a tall narrow J, a small R and O, a huge S), a baseline that wobbles. SELECTED: smaller, sun yellow #F2C62F with an ink outline, letters spaced irregularly. PROJECTS: butter #FDEFAF fill, a thick ink outline, a deep double extrusion in ink going down-right with scratchy hatching inside it, dry-brush texture, ink speckles, the colour not quite inside the outline.
+Format: landscape 3:2, PROJECTS filling 92% of the width, flat hot magenta #FF00FF background, no other text.
+```
+
+**T-04 "EXPERIENCE / & EDUCATION"** (Experience, ragged stencil). Attach `STYLE-COMIC-1.jpg`.
+```text
+Attach STYLE-COMIC-1.jpg (look at its chunky ragged title lettering).
+Draw a title in two lines, spelled EXACTLY: line 1 "EXPERIENCE", line 2 "& EDUCATION". Nothing else.
+STYLE: chunky ragged capitals like stencil cuts torn out of heavy paper: thick, rough notched edges, uneven ink coverage with starved patches. Letters of very different heights: the P of EXPERIENCE much taller and wider, the first E small; the "&" huge; in EDUCATION a big D and C and a tiny tall I. Slight rotations, lines stacked tight, both lines the same width, edge to edge. Fill deep teal #1B6885, thick ink outline, a tomato #E8553E offset 10 px behind, a hard ink extrusion down-right. Coarse halftone dots inside two or three letters only.
+Format: landscape 3:2, the title filling 92% of the width, flat hot magenta #FF00FF background, no other text.
+```
+
+**T-05 "THANKS FOR / LISTENING"** (Contact, loose marker). Attach `STYLE-COMIC-3.jpg`.
+```text
+Attach STYLE-COMIC-3.jpg (look at the loose marker lettering of its big pink title).
+Draw a title in two lines, spelled EXACTLY: line 1 "THANKS FOR", line 2 "LISTENING". Nothing else.
+STYLE: loose fat-marker capitals, wobbly and fast: THANKS big on the left shrinking towards the right, FOR small and tilted up; LISTENING with a huge L and a tiny I, the baseline rising. Visible start and end of each stroke, a double stroke where the marker went over twice. Butter-cream #FDEFAF fill, a thick ink outline of uneven weight, a solid ink drop shadow down-right and a tomato #E8553E offset. One scribbled underline under LISTENING.
+Format: landscape 3:2, the title filling 92% of the width, flat hot magenta #FF00FF background, no other text.
+```
+
+---
+
+### CHAT 4: OBJECTS (paste RULES first; each object in a different technique)
+
+**S1-01 The giant furry microphone** (cover hero). Attach `STYLE-COMIC-1.jpg`.
+```text
+Attach STYLE-COMIC-1.jpg (look at its chunky ink shapes, halftone and hatching).
+Draw ONE object: a giant furry boom-microphone windscreen (a "dead cat") bursting towards the viewer along a diagonal from the lower left to the upper right, seen from a low angle with strong foreshortening, filling about 85% of the canvas.
+TECHNIQUE: inked with a brush pen on paper, scanned. The fur is NOT individual hairs: it is bold ragged tufts with spiky silhouettes, 8 to 12 big clumps, each outlined in thick ink with a few hatching strokes on the shadow side; cream-butter #FDEFAF fill with a second darker butter tone and coarse salmon #F2A29A halftone dots on the shadow side only. Two periwinkle #7A8CE8 straps with rivets. At the lower end a deep-teal #1B6885 shock mount and a boom pole that runs off the bottom-right edge, gripped by two forearms in lilac #B58AD6 puffy sleeves with ribbed cuffs (hands drawn loosely). A thick braided cable looping out to the lower left, ending in a plug.
+HIDDEN DETAIL (tiny): two yellow cat eyes with slit pupils and a salmon nose peeking out of the fur on the upper side.
+Colour a few pixels off the outlines, dry-brush gaps, ink spots. Nothing smooth.
+Format: square, flat hot magenta #FF00FF background, 6% margin (the pole may end at the canvas edge), no text.
+```
+
+**S2-02 Celery (linocut).**
+```text
+Draw ONE object: a bunch of celery lying diagonally: 6 stalks with ribbed outsides, cut flat at the base, leafy tops in three clumps.
+TECHNIQUE: a LINOCUT PRINT on cheap paper, printed in two passes with two separate inks: pass 1 celery green #9CCF9A as flat solid shapes; pass 2 blue-black ink #101820 as the carved line block: chunky gouge marks, wedge-shaped cuts for the ribs, a rough chipped outline, the leaves as angular cut shapes. The two passes are misregistered by about 10 px (the green sticks out beyond the black on one side and leaves a paper gap on the other). Ink-starved patches where the paper shows through, slight roller streaks. No fine detail, no hairlines, nothing smooth.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S2-03 Candy wrapper (felt-tip).**
+```text
+Draw ONE object: a hard-candy cellophane wrapper twisted at both ends with a sweet inside, tilted; a tiny spiky tomato flame licking each twisted end.
+TECHNIQUE: cheap felt-tip markers on printer paper: shaky outlines, strokes that overlap and get darker where they cross, streaks, a marker running dry, colour scribbled outside the line. The cellophane is an angular pattern of pale highlights and a few diagonal lines, crinkle folds as zigzags, no gloss.
+Palette: sun yellow #F2C62F, tomato #E8553E, periwinkle #7A8CE8, salmon #F2A29A, white, ink fine-liner #101820.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S2-04 Cabbage (oil pastel).**
+```text
+Draw ONE object: a whole green cabbage, big and round, with thick overlapping leaf folds; between two leaves peek out two yellow cat eyes with slit pupils and one small black paw (a hidden joke).
+TECHNIQUE: oil pastel and wax crayon on rough paper: thick waxy strokes in layers; circular scribbled fills; the dark outline is a broken, heavy crayon line that does not close; paper tooth showing through as white speckle; colour scribbled outside the outline; a darker teal #007E9B crayon scribble for the shadow folds. 6 to 8 big simple leaf shapes, only 4 or 5 thick crayon lines for veins.
+Palette: celery #9CCF9A, butter #FDEFAF, teal #007E9B, ink #101820 for the cat, sun yellow #F2C62F for its eyes.
+Format: square, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S2-05 Umbrella (wet brush).**
+```text
+Draw ONE object: a half-open umbrella lying tilted, with a hooked tomato #E8553E handle and a periwinkle #7A8CE8 canopy; tiny feathers poking out between the ribs (the umbrella is also a wing).
+TECHNIQUE: fast wet brush with gouache and black Indian ink: a thick black brush contour with dry tips, the canopy painted in one pass of periwinkle that bleeds past the outline and pools darker at the edges, a few drips running down, one rib drawn twice, parts left unpainted with the paper showing, brush hairs visible in the strokes. The feathers are 5 quick brush flicks in ink and cream. No details, no perfect geometry.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S2-06 Watermelon (photocopy and cut paper).**
+```text
+Draw ONE object: half a watermelon, cut face up, a few seeds, a striped rind; a small wooden mallet lying across it; a band-aid stuck on the rind; a small crack.
+TECHNIQUE: a PHOTOCOPIED DRAWING with cut-paper colour. First a bold ink drawing photocopied to harsh black and white (thick contours, coarse halftone dots for the shadow, toner speckle, a fuzzy grey edge). Then two flat colours cut from coloured paper and pasted slightly crooked BEHIND it: tomato #E8553E for the flesh, celery #9CCF9A for the rind, both shifted 12 px and a little bigger or smaller than the black linework, with a visible scissor-cut edge (small notches).
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S4-02 Mixing console (felt-tip marker).**
+```text
+Draw ONE object: a long mixing-console desk seen from a slight above-front angle, about 2:1: a row of 12 faders and 6 big knobs in two rows, a few buttons, a small screen on top showing a green waveform of bars, two meters with needles, a cable looping off the side; at the right end a microphone stand with a salmon #F2A29A round pop filter on an angled boom arm. No people.
+TECHNIQUE: a fast marker drawing: a wobbly fine ink-marker contour with lines that do not meet at the corners, flat marker colour streaky and applied outside the line: desk body steel #63A0AC with darker steel hatching, tomato #E8553E knobs, sun-yellow #F2C62F buttons, celery #9CCF9A waveform. Keep detail simple: vary the position of the faders, leave a few crooked or missing.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S4-03 Speaker with the sleeping cat (wax crayon).**
+```text
+Draw ONE object group: a big studio speaker cabinet seen slightly from the front-left (a woofer cone, a smaller tweeter, a rounded box, a cable behind it) and, on top of it, a small black cat asleep curled in a ball, wearing one tiny yellow headphone on its head, one paw hanging over the edge, a tiny smile.
+TECHNIQUE: wax crayon and oil pastel on rough paper: thick waxy strokes, a broken heavy outline, paper tooth showing, flat colour scribbled outside the lines. Speaker box tomato #E8553E with steel #63A0AC cones and cream #F6F0DC rings; the cat in black crayon with sun-yellow #F2C62F headphone.
+Format: square, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S4-04 Wall souvenirs, paper (photocopy and cut paper).**
+```text
+Draw a SHEET of 6 paper souvenirs pinned on a wall, each separate, ALL BLANK of writing (no letters and no numbers on any of them; I will write on them):
+1. a film-script call sheet: a sheet with three scribbled blocks instead of text, a punched hole, a curled corner;
+2. a printed waveform: a strip of paper with a black audio waveform;
+3. a film strip with 4 frames, each frame with a tiny doodle: a boot, an umbrella, a smiling moon, a kettle;
+4. a cinema ticket (a notched edge, blank);
+5. a smaller ticket (blank);
+6. a postcard of the coloured houses along a river with an iron footbridge (Girona), with a blank stamp box.
+TECHNIQUE: found-object collage: the call sheet, the waveform and the film strip are black-and-white photocopies with coarse halftone, toner speckle and grey edges; the tickets and the postcard are cut from coloured paper with scissors (tomato, sun yellow, steel, butter), with torn corners, creases, tape remnants and one coffee stain.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% gap between items, no text.
+```
+
+**S4-05 Wall souvenirs, objects (felt-tip and instant photos).**
+```text
+Draw a SHEET of 5 objects pinned on a wall, each separate, with no writing at all:
+1. a compact audio cassette; 2. a film reel with three holes;
+3, 4, 5. three instant (Polaroid-style) photos with a white border: (3) red boots stamping on a salt flat; (4) a kettle with a screaming face; (5) a smiling paper crescent moon.
+TECHNIQUE: the cassette and the reel in felt-tip marker (shaky outline, streaky flat colour outside the line); the three photos as small gouache paintings inside a cream-white border, each painted fast, a bit crooked inside its frame, the border slightly dirty and bent at a corner.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% gap between items, no text.
+```
+
+**S5-02 Skyline of Girona (linocut).**
+```text
+Draw ONE long strip: the skyline of Girona, a city in Catalonia, as a panorama: a row of tall narrow houses along a river bank with irregular windows, an iron footbridge with a thin lattice, and behind and higher a cathedral with a tall bell tower above a long flight of stairs.
+TECHNIQUE: a LINOCUT PRINT in ONE colour (blue-black ink #101820) on paper: carved white windows and roof tiles, chunky gouge marks, uneven ink with starved patches, a rough torn-block edge at the bottom. Houses are simple blocks with irregular windows; the tower is a solid shape with a few openings. No other colour.
+Format: a wide strip about 4:1 centred in a 3:2 canvas (I will crop), flat hot magenta #FF00FF background, no text.
+```
+
+---
+
+### CHAT 5: PANELS (slide 3, paste RULES first; each panel in its own technique)
+
+**S3-01 "Salt Season" (risograph).** Attach `STYLE-COMIC-1.jpg`.
+```text
+Attach STYLE-COMIC-1.jpg (look only at its chunky shapes and coarse halftone).
+Draw ONE comic panel, picture plus its own rough hand-inked border, about 4:3: a flat salt desert under a big low sun, seen from ground level: two giant tomato #E8553E boots mid-stomp coming towards the viewer, kicking up a spray of salt (coarse dots); EXACTLY six bags of salt piled at the left; at the bottom right a baking tray of salt with a tiny microphone on a stand pointing at it. The left boot's toe breaks out of the border.
+TECHNIQUE: a three-colour RISOGRAPH print (butter + steel #63A0AC + tomato, with ink): coarse grain, a halftone sun, the layers misregistered by 10 to 15 px (the tomato layer shifted), darker overprint where colours overlap, ink-starved speckles, thick blunt shapes, no fine detail. The panel border is a rough irregular hand-inked line, slightly tilted. Outside the border: flat magenta.
+Format: landscape 4:3, flat hot magenta #FF00FF background outside the panel, no text.
+```
+
+**S3-02 "Kettle & Crow" (brush ink and gouache).** Attach `STYLE-COMIC-3.jpg`.
+```text
+Attach STYLE-COMIC-3.jpg (look only at its loose pen line and flat colour).
+Draw ONE comic panel shaped like a rough, slightly lopsided disc, periwinkle-lilac inside: a black ink crow whose two wings are open periwinkle #7A8CE8 umbrellas (ribs visible), flying with feet dangling, wearing ONE tiny yellow headphone on one ear; below it a tomato #E8553E kettle on a stove with a panicked screaming face (open mouth, huge eyes), steam jetting from its spout, small flames under it; rain falling from the umbrellas; one lightning flash; in a small window behind, two yellow cat eyes.
+TECHNIQUE: a loose brush-pen drawing with flat gouache colour, fast: a thick brush contour with dry gaps, the flat panel colour not reaching the border, coarse halftone dots in one corner, rain as quick strokes, colour off-register.
+Format: roughly square, flat hot magenta #FF00FF background outside the panel, no text.
+```
+
+**S3-03 "The Understudy Moon" (paper collage).**
+```text
+Draw ONE panel: a stop-motion set made of cut paper: a layered paper crescent moon in butter #FDEFAF and sun yellow #F2C62F with a visible hinge at the jaw, smiling with closed eyes, held up by two threads and bits of masking tape; a lilac #B58AD6 paper sky; wavy deep-teal #1B6885 paper hills; EXACTLY eight small paper stars hanging by threads; two cardboard cut-out boots on sticks walking along the bottom; a pair of scissors lying in the corner.
+TECHNIQUE: PAPER COLLAGE photographed flat: every shape a torn or scissor-cut piece of coloured paper with a visible fibre edge, glued on top of the others, each casting a thin hard shadow underneath; a dashed line of white stitching along one hill; masking-tape pieces; paper grain; slightly crooked cuts. No drawn lines except a few felt-tip details (the moon's closed eye and smile). The whole panel is a rough piece of torn paper with an irregular edge.
+Format: landscape 4:3, flat hot magenta #FF00FF background around the paper, no text.
+```
+
+---
+
+### One-line fixes (paste in the same chat)
+- Background not flat: `The background must be one perfectly flat hot magenta #FF00FF: no texture, no shadow, no gradient, no ground. Nothing in the artwork may be magenta or hot pink.`
+- Too clean or digital: `Too clean and digital. Redraw it as a real [linocut / wax crayon / felt-tip / wet brush / photocopy / cut paper / ballpoint / rubber stamp] by a human in a hurry: uneven line weight, lines that miss, colour off-register, material texture, parts left unfinished.`
+- Too much detail: `Simpler and bolder: fewer lines, no tiny details, no hairlines, big simple shapes.`
+- Misspelled word: `The text must read exactly: [WORDS]. Check every letter, [spell it letter by letter]. Same style, nothing else changes.`
+- It has text it should not have: `Remove all writing: no letters, numbers or logos anywhere on this.`
+- Items touch or overlap: `Redraw with every item fully separate, at least 6% of the width of empty magenta between any two items and from the edges.`
+- A second pair of headphones: `Exactly one pair of headphones, [round her neck / on her head], none anywhere else.`
+- Ona looks different: `Ona must match the model sheet exactly: face, hair, earring, sweater, dungarees, socks, boots, headphones.`
+- Wrong count: `Exactly [six] [salt bags / paper stars], count them.`
+- Shadow or ground under the object: `Remove the shadow and the ground: the object floats on flat magenta.`
+
+### What I do with it (no work for Pau)
+1. `tools/ingest_pf.py`: key out the magenta, split the sheets into pieces, name them, trim.
+2. `tools/compose_slides.mjs`: lay each slide out (the old layouts as the base: title edge to edge, hero, props, floor, zones for text), with overlaps and broken rules, procedurally torn paper, masking tape, hard shadows, rubber-stamp marks, **misregistration of the colour against the ink** on every piece, paper grain and ink speckle, a slight scanner skew; set all real text in real type (header and footer rows, bio, tags, timeline, contact card, seal 2026, luggage tag) in open-source hand-lettering faces chosen with Pau; render to 1080 x 1920.
+3. Save `slide-1..5.webp`, rebuild `sheet`, `contact-sheet`, `thumb`, the Works card and the cover peek; re-measure every pin and sound hotspot (`data.ts`), rewrite the design notes and alt texts, update the fonts card of the "About Ona" panel.
+4. Show Pau slide by slide, adjust.

@@ -1,4 +1,5 @@
-Drop the images generated in ChatGPT here, named with their ID (CAT-01.png, PR-02.png, TK-03.png, ST-07.png, ONA-00.png, PF-01.png ...).
-refs/ holds the style references (STYLE-MASTER.jpg Catalog, STYLE-PROCESS.jpg Process, STYLE-TATTOO.jpg On my desk, STYLE-STICKER.jpg Sticker Sheet, STYLE-COMIC-1..3.jpg A Portfolio) and the "what to draw" references (ELEM-01..04 Process scenes, OBJ-01..07 and OBJ-BIN On my desk, STK-01..09 the current stickers, SLD-01..05 the current slides of A Portfolio).
-_old/ holds the discarded graphite experiments.
+Drop the images generated in ChatGPT here, named with their ID (CAT-01.png, PR-02.png, TK-03.png, ST-07.png ...).
+The PF plan B results go in pf/ (K-01..K-07, T-01..T-05, S1-01, S2-01..06, S3-01..03, S4-01..05, S5-01..02).
+refs/ holds the style references (STYLE-MASTER Catalog, STYLE-PROCESS Process, STYLE-TATTOO On my desk, STYLE-STICKER Sticker Sheet, STYLE-COMIC-1..4 A Portfolio, ONA-REF and TITLE-REF) and the "what to draw" references (ELEM, OBJ, STK, SLD).
+_old/ holds discarded experiments and the first PF-02 versions.
 See docs/image-prompts.md. This folder is ignored by git.

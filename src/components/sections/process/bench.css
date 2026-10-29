@@ -828,5 +828,27 @@ html[data-motion='paused'] .pm-proc-tab::after, html[data-motion='paused'] .pm-p
 html[data-motion='paused'] .pm-proc-tk-art::before, html[data-motion='paused'] .pm-proc-tk-art::after { transition: none !important; }
 html[data-motion='paused'] .pm-proc-tk[data-lit] .pm-proc-tk-art, html[data-motion='paused'] .pm-proc-tk[data-hot] .pm-proc-tk-art { transform: none; }
 
-/* Pau's own picture in place of the vector scene (see images.ts) */
+/* ---- Pau's own hand-painted scene in place of the vector one (images.ts) -------------------------------------------------
+   The vector scenes drew their objects in turn; a painted picture keeps a little entrance of the same spirit. data-dev="0": the film has not
+   seen the light (nothing in the emulsion). data-dev="1": it rises from the bottom like developer in a tray and settles. Back in the light
+   after being developed (data-bump a/b, two names so the animation restarts) it only settles again. The wrapper idles with a tiny bob while
+   its frame is the active one. Everything here is transform, opacity and clip-path; the picture is still and complete for reduced motion and
+   "Pause motion". */
+.pm-proc-imgbox { display: block; }
 .pm-proc-img { display: block; width: 100%; height: auto; aspect-ratio: 14 / 15; object-fit: cover; user-select: none; }
+html.js .pm-proc-img[data-dev='0'] { opacity: 0; }
+html.js .pm-proc-img[data-dev='1'] { animation: pm-img-develop 1.05s var(--ease-out) 0.12s both; }
+html.js .pm-proc-img[data-dev='1'][data-bump='a'] { animation: pm-img-settle-a 0.6s var(--ease-out) both; }
+html.js .pm-proc-img[data-dev='1'][data-bump='b'] { animation: pm-img-settle-b 0.6s var(--ease-out) both; }
+@keyframes pm-img-develop {
+  from { opacity: 0; clip-path: inset(100% 0 0 0); transform: translateY(18px) rotate(-1.4deg) scale(0.965); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); transform: none; }
+}
+@keyframes pm-img-settle-a { from { transform: translateY(9px) rotate(-1.1deg) scale(0.985); } to { transform: none; } }
+@keyframes pm-img-settle-b { from { transform: translateY(9px) rotate(-1.1deg) scale(0.985); } to { transform: none; } }
+.pm-proc-bench[data-live] .pm-proc-slot[data-active] .pm-proc-imgbox { animation: pm-img-bob 7s ease-in-out infinite; }
+@keyframes pm-img-bob { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-5px) rotate(0.5deg); } }
+@media (prefers-reduced-motion: reduce) {
+  html.js .pm-proc-img[data-dev] { opacity: 1; animation: none !important; transform: none; clip-path: none; }
+}
+html[data-motion='paused'].js .pm-proc-img[data-dev] { opacity: 1; animation: none !important; transform: none; clip-path: none; }

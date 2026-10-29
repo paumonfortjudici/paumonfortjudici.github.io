@@ -18,12 +18,12 @@ export const STEP_STYLE: readonly StepStyle[] = [
   {
     tone: 'marigold',
     scene: 'collect',
-    alt: 'A reference wall: cards pinned to a board and joined by red string, a magnifying glass, and a sticky note that reads one-line promise.',
+    alt: 'A reference wall: cards pinned to a board and joined by red string, a magnifying glass over a strip of colour swatches, and a pink sticky note with one line drawn on it.',
   },
   {
     tone: 'bubblegum',
     scene: 'sketch',
-    alt: 'A notepad full of tiny thumbnail sketches of a little devil, a pencil drawing the next one, and a tablet with a stylus where the chosen sketch becomes a finished character.',
+    alt: 'A notepad full of tiny thumbnail sketches of a little devil, two crossed out and one circled, a pencil with its shavings, and a tablet with a stylus where the chosen sketch becomes a finished character.',
   },
   {
     tone: 'tomato',
@@ -33,7 +33,7 @@ export const STEP_STYLE: readonly StepStyle[] = [
   {
     tone: 'lagoon',
     scene: 'deliver',
-    alt: 'A stack of deliverables: a brand manual, a print-ready sheet with crop marks and colour bars, a website shown in desktop, tablet and phone windows, and a key on a tag that says yours.',
+    alt: 'A stack of deliverables: a brand manual, a print-ready sheet with crop marks and colour bars, a website shown in desktop, tablet and phone windows, and a key on a tag.',
   },
 ]
 

@@ -15,7 +15,7 @@ import { FilmPerforations, Reveal, Scribble, TabButton, Tape } from '../../primi
 import { PROCESS_UI, SCENE_LABELS, STEP_NOTES, STEP_STYLE, TOOLS, stepBody, type ToolId } from './data'
 import { Bin, CoffeeRing, Ruler, Shavings } from './marginalia'
 import { SCENES } from './scenes'
-import { SCENE_IMAGES, sceneImage } from './images'
+import { SCENE_IMAGES, sceneImage, sceneImageSmall } from './images'
 import { asset } from '../../../lib/asset'
 import { TOKEN_ART } from './tokens'
 import './art.css'
@@ -411,7 +411,24 @@ export default function Bench() {
                       <div className="pm-proc-pic">
                         <div className="pm-proc-art">
                           {SCENE_IMAGES.has(i) ? (
-                            <img className="pm-proc-img" src={asset(sceneImage(i))} width={1400} height={1500} alt={style.alt} loading="lazy" decoding="async" draggable={false} />
+                            // the painted scene develops like the vector ones did (see bench.css): it rises from the bottom once, settles when the
+                            // frame comes back into the light, and idles with a tiny bob while it is the active one (the wrapper carries the loop)
+                            <span className="pm-proc-imgbox pm-ambient">
+                              <img
+                                className="pm-proc-img"
+                                src={asset(sceneImage(i))}
+                                srcSet={`${asset(sceneImageSmall(i))} 800w, ${asset(sceneImage(i))} 1400w`}
+                                sizes="(max-width: 720px) 90vw, 700px"
+                                width={1400}
+                                height={1500}
+                                alt={style.alt}
+                                data-dev={dev ? '1' : '0'}
+                                data-bump={bump[i]}
+                                loading="lazy"
+                                decoding="async"
+                                draggable={false}
+                              />
+                            </span>
                           ) : (
                             <Scene dev={dev} bump={bump[i]} />
                           )}

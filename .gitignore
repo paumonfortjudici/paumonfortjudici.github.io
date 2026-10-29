@@ -17,3 +17,7 @@ skills-lock.json
 
 # TypeScript incremental build info
 *.tsbuildinfo
+
+# images waiting to be filed (docs/image-prompts.md)
+_inbox/*
+!_inbox/LEEME.txt

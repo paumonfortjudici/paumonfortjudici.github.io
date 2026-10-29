@@ -1,0 +1,2 @@
+Drop the images generated in ChatGPT here, named with their ID (CAT-01.png, PF-03.png, ST-07.png, PR-02.png ...).
+See docs/image-prompts.md. This folder is ignored by git.

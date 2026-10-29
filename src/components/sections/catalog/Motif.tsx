@@ -10,7 +10,7 @@
 // drawing only says `currentColor`. The board is anchored to the right (towards the meta column) and the CSS fades its left edge, so a
 // long title that reaches into the board never fights with it. Seeded: the same slug draws the same hand every time.
 import { useLayoutEffect, type ReactNode, type RefObject } from 'react'
-import { CATALOG_SKETCH, sketchPath } from './sketches'
+import { CATALOG_SKETCH } from './sketches'
 
 const W = 480
 const H = 120
@@ -477,10 +477,8 @@ export function useMotifRoom(host: RefObject<HTMLElement>): void {
 
 /** the world's drawing for a band (null for a slug without one) */
 export function Motif({ slug }: { slug: string }) {
-  // a hand-made picture for this band (sketches.ts) takes the place of the grey sketch: same box, full colour
-  if (CATALOG_SKETCH.has(slug)) {
-    return <img className="pm-cat-motif pm-cat-motif--art" data-motif={slug} src={sketchPath(slug)} alt="" loading="lazy" decoding="async" draggable={false} aria-hidden="true" />
-  }
+  // a band with a hand-drawn frieze (sketches.ts) shows that behind its header (Band.tsx) and no longer draws the grey sketch
+  if (CATALOG_SKETCH.has(slug)) return null
   const draw = DRAW[slug]
   if (!draw) return null
   return (

@@ -35,8 +35,10 @@ Measured on the live Catalog (closed folder bands):
 So the picture is a very long, low strip. Plan for filing:
 
 1. ChatGPT draws on a flat background of the folder's own colour (so the contrast is judged on the real colour). I remove that flat colour (key it out from the edges, with a soft edge), trim to the drawing and save `public/works/<slug>/catalog-sketch.webp` (transparent).
-2. The picture becomes the **background of the band head**: full width, behind the title and the meta (the title is already `z-index: 1`), `object-fit: cover`, centred, opacity about 0.25 to 0.4 (tuned by eye so the headline never loses). The old small grey sketch is switched off for that slug (`CATALOG_SKETCH` in `catalog/sketches.ts`).
-3. Hidden on phones, as the grey sketches were (max-width 760px).
+2. The picture becomes the **background of the band head**: full width, behind the title and the meta, `object-fit: cover`, opacity 0.3 (0.4 on hover). The old small grey sketch is switched off for that slug (`CATALOG_SKETCH` in `catalog/sketches.ts`). A header with a picture is never flatter than 7:1, so the crop shows enough of the picture.
+3. It shows on phones too (as a background it needs no room).
+
+**Status: CAT-01 .. CAT-10 are filed and live** (`python tools/ingest_catalog.py _inbox/refs`; the generated images are 2172x724). To replace one, put the new `CAT-NN.png` in the inbox and run the script again.
 
 Folder colours: 01 tomato `#FF4B2B`, 02 pine `#1F5C46`, 03 marigold `#FFB81C`, 04 oxblood `#8A1B3D`, 05 ultraviolet `#5B3DF5`, 06 bubblegum `#FF8FC1`, 07 lagoon `#0F9AA8`, 08 olive `#86A22F`, 09 butter `#FBE79A`, 10 lilac `#B79CFF`.
 

@@ -613,14 +613,38 @@
   mask-image: linear-gradient(to right, transparent 0, var(--ink) 16%);
   transition: transform 0.6s var(--ease-out);
 }
-/* a band's own picture (sketches.ts, public/works/<slug>/catalog-sketch.webp) instead of the grey sketch: same box, full colour, right-aligned, no fade */
-.pm-cat-motif--art {
-  color: inherit;
-  object-fit: contain;
-  object-position: right center;
-  -webkit-mask-image: none;
-  mask-image: none;
+/* a band's own picture (sketches.ts, public/works/<slug>/catalog-sketch.webp): a wide hand-drawn frieze behind the whole header, under the
+   number, the title and the meta. It is drawn in four colours chosen against the folder's colour; the opacity keeps it a background.
+   The header is its own stacking context so the picture can sit at z-index -1: above the band's field, below every word. */
+.pm-cat-head { isolation: isolate; }
+/* the frieze is 3:1: a header much flatter than 7:1 would show only a thin slice of it, so a header with a picture is never flatter than that
+   (the title and the meta keep their own height when they need more; a dimmed band folds down to a strip as before) */
+@media (min-width: 761px) {
+  .pm-cat-head[data-art] { aspect-ratio: 7 / 1; }
+}
+.pm-cat-band[data-state='thin'] .pm-cat-head[data-art] { aspect-ratio: auto; }
+.pm-cat-art {
+  --art-o: 0.3;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 52%;
+  border-radius: inherit;
+  opacity: var(--art-o);
+  pointer-events: none;
   user-select: none;
+  transition: opacity 0.35s ease;
+}
+/* where the crop falls on each picture: the part that says what the folder is (the ground line of the skyline, the fedora, the awning) */
+.pm-cat-band[data-slug='plana'] .pm-cat-art { object-position: 50% 64%; }
+.pm-cat-band[data-slug='spelled-guilty'] .pm-cat-art { object-position: 50% 40%; }
+.pm-cat-band[data-slug='concept-brand'] .pm-cat-art { object-position: 50% 34%; }
+.pm-cat-band[data-state='thin'] .pm-cat-art { opacity: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .pm-cat-head:hover .pm-cat-art { opacity: calc(var(--art-o) + 0.1); }
 }
 .pm-cat-motif .m-b { color: color-mix(in srgb, var(--on) 36%, transparent); }
 /* cream ink on pine, oxblood and ultraviolet: light lines on a dark field need more weight to read at the same quietness */

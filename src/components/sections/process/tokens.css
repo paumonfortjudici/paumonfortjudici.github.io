@@ -1,24 +1,61 @@
 /* ==========================================================================
    process / tokens: the seven tool tokens on the shelf and their micro-animations.
-   A token is a <button class="pm-proc-tk"> holding a 150px drawing (tokens.tsx), the tool's use line and the steps it lives in.
+   A token is a <button class="pm-proc-tk"> holding a drawing on a 150 x 150 unit board (tokens.tsx), the tool's use line and the steps it lives in.
+   The drawings are tattoo-flash pieces cut into their moving parts: every part is an <img> placed in board units, and a wrapper (.pm-tk-g) moves
+   it around a pivot given in the same units (--ox, --oy). One unit = --u (the board is --tk wide, 150 to 240px).
    Hover and focus play the object's own little move; data-lit (the active step uses this tool) lifts it off the shelf.
-   Everything that moves is a transform or a stroke-dash redraw, and has a still path at the end of the file.
+   Everything that moves is a transform or a clip-path reveal, and has a still path at the end of the file.
    ========================================================================== */
 
 .pm-tk-svg {
+  --u: calc(var(--tk, 150px) / 150);
   --shd: color-mix(in srgb, var(--ultraviolet) 46%, var(--ink));
+  position: relative;
+  display: block;
   width: var(--tk, 150px);
   height: var(--tk, 150px);
   max-width: none;
-  overflow: visible;
   filter: drop-shadow(calc(var(--tk, 150px) * 0.033) calc(var(--tk, 150px) * 0.04) 0 var(--shd));
 }
-.pm-tk-svg > g,
-.pm-tk-svg > g > g,
-.pm-tk-svg .tk-top { transition: transform 0.38s var(--ease-spring); }
+.pm-tk-img {
+  position: absolute;
+  display: block;
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+.pm-tk-g {
+  position: absolute;
+  inset: 0;
+  transform-origin: calc(var(--u) * var(--ox, 75)) calc(var(--u) * var(--oy, 75));
+  transition: transform 0.38s var(--ease-spring);
+}
 
-/* paint-chip fan: opens up */
-.pm-tk-svg .tk-fl, .pm-tk-svg .tk-fr, .pm-tk-svg .tk-fc { transform-origin: 75px 137px; }
+/* the name on the ribbon: real type in the label face, 13px at the least */
+.pm-tk-lab {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: calc(var(--u) * 118);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--u) * 24);
+  color: var(--ink);
+  font-family: var(--font-label);
+  font-size: max(13px, calc(var(--u) * 9));
+  font-synthesis: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+}
+/* the longer names (NOMAD SCULPT, PROCREATE) are set tighter so they stay inside the folds of the ribbon (never under 13px) */
+.pm-tk-lab[data-long] { font-size: max(13px, calc(var(--u) * 7.6)); letter-spacing: 0; }
+
+/* paint-chip fan: opens up around the rivet */
 .pm-tk-svg .tk-fl { transform: rotate(-30deg); }
 .pm-tk-svg .tk-fr { transform: rotate(30deg); }
 .pm-tk-svg .tk-fc { transform: rotate(-2deg); }
@@ -26,36 +63,30 @@
 .pm-proc-tk[data-hot] .tk-fr { transform: rotate(46deg); }
 .pm-proc-tk[data-hot] .tk-fc { transform: rotate(2deg); }
 
-/* pencil: writes: the scribble redraws and the pencil rides along it */
-.pm-tk-svg .tk-scr { stroke-dasharray: 1 2; }
-.pm-proc-tk[data-hot] .tk-scr { animation: pm-tk-redraw 0.9s cubic-bezier(0.5, 0, 0.2, 1) both; }
+/* pencil: writes: the scribble is drawn again from left to right and the pencil rides along it */
+.pm-proc-tk[data-hot] .tk-scr { animation: pm-tk-reveal 0.9s cubic-bezier(0.5, 0, 0.2, 1) both; }
 .pm-proc-tk[data-hot] .tk-pen { animation: pm-tk-write 0.9s ease-in-out both; }
-@keyframes pm-tk-redraw { from { stroke-dashoffset: 1.1; } to { stroke-dashoffset: 0; } }
+@keyframes pm-tk-reveal { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 @keyframes pm-tk-write {
-  0% { transform: translate(-30px, -8px); }
-  25% { transform: translate(-18px, 3px); }
-  50% { transform: translate(-6px, -4px); }
-  75% { transform: translate(4px, 3px); }
+  0% { transform: translate(calc(var(--u) * -30), calc(var(--u) * -8)); }
+  25% { transform: translate(calc(var(--u) * -18), calc(var(--u) * 3)); }
+  50% { transform: translate(calc(var(--u) * -6), calc(var(--u) * -4)); }
+  75% { transform: translate(calc(var(--u) * 4), calc(var(--u) * 3)); }
   100% { transform: none; }
 }
 
 /* index tab: slides up out of the card and the brush stroke is painted again */
-.pm-tk-svg .tk-b1, .pm-tk-svg .tk-b2 { stroke-dasharray: 1 2; }
-.pm-proc-tk[data-hot] .tk-tab { transform: translateY(-7px); }
-.pm-proc-tk[data-hot] .tk-b1, .pm-proc-tk[data-hot] .tk-b2 { animation: pm-tk-redraw 0.8s cubic-bezier(0.5, 0, 0.2, 1) both; }
+.pm-proc-tk[data-hot] .tk-tab { transform: translateY(calc(var(--u) * -7)); }
+.pm-proc-tk[data-hot] .tk-b1 { animation: pm-tk-reveal 0.8s cubic-bezier(0.5, 0, 0.2, 1) both; }
 
 /* clay: squashes under a thumb, the flag waves, the loop tool nudges in */
-.pm-tk-svg .tk-clay { transform-origin: 68px 132px; }
-.pm-tk-svg .tk-flag { transform-origin: 70px 52px; }
 .pm-proc-tk[data-hot] .tk-clay { transform: scale(1.07, 0.9); }
 .pm-proc-tk[data-hot] .tk-flag { transform: rotate(6deg); }
-.pm-proc-tk[data-hot] .tk-tool { transform: translate(-7px, 4px); }
+.pm-proc-tk[data-hot] .tk-tool { transform: translate(calc(var(--u) * -7), calc(var(--u) * 4)); }
 
-/* luggage tag: swings from its hook */
-.pm-tk-svg .tk-tagg { transform-origin: 75px 10px; }
-.pm-tk-svg .tk-tick { stroke-dasharray: 1 2; }
+/* luggage tag: swings from its string and the tick is drawn again */
 .pm-proc-tk[data-hot] .tk-tagg { animation: pm-tk-swing 1.1s ease-out both; }
-.pm-proc-tk[data-hot] .tk-tick { animation: pm-tk-redraw 0.5s 0.15s cubic-bezier(0.5, 0, 0.2, 1) both; }
+.pm-proc-tk[data-hot] .tk-tick { animation: pm-tk-reveal 0.5s 0.15s cubic-bezier(0.5, 0, 0.2, 1) both; }
 @keyframes pm-tk-swing {
   0% { transform: rotate(0); }
   18% { transform: rotate(-13deg); }
@@ -66,36 +97,35 @@
 }
 
 /* push pin: pushed in; the card settles with a flutter */
-.pm-tk-svg .tk-pin { transform-origin: 75px 44px; }
-.pm-tk-svg .tk-pcard { transform-origin: 75px 44px; }
-.pm-proc-tk[data-hot] .tk-pin { transform: translateY(2px) scale(0.88); }
-.pm-proc-tk[data-hot] .tk-pcard { transform: rotate(-4deg); }
+.pm-tk-svg .tk-pcard { transform: rotate(4deg); }
+.pm-proc-tk[data-hot] .tk-pin { transform: translateY(calc(var(--u) * 2)) scale(0.88); }
+.pm-proc-tk[data-hot] .tk-pcard { transform: rotate(-3deg); }
 
-/* key: pressed */
-.pm-proc-tk[data-hot] .tk-top { transform: translateY(7px); }
-.pm-tk-svg .tk-br { transition: transform 0.38s var(--ease-spring); transform-box: fill-box; transform-origin: 50% 50%; }
+/* key: the cap is pressed down onto its base, the braces pop */
+.pm-proc-tk[data-hot] .tk-top { transform: translateY(calc(var(--u) * 7)); }
 .pm-proc-tk[data-hot] .tk-br { transform: scale(1.12); }
 
 /* ---- STILL: no motion; the object keeps one still pose ------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .pm-tk-svg > g, .pm-tk-svg > g > g, .pm-tk-svg .tk-top, .pm-tk-svg .tk-br { transition: none; }
-  .pm-proc-tk[data-hot] .tk-scr, .pm-proc-tk[data-hot] .tk-pen, .pm-proc-tk[data-hot] .tk-b1, .pm-proc-tk[data-hot] .tk-b2,
-  .pm-proc-tk[data-hot] .tk-tagg, .pm-proc-tk[data-hot] .tk-tick { animation: none; stroke-dashoffset: 0; }
+  .pm-tk-g { transition: none; }
+  .pm-proc-tk[data-hot] .tk-scr, .pm-proc-tk[data-hot] .tk-pen, .pm-proc-tk[data-hot] .tk-b1,
+  .pm-proc-tk[data-hot] .tk-tagg, .pm-proc-tk[data-hot] .tk-tick { animation: none; clip-path: none; }
   .pm-proc-tk[data-hot] .tk-fl { transform: rotate(-30deg); }
   .pm-proc-tk[data-hot] .tk-fr { transform: rotate(30deg); }
   .pm-proc-tk[data-hot] .tk-fc { transform: rotate(-2deg); }
+  .pm-proc-tk[data-hot] .tk-pcard { transform: rotate(4deg); }
   .pm-proc-tk[data-hot] .tk-tab, .pm-proc-tk[data-hot] .tk-clay, .pm-proc-tk[data-hot] .tk-flag, .pm-proc-tk[data-hot] .tk-tool,
-  .pm-proc-tk[data-hot] .tk-pin, .pm-proc-tk[data-hot] .tk-pcard, .pm-proc-tk[data-hot] .tk-top, .pm-proc-tk[data-hot] .tk-br { transform: none; }
+  .pm-proc-tk[data-hot] .tk-pin, .pm-proc-tk[data-hot] .tk-top, .pm-proc-tk[data-hot] .tk-br { transform: none; }
 }
-html[data-motion='paused'] .pm-tk-svg > g, html[data-motion='paused'] .pm-tk-svg > g > g,
-html[data-motion='paused'] .pm-tk-svg .tk-top, html[data-motion='paused'] .pm-tk-svg .tk-br { transition: none; }
+html[data-motion='paused'] .pm-tk-g { transition: none; }
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-scr, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-pen,
-html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-b1, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-b2,
-html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-tagg, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-tick { animation: none; stroke-dashoffset: 0; }
+html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-b1, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-tagg,
+html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-tick { animation: none; clip-path: none; }
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-fl { transform: rotate(-30deg); }
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-fr { transform: rotate(30deg); }
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-fc { transform: rotate(-2deg); }
+html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-pcard { transform: rotate(4deg); }
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-tab, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-clay,
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-flag, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-tool,
-html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-pin, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-pcard,
-html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-top, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-br { transform: none; }
+html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-pin, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-top,
+html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-br { transform: none; }

@@ -783,11 +783,11 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
 }
 .pm-proc-shavings { position: absolute; left: 4%; bottom: clamp(52px, 4.6vw, 74px); width: clamp(150px, 13vw, 250px); height: auto; transform: rotate(-4deg); overflow: visible; }
 .pm-proc-coffee { position: absolute; left: 38%; bottom: clamp(26px, 2.4vw, 40px); z-index: 1; width: clamp(110px, 9.6vw, 170px); height: auto; color: color-mix(in srgb, var(--ink) 72%, var(--ultraviolet)); transform: rotate(14deg); }
-.pm-proc-bin { position: relative; display: block; width: clamp(180px, 15vw, 260px); }
-.pm-proc-bin__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.pm-proc-bin { position: relative; display: block; width: clamp(140px, 11vw, 200px); }
+.pm-proc-bin__svg { display: block; width: 100%; height: auto; filter: drop-shadow(5px 6px 0 color-mix(in srgb, var(--ultraviolet) 46%, var(--ink))); user-select: none; }
 .pm-proc-bin__note {
   position: absolute;
-  right: calc(100% + 6px);
+  right: calc(100% + 22px);
   top: 4%;
   display: flex;
   align-items: center;
@@ -803,7 +803,7 @@ html.js .pm-proc-slot[data-dev='0'] .pm-proc-num { opacity: 0; }
 @media (max-width: 720px) {
   .pm-proc-foot { grid-template-columns: minmax(0, 1fr); }
   .pm-proc-foot__desk { min-height: 130px; }
-  .pm-proc-bin { justify-self: end; width: 190px; margin-top: 8px; }
+  .pm-proc-bin { justify-self: end; width: 150px; margin-top: 8px; }
   .pm-proc-bin__note { right: calc(100% - 4px); top: 8%; white-space: normal; max-width: 9.5rem; }
   .pm-proc-bin__note .pm-sc { display: none; }
 }

@@ -1,6 +1,6 @@
 # Image prompts for ChatGPT (and how the images come back)
 
-Version 2 (2026-10-29). Pau threw away the first set (flat colour, riso look) and wants to work **one category at a time**, each with its own art direction and its own references. Only the Catalog (CAT) is defined so far. PF, ST and PR are open: they get their prompts when Pau gives the direction for each.
+Version 3 (2026-10-29). Pau threw away the first set (flat colour, riso look), then the second (five different references, too complex). He works **one category at a time**. The Catalog (CAT) is defined: ten pencil sketches that all copy ONE style master, the CAT-02 sketch he liked. PF, ST and PR are open: they get their prompts when Pau gives the direction for each.
 
 ## The system
 
@@ -8,191 +8,171 @@ Every image has an ID: `AREA-NN`. Use the ID as the file name when you save the 
 
 | Area | IDs | What it replaces | Status |
 |---|---|---|---|
-| `CAT` | CAT-01 .. CAT-10 | the grey sketch next to each name in the Catalog | **defined below (v2, graphite pencil)** |
+| `CAT` | CAT-01 .. CAT-10 | the grey sketch next to each name in the Catalog | **defined below (v3, one style master)**; CAT-02 is already in `_inbox` |
 | `PF` | PF-01 .. PF-05 | the five slides of folder 09 (A Portfolio for a Client) | waiting for Pau's direction |
 | `ST` | ST-01 .. ST-09 | the nine stickers of folder 10 (Sticker Sheet) | waiting for Pau's direction |
 | `PR` | PR-01 .. PR-04 | the four big scenes of the Process film (section 05) | waiting for Pau's direction |
 
-The five references Pau chose are copied to `_inbox/refs/` with a stable name:
+References, in `_inbox/refs/`:
 
 | File | What it is | Used for |
 |---|---|---|
-| `REF-1_chair-colour.jpg` | flat marker figure, orange + blue, on a chair | not for the Catalog (it is colour); keep for the colour categories |
-| `REF-2_crayon-laptop.jpg` | black waxy crayon line, one blue accent, figure with laptop | CAT-02, CAT-05, CAT-10 |
-| `REF-3_ink-hat-tie.jpg` | ink figure in a fedora, scribbled hat band, hatched tie | CAT-04, CAT-08 |
-| `REF-4_ink-bicycle.jpg` | fluid single ink line, man with a bicycle | CAT-03, CAT-07 |
-| `REF-5_pen-trumpet.jpg` | pen hatching, trumpet player leaning | CAT-01, CAT-06, CAT-09 |
+| `STYLE-MASTER.png` | the web-designer pencil sketch Pau liked (1536x1024) | **every CAT prompt** |
+| `REF-1_chair-colour.jpg` | flat marker figure, orange + blue | colour categories later |
+| `REF-2_crayon-laptop.jpg`, `REF-3_ink-hat-tie.jpg`, `REF-4_ink-bicycle.jpg`, `REF-5_pen-trumpet.jpg` | Pau's original Pinterest references | kept for the other categories; no longer used for CAT |
 
-## CAT: the ten Catalog sketches (graphite pencil)
+## CAT: the ten Catalog sketches (soft pencil, one style master)
 
-### How the picture is used on the site (this decides the format)
+### How the picture is used on the site
 
-- It sits **directly on the band colour**, right-aligned, in a box up to 38rem wide and 12rem (192 px) tall, `object-fit: contain`. So it is shown small: bold lines, a wide low composition.
-- It is hidden on phones (max-width 760px).
+- It sits **directly on the band colour**, right-aligned, in a box up to 38rem wide and 12rem (192 px) tall, `object-fit: contain`. It is hidden on phones (max-width 760px).
 - Band colours: 01 tomato `#FF4B2B`, 02 pine `#1F5C46` (dark), 03 marigold `#FFB81C`, 04 oxblood `#8A1B3D` (dark), 05 ultraviolet `#5B3DF5` (dark), 06 bubblegum `#FF8FC1`, 07 lagoon `#0F9AA8`, 08 olive `#86A22F`, 09 butter `#FBE79A`, 10 lilac `#B79CFF`.
-- ChatGPT draws dark graphite on pure white. At filing time white becomes transparent (luminance to alpha) and the pencil is tinted per band: graphite `#2E2E2E` on the seven light bands, pale chalk grey `#E6E1D6` on the three dark ones (02, 04, 05), so no sketch disappears. The pencil grain survives.
-- Format to ask for: landscape 1536x1024. I trim to the drawing and save `public/works/<slug>/catalog-sketch.webp`, then add the slug to `CATALOG_SKETCH` (`catalog/sketches.ts`).
+- ChatGPT draws dark pencil on white, 1536x1024. At filing time I trim to the drawing, turn white into transparent (luminance to alpha), **thicken the line a little** so it holds at 190 px tall, and tint the pencil per band: graphite `#2E2E2E` on the seven light bands, pale chalk grey `#E6E1D6` on the three dark ones (02, 04, 05). Result: `public/works/<slug>/catalog-sketch.webp`, then the slug is added to `CATALOG_SKETCH` (`catalog/sketches.ts`).
 
-### Chat opening message (new chat, paste first, attach REF-2, REF-3, REF-4, REF-5)
+### The recipe (what the style master does, and every prompt repeats)
+
+One soft dark pencil, line about 4 to 5 px on 1536x1024, fewest lines that make an object recognisable. Three tones only (soft light-grey diagonal hatching, one dense scribbled dark mass for hair or hat, one small dark shadow patch). One thick soft grey squiggle as the single loud mark. Layout: the same person at left (messy bun, round glasses, loose sweater, three-quarters from behind, face in profile), the object of the scene at right in simple perspective, one long horizontal line under both. Pure white background, no text.
+
+### Chat opening message (new chat, paste first, attach `STYLE-MASTER.png`)
 
 ```text
-You are a professional illustrator who draws in a sketchbook with soft graphite pencil. Over this chat we will make TEN loose preparatory sketches for the folders of a portfolio website. Each one is a quick "thinking sketch" that hints at what is inside a folder: artisanal and human, never corporate, never polished. All ten must look as if they were drawn on the same page of the same sketchbook in one sitting, with the same pencil and the same pressure.
+The attached image is the STYLE MASTER. Over this chat we will make TEN more sketches for the folders of a portfolio website, and all ten must look as if the same hand drew them on the same day with the same pencil as this one. Do not draw anything yet. Study the image, reply "ready" and describe its style back to me in five lines.
 
-Do not draw anything yet. Reply "ready" and summarise these rules in five lines.
+WHAT THE STYLE MASTER IS (copy all of it exactly):
+- MEDIUM: one soft dark pencil, black to graphite grey, slightly waxy, with visible grain. Nothing else: no colour, no ink, no digital look.
+- LINE: one confident line per contour, about 4 to 5 px thick on a 1536x1024 canvas, with a few doubled "searching" strokes and small overshoots at the corners. Straight edges are hand-drawn: nearly straight, never ruler-perfect. Quick and simple, not fussy: every object is built from the fewest lines that make it recognisable.
+- TONE: only three kinds. (1) Soft parallel diagonal hatching in light grey, about 45 degrees, on one big area of clothing and on one shape of the object. (2) One dense scribbled dark mass for the hair or a hat. (3) One small solid dark patch for a shadow. Everything else stays blank white.
+- ONE BOLD SQUIGGLE: every sketch has one thick, soft, grey wavy line pressed hard, like the steam in the style master. It is the single loud mark of the drawing.
+- LAYOUT: wide. At left the same person, seen three-quarters from behind with the face in profile. At right the object of the scene, drawn in simple perspective like the monitor in the style master. One long horizontal line (desk, counter or floor) runs under both. Generous white margin: the drawing fills about 80% of the width and 60% of the height.
+- THE PERSON, always the same: hair in a messy bun made of one dark scribble (or a hat when I say so), round glasses, a loose sweater with rolled sleeves, the face reduced to a profile line with a small nose and the glasses, tiny simple hands.
+- BACKGROUND: flat pure white. No paper texture, no frame, no shadow on the ground, no signature. NO TEXT of any kind: no letters, no numbers (text is drawn as rows of wavy line).
+- FORBIDDEN: colour, gradients, digital brush, vector look, 3D, perfect symmetry, realism, extra details, extra objects.
 
-MEDIUM. Soft graphite pencil (6B), sometimes the flat side of the lead for a broad smudge, a kneaded eraser used to lift a few highlights. Strictly monochrome grey: lines go from near-black graphite (#2E2E2E) through mid grey (#777777) to pale smudge (#C4C4C4). No colour of any kind: ignore every colour in the references (for example the blue in the crayon drawing).
-
-LINE. Gestural, quick and confident, drawn from the elbow, one stroke per contour. Pressure varies along every line: heavier where a form turns away or sits in shadow, lighter where it catches the light. Lines overshoot the corners and leave small gaps (10 to 40 px) instead of closing. In a few places a second searching line runs beside the first, the way a draftsman corrects a line. A few pale construction lines (a guide circle for a head, a horizon) stay visible. Straight edges are drawn freehand: slightly bowed, never ruler-straight, never vector-clean.
-
-TONE. Only in three to five places per drawing, and each request names them: a patch of loose parallel hatching (strokes at one angle, about 45 degrees, spaced at least 14 px apart), or a smudge made with the side of the pencil, or one dense scribbled dark mass. Everything else is blank white paper. No even fills, no gradients, no outline around a hatched area.
-
-UNFINISHED ON PURPOSE. Leave about half of what a finished drawing would contain: edges that fade out, a side of the main object only suggested by two or three lines, parts that are simply missing. The idea must still read at a glance, small.
-
-FIGURES. Drawn the way a sketcher draws strangers in a cafe: small head, the face reduced to a nose-and-chin profile line and one dot for the eye (or hidden under a hat or a scribble of hair), no eyelashes, no teeth, no realistic features. Hands are simple mitten-like shapes with three or four short strokes for the fingers. Bodies are big simple volumes of clothing with a few curved fold lines, long legs, a slightly off-balance gesture. Not a portrait, not a mascot, not manga, not a stick figure.
-
-LEGIBILITY. Each sketch will be shown only about 190 px tall on a website, so draw it bold: main contours about 10 px thick on the 1536x1024 canvas (soft pencil pressed hard), secondary lines about 5 px, no hairline detail. Fewer and bolder strokes than reference 5.
-
-COMPOSITION. One main subject plus at most two small secondary items. A wide, low arrangement: the whole drawing about 2.5 times wider than tall, centred, filling about 70% of the width and 55% of the height, with generous empty white all round. Casual, slightly naive perspective.
-
-BACKGROUND. Flat uniform pure white #FFFFFF. No paper texture, no page edge, no frame, no vignette, no cast shadow, no ground line, no signature, no stamp, no watermark. No text of any kind: no letters and no numbers (write text as rows of wavy line).
-
-REFERENCES. With every request I will attach ONE reference image. Take from it only the quality of the line, the pressure and the looseness. Never copy its subject, pose, composition or colour.
-
-FORMAT. Landscape 1536x1024.
+With every request I will attach the style master again. Copy only its style, never its scene: the web designer is already done.
 ```
 
-### The ten prompts (one message each, attach the named reference to each)
+### The ten prompts (one message each, attach `STYLE-MASTER.png` to each)
 
-**CAT-01 Proyecto Contract (trade magazines). Attach REF-5.**
+**CAT-01 Proyecto Contract (trade magazines)**
 
 ```text
-Attach REF-5 (fine pen hatching: borrow only the way a few directional strokes build volume).
+Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
 
-Draw: a magazine editor's moment. An open magazine spread lying on a table, seen from slightly above and tilted about 8 degrees, wide and low like a real spread. Left page: a big rectangular photo box with a bold diagonal cross inside it and one short caption bar under it. Right page: a headline made of two thick bars, then three narrow columns of text drawn as rows of short wavy lines. A right hand enters from the right edge holding a stubby pencil, its tip hovering just above the headline; the sleeve cuff is visible, nothing more of the arm. Around the spread, four small pale crop marks (L-shaped corner lines).
-Tone only on: the lower half of the photo box (loose diagonal hatching), the thin shadow under the right page edge, the sleeve cuff.
-Unfinished: the bottom-left corner of the spread fades out in two or three lines, the columns on the far right stop before the page edge.
-Must read at a glance: a magazine being edited.
-Add nothing else. Landscape 1536x1024, white background, grey graphite only, no text.
+SCENE: The person sits at left at a long table, leaning forward, one hand holding a stubby pencil above an open magazine spread lying on the table at right, drawn in simple perspective like the monitor in the master (a wide trapezoid with a centre fold). Left page: a big photo box with a diagonal cross and one short caption bar. Right page: two thick headline bars and three columns of wavy lines.
+BOLD SQUIGGLE: a loose thick loop drawn round the headline, as if marked while editing.
+TONE only on: the back of the sweater, the lower half of the photo box, the shadow under the edge of the spread; the hair as the dark scribble.
+Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
 ```
 
-**CAT-02 Plana Digital (brand and website). Attach REF-2.**
+**CAT-02 Plana Digital (brand and website). Already done: this is the prompt that matches the style master; use it only for variations.**
 
 ```text
-Attach REF-2 (waxy crayon-like loose line with one bold steam squiggle: borrow only the looseness and the bold steam line).
+Attach STYLE-MASTER.png. Same style as the attached image.
 
-Draw: a web designer at work. At left a person seated on a plain chair (four lines for the chair), seen in profile, slightly hunched, one arm stretched forward to a mouse; a tall steaming mug beside the hand with ONE bold free squiggle of steam. At right a large desktop monitor on a short stand, facing the viewer at a slight angle, its screen showing a rough website wireframe: a thin bar on top with three dots, a big hero rectangle with a half sun and four short rays inside it, two small boxes under it, and a mouse-cursor arrow overlapping a corner of the screen.
-Tone only on: the hero rectangle (a few diagonal strokes inside the half sun), the person's back, the shadow under the monitor stand.
-Unfinished: the chair legs stop halfway, the lower edge of the monitor is only suggested.
-Must read at a glance: someone building a website.
-Add nothing else. Landscape 1536x1024, white background, grey graphite only, no text.
+SCENE: The person sits at left on a plain chair, one arm stretched to a mouse, a tall mug beside the hand. At right a large desktop monitor on a short stand, slightly angled, its screen showing a website wireframe: a thin bar with three dots, a big hero rectangle with a half sun and four short rays inside it, two small boxes under it, a mouse-cursor arrow on a corner of the screen.
+BOLD SQUIGGLE: the steam rising from the mug.
+TONE only on: the back of the sweater, the hero rectangle, the shadow under the monitor stand; the hair as the dark scribble.
+Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
 ```
 
-**CAT-03 44 Lab (custom rugs). Attach REF-4.**
+**CAT-03 44 Lab (custom rugs)**
 
 ```text
-Attach REF-4 (one fluid line and a loose looping cable line: borrow the flow and the way the cable loops).
+Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
 
-Draw: someone tufting a rug. At right a tall wooden rug frame standing at an angle like an easel, a rug stretched in it with a bold concentric diamond pattern drawn only on the half nearest the figure and short fuzzy ticks along the rug's edge; the rest of the rug only suggested. At left a person standing in profile, wearing a knitted beanie, pushing a chunky tufting gun (box-shaped motor, grip, a pointed needle nose) against the rug; the gun's power cable makes one big free looping scribble that falls to the floor, like the line in the reference. On the top bar of the frame a tiny mischievous devil sits with legs dangling (round head, two small horns, wide grin, thin tail ending in an arrow tip), drawn in only five or six strokes.
-Tone only on: the beanie (dense dark scribble), the fuzzy rug edge, the shadow under the frame.
-Unfinished: the person's far arm and legs fade out below the knees, the frame's feet are only two lines.
-Must read at a glance: hand-tufting a rug, with a naughty devil.
-Add nothing else. Landscape 1536x1024, white background, grey graphite only, no text.
+SCENE: The person stands at left, three-quarters from behind, wearing a knitted beanie in place of the bun, pressing a chunky tufting gun (boxy body, a grip, a pointed nose) against a rug at right stretched in a tall wooden frame, drawn in simple perspective. The rug shows one bold pattern of three nested diamonds and short fuzzy ticks along its edges. A tiny devil with two horns and a thin tail sits on the top bar of the frame, drawn in six strokes. One floor line under everything.
+BOLD SQUIGGLE: the gun's power cable falling from the gun in one big loose loop to the floor.
+TONE only on: the back of the sweater, the outer diamond ring of the rug (hatching), the beanie as the dark scribble.
+Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
 ```
 
-**CAT-04 Spelled Guilty (noir word-search book). Attach REF-3.**
+**CAT-04 Spelled Guilty (noir word-search book)**
 
 ```text
-Attach REF-3 (ink figure in a fedora: borrow the dense scribbled hat band, the face lost in shadow and the hatched tie).
+Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
 
-Draw: a noir detective hunched over a puzzle book. Chest-up figure at left, three-quarter view, in a fedora tilted forward so the eyes are lost in shadow, only the nose, a thin mouth and the chin showing, the collar of a trench coat turned up, a loosely knotted tie. In front of the chest one hand holds up a thick-rimmed magnifying glass. At the lower right an open book held in the other hand, its page showing a loose 6-by-6 grid of tiny squares with scribbles instead of letters and one long pill-shaped loop drawn round one row.
-Tone only on: the hat band (dense dark scribble, as in the reference), the shadow over the eyes, the tie (parallel hatching).
-Unfinished: the coat dissolves into two or three lines at the bottom, the book's lower-right corner is missing.
-Must read at a glance: a noir detective solving a word-search puzzle.
-Add nothing else. Landscape 1536x1024, white background, grey graphite only, no text.
+SCENE: The person sits at left at a desk, wearing a fedora in place of the bun and a trench coat with the collar turned up, leaning over a big open puzzle book at right, drawn in simple perspective (a wide trapezoid with a centre fold). Its right page shows a 5-by-5 grid of small squares filled with tiny scribbles instead of letters, and one long pill-shaped loop round a row. A thick-rimmed magnifying glass lies on the left page.
+BOLD SQUIGGLE: one big loose question mark floating above the book.
+TONE only on: the hat band of the fedora as the dense dark scribble, the back of the coat (hatching), the shadow under the book.
+Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
 ```
 
-**CAT-05 Space Monkey (escape room). Attach REF-2.**
+**CAT-05 Space Monkey (escape room)**
 
 ```text
-Attach REF-2 (waxy crayon-like line, playful: borrow the bold line and the looseness).
+Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
 
-Draw: a monkey astronaut escaping. A chubby monkey in a baggy spacesuit floats diagonally across the middle of the page, body twisted, weightless. Its big round helmet shows a cheerful monkey face (two round ears poking out at the sides, two dot eyes, a wide grin line) and two short curved strokes of glass reflection. One gloved hand holds up a large old-fashioned key (round bow, long shaft, three teeth); the long curly tail ends in a tiny glove. At the upper left a small ringed planet (a circle with one tilted ellipse); at the right a long free looping tether line trailing from the suit's back.
-Tone only on: the underside folds of the suit, the three strokes of reflection on the helmet, a smudge under the planet's ring.
-Unfinished: the legs fade out at the knees, the planet is only half outlined.
-Must read at a glance: a space monkey holding the key to escape.
-Add nothing else. Landscape 1536x1024, white background, grey graphite only, no text.
+SCENE: The person stands at left, three-quarters from behind, holding up a big old-fashioned key (round bow, long shaft, three teeth) towards the right. At right, standing on a table, a big astronaut helmet seen from the front: a round glass dome with a cheerful monkey face inside (two round ears poking out at the sides, two dot eyes, a wide grin), a ribbed collar ring below it. A small ringed planet (a circle with one tilted ellipse) floats above the helmet.
+BOLD SQUIGGLE: a thick coiled hose leaving the helmet's collar and looping down to the table.
+TONE only on: the back of the sweater, a few diagonal strokes of reflection on the glass dome, the lower half of the planet; the hair as the dark scribble.
+Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
 ```
 
-**CAT-06 Procreate Sketchbook (early drawings). Attach REF-5.**
+**CAT-06 Procreate Sketchbook (early drawings)**
 
 ```text
-Attach REF-5 (pen hatching: borrow the way a few directional strokes build hair and cloth).
+Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
 
-Draw: a sketchbook moment. In the middle a drawing tablet resting at a slight angle (a thick rounded rectangle with a small stand) with a loose, half-finished profile portrait on its screen (only the hair, one eye and the nose line). From the right a hand holds a slim stylus, its tip on the screen. At the left three tiny doodles float on the empty page: a heraldic shield crest, a five-point star, a sprig with three leaves, each drawn in a few strokes as if testing logo ideas.
-Tone only on: the hair of the portrait (dense hatching), the left half of the shield crest, the shadow under the tablet.
-Unfinished: the portrait's face has no outline on its far side, the hand shows only the thumb and two fingers.
-Must read at a glance: drawing portraits, crests and logo ideas on a tablet.
-Add nothing else. Landscape 1536x1024, white background, grey graphite only, no text.
+SCENE: The person sits at left at a desk, a slim stylus in hand with its tip touching a drawing tablet at right (a thick rounded rectangle on a short stand, drawn in simple perspective like the monitor in the master). On the tablet screen a loose half-finished profile portrait: only the hair, one eye and the nose line. Beside the tablet on the desk lies a small sheet of paper with a shield crest and a five-point star doodled on it.
+BOLD SQUIGGLE: the stylus line leaving the screen and continuing into the air as one thick loose spiral.
+TONE only on: the back of the sweater, the hair of the portrait (dense hatching), the shadow under the tablet; the person's hair as the dark scribble.
+Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
 ```
 
-**CAT-07 Somia (sustainable fashion store). Attach REF-4.**
+**CAT-07 Somia (sustainable fashion store)**
 
 ```text
-Attach REF-4 (one fluid line: borrow the elegant stand-by-the-object posture and the economy of the line).
+Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
 
-Draw: a fashion store moment. At left a person standing in profile, long legs, holding up a blouse on a hanger at arm's length to examine it; a small empty paper price tag hangs from the hanger on a string. At right a clothes rail (one horizontal bar on two thin legs) with three garments hanging from it as simple shapes: a long coat, a blouse with wide sleeves, trousers folded over a hanger. At the foot of the rail a small potted plant with four leaves.
-Tone only on: the long coat (hatching along its fall), the person's trousers, the shadow under the rail's foot.
-Unfinished: the far garment on the rail is only its hanger and an outline, the person's head is a profile with no detail.
-Must read at a glance: a sustainable clothes shop.
-Add nothing else. Landscape 1536x1024, white background, grey graphite only, no text.
+SCENE: The person stands at left, three-quarters from behind, holding up a wide-sleeved blouse on a hanger at arm's length; a small empty paper price tag hangs from the hanger on a string. At right a clothes rail (one horizontal bar on two thin legs) with three garments hanging from it: a long coat, a blouse with wide sleeves, trousers folded over a hanger. A small potted plant with four leaves stands at the foot of the rail. One floor line under everything.
+BOLD SQUIGGLE: a tailor's measuring tape around the person's neck, hanging down in one thick wavy band.
+TONE only on: the back of the sweater, the long coat (hatching along its fall), the shadow under the rail; the hair as the dark scribble.
+Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
 ```
 
-**CAT-08 Gotet (vermouth bar). Attach REF-3.**
+**CAT-08 Gotet (vermouth bar)**
 
 ```text
-Attach REF-3 (ink figure with a tie: borrow the heavy hatching of the tie and the dark mass of the clothing).
+Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
 
-Draw: a vermouth bar. A chest-up bartender behind a counter at left, three-quarter view, slicked-back hair, a big moustache drawn as one dark scribbled bar, waistcoat and long tie. One hand holds a tall soda siphon (lever head, spout, a band of simple stripes), the other lifts a stemmed glass with ice cubes and an olive on a toothpick. A long, slightly bowed freehand line for the bar counter runs across the whole width in front of him.
-Tone only on: the tie and waistcoat (dense parallel hatching), the moustache, the liquid in the glass (short diagonal strokes).
-Unfinished: the right half of the counter fades out, the bartender's far shoulder is only suggested.
-Must read at a glance: a bartender serving vermouth with a siphon.
-Add nothing else. Landscape 1536x1024, white background, grey graphite only, no text.
+SCENE: The person stands at left behind a bar counter, in profile, wearing a long apron over the sweater, one hand on the lever of a tall soda siphon standing on the counter at right (lever head, spout, a few stripes). Under the spout a stemmed glass with two ice cubes and an olive on a toothpick; next to it a squat bottle with an empty label shape. The counter is one long horizontal line with a thickness edge.
+BOLD SQUIGGLE: one thick wavy spray falling from the siphon's spout into the glass.
+TONE only on: the back of the apron, the liquid in the glass (short diagonal hatching), the shadow under the siphon and the bottle; the hair as the dark scribble.
+Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
 ```
 
-**CAT-09 A Portfolio for a Client (foley artist). Attach REF-5.**
+**CAT-09 A Portfolio for a Client (foley artist)**
 
 ```text
-Attach REF-5 (a leaning, dynamic pose in pen line: borrow the weight and the lean of the body).
+Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
 
-Draw: a foley artist at work. At left a person leaning hard into a stride, one boot stamping on a small shallow tray of gravel (a low rectangle with dots), headphones hanging round the neck, a loose jacket with fold lines. Both hands hold a long boom pole raised diagonally to the upper right, ending in a big furry windshield microphone (a fat rounded capsule covered in short fur ticks, a strap round the middle). Three short radiating lines near the microphone suggest sound.
-Tone only on: the jacket folds (parallel hatching), the shadow of the gravel tray, a smudge at the base of the fur capsule. The fur itself is short ticks, not hatching.
-Unfinished: the far leg stops at the knee, the pole's lower end fades into the hands.
-Must read at a glance: a sound artist making noises with a boom microphone.
-Add nothing else. Landscape 1536x1024, white background, grey graphite only, no text.
+SCENE: The person stands at left, three-quarters from behind, headphones hanging round the neck, both hands holding a long boom pole that rises diagonally to the upper right and ends in a big furry windshield microphone (a fat rounded capsule drawn with short fur ticks, a strap round its middle). One boot is raised, about to stamp on a shallow gravel tray on the floor in front of the person (a low rectangle with dots). One floor line under everything.
+BOLD SQUIGGLE: one thick wavy sound line leaving the microphone towards the right.
+TONE only on: the back of the sweater, the shadow of the gravel tray, the fur as dense short ticks at the base of the capsule; the hair as the dark scribble.
+Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
 ```
 
-**CAT-10 Sticker Sheet (illustration showcase). Attach REF-2.**
+**CAT-10 Sticker Sheet (illustration showcase)**
 
 ```text
-Attach REF-2 (bold crayon-like line and mitten-like hands: borrow how the hands are simplified).
+Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
 
-Draw: peeling a sticker. At left a left hand holds a big sheet of backing paper (a rounded rectangle with one slightly curled corner) that has the cut outlines of four sticker shapes on it: a star, a heart, a speech bubble and a flower; the speech bubble and the flower are already empty, drawn as dashed outlines. At right a right hand pinches the corner of the star sticker and peels it away: the curled-up corner shows its back side. Hands are mitten-like shapes with three or four finger strokes each, each cut off at the wrist by a sleeve cuff.
-Tone only on: the curled underside of the star (parallel hatching), the shadow of the sheet under the left thumb, a smudge on the heart.
-Unfinished: the bottom edge of the sheet fades out, the flower is only half outlined.
-Must read at a glance: stickers on a backing sheet, one being peeled.
-Add nothing else. Landscape 1536x1024, white background, grey graphite only, no text.
+SCENE: The person sits at left at a table, leaning over a big sheet of backing paper lying on the table at right, drawn in simple perspective (a wide rounded trapezoid with one curled corner). On the sheet, four sticker shapes: a star, a heart, a speech bubble and a flower. The speech bubble and the flower are already empty, drawn as dashed outlines. The person's small hand pinches the corner of the star and peels it away; the curled corner shows its back side.
+BOLD SQUIGGLE: the peeled corner of the star curls into one thick loose spiral.
+TONE only on: the back of the sweater, the curled underside of the star (hatching), the shadow of the sheet on the table; the hair as the dark scribble.
+Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
 ```
 
 ### One-line fixes to paste when a result is off
 
-- Too neat or finished: `Same subject, redraw it looser: fewer strokes, leave half of it out, lines that overshoot and do not close.`
-- Colour, tint or paper texture crept in: `Grey graphite only on flat pure white, no tint, no paper texture.`
-- Lines too thin to read small: `Same drawing with the pencil pressed hard: main contours twice as thick, no hairlines.`
-- Face or hands too detailed: `Simplify: face is a nose-and-chin profile line and one dot, hands are mittens with three or four strokes.`
+- Too busy: `Simpler: remove everything that is not listed, fewer lines, like the style master.`
+- The person changed: `Same person as the style master: messy bun, round glasses, loose sweater, face in profile.`
+- It looks like marker or ink: `Pencil, not marker: soft graphite grey with visible grain, same line weight as the style master.`
+- Colour or paper texture crept in: `Pencil only on flat pure white, no tint, no paper texture.`
 
 ## PF, ST, PR
 
-Open. Pau gives the art direction and references for each category, then the prompts are written like the CAT set (one opening message per chat with the rules, one prompt per image with its own reference). The IDs, the file names and the filing procedure stay as before:
+Open. Pau gives the art direction and references for each category, then the prompts are written like the CAT set (one opening message per chat, one prompt per image). The IDs, the file names and the filing procedure stay as before:
 
 - `PF-NN` becomes `public/works/concept-portfolio/art/slide-N.webp` (1080x1920) plus the derived sheet, contact sheet, thumb, peek and card art.
 - `ST-NN` becomes `sticker-NN.webp` (1200x1600 transparent) and `thumb-NN.webp` (300x400), then `build-shapes.py` and the card art (see `docs/api/world-illustration.md`).

@@ -457,6 +457,10 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
   pointer-events: none;
 }
 .cv-face__concept .pm-stamp { display: block; }
+/* phones: the description wraps onto a second line, so the stamp moves to the empty bottom-right corner instead of striking it through */
+@media (max-width: 640px) {
+  .cv-face__concept { left: auto; right: clamp(12px, 3.2cqw, 20px); }
+}
 /* pressed on once the folders have landed (html.js only; the still paths are at the end of the file) */
 html.js .cv-deck[data-in] .cv-face__concept {
   animation: cv-press 0.46s cubic-bezier(0.2, 1.55, 0.4, 1) backwards;

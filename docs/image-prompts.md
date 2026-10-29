@@ -17,7 +17,7 @@ Every image has an ID: `AREA-NN`. Save the result with the ID as its name in `C:
 |---|---|---|---|
 | `CAT` | CAT-01 .. CAT-10 | the grey sketch next to each name in the Catalog, now a faint full-width background of the folder | **defined below (v4)** |
 | `PF` | PF-01 .. PF-05 | the five slides of folder 09 (A Portfolio for a Client) | waiting for Pau's direction |
-| `ST` | ST-01 .. ST-09 | the nine stickers of folder 10 (Sticker Sheet), same characters restyled | **defined below (v8)** |
+| `ST` | ST-01 .. ST-09 | the nine stickers of folder 10 (Sticker Sheet), same characters restyled | **filed and live** (`python tools/ingest_stickers.py _inbox/refs`) |
 | `PR` | PR-01 .. PR-04 | the four big scenes of the Process film (section 05): COLLECT, SKETCH, MAKE, DELIVER | **filed and live** |
 | `TK` / `BIN` | TK-01 .. TK-07, BIN-01 | the seven tool icons of "On my desk" (animated parts sheets) and the bin | **filed and live** (`python tools/ingest_tokens.py _inbox/refs`) |
 

@@ -37,7 +37,7 @@ src/lib/                    registry of the ten projects, copy, router, motion h
 public/works/<slug>/        optimised card art and assets of each project (WebP, SVG, no originals)
 art-src/                    sources of the generated art (SVG builders and scripts), not shipped
 docs/                       ART_DIRECTION.md (read section 12 first), ARCHITECTURE.md, COPY.md, docs/api/*
-tools/                      Playwright-based checks (screenshots, page audit, copy audit, link audit) and ingest_catalog.py / ingest_process.py / ingest_tokens.py (file the Catalog friezes, the Process scenes and the tool icons)
+tools/                      Playwright-based checks (screenshots, page audit, copy audit, link audit) and ingest_catalog.py / ingest_process.py / ingest_tokens.py / ingest_stickers.py (file the Catalog friezes, the Process scenes, the tool icons and the stickers)
 ```
 
 `docs/api/` has one short note per unit (chrome, each section, each world, the primitives, the flipbook, the card-art contract).

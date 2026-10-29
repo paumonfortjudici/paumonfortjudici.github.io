@@ -6,7 +6,8 @@ import type { Category } from '@/lib/works'
 
 export type FilterId = Category | 'all'
 
-/** f = featured (6 columns x 2 rows), s = small (3 x 1), w = the empty folder stretched to 6 x 1, n = the drawer note (6 x 1) */
+/** s = every folder (3 columns x 1 row), w = the empty folder stretched to 6 x 1, n = the drawer note (3 x 1). `f` (featured, 6 x 2) is no longer used:
+ *  the owner wants every folder the same size; the type stays so WorkCard keeps working if a featured cell ever comes back. */
 export type CellKind = 'f' | 's' | 'w' | 'n'
 
 export interface Cell {
@@ -23,51 +24,52 @@ export const YOURS = 'yours'
 /** the drawer note: a sticky note on the short drawers (Editorial, Web, Print) that says how many folders are in it and brings the rest back */
 export const NOTE = 'note'
 
-const f = (slug: string, col: number, row: number): Cell => ({ slug, kind: 'f', col, span: 6, row, rows: 2 })
 const s = (slug: string, col: number, row: number): Cell => ({ slug, kind: 's', col, span: 3, row, rows: 1 })
 const y = (col: number, row: number, wide = false): Cell => ({ slug: YOURS, kind: wide ? 'w' : 's', col, span: wide ? 6 : 3, row, rows: 1 })
-const note = (col: number, row: number): Cell => ({ slug: NOTE, kind: 'n', col, span: 6, row, rows: 1 })
+const note = (col: number, row: number): Cell => ({ slug: NOTE, kind: 'n', col, span: 3, row, rows: 1 })
 
 /**
- * Desktop recipes (>= 1100px). Every filter is its own composition on the 12-column grid, so a short list never leaves a hole:
- *   all           3 featured + 7 small + the empty folder = exactly 5 rows of 12 columns
- *   branding      one featured + a 2x2 block of small ones = exactly 2 rows
- *   illustration  a tall featured folder between two columns of small ones
- *   the others    featured pairs, then a last row of 12 columns: the small folders, the drawer note and the empty folder
+ * Desktop recipes (>= 1100px). Every folder is the same size (3 columns of 12, one row), so a row holds four cells. Each filter is its own
+ * composition and none leaves a hole:
+ *   all           10 folders in rows of 4, 4 and 2, then the empty folder stretched across the last 6 columns = exactly 3 rows
+ *   editorial     3 folders + the drawer note, then the empty folder stretched and centred under them (2 rows)
+ *   branding      4 folders, then the empty folder stretched and centred under them (2 rows)
+ *   web, print    2 folders + the drawer note + the empty folder = exactly 1 row
+ *   illustration  7 folders + the empty folder = exactly 2 rows
  * Below 1100px the grid is 2 columns (then 1) and flows in registry order: the recipe is ignored (the drawer note is hidden there).
  */
 export const LAYOUTS: Record<FilterId, Cell[]> = {
   all: [
-    f('contract', 1, 1),
-    f('plana', 7, 1),
-    s('fortyfour-lab', 1, 3),
-    f('spelled-guilty', 4, 3),
-    s('space-monkey', 10, 3),
-    s('procreate', 1, 4),
-    s('somia', 10, 4),
-    s('concept-brand', 1, 5),
-    s('concept-portfolio', 4, 5),
-    s('illustration', 7, 5),
-    y(10, 5),
-  ],
-  editorial: [f('contract', 1, 1), f('spelled-guilty', 7, 1), s('concept-portfolio', 1, 3), note(4, 3), y(10, 3)],
-  branding: [f('plana', 1, 1), s('fortyfour-lab', 7, 1), s('somia', 10, 1), s('concept-brand', 7, 2), y(10, 2)],
-  web: [f('plana', 1, 1), f('somia', 7, 1), note(1, 3), y(7, 3, true)],
-  illustration: [
-    s('fortyfour-lab', 1, 1),
-    f('spelled-guilty', 4, 1),
-    s('space-monkey', 10, 1),
-    s('procreate', 1, 2),
+    s('contract', 1, 1),
+    s('plana', 4, 1),
+    s('fortyfour-lab', 7, 1),
+    s('spelled-guilty', 10, 1),
+    s('space-monkey', 1, 2),
+    s('procreate', 4, 2),
+    s('somia', 7, 2),
     s('concept-brand', 10, 2),
     s('concept-portfolio', 1, 3),
     s('illustration', 4, 3),
     y(7, 3, true),
   ],
-  print: [f('contract', 1, 1), f('space-monkey', 7, 1), note(1, 3), y(7, 3, true)],
+  editorial: [s('contract', 1, 1), s('spelled-guilty', 4, 1), s('concept-portfolio', 7, 1), note(10, 1), y(4, 2, true)],
+  branding: [s('plana', 1, 1), s('fortyfour-lab', 4, 1), s('somia', 7, 1), s('concept-brand', 10, 1), y(4, 2, true)],
+  web: [s('plana', 1, 1), s('somia', 4, 1), note(7, 1), y(10, 1)],
+  illustration: [
+    s('fortyfour-lab', 1, 1),
+    s('spelled-guilty', 4, 1),
+    s('space-monkey', 7, 1),
+    s('procreate', 10, 1),
+    s('concept-brand', 1, 2),
+    s('concept-portfolio', 4, 2),
+    s('illustration', 7, 2),
+    y(10, 2),
+  ],
+  print: [s('contract', 1, 1), s('space-monkey', 4, 1), note(7, 1), y(10, 1)],
 }
 
-/** the two folders that stay double-width on tablet (2 columns); every other card is one column wide there */
-export const TABLET_WIDE = new Set(['contract', 'plana'])
+/** the folders that stay double-width on tablet (2 columns): none, every folder is the same size (the empty folder takes the full width when it would sit alone in a row) */
+export const TABLET_WIDE = new Set<string>()
 
 export interface Pose {
   /** resting vertical offset in px (desktop) and tilt of the whole folder in degrees. Kept small: rows never collide. */

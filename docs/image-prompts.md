@@ -1,178 +1,234 @@
 # Image prompts for ChatGPT (and how the images come back)
 
-Version 3 (2026-10-29). Pau threw away the first set (flat colour, riso look), then the second (five different references, too complex). He works **one category at a time**. The Catalog (CAT) is defined: ten pencil sketches that all copy ONE style master, the CAT-02 sketch he liked. PF, ST and PR are open: they get their prompts when Pau gives the direction for each.
+Version 4 (2026-10-29), the definitive Catalog set. Pau threw away three earlier directions (flat riso colour, five-reference graphite, one-reference graphite) and fixed the brief:
+
+- The style master is the flat felt-tip marker figure (orange hoodie, cobalt line, pink laces): `_inbox/refs/STYLE-MASTER.jpg`.
+- Each Catalog sketch is a **simple sketch in exactly 4 colours**, chosen to contrast with the colour of its folder.
+- No character is required, and the ten do **not** share a structure: same artistic hand, a different idea and composition each, "as if one artist had designed each folder one by one".
+- They are not a small motif any more: each is a **wide frieze behind the title of its folder**, at low opacity, filling much of the horizontal band.
+
+PF, ST and PR are still open: they get their prompts when Pau gives the direction for each category.
 
 ## The system
 
-Every image has an ID: `AREA-NN`. Use the ID as the file name when you save the result, in `C:\Users\User\Documents\Portofolio\_inbox\` (git ignores that folder). If you make several versions add a letter: `CAT-04b.png`.
+Every image has an ID: `AREA-NN`. Save the result with the ID as its name in `C:\Users\User\Documents\Portofolio\_inbox\` (git ignores that folder). If you make several versions add a letter: `CAT-04b.png`.
 
 | Area | IDs | What it replaces | Status |
 |---|---|---|---|
-| `CAT` | CAT-01 .. CAT-10 | the grey sketch next to each name in the Catalog | **defined below (v3, one style master)**; CAT-02 is already in `_inbox` |
+| `CAT` | CAT-01 .. CAT-10 | the grey sketch next to each name in the Catalog, now a faint full-width background of the folder | **defined below (v4)** |
 | `PF` | PF-01 .. PF-05 | the five slides of folder 09 (A Portfolio for a Client) | waiting for Pau's direction |
 | `ST` | ST-01 .. ST-09 | the nine stickers of folder 10 (Sticker Sheet) | waiting for Pau's direction |
 | `PR` | PR-01 .. PR-04 | the four big scenes of the Process film (section 05) | waiting for Pau's direction |
 
-References, in `_inbox/refs/`:
+`_inbox/refs/STYLE-MASTER.jpg` is the reference for every CAT prompt. `REF-2` .. `REF-5` (the crayon, ink and pen references) are kept for the other categories. The graphite experiments are archived in `_inbox/_old/` and are not used.
 
-| File | What it is | Used for |
-|---|---|---|
-| `STYLE-MASTER.png` | the web-designer pencil sketch Pau liked (1536x1024) | **every CAT prompt** |
-| `REF-1_chair-colour.jpg` | flat marker figure, orange + blue | colour categories later |
-| `REF-2_crayon-laptop.jpg`, `REF-3_ink-hat-tie.jpg`, `REF-4_ink-bicycle.jpg`, `REF-5_pen-trumpet.jpg` | Pau's original Pinterest references | kept for the other categories; no longer used for CAT |
+## CAT: how the pictures are used on the site (this decides the format)
 
-## CAT: the ten Catalog sketches (soft pencil, one style master)
+Measured on the live Catalog (closed folder bands):
 
-### How the picture is used on the site
+| Viewport | Band width | Head height (where the title sits) | Ratio |
+|---|---|---|---|
+| 1440 | 1270 px | 115 to 230 px | 5.5:1 to 11:1 |
+| 1920 | 1516 px | 127 to 284 px | 5.3:1 to 12:1 |
+| 1024 | 903 px | 86 to 174 px | 5.2:1 to 10.5:1 |
 
-- It sits **directly on the band colour**, right-aligned, in a box up to 38rem wide and 12rem (192 px) tall, `object-fit: contain`. It is hidden on phones (max-width 760px).
-- Band colours: 01 tomato `#FF4B2B`, 02 pine `#1F5C46` (dark), 03 marigold `#FFB81C`, 04 oxblood `#8A1B3D` (dark), 05 ultraviolet `#5B3DF5` (dark), 06 bubblegum `#FF8FC1`, 07 lagoon `#0F9AA8`, 08 olive `#86A22F`, 09 butter `#FBE79A`, 10 lilac `#B79CFF`.
-- ChatGPT draws dark pencil on white, 1536x1024. At filing time I trim to the drawing, turn white into transparent (luminance to alpha), **thicken the line a little** so it holds at 190 px tall, and tint the pencil per band: graphite `#2E2E2E` on the seven light bands, pale chalk grey `#E6E1D6` on the three dark ones (02, 04, 05). Result: `public/works/<slug>/catalog-sketch.webp`, then the slug is added to `CATALOG_SKETCH` (`catalog/sketches.ts`).
+So the picture is a very long, low strip. Plan for filing:
 
-### The recipe (what the style master does, and every prompt repeats)
+1. ChatGPT draws on a flat background of the folder's own colour (so the contrast is judged on the real colour). I remove that flat colour (key it out from the edges, with a soft edge), trim to the drawing and save `public/works/<slug>/catalog-sketch.webp` (transparent).
+2. The picture becomes the **background of the band head**: full width, behind the title and the meta (the title is already `z-index: 1`), `object-fit: cover`, centred, opacity about 0.25 to 0.4 (tuned by eye so the headline never loses). The old small grey sketch is switched off for that slug (`CATALOG_SKETCH` in `catalog/sketches.ts`).
+3. Hidden on phones, as the grey sketches were (max-width 760px).
 
-One soft dark pencil, line about 4 to 5 px on 1536x1024, fewest lines that make an object recognisable. Three tones only (soft light-grey diagonal hatching, one dense scribbled dark mass for hair or hat, one small dark shadow patch). One thick soft grey squiggle as the single loud mark. Layout: the same person at left (messy bun, round glasses, loose sweater, three-quarters from behind, face in profile), the object of the scene at right in simple perspective, one long horizontal line under both. Pure white background, no text.
+Folder colours: 01 tomato `#FF4B2B`, 02 pine `#1F5C46`, 03 marigold `#FFB81C`, 04 oxblood `#8A1B3D`, 05 ultraviolet `#5B3DF5`, 06 bubblegum `#FF8FC1`, 07 lagoon `#0F9AA8`, 08 olive `#86A22F`, 09 butter `#FBE79A`, 10 lilac `#B79CFF`.
 
-### Chat opening message (new chat, paste first, attach `STYLE-MASTER.png`)
-
-```text
-The attached image is the STYLE MASTER. Over this chat we will make TEN more sketches for the folders of a portfolio website, and all ten must look as if the same hand drew them on the same day with the same pencil as this one. Do not draw anything yet. Study the image, reply "ready" and describe its style back to me in five lines.
-
-WHAT THE STYLE MASTER IS (copy all of it exactly):
-- MEDIUM: one soft dark pencil, black to graphite grey, slightly waxy, with visible grain. Nothing else: no colour, no ink, no digital look.
-- LINE: one confident line per contour, about 4 to 5 px thick on a 1536x1024 canvas, with a few doubled "searching" strokes and small overshoots at the corners. Straight edges are hand-drawn: nearly straight, never ruler-perfect. Quick and simple, not fussy: every object is built from the fewest lines that make it recognisable.
-- TONE: only three kinds. (1) Soft parallel diagonal hatching in light grey, about 45 degrees, on one big area of clothing and on one shape of the object. (2) One dense scribbled dark mass for the hair or a hat. (3) One small solid dark patch for a shadow. Everything else stays blank white.
-- ONE BOLD SQUIGGLE: every sketch has one thick, soft, grey wavy line pressed hard, like the steam in the style master. It is the single loud mark of the drawing.
-- LAYOUT: wide. At left the same person, seen three-quarters from behind with the face in profile. At right the object of the scene, drawn in simple perspective like the monitor in the style master. One long horizontal line (desk, counter or floor) runs under both. Generous white margin: the drawing fills about 80% of the width and 60% of the height.
-- THE PERSON, always the same: hair in a messy bun made of one dark scribble (or a hat when I say so), round glasses, a loose sweater with rolled sleeves, the face reduced to a profile line with a small nose and the glasses, tiny simple hands.
-- BACKGROUND: flat pure white. No paper texture, no frame, no shadow on the ground, no signature. NO TEXT of any kind: no letters, no numbers (text is drawn as rows of wavy line).
-- FORBIDDEN: colour, gradients, digital brush, vector look, 3D, perfect symmetry, realism, extra details, extra objects.
-
-With every request I will attach the style master again. Copy only its style, never its scene: the web designer is already done.
-```
-
-### The ten prompts (one message each, attach `STYLE-MASTER.png` to each)
-
-**CAT-01 Proyecto Contract (trade magazines)**
+## Chat opening message (new chat, paste first, attach `STYLE-MASTER.jpg`)
 
 ```text
-Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
+The attached image is the STYLE MASTER. Over this chat we will draw TEN wide sketches, one for each coloured folder of a portfolio website. They are the work of ONE illustrator who solved each folder in a different way, but with the same hands, the same markers and the same sense of humour as the style master. Do not draw anything yet. Study the image, reply "ready" and describe back to me, in six lines, what makes its style.
 
-SCENE: The person sits at left at a long table, leaning forward, one hand holding a stubby pencil above an open magazine spread lying on the table at right, drawn in simple perspective like the monitor in the master (a wide trapezoid with a centre fold). Left page: a big photo box with a diagonal cross and one short caption bar. Right page: two thick headline bars and three columns of wavy lines.
-BOLD SQUIGGLE: a loose thick loop drawn round the headline, as if marked while editing.
-TONE only on: the back of the sweater, the lower half of the photo box, the shadow under the edge of the spread; the hair as the dark scribble.
-Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
+THE STYLE (copy it exactly; copy the style, never the subject):
+- MARKER LINE. Every outline is one thick felt-tip marker line of a single colour and a single constant weight (about 1.5% of the height of the artwork), with round ends. Lines are confident but not clean: they overshoot corners, leave small gaps instead of closing, wobble a little, and are never ruler-straight or vector-perfect.
+- OPAQUE FLAT FILLS. Colour is laid in with an opaque marker or gouache: completely flat, with faint directional brush streaks inside the fill. The fill is deliberately NOT registered with the line: in places it stops short of the outline and lets the background show through, in places it spills a little over it, like a two-pass screen print.
+- FEW INNER LINES. Folds, seams and details are single expressive strokes of the same marker. Never hatching, never shading.
+- NAIVE, CHUNKY SHAPES. Proportions are simplified and slightly exaggerated (oversized sweater, tiny head, long legs). Everything is a bold, simple, readable shape with a touch of humour.
+- ONE SMALL ACCENT. A tiny bright detail in the accent colour (like the pink shoelaces) that makes the drawing sing.
+- NO shading, NO gradients, NO shadows, NO textures except the faint streaks in the fills, NO 3D, NO photo look, NO outline in any colour other than the line colour of that drawing.
+
+THE FOUR COLOURS. Every drawing uses exactly FOUR colours, given in each request as hex codes: LINE (all the outlines), FILL A (the main fill, about 60% of the coloured area), FILL B (the second fill, about 30%) and DETAIL (the small accent, about 10%). No fifth colour, no tints, no black unless it is one of the four. They were chosen to contrast with the colour of the folder.
+
+THE BACKGROUND. The background is the colour of the folder, given in each request as a hex code: one perfectly flat, uniform fill, edge to edge. No gradient, no vignette, no paper texture, no frame, no border, no shadow on the ground. NO TEXT anywhere: no letters, no numbers, no logos (any label is an empty shape).
+
+THE FORMAT. Each sketch is a long horizontal FRIEZE that will become a faint background behind a headline across a wide folder. Make it an ultra-wide panorama, as close to 4:1 as you can get (for example 2048x512). If only 1536x1024 is possible, draw everything inside the middle horizontal third and leave the top and bottom thirds as empty flat background (I will crop them). The drawing runs edge to edge: shapes may touch or be cut by the left and right edges. Shapes are big and bold (the tallest reach the full height of the strip, nothing is smaller than 8% of that height) because it will be shown small and faint.
+
+TEN DIFFERENT SKETCHES, ONE ARTIST. The ten must NOT share a layout. Each request gives its own structure (a flat-lay, a skyline, a rug, a grid, a panorama...) and its own witty touch. What stays identical in all ten is the hand: the marker, the line weight, the unregistered flat fills, the chunky simplified shapes, the humour. Imagine one illustrator, one afternoon, ten folders, ten different ideas.
+
+With every request I will attach the style master again.
 ```
 
-**CAT-02 Plana Digital (brand and website). Already done: this is the prompt that matches the style master; use it only for variations.**
+## The ten prompts (one message each, attach `STYLE-MASTER.jpg` to each)
+
+**CAT-01 Proyecto Contract**
 
 ```text
-Attach STYLE-MASTER.png. Same style as the attached image.
+Attach the style master. Same artist and same hand as the style master (copy the style, not its subject).
 
-SCENE: The person sits at left on a plain chair, one arm stretched to a mouse, a tall mug beside the hand. At right a large desktop monitor on a short stand, slightly angled, its screen showing a website wireframe: a thin bar with three dots, a big hero rectangle with a half sun and four short rays inside it, two small boxes under it, a mouse-cursor arrow on a corner of the screen.
-BOLD SQUIGGLE: the steam rising from the mug.
-TONE only on: the back of the sweater, the hero rectangle, the shadow under the monitor stand; the hair as the dark scribble.
-Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
+FOLDER: 01 Proyecto Contract, a trade magazine on commercial interiors.
+BACKGROUND: perfectly flat tomato #FF4B2B, edge to edge.
+THE FOUR COLOURS: LINE ink #17101B, FILL A cream #FFF2DA, FILL B marigold #FFB81C, DETAIL ultraviolet #5B3DF5.
+STRUCTURE: a flat-lay of an editor's desk seen from directly above, objects scattered along one long table in a row from edge to edge, overlapping at different angles.
+ITEMS (all big and simple): a large open magazine spread (left page: a photo box with a bold diagonal cross and a caption bar; right page: a headline of two thick bars and three columns of wavy lines), a stack of three closed magazines slightly fanned, a stubby pencil, a ruler with tick marks, a round magnifying loupe, a coffee mug seen from above (two concentric circles and a handle), a pair of scissors, a roll of tape.
+YOUR OWN TOUCH: a loose thick loop in the DETAIL colour drawn round one headline, as if the editor had just marked it, with the pencil lying across it and its tip still touching the loop.
+Nothing like the other nine in layout, but drawn by the same hand.
+Format: ultra-wide panorama (about 4:1, or 1536x1024 with everything in the middle third), flat background, no text, no frame, no shadow.
 ```
 
-**CAT-03 44 Lab (custom rugs)**
+**CAT-02 Plana Digital**
 
 ```text
-Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
+Attach the style master. Same artist and same hand as the style master (copy the style, not its subject).
 
-SCENE: The person stands at left, three-quarters from behind, wearing a knitted beanie in place of the bun, pressing a chunky tufting gun (boxy body, a grip, a pointed nose) against a rug at right stretched in a tall wooden frame, drawn in simple perspective. The rug shows one bold pattern of three nested diamonds and short fuzzy ticks along its edges. A tiny devil with two horns and a thin tail sits on the top bar of the frame, drawn in six strokes. One floor line under everything.
-BOLD SQUIGGLE: the gun's power cable falling from the gun in one big loose loop to the floor.
-TONE only on: the back of the sweater, the outer diamond ring of the rug (hatching), the beanie as the dark scribble.
-Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
+FOLDER: 02 Plana Digital, brand identity and websites.
+BACKGROUND: perfectly flat pine green #1F5C46, edge to edge.
+THE FOUR COLOURS: LINE cream #FFF2DA, FILL A marigold #FFB81C, FILL B tomato #FF4B2B, DETAIL bubblegum #FF8FC1.
+STRUCTURE: a city skyline made of browser windows standing side by side like buildings of different heights and widths, on one long ground line, with a sky above.
+ITEMS (all big and simple): seven browser windows (a rounded rectangle with a bar of three dots on top). One holds a half sun with short rays, one a grid of six small boxes, one a big headline bar above a block. Two smaller buildings are a tall phone shape and a tablet shape. A flock of mouse-cursor arrows (the classic pointer shape) flies over the skyline in a loose V like birds.
+YOUR OWN TOUCH: the cursor arrows are the birds, drawn in the DETAIL colour, and the tallest window has a tiny antenna with a flag.
+Nothing like the other nine in layout, but drawn by the same hand.
+Format: ultra-wide panorama (about 4:1, or 1536x1024 with everything in the middle third), flat background, no text, no frame, no shadow.
 ```
 
-**CAT-04 Spelled Guilty (noir word-search book)**
+**CAT-03 44 Lab**
 
 ```text
-Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
+Attach the style master. Same artist and same hand as the style master (copy the style, not its subject).
 
-SCENE: The person sits at left at a desk, wearing a fedora in place of the bun and a trench coat with the collar turned up, leaning over a big open puzzle book at right, drawn in simple perspective (a wide trapezoid with a centre fold). Its right page shows a 5-by-5 grid of small squares filled with tiny scribbles instead of letters, and one long pill-shaped loop round a row. A thick-rimmed magnifying glass lies on the left page.
-BOLD SQUIGGLE: one big loose question mark floating above the book.
-TONE only on: the hat band of the fedora as the dense dark scribble, the back of the coat (hatching), the shadow under the book.
-Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
+FOLDER: 03 44 Lab, custom hand-tufted rugs.
+BACKGROUND: perfectly flat marigold #FFB81C, edge to edge.
+THE FOUR COLOURS: LINE ultraviolet #5B3DF5, FILL A tomato #FF4B2B, FILL B cream #FFF2DA, DETAIL pine #1F5C46.
+STRUCTURE: one single huge object stretched across the whole width: a long hand-tufted runner rug seen from slightly above, filling the strip almost edge to edge, with a fringe at both short ends.
+ITEMS (all big and simple): the rug with a bold repeated pattern of concentric diamonds and zigzags and short fuzzy ticks along its long edges; a chunky tufting gun (boxy motor, grip, pointed nose) resting on it with its cable making one big loose loop; three cones of yarn standing at one end.
+YOUR OWN TOUCH: a tiny mischievous devil (round head, two small horns, wide grin, thin tail ending in an arrow tip) peeks out from under a lifted corner of the rug and pulls a loose thread, drawn with the DETAIL colour for the thread and the tail.
+Nothing like the other nine in layout, but drawn by the same hand.
+Format: ultra-wide panorama (about 4:1, or 1536x1024 with everything in the middle third), flat background, no text, no frame, no shadow.
 ```
 
-**CAT-05 Space Monkey (escape room)**
+**CAT-04 Spelled Guilty**
 
 ```text
-Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
+Attach the style master. Same artist and same hand as the style master (copy the style, not its subject).
 
-SCENE: The person stands at left, three-quarters from behind, holding up a big old-fashioned key (round bow, long shaft, three teeth) towards the right. At right, standing on a table, a big astronaut helmet seen from the front: a round glass dome with a cheerful monkey face inside (two round ears poking out at the sides, two dot eyes, a wide grin), a ribbed collar ring below it. A small ringed planet (a circle with one tilted ellipse) floats above the helmet.
-BOLD SQUIGGLE: a thick coiled hose leaving the helmet's collar and looping down to the table.
-TONE only on: the back of the sweater, a few diagonal strokes of reflection on the glass dome, the lower half of the planet; the hair as the dark scribble.
-Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
+FOLDER: 04 Spelled Guilty, a noir murder-mystery word-search book.
+BACKGROUND: perfectly flat oxblood #8A1B3D, edge to edge.
+THE FOUR COLOURS: LINE cream #FFF2DA, FILL A marigold #FFB81C, FILL B lagoon #0F9AA8, DETAIL bubblegum #FF8FC1.
+STRUCTURE: a pattern. One long word-search grid runs across the whole width, 3 rows by about 18 columns of equal square cells, with the objects of the investigation lying on top of it.
+ITEMS (all big and simple): each cell holds one tiny squiggle instead of a letter (a different squiggle each time, never a readable letter); about a dozen cells are filled solid with FILL B; three long pill-shaped loops in the DETAIL colour circle rows of cells (one horizontal, one diagonal, one vertical); a noir fedora (pinched crown, band, wide brim) sits on the top edge of the grid at the right; a big magnifying glass (thick handle, round lens) lies over the left part of the grid and the three cells under the lens are drawn larger; a trail of four footprints walks across the grid.
+YOUR OWN TOUCH: one cell contains a cartoon eye peeking out at the viewer.
+Nothing like the other nine in layout, but drawn by the same hand.
+Format: ultra-wide panorama (about 4:1, or 1536x1024 with everything in the middle third), flat background, no text, no frame, no shadow.
 ```
 
-**CAT-06 Procreate Sketchbook (early drawings)**
+**CAT-05 Space Monkey**
 
 ```text
-Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
+Attach the style master. Same artist and same hand as the style master (copy the style, not its subject).
 
-SCENE: The person sits at left at a desk, a slim stylus in hand with its tip touching a drawing tablet at right (a thick rounded rectangle on a short stand, drawn in simple perspective like the monitor in the master). On the tablet screen a loose half-finished profile portrait: only the hair, one eye and the nose line. Beside the tablet on the desk lies a small sheet of paper with a shield crest and a five-point star doodled on it.
-BOLD SQUIGGLE: the stylus line leaving the screen and continuing into the air as one thick loose spiral.
-TONE only on: the back of the sweater, the hair of the portrait (dense hatching), the shadow under the tablet; the person's hair as the dark scribble.
-Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
+FOLDER: 05 Space Monkey, an escape room in Granollers.
+BACKGROUND: perfectly flat ultraviolet #5B3DF5, edge to edge.
+THE FOUR COLOURS: LINE cream #FFF2DA, FILL A marigold #FFB81C, FILL B bubblegum #FF8FC1, DETAIL lagoon #0F9AA8.
+STRUCTURE: a panorama of space with depth: one long dotted orbit line sweeps across the whole width from left to right, and everything is strung along it, objects at very different sizes.
+ITEMS (all big and simple): a big ringed planet at the far left; a small cratered planet; a moon shaped like a banana; a little rocket flying along the orbit line; five or six four-point stars of different sizes; and at the right of the centre a chubby monkey in a baggy spacesuit with a round glass helmet, floating weightless and holding up a big old-fashioned key (round bow, long shaft, three teeth).
+YOUR OWN TOUCH: the banana moon, and the monkey's long curly tail ends in a tiny glove.
+Nothing like the other nine in layout, but drawn by the same hand.
+Format: ultra-wide panorama (about 4:1, or 1536x1024 with everything in the middle third), flat background, no text, no frame, no shadow.
 ```
 
-**CAT-07 Somia (sustainable fashion store)**
+**CAT-06 Procreate Sketchbook**
 
 ```text
-Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
+Attach the style master. Same artist and same hand as the style master (copy the style, not its subject).
 
-SCENE: The person stands at left, three-quarters from behind, holding up a wide-sleeved blouse on a hanger at arm's length; a small empty paper price tag hangs from the hanger on a string. At right a clothes rail (one horizontal bar on two thin legs) with three garments hanging from it: a long coat, a blouse with wide sleeves, trousers folded over a hanger. A small potted plant with four leaves stands at the foot of the rail. One floor line under everything.
-BOLD SQUIGGLE: a tailor's measuring tape around the person's neck, hanging down in one thick wavy band.
-TONE only on: the back of the sweater, the long coat (hatching along its fall), the shadow under the rail; the hair as the dark scribble.
-Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
+FOLDER: 06 Procreate Sketchbook, my first drawings: portraits, crests and logo ideas.
+BACKGROUND: perfectly flat bubblegum pink #FF8FC1, edge to edge.
+THE FOUR COLOURS: LINE oxblood #8A1B3D, FILL A cream #FFF2DA, FILL B ultraviolet #5B3DF5, DETAIL marigold #FFB81C.
+STRUCTURE: a loose sheet of doodles, spread along the width at very different sizes, all connected by ONE long continuous marker line that never lifts: it starts at the left edge, loops through every doodle and ends at the tip of a stylus at the right.
+ITEMS (all big and simple): a face in profile with a big nose and a swirl of hair; a heraldic shield crest divided in four fields, two of them filled; a monogram-like swirl made of two loops (no letters); a five-point star; a leaf sprig with three leaves; a small bird; at the right end a slim stylus pen with a pointed tip and a clip; three round paint dots near the stylus.
+YOUR OWN TOUCH: the single unbroken line is the whole idea: the drawing is one stroke.
+Nothing like the other nine in layout, but drawn by the same hand.
+Format: ultra-wide panorama (about 4:1, or 1536x1024 with everything in the middle third), flat background, no text, no frame, no shadow.
 ```
 
-**CAT-08 Gotet (vermouth bar)**
+**CAT-07 Somia**
 
 ```text
-Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
+Attach the style master. Same artist and same hand as the style master (copy the style, not its subject).
 
-SCENE: The person stands at left behind a bar counter, in profile, wearing a long apron over the sweater, one hand on the lever of a tall soda siphon standing on the counter at right (lever head, spout, a few stripes). Under the spout a stemmed glass with two ice cubes and an olive on a toothpick; next to it a squat bottle with an empty label shape. The counter is one long horizontal line with a thickness edge.
-BOLD SQUIGGLE: one thick wavy spray falling from the siphon's spout into the glass.
-TONE only on: the back of the apron, the liquid in the glass (short diagonal hatching), the shadow under the siphon and the bottle; the hair as the dark scribble.
-Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
+FOLDER: 07 Somia, a sustainable fashion store.
+BACKGROUND: perfectly flat lagoon teal #0F9AA8, edge to edge.
+THE FOUR COLOURS: LINE ink #17101B, FILL A cream #FFF2DA, FILL B tomato #FF4B2B, DETAIL marigold #FFB81C.
+STRUCTURE: a rhythm along a line: one thin horizontal clothes rail runs across the whole width, garments hang from it at a regular beat, and a floor line runs below.
+ITEMS (all big and simple): six garments, each on a simple triangular hanger with a hook: a wide-sleeved blouse, a long coat, trousers folded over a hanger, a belted dress, a chunky knit jumper, a long scarf; three empty paper price tags on strings; on the floor three potted plants of different sizes and a folded stack of two garments.
+YOUR OWN TOUCH: one tiny bird sits on the rail and pecks at a price tag, and the DETAIL colour is used only on the tags and the bird's beak.
+Nothing like the other nine in layout, but drawn by the same hand.
+Format: ultra-wide panorama (about 4:1, or 1536x1024 with everything in the middle third), flat background, no text, no frame, no shadow.
 ```
 
-**CAT-09 A Portfolio for a Client (foley artist)**
+**CAT-08 Gotet**
 
 ```text
-Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
+Attach the style master. Same artist and same hand as the style master (copy the style, not its subject).
 
-SCENE: The person stands at left, three-quarters from behind, headphones hanging round the neck, both hands holding a long boom pole that rises diagonally to the upper right and ends in a big furry windshield microphone (a fat rounded capsule drawn with short fur ticks, a strap round its middle). One boot is raised, about to stamp on a shallow gravel tray on the floor in front of the person (a low rectangle with dots). One floor line under everything.
-BOLD SQUIGGLE: one thick wavy sound line leaving the microphone towards the right.
-TONE only on: the back of the sweater, the shadow of the gravel tray, the fur as dense short ticks at the base of the capsule; the hair as the dark scribble.
-Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
+FOLDER: 08 Gotet, a vermouth bar identity.
+BACKGROUND: perfectly flat olive green #86A22F, edge to edge.
+THE FOUR COLOURS: LINE oxblood #8A1B3D, FILL A cream #FFF2DA, FILL B tomato #FF4B2B, DETAIL marigold #FFB81C.
+STRUCTURE: a shop front seen straight on: a scalloped striped awning runs across the whole width at the top (nine scallops alternating FILL A and FILL B), and below it one long shelf line carries the bar.
+ITEMS (all big and simple): on the shelf, from left to right, three vermouth bottles of different heights (rounded shoulders, an empty label shape), a stemmed glass with ice cubes and a lemon wheel, a tall soda siphon (lever head and spout), a smiling olive character with two dot eyes, then two more bottles.
+YOUR OWN TOUCH: the olive wears a tiny beret and holds a toothpick like a flag; the DETAIL colour is only the lemon, the siphon lever and the flag.
+Nothing like the other nine in layout, but drawn by the same hand.
+Format: ultra-wide panorama (about 4:1, or 1536x1024 with everything in the middle third), flat background, no text, no frame, no shadow.
 ```
 
-**CAT-10 Sticker Sheet (illustration showcase)**
+**CAT-09 A Portfolio for a Client**
 
 ```text
-Attach STYLE-MASTER.png. Same style as the attached image (copy the style, not its scene).
+Attach the style master. Same artist and same hand as the style master (copy the style, not its subject).
 
-SCENE: The person sits at left at a table, leaning over a big sheet of backing paper lying on the table at right, drawn in simple perspective (a wide rounded trapezoid with one curled corner). On the sheet, four sticker shapes: a star, a heart, a speech bubble and a flower. The speech bubble and the flower are already empty, drawn as dashed outlines. The person's small hand pinches the corner of the star and peels it away; the curled corner shows its back side.
-BOLD SQUIGGLE: the peeled corner of the star curls into one thick loose spiral.
-TONE only on: the back of the sweater, the curled underside of the star (hatching), the shadow of the sheet on the table; the hair as the dark scribble.
-Keep it simple: nothing beyond what is listed. Landscape 1536x1024, pure white background, pencil only, no text.
+FOLDER: 09 A Portfolio for a Client, the presentation of a foley artist (the person who makes film sounds with everyday objects).
+BACKGROUND: perfectly flat butter yellow #FBE79A, edge to edge.
+THE FOUR COLOURS: LINE ultraviolet #5B3DF5, FILL A tomato #FF4B2B, FILL B lagoon #0F9AA8, DETAIL ink #17101B.
+STRUCTURE: an audio timeline: three long thin horizontal tracks stacked and running across the whole width, with clips of different lengths drawn as rounded rectangles, and a vertical playhead line with a small triangle head crossing near the right third.
+ITEMS (all big and simple): track 1 has clips filled with spiky waveform bars; track 2 has a pair of boots and three footprints; track 3 has a folded umbrella, a celery stalk, half a watermelon and a crumpled sheet drawn as a spiky star. Each clip holds one of these big simple pictures.
+YOUR OWN TOUCH: from the top-left corner a boom pole hangs down into the first track and ends in a big furry microphone (a fat capsule covered in short fur ticks, a strap round its middle), as if it were recording the timeline.
+Nothing like the other nine in layout, but drawn by the same hand.
+Format: ultra-wide panorama (about 4:1, or 1536x1024 with everything in the middle third), flat background, no text, no frame, no shadow.
 ```
 
-### One-line fixes to paste when a result is off
+**CAT-10 Sticker Sheet**
 
-- Too busy: `Simpler: remove everything that is not listed, fewer lines, like the style master.`
-- The person changed: `Same person as the style master: messy bun, round glasses, loose sweater, face in profile.`
-- It looks like marker or ink: `Pencil, not marker: soft graphite grey with visible grain, same line weight as the style master.`
-- Colour or paper texture crept in: `Pencil only on flat pure white, no tint, no paper texture.`
+```text
+Attach the style master. Same artist and same hand as the style master (copy the style, not its subject).
+
+FOLDER: 10 Sticker Sheet, an illustration showcase.
+BACKGROUND: perfectly flat lilac #B79CFF, edge to edge.
+THE FOUR COLOURS: LINE pine green #1F5C46, FILL A marigold #FFB81C, FILL B tomato #FF4B2B, DETAIL cream #FFF2DA.
+STRUCTURE: a long sheet of backing paper (a rounded rectangle, slightly curled at the right end) covering most of the width, with a loose grid of die-cut outlines on it, some stickers still in place, some already gone.
+ITEMS (all big and simple): on the sheet a star with a face (two dot eyes, a smile), a heart, a speech bubble with three dots, a flower, a lightning bolt and a smiling sun; two empty die-cut outlines drawn as dashed lines; two stickers already peeled and floating just off the sheet, each with a curled corner that shows its back side in the DETAIL colour; a pair of scissors at the right end.
+YOUR OWN TOUCH: the star sticker has tiny legs and is running off the sheet.
+Nothing like the other nine in layout, but drawn by the same hand.
+Format: ultra-wide panorama (about 4:1, or 1536x1024 with everything in the middle third), flat background, no text, no frame, no shadow.
+```
+
+## One-line fixes to paste when a result is off
+
+- It is not the same hand: `Same hand as the style master: one constant marker line, flat fills that are not registered with the line, chunky simplified shapes.`
+- Too clean or vector-like: `Looser: the line overshoots the corners and leaves gaps, the fills stop short of the outline in places.`
+- Too many colours: `Exactly four colours plus the background: LINE, FILL A, FILL B, DETAIL, nothing else.`
+- Shading, gradient or texture crept in: `Completely flat fills with only faint brush streaks, no shading, no gradient, no shadow.`
+- Too small or too busy for a strip: `Fewer and bigger shapes, the tallest reach the full height of the strip, nothing smaller than 8% of it.`
+- It is not wide enough: `Redraw it as an ultra-wide panorama, about 4:1, edge to edge.`
+- Background drifted: `The background is one perfectly flat fill of the folder colour, no vignette, no texture.`
 
 ## PF, ST, PR
 
-Open. Pau gives the art direction and references for each category, then the prompts are written like the CAT set (one opening message per chat, one prompt per image). The IDs, the file names and the filing procedure stay as before:
+Open. Pau gives the art direction and references for each category, then the prompts are written like the CAT set. The IDs, the file names and the filing procedure stay as before:
 
 - `PF-NN` becomes `public/works/concept-portfolio/art/slide-N.webp` (1080x1920) plus the derived sheet, contact sheet, thumb, peek and card art.
 - `ST-NN` becomes `sticker-NN.webp` (1200x1600 transparent) and `thumb-NN.webp` (300x400), then `build-shapes.py` and the card art (see `docs/api/world-illustration.md`).

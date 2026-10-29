@@ -909,3 +909,9 @@ Changes of method, valid for every remaining slide and every retry:
 4. **Hand-made imperfection**: wobbly uneven lines, doubled lines, three or four places where the colour is clearly off-register, dry-brush gaps, asymmetry, halftone only in two or three chosen areas.
 5. **Post-processing by us** on the whole set: one scanned-paper texture, ink grain and a slight print misregistration, which removes most of the plastic sheen and unifies the five slides.
 6. Fallback if a slide still looks generated: draw it in **separate pieces** (the title and sunburst, the hero alone on flat colour, the props on a parts sheet) and compose them in code with real textures, as was done for the "On my desk" icons.
+
+### v11: second correction of PF-02 (2026-10-29): "one hand" is the tell
+
+The second PF-02 fixed the content (one pair of headphones, two coconut halves, no containers, fewer objects) but still read as generated because **everything is drawn by the same hand**: one line weight, one finish, every object equally polished, perfect registration, nothing overlapping, a clean even title. Pau asks for the opposite: different illustration styles on one page (as if several artists worked on a zine), strokes out of place, things overlapping, much more raw than clean, letters of different sizes, a bit bizarre. Saved: `_inbox/_old/PF-02_v2.webp`, `PF-02_v2b.webp`.
+The prompt below is pasted in the same chat with the v2 image attached. It keeps the content and layout and changes only the hand. The same rules apply to PF-01, 03, 04 and 05 (paste the "ROUGH, MANY HANDS" block in the chat before asking for them).
+If ChatGPT keeps re-polishing, the fallback is a **parts sheet drawn with a different technique per object** (linocut celery, crayon cabbage, brush umbrella, stamped footprints, ballpoint neighbour, ink-brush Ona), composed here in code with real paper, print and ink textures.

@@ -934,7 +934,7 @@ Pau's verdict on the one-shot PF-02 (v1 and v2): the content is fine but "everyt
 1. **ONA**: K-01, then S2-01, S4-01, S5-01 (same chat, so she stays the same person)
 2. **KIT**: K-02 to K-07 (sunbursts, sound bursts, footprints, marks, sparks, neighbour)
 3. **TITLES**: T-01 to T-05
-4. **OBJECTS**: S1-01, S2-02 to S2-06, S4-02 to S4-05, S5-02
+4. **OBJECTS**: S1-01, S2-02 to S2-06, S4-02 to S4-05, S5-02 (since 2026-10-30 these are goofy 3D renders, see v13 at the end; do not use the RULES block below for this chat)
 5. **PANELS**: S3-01 to S3-03
 
 ### RULES block (paste first in every chat, reply "ready")
@@ -1129,7 +1129,7 @@ Format: landscape 3:2, the title filling 92% of the width, flat hot magenta #FF0
 
 ---
 
-### CHAT 4: OBJECTS (paste RULES first; each object in a different technique)
+### CHAT 4: OBJECTS, hand-drawn version (SUPERSEDED on 2026-10-30 by the 3D version in "PF plan B (v13)" at the end of this file; kept for reference)
 
 **S1-01 The giant furry microphone** (cover hero). Attach `STYLE-COMIC-1.jpg`.
 ```text
@@ -1267,3 +1267,156 @@ Format: landscape 4:3, flat hot magenta #FF00FF background around the paper, no 
 2. `tools/compose_slides.mjs`: lay each slide out (the old layouts as the base: title edge to edge, hero, props, floor, zones for text), with overlaps and broken rules, procedurally torn paper, masking tape, hard shadows, rubber-stamp marks, **misregistration of the colour against the ink** on every piece, paper grain and ink speckle, a slight scanner skew; set all real text in real type (header and footer rows, bio, tags, timeline, contact card, seal 2026, luggage tag) in open-source hand-lettering faces chosen with Pau; render to 1080 x 1920.
 3. Save `slide-1..5.webp`, rebuild `sheet`, `contact-sheet`, `thumb`, the Works card and the cover peek; re-measure every pin and sound hotspot (`data.ts`), rewrite the design notes and alt texts, update the fonts card of the "About Ona" panel.
 4. Show Pau slide by slide, adjust.
+
+---
+
+## PF plan B (v13): CHAT 4 OBJECTS redone as goofy 3D renders (2026-10-30)
+
+Pau's idea after chats 1 to 3: the objects should **break with everything else** in the deck. Instead of a hand technique each, they become **realistic but goofy 3D renders**, exactly in the style of a reference image he sent (a toy-like handheld console: putty-coloured soft-touch plastic, brushed metal, fat rounded bevels, oversized blue/yellow/red buttons, a yellow smiley knob, corner screws, vent slots, a knurled dial, plug-in tabs, a white cable, soft studio light, floating three-quarter view on a pastel backdrop). This section **replaces** the hand-drawn "CHAT 4: OBJECTS" above. Same IDs, same formats, same files.
+
+- New reference: `C:\Users\User\Documents\Portofolio\_inbox\refs\STYLE-3D.jpg` (the console; it is third party work, used only to copy the rendering style, never its shape, text or screen).
+- If a hand-drawn version of any of these IDs was already generated, move it to `_inbox\_old\` so the names do not clash.
+- Use a NEW chat for these. Do not paste the plan B RULES block (it forbids 3D renders); paste the 3D RULES below, with `STYLE-3D.jpg` attached, and reply "ready".
+
+### RULES block for the 3D chat (attach `STYLE-3D.jpg`, paste, reply "ready")
+```text
+RULES FOR EVERY IMAGE IN THIS CHAT. They apply to all my requests until I say otherwise. Reply "ready" and nothing else.
+
+WHAT THIS IS. I am cutting out separate objects to paste into a collage poster. Every request asks for ONE object (or one sheet of separate objects) as a stand-alone 3D product shot. Draw only that: never a scene around it, no table, floor, wall, frame or border, and no hands or people unless a request says so. The object floats in empty space.
+
+STYLE (identical for every image in this chat). Look at the attached reference (STYLE-3D) and match ITS RENDERING STYLE ONLY: a high-end 3D render of a toy-like gadget, real materials with goofy design. Do not copy its shape (never draw a console), its screen picture or any of its writing.
+- SHAPES: chunky, soft and over-rounded, with generous bevels and fat, slightly exaggerated proportions, like a designer toy or a tiny gadget from a kids' stop-motion show. Oversized buttons, knobs and handles. Small silly touches as in the reference: a round yellow smiley button or sticker, tiny corner screws, vent slots, a knurled dial, a plug-in tab, a cable with a plug.
+- MATERIALS: tactile and believable: matte or satin plastic, soft-touch rubber, brushed or anodised metal, painted metal, fabric, paper, fur, wood. Fine surface grain, small seams, tiny bevel highlights, a few small imperfections. Glossy only where the thing is naturally glossy or wet (an eye, cut watermelon flesh, cellophane). No chrome, no mirror finish.
+- LIGHT: big soft studio light from the upper left, a gentle fill from the right, soft ambient occlusion in the crevices, soft bounce light, small soft highlights. No hard shadows, no dramatic contrast, no lens flare, no depth-of-field blur: the whole object is sharp.
+- COLOUR: soft pastels with a few saturated primary accents (as in the reference: putty body, blue, yellow and red buttons). Palette: warm putty #E8DCCB, teal #007E9B, deep teal #1B6885, butter #FDEFAF, steel #63A0AC, paper #F6F0DC, sun yellow #F2C62F, tomato #E8553E, salmon #F2A29A, lilac #B58AD6, periwinkle #7A8CE8, celery #9CCF9A, and blue-black #101820 for the darkest parts (never pure black).
+- CAMERA: a hero view from a three-quarter angle, slightly from above, the object a little tilted as if floating, a moderate wide lens with little distortion, filling the frame as the request says.
+- GOOFY means: fatter, rounder, cuter, one silly detail. Never scary, never uncanny, never grimy.
+
+BACKGROUND. Perfectly flat hot magenta #FF00FF over the whole image, edge to edge (a working colour I will remove). No gradient, vignette, floor, ground, cast shadow or reflection on it. The object has a crisp clean silhouette: no glow, no halo, no magenta rim light, and the magenta must not tint the object. Nothing in the object may be magenta, hot pink or purple-pink. Leave at least 6% of empty magenta all round it and between separate items.
+
+TEXT. No text of any kind unless a request puts a word in capitals between quotes. No logos, brand names, watermarks or numbers.
+
+NOT. Not hand-drawn, no outlines, no cel-shading, no flat vector look, no sketch, no photograph of a real place, no photoreal dirt or grime, no neon or sci-fi glow.
+```
+
+### The eleven prompts (one message each; attach `STYLE-3D.jpg` to each)
+
+**S1-01 The giant furry microphone** (cover hero)
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not draw a console and do not copy its text).
+Draw ONE object: a giant boom microphone with a huge furry windscreen (a "dead cat"), bursting towards the viewer on a diagonal from the lower left to the upper right, seen from a low three-quarter angle with strong foreshortening, filling about 85% of the canvas.
+FUR: a real 3D fur groom, dense and fluffy, cream-butter #FDEFAF with slightly darker butter roots, long soft tufts that catch the light at their tips, a few flyaway strands. The windscreen is fat and ridiculous, like a fluffy cloud on a stick.
+HARDWARE: two periwinkle #7A8CE8 soft-touch straps with small metal rivets round the fur; at the lower end a chunky deep-teal #1B6885 shock mount held by thick tomato #E8553E elastic bands; a fat brushed-aluminium boom pole ending in a big soft-touch sun-yellow #F2C62F rubber grip with a small round smiley-face sticker on it, running off the bottom-right edge; a thick white cable looping out to the lower left and ending in a chunky plug. No hands, no arms.
+HIDDEN DETAIL (tiny): two glossy yellow cat eyes with slit pupils and a small salmon nose peeking out of the fur on the upper side.
+Format: square, flat hot magenta #FF00FF background, 6% margin (the pole may end at the canvas edge), no text.
+```
+
+**S2-02 Celery**
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not copy its shape or text).
+Draw ONE object: a fat bunch of celery floating diagonally: six chubby ribbed stalks cut flat at the base (the cut ends show pale cross-sections with tiny dots), ruffled leafy tops in three clumps, and a small periwinkle #7A8CE8 elastic band tied round the middle.
+GOOFY: designer-toy proportions, thick stalks slightly bent as if dancing, puffy crinkled leaves.
+MATERIAL: crisp waxy vegetable skin in soft satin, fine ribbing and tiny fibres, celery green #9CCF9A with paler inner faces and a slightly deeper green at the leaf tips, a few small realistic blemishes.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S2-03 Candy wrapper**
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not copy its shape or text).
+Draw ONE object: a hard candy in a twisted cellophane wrapper, floating tilted: a round sweet with sun-yellow #F2C62F and tomato #E8553E swirl stripes, wrapped in crinkly transparent cellophane that is twisted into a fan at both ends. At each twisted end a tiny soft tomato jelly-silicone flame licks up like a little candle flame.
+GOOFY: the wrapper ends are oversized and fluffy-fanned, the flames are cute.
+MATERIAL: real cellophane, thin, translucent, crinkled, with soft highlights, see-through folds and faint caustics; the sweet is satin boiled sugar.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S2-04 Cabbage**
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not copy its shape or text).
+Draw ONE object: a big round green cabbage floating, with thick overlapping crinkled leaves and pale ribs. Between two leaves peek out two glossy sun-yellow #F2C62F cat eyes with slit pupils and one small black paw with tiny salmon toe beans (a hidden joke); the paw is a soft velvety toy-like shape.
+GOOFY: very fat and round, the leaf edges frilly and exaggerated.
+MATERIAL: waxy leaves in soft satin with a light bloom and fine veins; celery #9CCF9A, deeper teal-green #007E9B in the folds, butter #FDEFAF at the pale core; the cat parts in blue-black #101820.
+Format: square, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S2-05 Umbrella**
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not copy its shape or text).
+Draw ONE object: a half-open umbrella floating tilted, the canopy half unfurled with the ribs showing: matte periwinkle #7A8CE8 nylon with stitched seams and soft folds, brushed-metal ribs and tips, a hooked tomato #E8553E soft-touch handle and a chunky rubber tip. Soft white feathers (real 3D feathers with fine barbs) poke out between the ribs and folds, as if the umbrella is secretly a wing.
+GOOFY: a puffy canopy and a fat handle.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S2-06 Watermelon**
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not copy its shape or text).
+Draw ONE object: half a watermelon, cut face up, floating tilted: juicy tomato-red #E8553E flesh with a few black seeds and a pale inner rim, a thick striped rind in celery #9CCF9A and teal #007E9B; a small round-headed wooden toy mallet lying across the flesh; a band-aid (soft fabric plaster in salmon #F2A29A with a white pad) stuck on the rind; one small crack through the rind with a few fine splits and tiny juice drops.
+GOOFY: chubby, very thick rind, a toy-sized mallet.
+MATERIAL: wet glossy flesh (the only glossy part), satin rind, real wood grain on the mallet, soft fabric on the band-aid.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S4-02 Mixing console**
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not copy its shape or text).
+Draw ONE object: a chunky desktop mixing console seen from a slight above-front three-quarter angle, about 2:1, in warm putty #E8DCCB soft-touch plastic with a brushed steel #63A0AC side panel. On top: a row of 12 short fat faders at different heights (one slightly crooked) with sun-yellow, periwinkle #7A8CE8 and tomato #E8553E caps; six big chunky rubber knobs in two rows, one of them bigger with a small round yellow smiley sticker on top; a few oversized round buttons in blue, yellow and red; a small rounded screen at the top showing a soft green waveform made of simple bars; two small analogue meters with needles. Details: corner screws, vent slots and a knurled metal dial on the side, a white cable looping off the side and ending in a plug, two or three small colourful plug-in tabs sticking out of the sides. At the right end a slim microphone stand with a round salmon #F2A29A pop filter on an angled boom arm. No people.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S4-03 Speaker with the sleeping cat**
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not copy its shape or text).
+Draw ONE object group: a big studio speaker cabinet seen slightly from the front-left: a rounded, bevelled box in tomato #E8553E soft-touch plastic, a large woofer with a steel #63A0AC cone and a thick cream #F6F0DC rubber surround, a smaller tweeter, corner screws, a cable behind it ending in a plug. On top of it a small black cat asleep, curled in a ball, with a tiny pair of sun-yellow #F2C62F over-ear headphones sitting crooked on its head (exactly one pair), one paw hanging over the edge, closed eyes and a tiny smile.
+GOOFY: a very chunky speaker with slightly oversized details; the cat is a designer-toy cat.
+CAT: soft velvety short fur in blue-black #101820 with a soft rim light so its shape reads against the speaker, salmon toe beans.
+Format: square, flat hot magenta #FF00FF background, 6% margin, no text.
+```
+
+**S4-04 Wall souvenirs, paper**
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not copy its shape or text).
+Draw a SHEET of 6 paper souvenirs, each separate and floating at a slightly different angle, ALL BLANK of writing (no letters and no numbers on any of them; I will add text myself):
+1. a film-script call sheet in cream #F6F0DC paper with three soft grey blocks standing in for text, a punched hole and a curled corner;
+2. a strip of paper with a bold black audio waveform printed on it;
+3. a film strip with 4 frames, each frame holding a tiny clay-toy miniature: a boot, an umbrella, a smiling moon, a kettle;
+4. a cinema ticket with a notched edge, tomato #E8553E, blank;
+5. a smaller ticket, sun yellow #F2C62F, blank;
+6. a postcard of the coloured houses along a river with an iron footbridge (Girona) as a tiny toy diorama, with a blank stamp box.
+MATERIAL: each a real 3D paper object: visible paper thickness at the edges, a slight curl, soft creases, a bit of tape remnant on one corner, matte paper grain, a soft ambient shadow only inside the creases.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% gap between items, no text.
+```
+
+**S4-05 Wall souvenirs, objects**
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not copy its shape or text).
+Draw a SHEET of 5 objects, each separate and floating at a slightly different angle, with no writing at all:
+1. a chunky compact audio cassette in warm putty #E8DCCB plastic with a smoky translucent window, two visible reels, a blank tomato label area and a tiny round yellow smiley sticker;
+2. a film reel in steel #63A0AC metal with three big round holes and a short curl of film trailing;
+3, 4, 5. three instant (Polaroid-style) photos with a thick soft white plastic border, each slightly bent at a corner, each showing a tiny clay-toy 3D miniature scene: (3) a pair of red boots stamping on a white salt flat; (4) a kettle with a screaming face; (5) a smiling paper crescent moon.
+GOOFY: fat, rounded, oversized parts.
+Format: landscape 3:2, flat hot magenta #FF00FF background, 6% gap between items, no text.
+```
+
+**S5-02 Skyline of Girona**
+```text
+Attach STYLE-3D.jpg (copy only its rendering style: materials, soft light, chunky toy shapes, pastels with primary accents; do not copy its shape or text).
+Draw ONE long strip: a toy diorama of the skyline of Girona, a city in Catalonia, seen straight-on from the front like a panorama and standing on a thin chunky clay plinth that is the river bank (the plinth is the bottom edge of the strip). A row of tall narrow chubby houses in soft pastel ochre, salmon, butter, steel and teal with small shuttered windows, little balconies and wobbly rooflines; a slim iron footbridge with a lattice in tomato #E8553E; and behind and higher, a cathedral with a tall bell tower rising above a long flight of stairs.
+MATERIAL: matte painted clay, soft-touch resin, rounded edges, tiny seams, as a hand-made miniature rendered in 3D. No sky, no water, no ground beyond the plinth.
+Format: a wide strip about 4:1 centred in a 3:2 canvas (I will crop), flat hot magenta #FF00FF background, no text.
+```
+
+### One-line fixes for the 3D chat (paste in the same chat)
+- Not the reference's look: `Match the reference's rendering: a clean 3D render, chunky over-rounded toy shapes, soft studio light, pastel colours with primary accents. Nothing hand-drawn, no outlines.`
+- Too glossy or plasticky: `Less glossy: matte and satin soft-touch materials, small soft highlights only, no mirror reflections.`
+- Too serious or realistic: `More goofy: chunkier, rounder, fatter proportions, oversized buttons and handles, one silly detail.`
+- Magenta spill or pink edge: `The object has picked up magenta light and a pink edge. Re-render with neutral white light: no magenta tint, glow or halo on the object, a crisp clean silhouette.`
+- Background not flat or shadow under it: `The background must be one perfectly flat hot magenta #FF00FF: no floor, no cast shadow, no gradient, no reflection. The object floats.`
+- Too dark or dirty: `Cleaner and brighter: soft even light, pastel colours, no grime, no dark shadows.`
+- Too many tiny details: `Simpler: fewer tiny details, big readable shapes.`
+- It has writing: `Remove all writing: no letters, numbers or logos anywhere on this.`
+- Items touch (sheets): `Redraw with every item fully separate, at least 6% of the width of empty magenta between any two items and from the edges.`
+- Shape drifts to the console: `Do not draw a console or a handheld gadget. Draw only [the object]; take only the rendering style from the reference.`
+
+### What I do with the 3D pieces
+1. `tools/ingest_pf.py`: key the magenta out with a soft edge and a magenta de-spill, split the sheets, trim, name.
+2. In the compositions the 3D objects are the deliberate intruders in a hand-drawn poster. To make them sit on the same paper I treat each one as a die-cut sticker: a thin cream cut edge, a hard blue-black offset shadow, a touch of grain, plus tape and torn paper where it overlaps the drawn parts. I test it on slide 2 first and show Pau before doing the rest.
+3. The rest of the pipeline (text, layouts, sheet, thumbs, pins) is the same as in v12 above.

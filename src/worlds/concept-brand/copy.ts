@@ -477,7 +477,7 @@ export const OVERVIEW = {
   sub: 'A neighbourhood vermuteria in Cardedeu that does not exist.',
   lines: [
     'I invented this bar to show how I build a brand from nothing: a name, a pen, four characters and twenty things a bar could put its name on.',
-    'The brief, the art direction and every rule on this board are mine. The artwork was produced with AI-assisted tools, directed piece by piece against those rules.',
+    'The brief, the art direction and every rule on this board are mine. Every piece was checked against those rules.',
   ],
   hint: 'Pick a tab on the left, tap any tile, say hi to a character or take the tour.',
   inventory: [
@@ -570,7 +570,7 @@ export const TOUR: { title: string; note: string }[] = [
   },
   {
     title: 'The whole board',
-    note: 'That is the system on one wall: one name, four characters, one pattern, twenty objects and three posters. I wrote the rules and art-directed every piece; the artwork was made with AI-assisted tools under that direction.',
+    note: 'That is the system on one wall: one name, four characters, one pattern, twenty objects and three posters. I wrote the rules and art-directed every piece.',
   },
 ]
 

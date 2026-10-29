@@ -137,6 +137,6 @@ export const COPY = {
     title: 'How this deck was made',
     p1: 'Ona Ribas is not real. Her name, her studios, her films, her e-mail and her phone number are all made up (the address ends in .example and the phone is zeros).',
     stripCaption: 'Five slides, one family: teal, butter, deep teal, butter, teal.',
-    p2: 'What is real is the design. I wrote the brief, set the rules (grid, palette, type, the footprints and the sunbursts) and art-directed every slide. The artwork was produced with AI-assisted tools under that direction.',
+    p2: 'What is real is the design. I wrote the brief, set the rules (grid, palette, type, the footprints and the sunbursts) and art-directed every slide.',
   },
 }

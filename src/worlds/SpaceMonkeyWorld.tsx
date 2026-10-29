@@ -14,7 +14,7 @@ import { MissionPatch } from './space-monkey/MissionPatch'
 import { MissionTape } from './space-monkey/MissionTape'
 import { Starfield } from './space-monkey/Starfield'
 import { useStill } from './space-monkey/useStill'
-import { LEAD, POSTERS, TAPE_GAP_DAYS } from './space-monkey/data'
+import { LEAD, POSTERS } from './space-monkey/data'
 import './space-monkey/space-monkey.css'
 
 /** The margin note beside the posters. Wide layouts only: below that every poster has its own labelled Flip tab. */
@@ -43,15 +43,15 @@ function Seal() {
 /** A countdown slate in the rail (wide layouts only): the one number of the story, pulled up from the log so the first screen has a reason to scroll. */
 function Gauge() {
   return (
-    <div className="w-space-monkey-gauge" role="group" aria-label={`${TAPE_GAP_DAYS} days from the last save of SMITH to opening day`}>
+    <div className="w-space-monkey-gauge" role="group" aria-label="About five months from the posters to opening day">
       <span className="w-space-monkey-gauge-head" aria-hidden="true">
         T-minus
       </span>
       <span className="w-space-monkey-gauge-num" aria-hidden="true">
-        {TAPE_GAP_DAYS}
+        5
       </span>
       <span className="w-space-monkey-gauge-note" aria-hidden="true">
-        days from the last save to opening day
+        months from the posters to opening day
       </span>
     </div>
   )

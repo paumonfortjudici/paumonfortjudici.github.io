@@ -20,7 +20,7 @@ const OUT = process.argv[2] || path.join(here, 'sticker-02.svg')
 
 const st = createSticker({
   title: 'Just one more chapter - doodle sticker 02',
-  desc: 'A cosy reader in a cable-knit sweater sits cross-legged on a wobbly tower of books, a hardback held up in front of the chest and a sleeping black cat on the lap. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
+  desc: 'A cosy reader in a cable-knit sweater sits cross-legged on a wobbly tower of books, a hardback held up in front of the chest and a sleeping black cat on the lap. Concept illustration, art-directed by Pau.',
   accent: '#FFA65F',
   seed: 11,
   root: 'translate(-22,-36) scale(1.037)',

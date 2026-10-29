@@ -42,8 +42,8 @@ export const POSTERS: readonly PosterData[] = [
     alt: 'Space Monkey escape-room poster "TYLER": a line-drawn astronaut floating in front of the Earth on a starfield, title in brushed-metal condensed capitals.',
     caption: 'An astronaut drifts in front of the Earth.',
     file: 'TYLER.jpg',
-    created: '08 DEC 2017 / 00:25',
-    saved: '08 DEC 2017',
+    created: 'DEC 2013',
+    saved: 'DEC 2013',
     palette: [
       { hex: '#020308', name: 'Space black' },
       { hex: '#0C152F', name: 'Midnight' },
@@ -65,8 +65,8 @@ export const POSTERS: readonly PosterData[] = [
     alt: 'Space Monkey escape-room poster "SMITH": a stern cartoon officer in a royal-blue uniform with yellow epaulettes in front of a space-shuttle launch hangar, title in chrome capitals.',
     caption: 'A stern officer, medals on, in the shuttle hangar.',
     file: 'SMITH 2.jpg',
-    created: '13 DEC 2017 / 16:47',
-    saved: '20 DEC 2017',
+    created: 'DEC 2013',
+    saved: 'DEC 2013',
     palette: [
       { hex: '#1961D0', name: 'Royal blue' },
       { hex: '#0D2655', name: 'Deep navy' },
@@ -75,7 +75,7 @@ export const POSTERS: readonly PosterData[] = [
       { hex: '#E1DE0A', name: 'Epaulette' },
       { hex: '#E9F5FB', name: 'Pale sky' },
     ],
-    note: 'Five days after TYLER.',
+    note: 'The second poster of the pair.',
   },
 ]
 
@@ -99,16 +99,16 @@ export const LOG: readonly LogLine[] = [
   { k: 'What', v: 'The artwork for the room: TYLER, an astronaut over the Earth, and SMITH, a uniformed officer in a shuttle hangar.' },
   { k: 'Story', v: 'A crew flies the shuttle Icarus to the station Helios, where contact has been lost.' },
   { k: 'Where', v: 'Near Barcelona, in a room built for two to six players.' },
-  { k: 'When', v: 'Finished in December 2017. The room opened 61 days after the last save.' },
+  { k: 'When', v: 'Both posters are from December 2013. The room opened in May 2014.' },
   { k: 'Who', v: 'Me, at 13. It was my first project.' },
   { k: 'Now', v: 'The room’s own website no longer exists, so there is nothing to link to. The posters stay.' },
 ]
 
-// ---- the mission tape (day-accurate: 1 Dec 2017 = 0, 28 Feb 2018 = 89) -------------------------------------------------------
-export const TAPE_DAYS = 90
+// ---- the mission tape (day-accurate: 1 Dec 2013 = 0, 31 May 2014 = 181) -------------------------------------------------------
+export const TAPE_DAYS = 182
 
 export interface TapeMark {
-  /** day index counted from 1 December 2017 */
+  /** day index counted from 1 December 2013 */
   day: number
   date: string
   text: string
@@ -116,19 +116,21 @@ export interface TapeMark {
   strong?: boolean
 }
 
+/** only what Pau states: both posters are from December 2013, the room opened in May 2014 (no day of the month is claimed) */
 export const TAPE_MARKS: readonly TapeMark[] = [
-  { day: 7, date: '08 DEC', text: 'TYLER file created', side: 'up' },
-  { day: 12, date: '13 DEC', text: 'SMITH file created', side: 'down' },
-  { day: 19, date: '20 DEC', text: 'SMITH last saved', side: 'up' },
-  { day: 80, date: '19 FEB 2018', text: 'Space Monkey opens in Granollers', side: 'up', strong: true },
+  { day: 15, date: 'DEC 2013', text: 'TYLER and SMITH are made', side: 'up' },
+  { day: 165, date: 'MAY 2014', text: 'Space Monkey opens in Granollers', side: 'up', strong: true },
 ]
 
 /** month boundaries on the tape: label + first day index */
 export const TAPE_MONTHS: readonly { label: string; day: number }[] = [
-  { label: 'DEC 2017', day: 0 },
-  { label: 'JAN 2018', day: 31 },
-  { label: 'FEB 2018', day: 62 },
+  { label: 'DEC 2013', day: 0 },
+  { label: 'JAN 2014', day: 31 },
+  { label: 'FEB 2014', day: 62 },
+  { label: 'MAR 2014', day: 90 },
+  { label: 'APR 2014', day: 121 },
+  { label: 'MAY 2014', day: 151 },
 ]
 
-/** from the last save of SMITH (20 Dec) to opening day (19 Feb): 11 + 31 + 19 days */
-export const TAPE_GAP_DAYS = 61
+/** from the posters (December) to opening day (May) */
+export const TAPE_GAP_LABEL = 'about five months'

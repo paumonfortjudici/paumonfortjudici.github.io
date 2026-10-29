@@ -19,7 +19,7 @@ const OUT = process.argv[2] || path.join(here, 'sticker-03.svg')
 
 const st = createSticker({
   title: 'Coffee first, pixels later - doodle sticker 03',
-  desc: 'A designer with curly hair hugs a paper coffee cup as tall as themselves, cheek resting on the lid, while a drawing tablet with a half-finished bezier curve leans at their feet. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
+  desc: 'A designer with curly hair hugs a paper coffee cup as tall as themselves, cheek resting on the lid, while a drawing tablet with a half-finished bezier curve leans at their feet. Concept illustration, art-directed by Pau.',
   accent: '#85CEF9',
   seed: 13,
   root: 'translate(-90,-19)',

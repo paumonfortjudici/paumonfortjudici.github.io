@@ -27,7 +27,7 @@ function ConceptBar() {
   return (
     <p className="w-concept-brand-conceptbar">
       <span className="w-concept-brand-conceptbar-tag">Concept</span>
-      <span>An invented bar. AI-assisted art.</span>
+      <span>An invented bar.</span>
     </p>
   )
 }

@@ -44,10 +44,9 @@ export const WORKS_UI = {
     filter === 'All' ? `Showing all ${total} folders.` : `Showing ${shown} of ${total} folders: ${filter}.`,
   /** accessible name of a folder card */
   cardLabel: (work: WorkMeta): string => {
-    // "Early work" is not a year: only years with digits are read out; concept art says it is AI-assisted, as the stamp on the print does
+    // "Early work" is not a year: only years with digits are read out
     const years = /[0-9]/.test(work.years) ? `, ${work.years}` : ''
-    const ai = work.concept && work.tools.some((tool) => /AI/.test(tool)) ? ' AI-assisted.' : ''
-    return `${work.title}. ${work.kind}${years}.${ai} Open folder.`
+    return `${work.title}. ${work.kind}${years}. Open folder.`
   },
   /** accessible name of the empty folder */
   yoursLabel: 'Next folder: yours? Tell me what you’re making. Go to contact.',

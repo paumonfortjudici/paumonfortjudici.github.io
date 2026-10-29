@@ -68,19 +68,24 @@ function PlusIcon() {
   )
 }
 
+/** the highlight layer of a title (catalog.css, "the title highlight"): one inline marker block per line of text, the same in every band */
+function Hl({ children }: { children: ReactNode }) {
+  return <span className="pm-cat-hl">{children}</span>
+}
+
 /** the giant title; Plana sets "plana" heavy and "digital" light, like its own logo */
 function TitleText({ work, words }: { work: WorkMeta; words: string[] }) {
   if (work.slug === 'plana') {
     const [first, ...rest] = work.title.split(' ')
     return (
-      <>
+      <Hl>
         <span className="pm-cat-t1">
           <Marked text={first} words={words} />
         </span>{' '}
         <span className="pm-cat-t2">
           <Marked text={rest.join(' ')} words={words} />
         </span>
-      </>
+      </Hl>
     )
   }
   const stacked = LINES[work.slug]
@@ -92,14 +97,20 @@ function TitleText({ work, words }: { work: WorkMeta; words: string[] }) {
           <Fragment key={line}>
             {i > 0 && ' '}
             <span className="pm-cat-ln">
-              <Marked text={line} words={words} />
+              <Hl>
+                <Marked text={line} words={words} />
+              </Hl>
             </span>
           </Fragment>
         ))}
       </>
     )
   }
-  return <Marked text={work.title} words={words} />
+  return (
+    <Hl>
+      <Marked text={work.title} words={words} />
+    </Hl>
+  )
 }
 
 interface BandProps {

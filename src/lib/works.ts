@@ -32,7 +32,7 @@ export interface WorkMeta {
   thumb: string
   peek?: string
   links?: WorkLink[]
-  /** adds the CONCEPT stamp and the AI-assisted line */
+  /** adds the CONCEPT stamp and the concept line */
   concept?: boolean
   /** extra words the catalog search should match (synonyms, not claims) */
   keywords: string[]
@@ -48,7 +48,7 @@ export const CATEGORY_LABEL: Record<Category, string> = {
   print: 'Print',
 }
 
-export const CONCEPT_LINE = 'Concept project, art-directed by Pau, built with AI-assisted tools.'
+export const CONCEPT_LINE = 'Concept project, art-directed by Pau.'
 
 export const WORKS: WorkMeta[] = [
   {
@@ -117,9 +117,9 @@ export const WORKS: WorkMeta[] = [
     group: 'Published work',
     categories: ['editorial', 'illustration'],
     roles: ['Author', 'Art direction', 'Publishing'],
-    tools: ['AI image tools', 'Custom book engine'],
+    tools: ['Custom book engine'],
     blurb:
-      'A murder-mystery word-search book: written with AI help, art-directed and published by me. 80 cases, 214 pages, on Amazon.',
+      'A murder-mystery word-search book: written, art-directed and published by me. 80 cases, 214 pages, on Amazon.',
     color: '#8A1B3D',
     ink: '#FFF2DA',
     thumb: '/works/spelled-guilty/thumb.webp',
@@ -132,7 +132,7 @@ export const WORKS: WorkMeta[] = [
     n: 5,
     title: 'Space Monkey',
     kind: 'Escape-room posters',
-    years: '2017',
+    years: '2013',
     group: 'First steps',
     categories: ['illustration', 'print'],
     roles: ['Poster design', 'Illustration'],
@@ -190,7 +190,7 @@ export const WORKS: WorkMeta[] = [
     group: 'Concept',
     categories: ['branding', 'illustration'],
     roles: ['Art direction', 'Logo & lettering', 'Mascots', 'Packaging & posters'],
-    tools: ['AI-assisted'],
+    tools: [],
     blurb:
       'A fictional neighbourhood vermuteria in Cardedeu: hand-lettered logo, four mascots, pattern, mockups and posters on one brand board.',
     color: '#86A22F',
@@ -210,7 +210,7 @@ export const WORKS: WorkMeta[] = [
     group: 'Concept',
     categories: ['editorial', 'illustration'],
     roles: ['Art direction', 'Presentation design', 'Illustration'],
-    tools: ['AI-assisted'],
+    tools: [],
     blurb: 'A fictional client’s portfolio deck in five slides: hand-drawn, warm and easy to say yes to.',
     color: '#FBE79A',
     ink: '#17101B',
@@ -229,7 +229,7 @@ export const WORKS: WorkMeta[] = [
     group: 'Concept',
     categories: ['illustration'],
     roles: ['Illustration', 'Character design'],
-    tools: ['AI-assisted'],
+    tools: [],
     blurb: 'Nine doodle characters on one sticker sheet: a showcase of my illustration style.',
     color: '#B79CFF',
     ink: '#17101B',

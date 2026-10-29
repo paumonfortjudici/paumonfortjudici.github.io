@@ -20,8 +20,8 @@ export const Lid = forwardRef<HTMLDivElement, { tabs?: ReactNode; footer?: React
             <span className="w-illustration-sheen" />
           </div>
           <div className="w-illustration-hinge">
-            <span className="w-illustration-hinge-long">Concept: invented characters, AI-assisted</span>
-            <span className="w-illustration-hinge-short">Concept: invented, AI-assisted</span>
+            <span className="w-illustration-hinge-long">Concept: invented characters</span>
+            <span className="w-illustration-hinge-short">Concept: invented</span>
           </div>
         </div>
       </div>

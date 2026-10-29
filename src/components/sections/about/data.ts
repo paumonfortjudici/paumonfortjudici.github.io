@@ -6,7 +6,7 @@ import { workBySlug, WORKS, type WorkMeta } from '../../../lib/works'
 import type { ToneName } from '../../primitives'
 import { CV, PROJECT_NOTES } from './text'
 
-export const AXIS_START = 2017
+export const AXIS_START = 2013
 
 const today = new Date()
 /** "now" as a fraction of a year (the bar of a job that is still running ends here) */
@@ -184,12 +184,12 @@ interface PinDef extends Omit<Pin, 'work'> {
 }
 
 /**
- * Pins: only projects with a date I can stand behind. Space Monkey is Dec 2017 (the Photoshop files), 44 Lab is 2023 (the posts run
+ * Pins: only projects with a date I can stand behind. Space Monkey is Dec 2013 (Pau: the posters are from December 2013), 44 Lab is 2023 (the posts run
  * Mar to Jun), Plana Digital and Spelled Guilty are 2026 (no month). Pins that would touch are spread sideways at run time
  * (CareerTimeline), so two folders of the same year hang from nearby strings and fan out.
  */
 const PIN_DEFS: readonly PinDef[] = [
-  { slug: 'space-monkey', year: 'Dec 2017', at: 2017.96, note: PROJECT_NOTES['space-monkey'], rot: -3 },
+  { slug: 'space-monkey', year: 'Dec 2013', at: 2013.96, note: PROJECT_NOTES['space-monkey'], rot: -3 },
   { slug: 'fortyfour-lab', year: '2023', at: 2023.34, note: PROJECT_NOTES['fortyfour-lab'], rot: 2.5 },
   { slug: 'plana', year: '2026', at: 2026.1, note: PROJECT_NOTES.plana, rot: -3.5 },
   { slug: 'spelled-guilty', year: '2026', at: 2026.5, note: PROJECT_NOTES['spelled-guilty'], rot: 3 },

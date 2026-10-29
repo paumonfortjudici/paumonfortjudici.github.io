@@ -21,7 +21,7 @@ const BR = Number(process.env.BR || 5), BLr = Number(process.env.BLR || -40)
 
 const st = createSticker({
   title: 'Houston, we have bananas - doodle sticker 08',
-  desc: 'A monkey floats in a puffy spacesuit, grinning inside the helmet visor and holding up a banana; a long tail ends in a tiny glove and a ringed planet drifts by. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
+  desc: 'A monkey floats in a puffy spacesuit, grinning inside the helmet visor and holding up a banana; a long tail ends in a tiny glove and a ringed planet drifts by. Concept illustration, art-directed by Pau.',
   accent: '#66CBC7',
   seed: 31,
   root: process.env.ROOT || 'translate(22,2)',

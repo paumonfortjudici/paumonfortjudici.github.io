@@ -35,8 +35,8 @@ export const TIMELINE = {
   concept: 'Concept',
   /** handwritten on the film, pointing at the clip that starts while the one below it is still running; the years come from the CV dates */
   overlap: (from: number, to: number): string => `two roles at once, ${from} to ${to}`,
-  /** ART_DIRECTION 12.1: the escape room opened in Feb 2018 in Granollers (the posters themselves are Dec 2017) */
-  escapeRoom: 'Feb 2018: the escape room opens in Granollers',
+  /** ART_DIRECTION 12.1: the escape room opened in May 2014 in Granollers (the posters themselves are Dec 2013; Pau, 2026-10-29) */
+  escapeRoom: 'May 2014: the escape room opens in Granollers',
   seeIssue: 'Proyecto Contract',
   seeIssueAria: 'Open the folder: Proyecto Contract, the magazine published by Casual Magazines',
 } as const

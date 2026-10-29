@@ -36,7 +36,7 @@ The sheet is built live in the DOM from the nine stickers (the baked `sheet.webp
 * **Details lightbox**: the full image on a field of the sticker's own accent colour, its alt text, the accent swatch (click copies the hex, announced), previous / next (also `ArrowLeft` / `ArrowRight`), Close. Focus trap, `useWorldEscape`, focus returns to the opener, the board behind is `inert`.
 * **Gravity** (the lever; `role="switch"`): the lid tips -3.6 degrees and every sticker on it falls, bounces, tumbles and piles up (compound matter-js bodies from the vinyl outline); drag is off while it is on (a click still opens the tag); off lets you pick them up again. The pile always falls asleep (about 2 to 7 s); then no `requestAnimationFrame` runs.
 * **Peel all** (every sticker still on the sheet flies to the lid, one after the other, into a best-candidate scatter), **Reset** (everything flies back into its ghost), **Arrange** (all nine in a two-row composition with a rhythm of tilts). They turn Gravity off first and are disabled while matter-js loads.
-* **Concept label**: a CONCEPT stamp stands on the lid's top edge (`Lid` prop `badge`) and the hinge strip under the lid prints "Concept: invented characters, AI-assisted" outside the stickers' play area. The shared custom cursor's "Drag" / "Flip" / "Open" discs are not used in this world (they covered the art and the Gravity label); the ring still grows over every control.
+* **Concept label**: a CONCEPT stamp stands on the lid's top edge (`Lid` prop `badge`) and the hinge strip under the lid prints "Concept: invented characters" outside the stickers' play area. The shared custom cursor's "Drag" / "Flip" / "Open" discs are not used in this world (they covered the art and the Gravity label); the ring still grows over every control.
 * **Entrance**: when the world opens the four stickers on the lid slap down one after another (not under reduced motion).
 * **Keyboard**: every sticker is a `<button>` in the tab order. `Space` / `Enter` picks it up (announced in the live region), arrows move it 12 px (Shift 48), `Space` / `Enter` sticks it down, `R` / `Shift+R` turn, `+` `-` resize, `D` details, `L` / `B` send it to the lid / back to the sheet, `Esc` puts a held sticker back, then closes an open tag, and only then the shell closes the world. Blur sticks a keyboard-held sticker down.
 * **Touch**: `touch-action: pan-y` on the stickers, so a swipe that starts on a sticker scrolls the page. A finger peels only after a 250 ms hold (the sticker lifts and a corner curls: the cue; a short vibration where supported; from then on a non-passive `touchmove` listener blocks the scroll) or a clearly sideways drag. Mouse and pen peel on pointer down, as before. A tap selects, a double-tap turns. Dragging near the top or bottom edge auto-scrolls.
@@ -57,7 +57,7 @@ The sheet is built live in the DOM from the nine stickers (the baked `sheet.webp
 
 ## Honest copy
 
-"One outline weight, one halo, one flat colour each. I art-directed all nine so they read as one set. They are invented characters made with AI-assisted tools, not clients or real people." plus the CONCEPT stamp and `CONCEPT_LINE` (WorldFacts). Never "hand-drawn by me".
+"One outline weight, one halo, one flat colour each. I art-directed all nine so they read as one set. They are invented characters, not clients or real people." plus the CONCEPT stamp (the word "Concept" only) and `CONCEPT_LINE` (WorldFacts). The world never says how the art was made (no "AI-assisted" anywhere) and never says "hand-drawn by me".
 
 ## Performance
 
@@ -81,7 +81,73 @@ In dev builds only, `window.__illustration` is the `Board`; `__illustration.debu
 ## Final mop-up round
 
 * Title: one visually hidden "Sticker sheet" is the h2's text; the die-cut letters are painted by CSS (`::after` with `attr(data-c)`).
+  The letters are painted in three identical stacked layers (`Title.tsx`, `.w-illustration-tl[data-layer]`): ONE white halo under the whole word (with the hard shadow on the union), then the ink keylines, then the flat accent fills. Painting per layer, not per letter, keeps every letter whole where two touch: the old per-letter halo (a 0.36em white stroke) was painted over the letter before it and over the first word's lower edge, so the letters looked overlapped. The CONCEPT stamp is just "Concept" and sits clear of the halo (head `margin-bottom` 46 px).
 * Lightbox: closing it puts the focus back on the sticker that was being viewed (the inert flag is cleared first); a lightbox opened from a cast strip returns to that strip.
 * At 1700 px and wider (and 860 px tall) the head carries a recap strip (Peel it off, Throw it, Stick it down; decorative, `aria-hidden`) beside the lede.
 * On phones (560 px and narrower) the cast is one swipeable shelf (scroll-snap, next strip peeks in, keyboard-focusable), without the hex.
 * Not tested: real iOS Safari touch (only Chrome with CDP touch events: swipe scroll, 250 ms hold and drag, tap, sideways drag).
+
+
+## How to replace the nine stickers
+
+The art is swappable without touching React. The world draws the white vinyl margin, the shadow, the die-cut ghost on the sheet, the hit area and the physics shape itself, all from the **alpha channel** of each image, so the new art only has to be a transparent cut-out.
+
+**1. Files (exact names, in `public/works/illustration/art/`)**
+
+| File | Size | Used for |
+|---|---|---|
+| `sticker-01.webp` ... `sticker-09.webp` | **1200 x 1600 px**, RGBA, transparent background, WebP (quality about 88 is fine; about 150 to 220 KB each) | the sticker on the lid and the sheet, the Details lightbox (`1200w`), the PNG export |
+| `thumb-01.webp` ... `thumb-09.webp` | **300 x 400 px**, the same picture scaled down, RGBA WebP | the `1x` source of every sticker, the cast strips |
+
+Draw or generate each character as a **transparent PNG at 1200 x 1600 (3:4 portrait)**, the character filling the canvas but leaving at least **60 px of empty transparent margin on every side** (the vinyl margin of about 31 px is added outside the art, and a sticker touching the canvas edge would get it cut off). **No white die-cut border in the art**: the world adds it (white, one weight for all nine). Do put a clean, solid, closed outline round the character (the current set uses a flat accent colour as its outermost edge) and nothing else round it: no specks, glow, drop shadow or semi-transparent haze, because stray pixels become part of the outline. Holes (between an arm and the body) are fine, narrow gaps are filled by the world on purpose. Keep the nine on one visual weight (same outline thickness, same flat-colour style) so they read as a set.
+
+Convert the PNGs to the two WebP sizes (any tool; with Pillow from the project's venv, run from the repo root, `new-art/` being wherever the PNGs are):
+
+```
+<venv python> -I -X utf8 -c "
+from PIL import Image
+for n in range(1, 10):
+    im = Image.open('new-art/sticker-%02d.png' % n).convert('RGBA')
+    assert im.size == (1200, 1600), im.size
+    im.save('public/works/illustration/art/sticker-%02d.webp' % n, quality=88, method=6)
+    im.resize((300, 400), Image.LANCZOS).save('public/works/illustration/art/thumb-%02d.webp' % n, quality=86, method=6)
+"
+```
+
+with `<venv python>` = `C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/venv/Scripts/python.exe` (needs Pillow; any Python with numpy + Pillow works).
+
+**2. Regenerate the silhouettes (always, after any image changed)**
+
+From the repo root:
+
+```
+C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/venv/Scripts/python.exe -I -X utf8 src/worlds/illustration/tools/build-shapes.py
+```
+
+(numpy and Pillow only, about 20 s; on another machine simply `python -I -X utf8 src/worlds/illustration/tools/build-shapes.py`.) It reads `sticker-0N.webp` and rewrites `src/worlds/illustration/shapes.generated.ts` (outline `d`, collision `parts`, `com`, `lab`, `box`). Set `STICKER_DEBUG=<folder>` to also get overlay PNGs of the outline and the convex pieces and look at them: the outline should hug the character with an even margin and no stray islands. Then `npx tsc -b` and look at the world (peel, throw, Gravity).
+
+**3. Where the words, colours and layout live**
+
+* `src/worlds/illustration/data.ts`, `STICKERS`: per sticker `caption` (the tag, the ghost on the sheet, the cast strip), `accent` (one of `lilac, tangerine, sky, mint, butter, tomato, pink, teal, lime`), `hex` (the swatch in the lightbox and the cast strip, copied to the clipboard on click) and `alt` (the description for screen readers and the lightbox). The accent colour variables are `--wi-lilac` ... `--wi-lime` at the top of `illustration.css` (the lightbox field, the die-cut title letters and the tape buttons use them): if a character's colour changes, change `hex` here and the matching variable there.
+* `Cast.tsx`, `ROLE`: the one-line role under each caption in the cast strips.
+* `SLOTS` (where each ghost sits on the sheet), `INITIAL_LID` (the four on the lid at the start) and `ARRANGE` (the Arrange composition), all in `data.ts`, go by sticker number, so they keep working when the nine characters are replaced one for one. If a new sticker looks much bigger or smaller than its neighbours, adjust its `mult` in `SLOTS` and its `k` in `INITIAL_LID` / `ARRANGE`.
+* `public/works/illustration/art/manifest.json` mirrors the same text for humans (the code does not read it): update it too.
+* Not in this folder, also showing the old art: the Works card images `public/works/illustration/thumb.webp` (720 x 900) and `peek.webp` (430 x 632, transparent), and the baked reference `art/sheet.webp` (not loaded by the world). Re-export the card images from the new art.
+
+**4. The nine characters: the brief for new art**
+
+Common recipe: one sticker = one invented character, full body, in a dynamic pose that fills a 3:4 portrait; a clean bold black ink outline of one weight, flat fills in the character's accent plus black and cream, a little pattern texture, cheerful and quirky, no text in the picture, and one clear silhouette (tilted X, tower, S-curve...) so the nine read apart on a laptop lid.
+
+| # | Caption | Accent | The character |
+|---|---|---|---|
+| 1 | Boombox ollie | lilac `#C6B1FE` | A skater in a black beanie and baggy plaid trousers pops an ollie (board tilted in the air), a boombox on one shoulder, a rock-on hand up. Equalizer bars on the sweater. |
+| 2 | Just one more chapter | tangerine `#FFA65F` | A cosy reader in round glasses and a cable-knit sweater sits cross-legged on a tower of books, holding a hardback while a sleeping black cat curls up on their lap. |
+| 3 | Coffee first, pixels later | sky `#85CEF9` | A curly-haired designer in dungarees hugs a paper coffee cup as tall as themselves, cheek on the lid, a drawing tablet showing a bezier curve leaning at their feet. |
+| 4 | Small me, big plant | mint `#8EEBC3` | A small gardener in a polka-dot bandana and rubber boots staggers along carrying a big pot with a monstera three times their height, a snail riding one leaf. |
+| 5 | Quiet on set! | butter `#FCE67A` | A film director in a beret and sunglasses, striped scarf flying, steps up onto an apple crate and shouts through a megaphone while holding a clapperboard aloft. |
+| 6 | Case of the missing sock | tomato `#FE7D6C` | A trench-coated detective in a fedora creeps forward, one eye hugely magnified by an oversized magnifying glass, pinching a single striped sock as evidence. |
+| 7 | Tuft happens | pink `#FF9FC5` | A rug maker in goggles and dungarees kneels at a wooden frame, tongue out in concentration, punching yarn into a half-finished mushroom rug with a chunky tufting gun. |
+| 8 | Houston, we have bananas | teal `#66CBC7` | A monkey in a puffy spacesuit floats weightless, grinning inside the helmet and holding up a banana, its long tail ending in a tiny glove, a ringed planet nearby. |
+| 9 | Headphones on, world off | lime `#C5EB7C` | A dancer in headphones and an oversized track jacket laughs with eyes shut, ponytail whipping, balancing on one toe with the other leg kicked high. |
+
+The cast-strip roles (`ROLE` in `Cast.tsx`): 1 Skater with a boombox, mid-ollie; 2 Reader on a book tower, with cat; 3 Designer hugging a giant coffee; 4 Gardener under a monstera; 5 Director on an apple crate; 6 Detective holding one sock; 7 Rug tufter at the frame; 8 Astronaut monkey, one banana; 9 Headphone dancer, high kick.

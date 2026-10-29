@@ -4,7 +4,7 @@
 // pulls the project's cut-out ("peek") up from behind its tab. Geometry lives in cover.css, hand-made offsets in ./slots.
 import { useEffect, useRef, useState, type CSSProperties, type MouseEvent } from 'react'
 import { motion } from 'framer-motion'
-import { ArrowIcon, Folder, Stamp } from '../../primitives'
+import { ArrowIcon, Folder } from '../../primitives'
 import { COVER, pad2 } from '../../../lib/copy'
 import { useInView, usePointerFine } from '../../../lib/hooks'
 import { folderLayoutId, openWork, workHref } from '../../../lib/router'
@@ -135,15 +135,9 @@ function DeckFolder({ work, index, layout, deckWidth, peek, rest, ready }: DeckF
               the primary category, or, for concept work, the rubber stamp it wears in its own world (ART_DIRECTION 12.1), pressed on
               after the folders land */}
           {stuck ? (
-            work.concept ? (
-              <span className="cv-face__concept" aria-hidden="true">
-                <Stamp text="Concept" tone="ink" rotate={-7} size="var(--cstamp)" thump={false} rough={2} decorative />
-              </span>
-            ) : (
-              <span className="cv-face__tag" aria-hidden="true">
-                {CATEGORY_LABEL[work.categories[0]]}
-              </span>
-            )
+            <span className="cv-face__tag" aria-hidden="true">
+              {work.concept ? 'Freelance' : CATEGORY_LABEL[work.categories[0]]}
+            </span>
           ) : null}
         </Folder>
       </div>

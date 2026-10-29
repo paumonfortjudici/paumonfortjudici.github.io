@@ -17,7 +17,7 @@ const OUT = process.argv[2] || path.join(here, 'sticker-07.svg')
 
 const st = createSticker({
   title: 'Tuft happens - doodle sticker 07',
-  desc: 'A rug-tufting maker in dungarees kneels at a wooden frame, a chunky tufting gun punching loops of yarn into a half-finished mushroom rug, tongue out in concentration. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
+  desc: 'A rug-tufting maker in dungarees kneels at a wooden frame, a chunky tufting gun punching loops of yarn into a half-finished mushroom rug, tongue out in concentration. Concept illustration, art-directed by Pau.',
   accent: '#FF9FC5',
   seed: 29,
   root: 'translate(-26,-30) scale(1.005)',

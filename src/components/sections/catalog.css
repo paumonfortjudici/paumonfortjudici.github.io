@@ -613,6 +613,15 @@
   mask-image: linear-gradient(to right, transparent 0, var(--ink) 16%);
   transition: transform 0.6s var(--ease-out);
 }
+/* a band's own picture (sketches.ts, public/works/<slug>/catalog-sketch.webp) instead of the grey sketch: same box, full colour, right-aligned, no fade */
+.pm-cat-motif--art {
+  color: inherit;
+  object-fit: contain;
+  object-position: right center;
+  -webkit-mask-image: none;
+  mask-image: none;
+  user-select: none;
+}
 .pm-cat-motif .m-b { color: color-mix(in srgb, var(--on) 36%, transparent); }
 /* cream ink on pine, oxblood and ultraviolet: light lines on a dark field need more weight to read at the same quietness */
 .pm-cat-band[data-dark] .pm-cat-motif { color: color-mix(in srgb, var(--on) 27%, transparent); }
@@ -641,11 +650,39 @@
   text-transform: var(--cat-case, none);
   text-wrap: balance;
   overflow-wrap: break-word;
-  color: var(--on);
+  color: var(--hl-ink, var(--on));
   transition: transform 0.4s var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
   .pm-cat-head:hover .pm-cat-title { transform: translateX(0.12em); }
+}
+
+/* ---- the title highlight: ONE system for all ten titles (Band.tsx <Hl>) ----------------------------------------------------
+   Every title is lettered in its own face, then laid on a marker block of a contrasting colour with a hard offset shadow, like a strip
+   from a label maker. Same structure, same weight and same offsets in every band; only the three colours change (the table is at the end
+   of the file, with the contrast of every pair). The block is a background layer of an inline box (one block per line of text, repeated on
+   a wrapped line by box-decoration-break), so nothing moves: no layout, no animation, nothing to switch off for reduced motion.
+   --hl-h  height of the block (a little under the line pitch of .96em, so stacked lines show a hair of the band between their blocks)
+   --hl-dy nudge of the block down from the middle of the line box (descenders hang below the middle)
+   --hl-o  the offset of the shadow (right and down); the right padding grows by the same amount so the shadow is never cut off */
+.pm-cat-hl {
+  --hl-o: 0.055em;
+  --hl-pad: 0.17em;
+  padding: 0.14em calc(var(--hl-pad) + var(--hl-o)) 0.14em var(--hl-pad);
+  margin-inline: calc(var(--hl-pad) * -1) calc(var(--hl-o) * -1);
+  color: var(--hl-ink, var(--on));
+  background-repeat: no-repeat;
+  background-image:
+    linear-gradient(var(--hl, transparent), var(--hl, transparent)),
+    linear-gradient(var(--hl-sh, transparent), var(--hl-sh, transparent));
+  background-size:
+    calc(100% - var(--hl-o)) var(--hl-h, 0.93em),
+    calc(100% - var(--hl-o)) var(--hl-h, 0.93em);
+  background-position:
+    0 calc(50% + var(--hl-dy, 0.04em)),
+    var(--hl-o) calc(50% + var(--hl-dy, 0.04em) + var(--hl-o));
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .pm-cat-metarow { display: flex; align-items: center; justify-content: flex-end; gap: 1rem; min-width: 0; }
@@ -1015,10 +1052,8 @@ html.js .pm-cat-stack[data-in] .pm-cat-item { transition-delay: calc(var(--i, 0)
 .pm-cat-item[data-slug='plana'] .pm-cat-t2 { font-weight: 300; }
 
 .pm-cat-item[data-slug='fortyfour-lab'] { --cat-face: 'Chango', var(--font-display); --cat-w: 400; --cat-adj: 0.82; --cat-ls: 0.005em; }
-.pm-cat-item[data-slug='fortyfour-lab'] .pm-cat-title { text-shadow: 0.05em 0.065em 0 var(--tomato); }
 
 .pm-cat-item[data-slug='spelled-guilty'] { --cat-face: 'Archivo Variable', var(--font-display); --cat-w: 800; --cat-stretch: 85%; --cat-adj: 1.14; --cat-case: uppercase; --cat-ls: 0.01em; }
-.pm-cat-item[data-slug='spelled-guilty'] .pm-cat-title { text-shadow: 0.035em 0.045em 0 var(--ink); }
 
 .pm-cat-item[data-slug='space-monkey'] { --cat-face: 'Orbitron Variable', var(--font-display); --cat-w: 800; --cat-adj: 0.8; --cat-case: uppercase; --cat-ls: 0.12em; }
 
@@ -1031,11 +1066,35 @@ html.js .pm-cat-stack[data-in] .pm-cat-item { transition-delay: calc(var(--i, 0)
 .pm-cat-item[data-slug='concept-portfolio'] { --cat-face: 'Anybody Variable', var(--font-display); --cat-w: 900; --cat-stretch: 125%; --cat-adj: 0.6; --cat-case: uppercase; --cat-ls: -0.01em; }
 
 .pm-cat-item[data-slug='illustration'] { --cat-face: 'Cherry Bomb One', var(--font-display); --cat-w: 400; --cat-adj: 0.94; --cat-ls: 0.005em; }
-.pm-cat-item[data-slug='illustration'] .pm-cat-title {
-  -webkit-text-stroke: 0.16em var(--paper);
-  paint-order: stroke fill;
-  text-shadow: 0.05em 0.06em 0 color-mix(in srgb, var(--ink) 50%, transparent);
-}
+
+/* ==========================================================================
+   the title highlight: the ten colour pairs (the one place they live; checked with WCAG 2.x relative luminance)
+   --hl      the marker block      --hl-ink  the lettering on it      --hl-sh  the hard offset shadow (a hair of depth, not information)
+   text/block = contrast of the lettering on its block (needs 4.5, or 3 for large text: every title here is far above 24px)
+   block/band = contrast of the block against the folder colour (needs 3, non-text) so the highlight reads at a glance
+     band          folder colour  block        lettering   shadow     text/block  block/band
+     01 Contract   tomato         ink          cream       marigold   16.8        5.6
+     02 Plana      pine           cream        pine        marigold   7.1         7.1
+     03 44 Lab     marigold       ink          marigold    tomato     10.8        10.8
+     04 Spelled    oxblood        cream        oxblood     ink        8.2         8.2
+     05 Space M.   ultraviolet    marigold     ink         ink        10.8        3.5
+     06 Procreate  bubblegum      oxblood      cream       ink        8.2         8.8
+     07 Somia      lagoon         ink          cream       cream      16.8        5.5
+     08 Gotet      olive          oxblood      cream       ink        8.2         3.1
+     09 Portfolio  butter         ultraviolet  cream       ink        5.5         5.0
+     10 Stickers   lilac          pine         butter      ink        6.4         3.4
+   No two neighbours share a block colour; every colour is a token of the sheet's palette.
+   ========================================================================== */
+.pm-cat-item[data-slug='contract']          { --hl: var(--ink);         --hl-ink: var(--cream);    --hl-sh: var(--marigold); }
+.pm-cat-item[data-slug='plana']             { --hl: var(--cream);       --hl-ink: var(--pine);     --hl-sh: var(--marigold); }
+.pm-cat-item[data-slug='fortyfour-lab']     { --hl: var(--ink);         --hl-ink: var(--marigold); --hl-sh: var(--tomato); }
+.pm-cat-item[data-slug='spelled-guilty']    { --hl: var(--cream);       --hl-ink: var(--oxblood);  --hl-sh: var(--ink); }
+.pm-cat-item[data-slug='space-monkey']      { --hl: var(--marigold);    --hl-ink: var(--ink);      --hl-sh: var(--ink); }
+.pm-cat-item[data-slug='procreate']         { --hl: var(--oxblood);     --hl-ink: var(--cream);    --hl-sh: var(--ink); }
+.pm-cat-item[data-slug='somia']             { --hl: var(--ink);         --hl-ink: var(--cream);    --hl-sh: var(--cream); }
+.pm-cat-item[data-slug='concept-brand']     { --hl: var(--oxblood);     --hl-ink: var(--cream);    --hl-sh: var(--ink); }
+.pm-cat-item[data-slug='concept-portfolio'] { --hl: var(--ultraviolet); --hl-ink: var(--cream);    --hl-sh: var(--ink); }
+.pm-cat-item[data-slug='illustration']      { --hl: var(--pine);        --hl-ink: var(--butter);   --hl-sh: var(--ink); }
 
 /* the two-line titles break where the design says (Band.tsx LINES), in every face, so a band never changes height when its face swaps in */
 .pm-cat-ln { display: block; }

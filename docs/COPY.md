@@ -89,4 +89,4 @@ Pau Monfort · © 2026 Pau Monfort Judici · Barcelona {HH:MM} · Sydney {HH:MM}
 Open · Flip · Drag · Play · Visit · Copy · Close
 
 ## Labels for concept work (exact)
-Stamp: CONCEPT · Subline: Concept project — art-directed by Pau, built with AI-assisted tools.
+Stamp: CONCEPT · Subline: Concept project — art-directed by Pau.

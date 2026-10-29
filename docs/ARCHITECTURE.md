@@ -36,7 +36,7 @@ export interface WorkMeta {
   color: string; ink: string; accent?: string   // folder color + text color on it (see ART_DIRECTION §2)
   thumb: string; peek?: string            // public paths for folder-card art
   links?: { label: string; href: string }[]
-  concept?: boolean                       // show CONCEPT stamp + AI-assisted line
+  concept?: boolean                       // show CONCEPT stamp + concept line
 }
 export const WORKS: WorkMeta[]            // 10 entries, sorted by n
 ```

@@ -20,7 +20,7 @@ const OUT = process.argv[2] || path.join(here, 'sticker-09.svg')
 
 const st = createSticker({
   title: 'Headphones on, world off - doodle sticker 09',
-  desc: 'A dancer lost in the music: eyes shut and laughing, headphones on, ponytail whipping, one foot on tiptoe and the other leg kicked high in parachute trousers and an oversized track jacket. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
+  desc: 'A dancer lost in the music: eyes shut and laughing, headphones on, ponytail whipping, one foot on tiptoe and the other leg kicked high in parachute trousers and an oversized track jacket. Concept illustration, art-directed by Pau.',
   accent: '#C5EB7C',
   seed: 37,
   root: process.env.ROOT || 'translate(29,-71)',

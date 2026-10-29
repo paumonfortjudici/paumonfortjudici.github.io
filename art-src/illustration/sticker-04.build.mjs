@@ -24,7 +24,7 @@ const OUT = process.argv[2] || path.join(here, 'sticker-04.svg')
 
 const st = createSticker({
   title: 'Small me, big plant - doodle sticker 04',
-  desc: 'A small gardener in overalls and a polka-dot bandana staggers along carrying a pot with a monstera three times their height; a snail rides one of the leaves. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
+  desc: 'A small gardener in overalls and a polka-dot bandana staggers along carrying a pot with a monstera three times their height; a snail rides one of the leaves. Concept illustration, art-directed by Pau.',
   accent: '#8EEBC3',
   seed: 17,
   root: 'translate(28,14) scale(.99)',

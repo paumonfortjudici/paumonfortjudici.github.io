@@ -1,6 +1,6 @@
 // World 10, "Sticker Sheet": a sticker sandbox. Nine doodle characters sit on a cream sticker sheet; peel them off, throw them at
 // the aluminium laptop lid, stick them anywhere, turn and resize them, tip the lid with Gravity (matter-js, loaded on demand),
-// arrange them, save the result as a PNG. Concept project: art-directed by Pau, made with AI-assisted tools.
+// arrange them, save the result as a PNG. Concept project: art-directed by Pau.
 // The physics and pointer handling live in illustration/board.ts (no React); this file only renders and wires it up.
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react'
 import { Stamp, Tape, WorldFacts } from '../components/primitives'
@@ -170,7 +170,7 @@ export default function IllustrationWorld() {
             </header>
             <Lid
               ref={lidRef}
-              badge={<Stamp text="Concept · AI-assisted" rotate={-3} color="var(--ink)" size="0.95rem" thump={false} />}
+              badge={<Stamp text="Concept" rotate={-3} color="var(--ink)" size="0.95rem" thump={false} />}
               tabs={narrow ? undefined : <SaveTab ui={ui} saving={saving} onSave={() => void save()} />}
               footer={<Controls board={board} ui={ui}>{narrow && <SaveTab ui={ui} saving={saving} onSave={() => void save()} short />}</Controls>}
             />
@@ -226,7 +226,7 @@ export default function IllustrationWorld() {
               One outline, one halo, one colour each.
             </h3>
             <p className="w-illustration-why-text">
-              I art-directed all nine so they read as one set: a single outline weight, a single white halo, a single flat accent per character. They are invented characters made with AI-assisted tools, not clients or real people.
+              I art-directed all nine so they read as one set: a single outline weight, a single white halo, a single flat accent per character. They are invented characters, not clients or real people.
             </p>
           </section>
           <WorldFacts work={work} tone={work.ink.toLowerCase() === '#fff2da' ? 'paper' : 'ink'} />

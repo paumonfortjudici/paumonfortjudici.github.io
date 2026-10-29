@@ -827,3 +827,6 @@ html[data-motion='paused'] .pm-proc-copy > *, html[data-motion='paused'] .pm-pro
 html[data-motion='paused'] .pm-proc-tab::after, html[data-motion='paused'] .pm-proc-ruler::before, html[data-motion='paused'] .pm-proc-tk-art,
 html[data-motion='paused'] .pm-proc-tk-art::before, html[data-motion='paused'] .pm-proc-tk-art::after { transition: none !important; }
 html[data-motion='paused'] .pm-proc-tk[data-lit] .pm-proc-tk-art, html[data-motion='paused'] .pm-proc-tk[data-hot] .pm-proc-tk-art { transform: none; }
+
+/* Pau's own picture in place of the vector scene (see images.ts) */
+.pm-proc-img { display: block; width: 100%; height: auto; aspect-ratio: 14 / 15; object-fit: cover; user-select: none; }

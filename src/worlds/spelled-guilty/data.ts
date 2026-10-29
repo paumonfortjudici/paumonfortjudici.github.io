@@ -114,7 +114,7 @@ export const STEP_CARDS: MarketingItem[] = [
   {"file": "marketing/step-3-name-the-killer.webp", "w": 600, "h": 600, "alt": "Step three card: a pinned note where crossed-out words leave the letters LEFT-HANDED, titled Name the Killer."},
 ]
 
-export const BOOK = {"title": "Spelled Guilty", "pages": 214, "cases": 80, "illustratedSuspects": 320, "from": 1874, "to": 2026, "grid": "13 x 13", "trimIn": [6, 9], "creditLineFromTheBookItself": "Stories written with the help of AI tools and reviewed by the author. All puzzles generated and verified by computer. Case and cover illustrations created with AI image tools."} as const
+export const BOOK = {"title": "Spelled Guilty", "pages": 214, "cases": 80, "illustratedSuspects": 320, "from": 1874, "to": 2026, "grid": "13 x 13", "trimIn": [6, 9]} as const
 
 /** all 80 cases of the book (title, setting, year, level): nothing about a solution. Used by the scorecard. */
 export interface CaseItem {

@@ -4,7 +4,7 @@ Everything needed to draw the 9 "doodle stickers" so that they look like one fam
 `../sticker-01.build.mjs` (a fully worked example), then the director's guide
 (`C:/Users/User/AppData/Local/Temp/claude/C--Users-User-Documents-Portofolio/0908f779-4789-499a-9f74-ecb97a4d3b2d/scratchpad/art/illustration/illustration-guide.md`: concepts, poses and palettes for all nine).
 
-Concept work, shown on the site as *"Concept project - art-directed by Pau, built with AI-assisted tools"*.
+Concept work, shown on the site as *"Concept project - art-directed by Pau"*.
 
 ## Files
 

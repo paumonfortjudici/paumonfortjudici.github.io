@@ -13,7 +13,6 @@ import { CONTACT } from '../../lib/copy'
 import { useCopy, useInView, useMediaQuery } from '../../lib/hooks'
 import { layoutLetters, UNITS_PER_EM } from '../../lib/lettering/layout'
 import { Glyph, type GlyphName } from './contact/glyphs'
-import TimeZones from './contact/TimeZones'
 import './contact.css'
 
 // The business card is its own chunk (it brings Plana's three faces with it): it loads when the section is about to be seen.
@@ -268,9 +267,6 @@ export function Contact() {
           {!wide && cardSlot}
         </div>
 
-        <QuietBoundary>
-          <TimeZones />
-        </QuietBoundary>
       </div>
     </Sheet>
   )

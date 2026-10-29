@@ -17,7 +17,7 @@ const OUT = process.argv[2] || path.join(here, 'sticker-05.svg')
 
 const st = createSticker({
   title: 'Quiet on set! - doodle sticker 05',
-  desc: 'A film director in sunglasses, beret and a flying striped scarf steps onto an apple crate and shouts through a megaphone while raising a clapperboard. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
+  desc: 'A film director in sunglasses, beret and a flying striped scarf steps onto an apple crate and shouts through a megaphone while raising a clapperboard. Concept illustration, art-directed by Pau.',
   accent: '#FCE67A',
   seed: 19,
   root: 'translate(-22,10)',

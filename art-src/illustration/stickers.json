@@ -1,7 +1,7 @@
 {
   "canvas": { "width": 1200, "height": 1600, "background": "transparent", "haloPx": 38, "safeMarginPx": 60 },
   "palette": { "ink": "#0C0A10", "paper": "#FFEFDF" },
-  "label": "Concept project - art-directed by Pau, built with AI-assisted tools",
+  "label": "Concept project - art-directed by Pau",
   "stickers": [
     { "id": 1, "file": "sticker-01", "title": "Boombox ollie", "caption": "Boombox ollie", "accent": { "name": "lilac", "hex": "#C6B1FE" },
       "pose": "airborne diagonal (board -13deg), rock-on hand up, boombox on the shoulder", "silhouette": "tilted X",

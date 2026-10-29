@@ -23,7 +23,7 @@ const OUT = process.argv[2] || path.join(here, 'sticker-01.svg')
 
 const st = createSticker({
   title: 'Boombox ollie - doodle sticker 01',
-  desc: 'A skater in plaid baggy trousers pops an ollie with a boombox on the shoulder and a rock-on hand. Concept illustration, art-directed by Pau, built with AI-assisted tools.',
+  desc: 'A skater in plaid baggy trousers pops an ollie with a boombox on the shoulder and a rock-on hand. Concept illustration, art-directed by Pau.',
   accent: '#C6B1FE',
   seed: 7,
   root: 'translate(4,-30)',        // fit transform: halo lands 67-75 px from every edge of the 1200 x 1600 canvas

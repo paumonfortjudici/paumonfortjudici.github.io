@@ -1,7 +1,7 @@
 // Visible strings of the Spelled Guilty world. English, first person where Pau talks, sentence case, no spoilers
 // (no hints, no solutions, no hidden messages, nobody is named innocent or guilty), no price, ISBN, date, ratings or Kindle.
-// Honesty (docs/ART_DIRECTION.md 12.1): the 80 case illustrations are AI-generated under Pau's art direction; the stories were
-// drafted with AI help and reviewed by the author; puzzles and layout come from a custom book engine.
+// Credits (docs/ART_DIRECTION.md 12.1): written, art-directed and published by Pau; puzzles and layout come from a custom book engine.
+// Pau decided on 2026-10-29 that this world says nothing about how the pictures or stories were made.
 // Typography: "6 × 9 in" and "13 × 13" use no-break spaces; "line-up" carries an invisible word joiner (U+2060) after its hyphen
 // so a sentence never breaks it across two lines.
 
@@ -161,10 +161,10 @@ export const SG = {
     // the sentence is cut in three so the name can be set in bold; read together it is exactly the credit line Pau approved
     leadIn: 'Written, art-directed and published by ',
     name: 'Pau Monfort',
-    rest: '. Illustrations generated with AI image tools under my direction; puzzles and layout built with a custom book engine.',
-    bookLead: 'The book says it too, on its copyright page:',
-    bookLine: 'Stories written with the help of AI tools and reviewed by the author. All puzzles generated and verified by computer. Case and cover illustrations created with AI image tools.',
-    note: 'The pictures are AI. The directing is mine.',
+    rest: '. Puzzles and layout built with a custom book engine.',
+    bookLead: 'How the puzzles are made:',
+    bookLine: 'All puzzles generated and verified by computer.',
+    note: 'The engine builds the puzzles. The directing is mine.',
     samplePages: 'The pages here are a selection of the 214. The hints and solutions stay in the book.',
   },
 } as const

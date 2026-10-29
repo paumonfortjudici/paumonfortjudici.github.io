@@ -311,9 +311,9 @@ export function WorkCard({ work, cell, filter, still, flat, index }: WorkCardPro
           </>
         )}
       </span>
-      {/* concept art is AI-assisted (the registry says so in `tools`): the stamp says it too, so the print never travels unlabelled. It is pressed
+      {/* concept work is an invented project: the CONCEPT stamp says so, so the print never travels unlabelled. It is pressed
           on the folder's own paper, under the print, in a strip the card keeps free for it, so it never covers the work or the years chip */}
-      {work.concept && <Stamp text={CONCEPT.stamp} sub={work.tools.find((tool) => /AI/.test(tool))} tone="ink" rotate={-5} className="pm-wk-stamp" />}
+      {work.concept && <Stamp text={CONCEPT.stamp} tone="ink" rotate={-5} className="pm-wk-stamp" />}
     </Folder>
   )
 }

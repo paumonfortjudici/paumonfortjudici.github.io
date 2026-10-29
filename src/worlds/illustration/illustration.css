@@ -39,7 +39,7 @@
   --wi-grid-fine: color-mix(in srgb, var(--ink) 5.5%, transparent);
   --font-display: 'Cherry Bomb One', var(--font-body);
   /* everything on the first screen except the lid (strip aside): padding, head, tab zone, hinge, one row of controls */
-  --wi-chrome: clamp(370px, calc(370px + (100vw - 1280px) * 0.11), 444px);
+  --wi-chrome: clamp(376px, calc(376px + (100vw - 1280px) * 0.11), 450px);
 
   position: relative;
   min-height: 100%;
@@ -114,7 +114,7 @@
 
 
   .w-illustration-head .w-illustration-title {
-    font-size: min(14cqw, 7rem);
+    font-size: min(12cqw, 7rem);
   }
 }
 
@@ -130,37 +130,42 @@
   flex-wrap: wrap;
   align-items: flex-end;
   gap: clamp(10px, 1.6vw, 28px) clamp(18px, 2.6vw, 44px);
-  margin-bottom: 40px; /* room for the Save tab that stands on the lid's top edge */
+  margin-bottom: 46px; /* room for the Save tab and the Concept stamp that stand on the lid's top edge */
 }
 
 .w-illustration-title {
-  display: flex;
+  display: block;
   flex: none;
+  margin: 0;
+  padding: 0.06em 0.08em 0.1em 0.08em; /* room for the halo, which is painted outside the letters' boxes */
+  font-family: 'Cherry Bomb One', var(--font-body);
+  font-size: min(9.4cqw, 6.2rem);
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: 0.02em;
+  text-wrap: nowrap;
+}
+
+/* three identical layers in one grid cell: halo (below), keylines, fills (above) */
+.w-illustration-art {
+  display: grid;
+}
+
+.w-illustration-tl {
+  grid-area: 1 / 1;
+  display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 0;
-  padding: 0.04em 0.08em 0.1em 0.06em;
-  font-family: 'Cherry Bomb One', var(--font-body);
-  font-size: min(9.8cqw, 6.6rem);
-  font-weight: 400;
-  line-height: 0.96;
-  letter-spacing: -0.012em;
-  text-wrap: nowrap;
+  gap: 0.02em;
 }
 
 .w-illustration-word {
   display: inline-flex;
 }
 
-/* every letter is a vinyl letter sticker: its accent, an ink keyline, a thick white halo behind it and a hard shadow */
 .w-illustration-ch {
-  position: relative;
   display: inline-block;
-  color: var(--c);
-  -webkit-text-stroke: 0.1em var(--ink);
-  paint-order: stroke fill;
   transform: translateY(var(--drop)) rotate(var(--tilt));
-  filter: drop-shadow(0 0.04em 0 color-mix(in srgb, var(--ink) 55%, transparent));
 }
 
 /* the letter itself is generated: the title's text is one visually hidden "Sticker sheet", so nothing spells it out */
@@ -168,15 +173,26 @@
   content: attr(data-c);
 }
 
-.w-illustration-ch::before {
-  content: attr(data-c);
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: -1;
+/* layer 1: ONE white die-cut border round the whole word (letters of the halo layer all share it, so a halo never lies over a letter)
+   and one hard shadow under the union */
+.w-illustration-tl[data-layer='halo'] {
+  filter: drop-shadow(0 0.05em 0 color-mix(in srgb, var(--ink) 55%, transparent));
+}
+
+.w-illustration-tl[data-layer='halo'] .w-illustration-ch {
   color: var(--wi-white);
-  -webkit-text-stroke: 0.36em var(--wi-white);
-  paint-order: stroke fill;
+  -webkit-text-stroke: 0.3em var(--wi-white);
+}
+
+/* layer 2: the ink keyline (the glyph, fattened a little) */
+.w-illustration-tl[data-layer='key'] .w-illustration-ch {
+  color: var(--ink);
+  -webkit-text-stroke: 0.1em var(--ink);
+}
+
+/* layer 3: the flat accent colour, exactly the glyph, on top of everything */
+.w-illustration-tl[data-layer='fill'] .w-illustration-ch {
+  color: var(--c);
 }
 
 .w-illustration-headtext {
@@ -591,7 +607,7 @@
    and the control row comes up into the first screen where it can ------------------------------------------------------------ */
 @media (min-width: 900px) and (max-height: 820px) {
   .w-illustration {
-    --wi-chrome: 338px;
+    --wi-chrome: 344px;
   }
 
   .w-illustration-head .w-illustration-title {

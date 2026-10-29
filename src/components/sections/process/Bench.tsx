@@ -15,6 +15,8 @@ import { FilmPerforations, Reveal, Scribble, TabButton, Tape } from '../../primi
 import { PROCESS_UI, SCENE_LABELS, STEP_NOTES, STEP_STYLE, TOOLS, stepBody, type ToolId } from './data'
 import { Bin, CoffeeRing, Ruler, Shavings } from './marginalia'
 import { SCENES } from './scenes'
+import { SCENE_IMAGES, sceneImage } from './images'
+import { asset } from '../../../lib/asset'
 import { TOKEN_ART } from './tokens'
 import './art.css'
 import './tokens.css'
@@ -408,8 +410,12 @@ export default function Bench() {
                       <div className="pm-proc-grid">
                       <div className="pm-proc-pic">
                         <div className="pm-proc-art">
-                          <Scene dev={dev} bump={bump[i]} />
-                          {labels.map((l) => (
+                          {SCENE_IMAGES.has(i) ? (
+                            <img className="pm-proc-img" src={asset(sceneImage(i))} width={1400} height={1500} alt={style.alt} loading="lazy" decoding="async" draggable={false} />
+                          ) : (
+                            <Scene dev={dev} bump={bump[i]} />
+                          )}
+                          {(SCENE_IMAGES.has(i) ? [] : labels).map((l) => (
                             <span
                               key={l.text}
                               className="pm-proc-lbl"

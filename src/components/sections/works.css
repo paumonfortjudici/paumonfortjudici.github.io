@@ -805,7 +805,7 @@ html.js .pm-wk__ghost {
   --w: 30cqw;
   --h: 6.6cqw;
 }
-/* the CONCEPT / AI-assisted stamp is pressed on the folder's own paper, in a strip under the words that concept folders keep free (extra
+/* the CONCEPT stamp is pressed on the folder's own paper, in a strip under the words that concept folders keep free (extra
    bottom padding), so it labels the work without covering the print, the years chip or the kind line */
 .pm-wk-card[data-concept] .pm-folder__body {
   padding-bottom: calc(var(--fpad, 12px) + 40px);

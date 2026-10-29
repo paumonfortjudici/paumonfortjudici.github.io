@@ -220,6 +220,20 @@ def run(src_dir, list_only):
             ys, xs = np.where(al > 0.5)
             info['top'] = {'x': round(float(xs[ys == ys.min()].mean() / size[0]), 4), 'y': 0.0}  # where the highest solid pixel is (a string's loop, a pole's tip)
             info['foot'] = {'x': round(float(xs[ys == ys.max()].mean() / size[0]), 4), 'y': 1.0}  # and the lowest (a pole's foot)
+            if k == 'banner':
+                # the centre line of the ribbon's band between its folded tails, as y = a x^2 + b x + c (x and y are 0..1 of the piece), and the band's
+                # thickness (0..1 of the piece height): tokens.tsx writes the tool's name along this curve
+                cols = np.arange(int(size[0] * 0.2), int(size[0] * 0.8))
+                tops, bots = [], []
+                for cx in cols:
+                    rows = np.where(al[:, cx] > 0.5)[0]
+                    tops.append(rows.min())
+                    bots.append(rows.max())
+                xs_n = cols / size[0]
+                mid = (np.array(tops) + np.array(bots)) / 2 / size[1]
+                a2, b2, c2 = np.polyfit(xs_n, mid, 2)
+                info['curve'] = [round(float(a2), 5), round(float(b2), 5), round(float(c2), 5)]
+                info['band'] = round(float(np.median((np.array(bots) - np.array(tops)) / size[1])), 4)
             manifest[token][k] = info
     # the bin: one picture
     bpath = os.path.join(src_dir, 'BIN-01.png')

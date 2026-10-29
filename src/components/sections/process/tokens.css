@@ -12,8 +12,11 @@
   --shd: color-mix(in srgb, var(--ultraviolet) 46%, var(--ink));
   position: relative;
   display: block;
+  /* the board is a square and never shrinks with its column (the pieces are placed in percent of it): it may reach past the column, centred */
+  flex: none;
   width: var(--tk, 150px);
   height: var(--tk, 150px);
+  aspect-ratio: 1;
   max-width: none;
   filter: drop-shadow(calc(var(--tk, 150px) * 0.033) calc(var(--tk, 150px) * 0.04) 0 var(--shd));
 }
@@ -32,46 +35,37 @@
   transition: transform 0.38s var(--ease-spring);
 }
 
-/* the name on the ribbon: real type in the label face, 13px at the least */
-.pm-tk-lab {
-  position: absolute;
-  left: 15%;
-  right: 15%;
-  top: calc(var(--u) * 118);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(var(--u) * 24);
-  color: var(--ink);
+/* the ribbon with the tool's name along its curve (tokens.tsx writes the text on a path measured on the drawing): the box is placed and tilted
+   by the component, the picture fills it and the SVG text sits exactly over it. The type is the label face in ink, as big as the band allows. */
+.pm-tk-rb { position: absolute; display: block; pointer-events: none; }
+.pm-tk-rb__img { display: block; width: 100%; height: auto; user-select: none; }
+.pm-tk-rb__txt { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.pm-tk-rb__txt text {
+  fill: var(--ink);
   font-family: var(--font-label);
-  font-size: max(13px, calc(var(--u) * 9));
-  font-synthesis: none;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  font-synthesis: none;
+  letter-spacing: 0;
   text-transform: uppercase;
-  white-space: nowrap;
-  pointer-events: none;
 }
-/* the longer names (NOMAD SCULPT, PROCREATE) are set tighter so they stay inside the folds of the ribbon (never under 13px) */
-.pm-tk-lab[data-long] { font-size: max(13px, calc(var(--u) * 7.6)); letter-spacing: 0; }
 
 /* paint-chip fan: opens up around the rivet */
-.pm-tk-svg .tk-fl { transform: rotate(-30deg); }
-.pm-tk-svg .tk-fr { transform: rotate(30deg); }
-.pm-tk-svg .tk-fc { transform: rotate(-2deg); }
-.pm-proc-tk[data-hot] .tk-fl { transform: rotate(-46deg); }
-.pm-proc-tk[data-hot] .tk-fr { transform: rotate(46deg); }
-.pm-proc-tk[data-hot] .tk-fc { transform: rotate(2deg); }
+.pm-tk-svg .tk-fl { transform: rotate(-28deg); }
+.pm-tk-svg .tk-fr { transform: rotate(28deg); }
+.pm-tk-svg .tk-fc { transform: none; }
+.pm-proc-tk[data-hot] .tk-fl { transform: rotate(-42deg); }
+.pm-proc-tk[data-hot] .tk-fr { transform: rotate(42deg); }
+.pm-proc-tk[data-hot] .tk-fc { transform: none; }
 
 /* pencil: writes: the scribble is drawn again from left to right and the pencil rides along it */
 .pm-proc-tk[data-hot] .tk-scr { animation: pm-tk-reveal 0.9s cubic-bezier(0.5, 0, 0.2, 1) both; }
 .pm-proc-tk[data-hot] .tk-pen { animation: pm-tk-write 0.9s ease-in-out both; }
 @keyframes pm-tk-reveal { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
 @keyframes pm-tk-write {
-  0% { transform: translate(calc(var(--u) * -30), calc(var(--u) * -8)); }
-  25% { transform: translate(calc(var(--u) * -18), calc(var(--u) * 3)); }
-  50% { transform: translate(calc(var(--u) * -6), calc(var(--u) * -4)); }
-  75% { transform: translate(calc(var(--u) * 4), calc(var(--u) * 3)); }
+  0% { transform: translate(calc(var(--u) * -62), calc(var(--u) * -1)); }
+  25% { transform: translate(calc(var(--u) * -46), calc(var(--u) * 2)); }
+  50% { transform: translate(calc(var(--u) * -31), calc(var(--u) * -2)); }
+  75% { transform: translate(calc(var(--u) * -15), calc(var(--u) * 2)); }
   100% { transform: none; }
 }
 
@@ -110,9 +104,9 @@
   .pm-tk-g { transition: none; }
   .pm-proc-tk[data-hot] .tk-scr, .pm-proc-tk[data-hot] .tk-pen, .pm-proc-tk[data-hot] .tk-b1,
   .pm-proc-tk[data-hot] .tk-tagg, .pm-proc-tk[data-hot] .tk-tick { animation: none; clip-path: none; }
-  .pm-proc-tk[data-hot] .tk-fl { transform: rotate(-30deg); }
-  .pm-proc-tk[data-hot] .tk-fr { transform: rotate(30deg); }
-  .pm-proc-tk[data-hot] .tk-fc { transform: rotate(-2deg); }
+  .pm-proc-tk[data-hot] .tk-fl { transform: rotate(-28deg); }
+  .pm-proc-tk[data-hot] .tk-fr { transform: rotate(28deg); }
+  .pm-proc-tk[data-hot] .tk-fc { transform: none; }
   .pm-proc-tk[data-hot] .tk-pcard { transform: rotate(4deg); }
   .pm-proc-tk[data-hot] .tk-tab, .pm-proc-tk[data-hot] .tk-clay, .pm-proc-tk[data-hot] .tk-flag, .pm-proc-tk[data-hot] .tk-tool,
   .pm-proc-tk[data-hot] .tk-pin, .pm-proc-tk[data-hot] .tk-top, .pm-proc-tk[data-hot] .tk-br { transform: none; }
@@ -121,9 +115,9 @@ html[data-motion='paused'] .pm-tk-g { transition: none; }
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-scr, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-pen,
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-b1, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-tagg,
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-tick { animation: none; clip-path: none; }
-html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-fl { transform: rotate(-30deg); }
-html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-fr { transform: rotate(30deg); }
-html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-fc { transform: rotate(-2deg); }
+html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-fl { transform: rotate(-28deg); }
+html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-fr { transform: rotate(28deg); }
+html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-fc { transform: none; }
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-pcard { transform: rotate(4deg); }
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-tab, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-clay,
 html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-flag, html[data-motion='paused'] .pm-proc-tk[data-hot] .tk-tool,

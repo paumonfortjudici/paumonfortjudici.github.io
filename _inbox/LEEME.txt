@@ -1,2 +1,3 @@
 Drop the images generated in ChatGPT here, named with their ID (CAT-01.png, PF-03.png, ST-07.png, PR-02.png ...).
+The five style references are in refs/ (REF-1 .. REF-5).
 See docs/image-prompts.md. This folder is ignored by git.

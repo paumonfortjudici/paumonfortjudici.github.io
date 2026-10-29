@@ -898,3 +898,14 @@ Do not write any other text. Keep the header and footer bands clean. Full 9:16 p
 - Too dark: `Lighter: more flat colour and white-cream highlights, less black hatching.`
 
 Work order that saves retries: ONA-00 first (approve her), then PF-02 (the hardest), then PF-01, PF-04, PF-05 and PF-03.
+
+### v10: corrections after the first PF-02 (2026-10-29)
+
+The first PF-02 had a very good title and sunburst but was **overloaded** (five taped paper frames, six empty containers, string tags, a knife, feathers, a gravel bucket, a cable plugged into a cabbage, a stray black blob, sparkles everywhere), **read as AI-generated** (every object rendered at the same fine detail, botanical cabbage and celery next to a cartoon girl, etched hatching, glossy shading, a uniform halftone filter, perfectly even lines, the "taped sketch" frames made from the pencil-construction-line instruction) and had **execution errors** (two pairs of headphones, one cracked coconut instead of two shells). The saved first version is `_inbox/_old/PF-02_v1.webp`.
+Changes of method, valid for every remaining slide and every retry:
+1. **Less information**: the title, one hero, at most five simple secondary objects, the sound burst, the floor, at most two tiny hidden details (the ten to eleven listed per slide above are a menu, not a requirement). No pencil construction lines.
+2. **ChatGPT draws no text containers** (no caption boxes, strips, tags, seals, cards or tape): the left empty zones stay plain field. The containers are made afterwards in code (torn paper, tape, hard shadows, a little wobble) and carry the real text; they look hand-made instead of generated.
+3. **Less AI**: bold, simple, confident; one outline weight; no fine hatching, no micro detail, no realistic or botanical rendering, no gloss, no soft shading; shadows are flat solid black shapes; every object in the same cartoon line language as the characters; detail only in faces, hands and a little in the boots.
+4. **Hand-made imperfection**: wobbly uneven lines, doubled lines, three or four places where the colour is clearly off-register, dry-brush gaps, asymmetry, halftone only in two or three chosen areas.
+5. **Post-processing by us** on the whole set: one scanned-paper texture, ink grain and a slight print misregistration, which removes most of the plastic sheen and unifies the five slides.
+6. Fallback if a slide still looks generated: draw it in **separate pieces** (the title and sunburst, the hero alone on flat colour, the props on a parts sheet) and compose them in code with real textures, as was done for the "On my desk" icons.

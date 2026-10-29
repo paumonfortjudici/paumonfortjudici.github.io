@@ -7,7 +7,7 @@ Version 4 (2026-10-29), the definitive Catalog set. Pau threw away three earlier
 - No character is required, and the ten do **not** share a structure: same artistic hand, a different idea and composition each, "as if one artist had designed each folder one by one".
 - They are not a small motif any more: each is a **wide frieze behind the title of its folder**, at low opacity, filling much of the horizontal band.
 
-Version 7 adds TK (the seven "On my desk" icons as animatable parts sheets, plus the bin, in blackwork tattoo style: see the TK section). Version 6 added PR (the four Process scenes: a restyle of the scenes already on the site, two references per prompt). PF and ST are still open: they get their prompts when Pau gives the direction for each category.
+Version 8 adds ST (the nine Sticker Sheet characters restyled like Pau's lilac selfie sticker, two references per prompt). Version 7 added TK (the seven "On my desk" icons as animatable parts sheets, plus the bin, in blackwork tattoo style: see the TK section). Version 6 added PR (the four Process scenes: a restyle of the scenes already on the site, two references per prompt). PF and ST are still open: they get their prompts when Pau gives the direction for each category.
 
 ## The system
 
@@ -17,7 +17,7 @@ Every image has an ID: `AREA-NN`. Save the result with the ID as its name in `C:
 |---|---|---|---|
 | `CAT` | CAT-01 .. CAT-10 | the grey sketch next to each name in the Catalog, now a faint full-width background of the folder | **defined below (v4)** |
 | `PF` | PF-01 .. PF-05 | the five slides of folder 09 (A Portfolio for a Client) | waiting for Pau's direction |
-| `ST` | ST-01 .. ST-09 | the nine stickers of folder 10 (Sticker Sheet) | waiting for Pau's direction |
+| `ST` | ST-01 .. ST-09 | the nine stickers of folder 10 (Sticker Sheet), same characters restyled | **defined below (v8)** |
 | `PR` | PR-01 .. PR-04 | the four big scenes of the Process film (section 05): COLLECT, SKETCH, MAKE, DELIVER | **filed and live** |
 | `TK` / `BIN` | TK-01 .. TK-07, BIN-01 | the seven tool icons of "On my desk" (animated parts sheets) and the bin | **filed and live** (`python tools/ingest_tokens.py _inbox/refs`) |
 
@@ -553,9 +553,177 @@ Fill about 90% of the canvas, centred. Add nothing else. Square 1024x1024, flat 
 - Text appeared (the banner or a part): `Remove all lettering: the ribbon banner must be completely empty.`
 - Wrong scale between parts: `Keep the parts at the scale they have in IMAGE 1, so that together they form that object.`
 
-## PF and ST
+## ST: the nine Sticker Sheet characters (restyle in the lilac selfie-sticker style)
 
-Open. Pau gives the art direction and references for each category, then the prompts are written like the CAT and PR sets. The IDs, the file names and the filing procedure stay as before:
+**v8 (2026-10-29).** Pau wants the nine characters of folder 10 redrawn in the style of his lilac selfie sticker (`_inbox/refs/STYLE-STICKER.jpg`): the character types, descriptions, poses, props and the whole page layout stay exactly as they are; only the illustration style changes. Strategy as for Process: **two references per prompt**. IMAGE 1 = the current sticker (`STK-01.png` .. `STK-09.png`, the live art on cream: says WHAT to draw), IMAGE 2 = the style reference (says HOW).
+
+### What the style is (read from the reference)
+
+One accent colour for the whole figure (skin, clothes, props) plus solid black; a smooth, confident black ink line (medium weight outside, finer inside); solid black masses (curly hair, shoes, belt, pupils); plaid, stripes and quilting drawn only as thin black lines inside the garments; folds as short curved strokes in groups of two or three; hands with four fingers and a thumb; chunky shoes with two-loop laces and a few accent-colour eyelet dots on the black; a die-cut halo of the same accent colour round the whole figure, filling the gaps between limbs and body; flat cream `#FFF0E0` background; no cream, white, shading, gradient or text anywhere inside. (The current set is busier: cream highlights on the cat and the pages, dotted stitching, lots of small marks.)
+
+### How the pictures are filed (this decides the format)
+
+Per `docs/api/world-illustration.md` ("How to replace the nine stickers"): a transparent 1200 x 1600 cut-out whose outermost edge is a solid flat accent-colour outline and nothing else round it; the world adds the white vinyl margin, the shadow, the ghost and the physics shape from the alpha. So ChatGPT draws the figure with its accent halo on flat cream, and `tools/ingest_stickers.py` (written when the images arrive) does: key out the cream (the figure never contains cream, so it is safe), re-colour the accent to the exact hex (the generated accent drifts), trim, fit into 1080 x 1480 (at least 60 px of margin) centred on 1200 x 1600, save `sticker-0N.webp` + `thumb-0N.webp` (300 x 400), run `build-shapes.py`, re-export the Works card art (`thumb.webp`, `peek.webp`, `art/sheet.webp`). Captions, accents, hexes, alt texts, slots on the sheet, the Arrange composition and the lid do not change.
+
+| ID | Sticker | Accent | Reference for IMAGE 1 | Result file |
+|---|---|---|---|---|
+| ST-01 | Boombox ollie | lilac `#C6B1FE` | `STK-01.png` | `ST-01.png` |
+| ST-02 | Just one more chapter | tangerine `#FFA65F` | `STK-02.png` | `ST-02.png` |
+| ST-03 | Coffee first, pixels later | sky `#85CEF9` | `STK-03.png` | `ST-03.png` |
+| ST-04 | Small me, big plant | mint `#8EEBC3` | `STK-04.png` | `ST-04.png` |
+| ST-05 | Quiet on set! | butter `#FCE67A` | `STK-05.png` | `ST-05.png` |
+| ST-06 | Case of the missing sock | tomato `#FE7D6C` | `STK-06.png` | `ST-06.png` |
+| ST-07 | Tuft happens | pink `#FF9FC5` | `STK-07.png` | `ST-07.png` |
+| ST-08 | Houston, we have bananas | teal `#66CBC7` | `STK-08.png` | `ST-08.png` |
+| ST-09 | Headphones on, world off | lime `#C5EB7C` | `STK-09.png` | `ST-09.png` |
+
+### Chat opening message (new chat, paste first, attach `STYLE-STICKER.jpg`)
+
+```text
+You will make NINE sticker illustrations for a portfolio website: nine invented characters that must look like one sticker set drawn by one illustrator. With every request I will attach TWO images: IMAGE 1 is the current sticker (it tells you WHAT to draw: the character, the pose, the props, the composition) and IMAGE 2 is the STYLE REFERENCE (it tells you HOW to draw it). The image attached now is the STYLE REFERENCE. Do not draw anything yet. Study it, reply "ready" and describe back to me, in six lines, what makes its style.
+
+THE STYLE OF THE REFERENCE (copy how it is drawn, never its subject):
+1. ONE COLOUR PLUS BLACK. Everything that is not black is ONE single accent colour, flat and opaque: skin, face, hands, clothes, props. Nothing is cream, white or a second colour. Each request gives the exact accent hex.
+2. THE INK LINE. A smooth, confident, clean black ink line with a slight thick-and-thin variation and softly tapered ends: a medium weight for the outline of the figure (about 0.7% of the image height) and a finer weight, about half, for inner details. Closed shapes, curved and elegant. Not sketchy, not wobbly, not a fat marker.
+3. SOLID BLACK MASSES. Hair is a big solid black mass with wavy curly edges, shoes are solid black with two-loop laces and a few eyelet dots left in the accent colour, belts, pupils, the inside of a mouth and the darkest small details are solid black. Nothing else is black-filled.
+4. PATTERN AND FOLDS IN LINE ONLY. Plaid, stripes, quilting or stitching are thin black lines drawn inside the garment, hand-ruled and a little irregular, clipped to its shape. Folds are short curved strokes in groups of two or three at elbows, knees, cuffs and hems. Ribbed cuffs are short parallel lines. No hatching for shading, no tone, no fill changes.
+5. THE FIGURES. Stylised and elegant: small head, long limbs, oversized clothes with big soft volumes, a dynamic slightly off-balance gesture. Faces are very simple: two dot eyes or closed arcs, a short eyebrow, a small curved nose line, a smiling mouth, an ear. Hands are big and readable, four fingers and a thumb. Chunky shoes.
+6. THE DIE-CUT HALO. Round the whole sticker runs a halo of the SAME accent colour, an even width of about 3.5% of the image width, with a smooth rounded contour. It fills the small gaps between limbs and body (under an arm, between the legs) so the sticker is one solid shape. The halo has no outline and no other border.
+7. NOTHING ELSE. No shading, no gradient, no shadow, no texture, no glossy highlight, no white, no cream inside the figure, no text.
+
+THE BACKGROUND. One flat cream #FFF0E0, edge to edge, exactly like the reference. Nothing else on it.
+
+THE FORMAT. Portrait. The sticker, halo included, fills about 85% of the height, centred, with at least 8% of empty cream on every side.
+
+THE RULE FOR EVERY REQUEST. IMAGE 1 is the layout: keep the same character, the same pose and gesture, the same props, the same number of objects, the same composition and the same overall silhouette. Keep its description. Do NOT copy how IMAGE 1 is drawn: it is a busier drawing with cream details and small marks; yours is cleaner, bolder and simpler, one colour plus black, as in IMAGE 2. Replace nothing with something else and add nothing that is not in IMAGE 1.
+
+With every request I will attach the current sticker (IMAGE 1) and the style reference (IMAGE 2).
+```
+
+### The nine prompts (one message each: attach the sticker as IMAGE 1 and `STYLE-STICKER.jpg` as IMAGE 2)
+
+**ST-01 Boombox ollie. IMAGE 1 = `STK-01.png`**
+
+```text
+IMAGE 1 is attached first (STK-01.png, the current sticker) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1, sticker "Boombox ollie", in the style of IMAGE 2. Same character, same pose, same props, same composition; only the way it is drawn changes.
+ACCENT COLOUR: lilac #C6B1FE for everything that is not black, and for the die-cut halo.
+WHAT IMAGE 1 SHOWS (keep all of it): a skater caught mid-ollie with the whole board tilted in the air. A black beanie with a folded cuff and a pompom, long wavy black hair under it, a wide open grin. The arm on the viewer's left is raised with a rock-on hand (index and little finger up, thumb out). The other arm holds a boombox on the shoulder (a rectangular radio with two big round speakers with concentric rings, a cassette window, a carry handle, a short antenna) and two music notes float above it. An oversized sweater with five vertical equalizer bars on the chest, a black belt, baggy plaid trousers with a small star patch on one knee, chunky black sneakers. The skateboard is seen from the side with a kicked tail and four wheels.
+STYLE FOR THIS ONE: the plaid of the trousers as thin black ruled lines like the jacket in IMAGE 2, folds in groups of two or three strokes at the elbows and knees, solid black beanie, hair and shoes, the equalizer bars as solid black bars.
+Format: portrait, flat cream #FFF0E0 background, the sticker with its halo about 85% of the height, no text.
+```
+
+**ST-02 Just one more chapter. IMAGE 1 = `STK-02.png`**
+
+```text
+IMAGE 1 is attached first (STK-02.png, the current sticker) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1, sticker "Just one more chapter", in the style of IMAGE 2. Same character, same pose, same props, same composition; only the way it is drawn changes.
+ACCENT COLOUR: tangerine #FFA65F for everything that is not black, and for the die-cut halo.
+WHAT IMAGE 1 SHOWS (keep all of it): a cosy reader sitting cross-legged on top of a tall tower of five books of different sizes (spines with simple stripes and small diamond marks), a tiny mug with a heart beside the lower books. The reader has hair in a bun with a pencil stuck through it, round glasses, closed smiling eyes, a heart floating at the left and three small z shapes rising at the right. A chunky cable-knit sweater with a rolled turtleneck. Both hands hold an open hardback with a moon and a star on its cover. A sleeping black cat curls on their lap, with closed eyes and a small smile, and its tiny paws.
+STYLE FOR THIS ONE: the cable-knit as thin black braided lines clipped inside the sweater, folds at the elbows and the crossed knees, the cat as a solid black shape with its paws left in the accent colour with a black outline (no cream), the bun and pencil in solid black and line.
+Format: portrait, flat cream #FFF0E0 background, the sticker with its halo about 85% of the height, no text.
+```
+
+**ST-03 Coffee first, pixels later. IMAGE 1 = `STK-03.png`**
+
+```text
+IMAGE 1 is attached first (STK-03.png, the current sticker) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1, sticker "Coffee first, pixels later", in the style of IMAGE 2. Same character, same pose, same props, same composition; only the way it is drawn changes.
+ACCENT COLOUR: sky blue #85CEF9 for everything that is not black, and for the die-cut halo.
+WHAT IMAGE 1 SHOWS (keep all of it): a curly-haired designer in dungarees standing and hugging a paper coffee cup as tall as themselves (a cup with a lid, a sleeve with a vertical-stripe pattern and a round coffee-bean icon), cheek resting on the lid with closed contented eyes, wavy steam lines rising above, a pencil behind the ear. A ruler and pens in the dungarees chest pocket, rolled-up trousers, chunky black sneakers. A drawing tablet in a thick frame leans against their legs, showing a bezier curve with two handle points and three tiny round buttons, a stylus lying on it.
+STYLE FOR THIS ONE: curly hair as a big solid black mass with wavy edges, the dungaree stitching and seams as thin black lines, folds at the elbows, hem and knees, the cup sleeve stripes as black lines, the tablet frame as a thick black outline with the screen in the accent colour.
+Format: portrait, flat cream #FFF0E0 background, the sticker with its halo about 85% of the height, no text.
+```
+
+**ST-04 Small me, big plant. IMAGE 1 = `STK-04.png`**
+
+```text
+IMAGE 1 is attached first (STK-04.png, the current sticker) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1, sticker "Small me, big plant", in the style of IMAGE 2. Same character, same pose, same props, same composition; only the way it is drawn changes.
+ACCENT COLOUR: mint #8EEBC3 for everything that is not black, and for the die-cut halo.
+WHAT IMAGE 1 SHOWS (keep all of it): a small gardener staggering forward under a huge pot (a rolled rim and a black zigzag pattern band around it) holding a monstera three times their height: big split leaves with their holes and veins as thin lines, and one small snail with a spiral shell riding on a leaf. The gardener wears a polka-dot bandana tied on the head with two tails, has a surprised open mouth and round eyes looking up, a utility belt with a trowel and small tools, rolled-up trousers and rubber boots caught mid-step. A couple of small four-point sparkle stars.
+STYLE FOR THIS ONE: the pot as a solid black band with the zigzag left in the accent colour, the leaf veins as thin black lines, the polka dots of the bandana as small solid black dots, boots solid black with eyelet dots in the accent colour, folds at the knees and the elbows.
+Format: portrait, flat cream #FFF0E0 background, the sticker with its halo about 85% of the height, no text.
+```
+
+**ST-05 Quiet on set! IMAGE 1 = `STK-05.png`**
+
+```text
+IMAGE 1 is attached first (STK-05.png, the current sticker) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1, sticker "Quiet on set!", in the style of IMAGE 2. Same character, same pose, same props, same composition; only the way it is drawn changes.
+ACCENT COLOUR: butter yellow #FCE67A for everything that is not black, and for the die-cut halo.
+WHAT IMAGE 1 SHOWS (keep all of it): a film director stepping up with one foot on a wooden apple crate (slats and an apple icon on its side). A beret on the head, sunglasses, the mouth wide open shouting into a big cone megaphone held with one hand, the other arm raised holding a clapperboard (a hinged clapper stick with diagonal stripes and a grid of lines on the board, no text). A long striped scarf flying behind, suspenders with a film-reel badge on the chest, high boots. An exclamation mark and a small sparkle float near the megaphone.
+STYLE FOR THIS ONE: sunglasses as solid black, the clapper stripes and the scarf stripes as solid black bands, boots solid black, the crate slats as black lines, folds at the elbows and knees.
+Format: portrait, flat cream #FFF0E0 background, the sticker with its halo about 85% of the height, no text.
+```
+
+**ST-06 Case of the missing sock. IMAGE 1 = `STK-06.png`**
+
+```text
+IMAGE 1 is attached first (STK-06.png, the current sticker) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1, sticker "Case of the missing sock", in the style of IMAGE 2. Same character, same pose, same props, same composition; only the way it is drawn changes.
+ACCENT COLOUR: tomato #FE7D6C for everything that is not black, and for the die-cut halo.
+WHAT IMAGE 1 SHOWS (keep all of it): a detective in a double-breasted trench coat (two rows of buttons, a belt, the collar up) and a fedora with a band, creeping forward on tiptoe. One hand holds a huge magnifying glass up to the face so that one eye looks gigantic inside the lens (a big almond with an iris and a highlight). A question mark floats at the top left. The other hand pinches a single striped sock held out as evidence. The detective's own legs wear striped socks and chunky shoes.
+STYLE FOR THIS ONE: the big eye inside the lens with a solid black iris, the sock and the socks with solid black stripes, fedora band, belt and shoes solid black, the coat folds in groups of two or three strokes, plaid-like thin lines are not needed on the coat.
+Format: portrait, flat cream #FFF0E0 background, the sticker with its halo about 85% of the height, no text.
+```
+
+**ST-07 Tuft happens. IMAGE 1 = `STK-07.png`**
+
+```text
+IMAGE 1 is attached first (STK-07.png, the current sticker) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1, sticker "Tuft happens", in the style of IMAGE 2. Same character, same pose, same props, same composition; only the way it is drawn changes.
+ACCENT COLOUR: pink #FF9FC5 for everything that is not black, and for the die-cut halo.
+WHAT IMAGE 1 SHOWS (keep all of it): a rug maker kneeling at a big upright wooden frame that holds a stretched canvas with a half-finished mushroom rug (a spotted mushroom cap on a stem, a field of small plus signs) and a few cone-shaped yarn spools at the foot of the frame. The rug maker wears goggles pushed up on a striped headband, sticks the tongue out in concentration, wears dungarees over a long-sleeved top and a belt with small tools, and holds a chunky tufting gun (a grip, a motor, a needle nose) with a power cable looping to the floor. A ball of yarn with a trailing thread flies at the top right, and a few fibre tufts fly off.
+STYLE FOR THIS ONE: the field of plus signs and the mushroom spots as thin black marks, the headband stripes as solid black, the tufting gun body solid black, the cable as one thick looping black line, folds at the knees, elbows and dungaree straps, boots solid black with eyelet dots in the accent colour.
+Format: portrait, flat cream #FFF0E0 background, the sticker with its halo about 85% of the height, no text.
+```
+
+**ST-08 Houston, we have bananas. IMAGE 1 = `STK-08.png`**
+
+```text
+IMAGE 1 is attached first (STK-08.png, the current sticker) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1, sticker "Houston, we have bananas", in the style of IMAGE 2. Same character, same pose, same props, same composition; only the way it is drawn changes.
+ACCENT COLOUR: teal #66CBC7 for everything that is not black, and for the die-cut halo.
+WHAT IMAGE 1 SHOWS (keep all of it): a monkey in a puffy spacesuit floating weightless, the body twisted. A big round glass helmet with a ribbed collar shows a grinning monkey face (round ears, big eyes, a wide smile). A chest control panel with a small heartbeat line, a coiled hose, a utility belt. One gloved hand holds up a bunch of bananas, the other waves. A long curly tail ends in a tiny glove. A ringed planet floats at the top left and a few four-point stars and sparkles around.
+STYLE FOR THIS ONE: the monkey face with a solid black fur cap, nose and mouth in line and a black mouth interior, the glass of the helmet in the accent colour with two short curved reflection strokes, the suit folds in groups of two or three strokes, the collar rings and cuffs as parallel short lines, boots and gloves' cuffs solid black, the bananas as outlined accent shapes with black tips.
+Format: portrait, flat cream #FFF0E0 background, the sticker with its halo about 85% of the height, no text.
+```
+
+**ST-09 Headphones on, world off. IMAGE 1 = `STK-09.png`**
+
+```text
+IMAGE 1 is attached first (STK-09.png, the current sticker) and IMAGE 2 second (the style reference).
+
+Redraw IMAGE 1, sticker "Headphones on, world off", in the style of IMAGE 2. Same character, same pose, same props, same composition; only the way it is drawn changes.
+ACCENT COLOUR: lime #C5EB7C for everything that is not black, and for the die-cut halo.
+WHAT IMAGE 1 SHOWS (keep all of it): a dancer laughing with eyes closed, over-ear headphones on a headband, a long ponytail whipping through the air. An oversized track jacket with a star on the chest and a stripe running along the sleeves, trousers with a stripe down the leg (two parallel lines) and a patch on one knee. The dancer balances on the toe of one chunky sneaker with the other leg kicked up high. One arm is raised with a pointing finger, the other hand is open. Small motion lines and sparkles around.
+STYLE FOR THIS ONE: ponytail and headphone pads as solid black masses, the star on the chest solid black, the stripes as two thin black lines or one solid black band, folds at the elbows and the bent knee, sneakers solid black with eyelet dots in the accent colour.
+Format: portrait, flat cream #FFF0E0 background, the sticker with its halo about 85% of the height, no text.
+```
+
+### One-line fixes to paste when a result is off
+
+- Cream or white inside the figure: `No cream or white anywhere inside the figure: every area that is not black is the single accent colour, flat.`
+- A second colour crept in: `One accent colour only, plus solid black. Everything that is not black is exactly the accent colour.`
+- Halo missing, uneven or white: `Add the die-cut halo: the same accent colour as the figure, an even width of about 3.5% of the image width, smooth contour, filling the gaps between limbs and body, no outline, not white.`
+- Too busy or too like IMAGE 1: `Simpler and cleaner, like IMAGE 2: fewer small marks, a smooth confident black line, solid black masses, pattern as thin lines only. Do not copy how IMAGE 1 is drawn.`
+- Wobbly or sketchy line: `A smooth, clean, confident ink line with slightly tapered ends, not wobbly, not sketchy.`
+- Shading, texture or shine: `Completely flat: no shading, gradient, texture, shadow or glossy highlight.`
+- The character changed: `You changed the character. Redraw IMAGE 1 exactly: the same character, pose, props and composition. Only the way it is drawn changes.`
+- Text appeared: `Remove all lettering: no letters, numbers or logos anywhere.`
+- Sticker cut at the edge or too small: `The whole sticker with its halo fully inside the picture, about 85% of the height, at least 8% of empty cream margin on every side.`
+
+## PF
+
+Open. Pau gives the art direction and references, then the prompts are written like the CAT, PR, TK and ST sets. The IDs, the file names and the filing procedure stay as before:
 
 - `PF-NN` becomes `public/works/concept-portfolio/art/slide-N.webp` (1080x1920) plus the derived sheet, contact sheet, thumb, peek and card art.
-- `ST-NN` becomes `sticker-NN.webp` (1200x1600 transparent) and `thumb-NN.webp` (300x400), then `build-shapes.py` and the card art (see `docs/api/world-illustration.md`).

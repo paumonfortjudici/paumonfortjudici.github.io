@@ -1,4 +1,4 @@
-Drop the images generated in ChatGPT here, named with their ID (CAT-01.png, PR-02.png, TK-03.png, BIN-01.png ...).
-refs/ holds the style references (STYLE-MASTER.jpg Catalog, STYLE-PROCESS.jpg Process, STYLE-TATTOO.jpg On my desk) and the "what to draw" references (ELEM-01..04 Process scenes, OBJ-01..07 and OBJ-BIN On my desk).
+Drop the images generated in ChatGPT here, named with their ID (CAT-01.png, PR-02.png, TK-03.png, BIN-01.png, ST-07.png ...).
+refs/ holds the style references (STYLE-MASTER.jpg Catalog, STYLE-PROCESS.jpg Process, STYLE-TATTOO.jpg On my desk, STYLE-STICKER.jpg Sticker Sheet) and the "what to draw" references (ELEM-01..04 Process scenes, OBJ-01..07 and OBJ-BIN On my desk, STK-01..09 the current stickers).
 _old/ holds the discarded graphite experiments.
 See docs/image-prompts.md. This folder is ignored by git.

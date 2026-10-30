@@ -128,45 +128,45 @@ export interface Art {
 /** The files' real sizes (measured): contract 481x640, plana 695x640, 44 Lab 511x633, Spelled Guilty 428x640, Space Monkey 433x640, Procreate 411x640, Somia 336x519. */
 export const ART: Record<string, Art> = {
   contract: {
-    alt: 'Opening page of a feature in Proyecto Contract: a blue flagship store under the headline Retail hipnótico, beside a rust OPEN SPACE tab.',
+    alt: 'The inside of a grey proofing folder for Proyecto Contract: the issue cover as a press proof with crop marks, a PROOF stamp and a colour bar, tear sheets, a contact sheet under a loupe and red-pencil marks.',
     peek: { w: 481, h: 640, x: 70, rot: 3 },
     tape: [{ at: 'top', x: 78, color: 'lagoon', pattern: 'stripes', rotate: 3 }],
   },
   plana: {
-    alt: 'Plana Digital identity: the sunrise-over-a-browser symbol, the round 72 h seal and a sample social post.',
+    alt: 'The inside of a Plana Digital brand-manual binder: pages with the sunrise-over-a-browser symbol and the lockup, a website printout, colour chips, business cards and a 72 h sticker.',
     peek: { w: 695, h: 640, x: 27, rot: -3, k: 0.8 },
   },
   'fortyfour-lab': {
-    alt: 'Close-up of a hand-tufted rug in pink, lilac and mint, with the 44 Lab logo and its hand-drawn devil.',
+    alt: 'The inside of a 44 Lab job envelope: a pencil sketch of a smiley rug, a photo print of the finished rug, the hand-drawn devil as a sticker, yarn swatches and a work order.',
     peek: { w: 511, h: 633, x: 72, rot: 4 },
     tape: [{ at: 'top', color: 'bubblegum', pattern: 'dots', rotate: -2 }],
   },
   'spelled-guilty': {
-    alt: 'The Spelled Guilty paperback on a kraft table beside an open case file and word search.',
+    alt: 'The inside of a Spelled Guilty case file: the book cover as a proof, a case page with a red GUILTY stamp, a word search under a magnifying glass, index cards and red string.',
     peek: { w: 388, h: 640, x: 21, rot: -3 },
   },
   'space-monkey': {
-    alt: 'The TYLER and SMITH escape-room posters pinned side by side, with the monkey-astronaut patch.',
+    alt: 'The inside of a TOP SECRET dossier for Space Monkey: the TYLER and SMITH escape-room posters as proofs with the monkey patch, a blueprint star chart, keys on tags and a cipher wheel.',
     peek: { w: 433, h: 640, x: 25, rot: -4 },
   },
   procreate: {
-    alt: 'Two flat-colour portraits in four tones of orange, cut out like paper on a teal wall.',
+    alt: 'The inside of a pink art portfolio sleeve for Procreate Sketchbook: two portraits on sketch paper, tracing paper over one, colour swatch cards, a logo proof, a crest sticker, pencils and erasers.',
     peek: { w: 411, h: 640, x: 66, rot: 3 },
   },
   somia: {
-    alt: 'A red and blue woollen handbag carrying the Somia tag, under the Somia wordmark.',
+    alt: 'The inside of a teal Somia packaging folder: tissue paper, the SOMIA hang tag, a printed web page, a red and blue wool bag, fabric swatches, a thank-you card with a wax seal and a ribbon.',
     peek: { w: 336, h: 519, x: 22, rot: -3, k: 0.95 },
   },
   'concept-brand': {
-    alt: 'The red g and olive o of the Gotet wordmark, huge on a pink pattern, above three of its mascots: a vermouth glass with a lemon slice, an olive in a red beret and a blue soda siphon.',
+    alt: 'The inside of an olive-green Gotet back-office folder: menu cards, coasters, posters, the gotet wordmark with its mascots, a bar-tab receipt, bottle-label proofs, an order pad and a CONCEPT stamp.',
     peek: { w: 767, h: 633, x: 62, rot: 3, k: 0.8 },
   },
   'concept-portfolio': {
-    alt: 'Three slides of a fictional foley artist’s portfolio deck on a tomato-red desk: the FOLEY PORTFOLIO cover with a furry boom microphone, an I’M ONA RIBAS page and a SELECTED PROJECTS page.',
+    alt: 'The inside of a manila film-production folder: a call sheet, the slides of the Ona Ribas deck printed and fanned, film strips of the deck, a clapperboard and a sticky note.',
     peek: { w: 561, h: 628, x: 30, rot: -3, k: 0.95 },
   },
   illustration: {
-    alt: 'Four die-cut doodle stickers piled on cream paper: a rug maker with a tufting gun and a peeling corner, a skater with a boombox, a gardener carrying a huge plant and a director with a megaphone.',
+    alt: 'The inside of a lilac sticker binder: five die-cut doodle stickers on a clear sleeve, one with a peeling corner, price labels, sticker sheets, a sticker pack and a CONCEPT stamp.',
     peek: { w: 430, h: 632, x: 76, rot: 4, k: 0.95 },
   },
 }
@@ -179,6 +179,13 @@ export const ART: Record<string, Art> = {
 export const PEEK_SRC: Record<string, string> = {
   'spelled-guilty': '/works/spelled-guilty/peek-suspect.webp',
 }
+
+/**
+ * Folders whose card shows "the inside of the folder": public/works/<slug>/inside.webp (900 x 1125, 4:5), a composed picture of an open
+ * folder full of the project's papers (art-src/folders). It replaces the thumb as the print; the thumb stays for the other places that
+ * show it (catalog, search). A slug not listed here keeps its thumb.
+ */
+export const INSIDE_ART = new Set<string>(['contract', 'plana', 'fortyfour-lab', 'spelled-guilty', 'space-monkey', 'procreate', 'somia', 'concept-brand', 'concept-portfolio', 'illustration'])
 
 export interface FallbackArt {
   /** used when the registry's thumb.webp / peek.webp does not exist (yet) */

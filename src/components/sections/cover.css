@@ -246,6 +246,13 @@
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 14%, transparent), 0 3px 8px color-mix(in srgb, var(--ink) 20%, transparent);
 }
 
+/* wide cover: the seal rests in the empty column between the headline and the side column, so it never touches the lettering
+   (it used to land half on the last O of the word). The chip no longer has to dodge it. */
+.cv[data-layout='wide'] .cv__row { --stamp: clamp(8.5rem, 9.4cqw, 12rem); }
+.cv[data-layout='wide'] .cv__side { position: relative; }
+.cv[data-layout='wide'] .cv__stamp { right: auto; left: calc(var(--stamp) * -1 - 2.6cqw); top: 0.4rem; }
+.cv[data-layout='wide'] .cv__chip { max-width: none; }
+
 /* the hand-written pointer: its arrow ends on the first folder */
 .cv__note {
   display: flex;
@@ -362,7 +369,10 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
 }
 .cv-folder.pm-folder {
   /* the face minus the strip the right-hand neighbour covers (below that neighbour's top edge); the margins leave the ring and shadows alone */
-  --under-next: polygon(-60px -60px, calc(100% + 60px) -60px, calc(100% + 60px) calc(var(--tab-h) + var(--lift)), calc(100% - var(--ov)) calc(var(--tab-h) + var(--lift)), calc(100% - var(--ov)) calc(100% + 60px), -60px calc(100% + 60px));
+  /* --dxn / --dyn: the neighbour's own hand-made offset from this folder (tenths of 1cqw, Deck.tsx), so the cut follows its real top edge */
+  --cut-y: calc(var(--tab-h) + var(--lift) + var(--dyn, 0) * 0.1cqw);
+  --cut-x: calc(100% - var(--ov) + var(--dxn, 0) * 0.1cqw);
+  --under-next: polygon(-60px -60px, calc(100% + 60px) -60px, calc(100% + 60px) var(--cut-y), var(--cut-x) var(--cut-y), var(--cut-x) calc(100% + 60px), -60px calc(100% + 60px));
   position: absolute;
   inset: 0;
   width: 100%;

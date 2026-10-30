@@ -81,3 +81,12 @@ A blank manila folder drawn with `Folder dashed` (hand-wobbled pencil outline th
 ## Same-size folders (owner request): what changed and how it was checked
 `works/data.ts`: `LAYOUTS` rewritten (every folder `s`, the note 3 columns wide, the empty folder placed to close each row), `TABLET_WIDE` emptied, `f` no longer used. Nothing else changed: the CSS rules for `data-kind='f'` and `data-tw='2'` are now dead but harmless. Contract, Plana and Spelled Guilty are now 313 x 651 px at 1440 (they were 648 x 1325); the whole cabinet is 3 rows in All (about 1 970 px tall instead of 2 700 px at 1440).
 Verified (headless Chrome, reduced motion): 9 desktop widths (1100, 1200, 1280, 1366, 1440, 1600, 1700, 1920, 2560) x 6 filters: all folders have one size, no text outside its folder, no overlapping cells, no horizontal scroll; screenshots of every filter at 1440 and of All at 1920, 1100, 768 and 390; 0 console errors.
+
+## The inside of the folder (2026-10-30)
+
+The print in each card is no longer the project's thumb on a cream sheet but **the inside of the open folder**: a composed picture of the project's real papers (pages, tags, stickers, photos), one folder style per project (proofing folder, ring binder, workshop envelope, case file, dossier, sketch sleeve, unboxing folder, bar office, sticker binder, film production folder).
+
+* Files: `public/works/<slug>/inside.webp` (900 x 1125, 4:5). The slugs that have one are listed in `INSIDE_ART` (`works/data.ts`); a slug that is not listed (or whose file fails) keeps its thumb, so nothing 404s. The thumb stays for the other places that show it.
+* Source: `art-src/folders/` (`lib.mjs` the kit, one `<slug>.mjs` per folder, `render.mjs` prints 1080 x 1350, `export.py` writes the WebPs). Order: `node art-src/folders/render.mjs <slug>`, then `python art-src/folders/export.py <slug>`.
+* Crop: the print box is 4:5 on tablets and phones, but on desktop it takes what the words leave (about 1.5:1, and about 2.7:1 on the three concept cards, which keep a strip free for the CONCEPT stamp). `object-fit: cover` crops top and bottom, never the sides, so every picture keeps its identity inside the band y 430 to 920 and fills the rest with paper.
+* CSS (`works.css`): `.pm-wk-print[data-inside]` is the open pocket: no cream border, no tape, a lip and an inner shadow, centred crop (it overrides the per-folder `object-position` rules).

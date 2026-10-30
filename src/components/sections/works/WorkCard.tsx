@@ -17,7 +17,7 @@ import { folderLayoutId, openWork, workHref } from '@/lib/router'
 import { CATEGORY_LABEL, type WorkMeta } from '@/lib/works'
 import { loadWorldFonts } from '@/worlds/fonts'
 import { prefetchWorld } from '@/worlds/registry'
-import { ART, FALLBACK, OFFICIAL_ART, PEEK_SRC, POSES, type Cell, type FilterId, type PeekArt } from './data'
+import { ART, FALLBACK, INSIDE_ART, OFFICIAL_ART, PEEK_SRC, POSES, type Cell, type FilterId, type PeekArt } from './data'
 import { WORKS_UI } from './strings'
 
 /** a folder lands when it is 90px short of the fold: the peek and the tab are seen arriving, and a short viewport (a 768px laptop) never shows a blank band under the rail */
@@ -141,7 +141,9 @@ export function WorkCard({ work, cell, filter, still, flat, index }: WorkCardPro
   const category = filter === 'all' || !work.categories.includes(filter) ? work.categories[0] : filter
   const tabLabel = CATEGORY_LABEL[category]
 
-  const fail = (what: 'thumb' | 'peek') => () => {
+  // the inside of the folder (a composed picture of its papers) is the print where the folder has one; if its file fails the thumb takes over
+  const inside = INSIDE_ART.has(work.slug) && !failedArt.has(`${work.slug}:inside`)
+  const fail = (what: 'thumb' | 'peek' | 'inside') => () => {
     failedArt.add(`${work.slug}:${what}`)
     bump()
   }
@@ -183,6 +185,8 @@ export function WorkCard({ work, cell, filter, still, flat, index }: WorkCardPro
         style={{ objectPosition: fallback.thumb.pos }}
       />
     )
+  } else if (inside) {
+    print = <img src={asset(`/works/${work.slug}/inside.webp`)} alt={art.alt} width={900} height={1125} loading="lazy" decoding="async" draggable={false} onError={fail('inside')} />
   } else {
     print = <img src={asset(work.thumb)} alt={art.alt} width={720} height={900} loading="lazy" decoding="async" draggable={false} onError={fail('thumb')} />
   }
@@ -272,9 +276,9 @@ export function WorkCard({ work, cell, filter, still, flat, index }: WorkCardPro
       {...motionProps}
     >
       {peek}
-      <span className="pm-wk-print" style={{ '--prot': `${pose.prot}deg` } as CSSProperties}>
+      <span className="pm-wk-print" data-inside={inside && !thumbFailed ? '' : undefined} style={{ '--prot': `${pose.prot}deg` } as CSSProperties}>
         {print}
-        {art.tape?.map((tape) => (
+        {!inside && art.tape?.map((tape) => (
           <Tape
             key={tape.at}
             at={tape.at}

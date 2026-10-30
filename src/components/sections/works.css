@@ -425,7 +425,12 @@ html.js .pm-wk__ghost {
     justify-self: end;
   }
 }
-@media (min-width: 1700px) {
+/* ... and on the wide row only where the rail really has room for holder + six tabs + plate (about 1540px); a narrower rail on a wide screen
+   (a capped page) used to squeeze the last tab under the plate. The rail is the container, so the plate asks the rail, not the window. */
+.pm-wk-rail {
+  container: wkrail / inline-size;
+}
+@container wkrail (min-width: 1580px) {
   .pm-wk-pull {
     display: flex;
     align-items: flex-end;
@@ -769,6 +774,31 @@ html.js .pm-wk__ghost {
   .pm-wk-cell .pm-wk-text {
     flex: none;
   }
+}
+/* the inside of the folder: the print is not a photo on a cream sheet any more but the open pocket itself: the picture runs edge to edge,
+   a little recessed (inner shadow and a lip) and level (no tilt, no tape). Its middle band is what wide screens show, so the crop is centred. */
+.pm-wk-print[data-inside] {
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--fc, #888) 55%, var(--ink));
+  background-image: none;
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--fc, #888) 70%, var(--ink)), 0 14px 14px -12px color-mix(in srgb, var(--ink) 55%, transparent);
+  transform: rotate(calc(var(--prot, 0deg) * 0.3));
+}
+.pm-wk-card[data-slug] .pm-wk-print[data-inside] > img {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-position: 50% 50%;
+}
+.pm-wk-print[data-inside]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ink) 45%, transparent), inset 0 9px 12px -7px rgba(0, 0, 0, 0.5), inset 0 -6px 10px -8px rgba(0, 0, 0, 0.35);
 }
 /* the crop of each print when the box is not 4:5 (a window onto the 4:5 art that keeps the recognisable part in view) */
 .pm-wk-card[data-slug='contract'] .pm-wk-print > img {

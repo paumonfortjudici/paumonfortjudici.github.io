@@ -309,7 +309,7 @@ export const GROUPS: Record<GroupId, GroupCopy> = {
     sub: 'Four things from the vermut table, one colour each',
     lines: [
       'Gotet the glass, Oliva the olive, Sifó the siphon and Xip the crisp. Each owns one colour, so the cast is the palette.',
-      'One pen for all four: a Tinta outline of 12 units on big shapes and 7 on details, round caps, flat colour, a hard ground shadow and light from the top left. I treat that as the family code.',
+      'One pen for all four, in a 90s rubber-hose style: a thick even Tinta outline, flat colour with one lighter and one darker shape per body, white gloves, chunky sneakers, a flat ground ellipse and light from the top left. I treat that as the family code.',
       'Faces live only on these four. Letters, packaging and the pattern never get one.',
     ],
   },
@@ -443,11 +443,11 @@ export const MASCOT_COPY: Record<MascotId, MascotCopy> = {
 }
 
 export const CAST_RULES: { title: string; body: string }[] = [
-  { title: 'One pen', body: 'Tinta outline: 12 units on big shapes, 7 on details, 5 on the tiniest marks. Round caps, round joins, no other weights.' },
-  { title: 'Flat colour', body: 'No gradients, glows or bevels. Depth comes from a hard ground shadow and a little grain.' },
-  { title: 'One light', body: 'It always comes from the top left: one pink shine stroke per body.' },
-  { title: 'Same eyes', body: 'Pink whites with a dark pupil and a glint, so faces read on blue and on red.' },
-  { title: 'Noodle limbs', body: 'Two arms, two legs, pink gloves, big dark shoes. The 1930s rubber-hose look.' },
+  { title: 'One pen', body: 'A thick, even Tinta outline round every shape, half that weight for detail lines inside. Round caps, round joins, never sketchy, never thin.' },
+  { title: 'Flat colour', body: 'No gradients, glows or bevels. Each body gets one lighter and one darker hard-edged shape, a flat ground ellipse and a few sparkles.' },
+  { title: 'One light', body: 'It always comes from the top left: one lighter shape and a small white glint per body.' },
+  { title: 'Same eyes', body: 'Big white ovals with a thick outline, a big dark pupil and a glint, so faces read on blue and on red.' },
+  { title: 'Noodle limbs', body: 'Two arms and two legs of one thickness, white three-finger gloves, chunky sneakers with white soles. The 90s rubber-hose look.' },
 ]
 
 export const CAST_HEIGHTS = 'Heights, tallest first: Sifó 1, Oliva 0.81, Gotet 0.71, Xip 0.65. They always share one scale.'

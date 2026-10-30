@@ -159,7 +159,7 @@ export const ART: Record<string, Art> = {
   },
   'concept-brand': {
     alt: 'The inside of an olive-green Gotet back-office folder: menu cards, coasters, posters, the gotet wordmark with its mascots, a bar-tab receipt, bottle-label proofs, an order pad and a CONCEPT stamp.',
-    peek: { w: 767, h: 633, x: 62, rot: 3, k: 0.8 },
+    peek: { w: 644, h: 633, x: 62, rot: 3, k: 0.9 },
   },
   'concept-portfolio': {
     alt: 'The inside of a manila film-production folder: a call sheet, the slides of the Ona Ribas deck printed and fanned, film strips of the deck, a clapperboard and a sticky note.',

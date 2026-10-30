@@ -45,7 +45,7 @@ export const PEEK_SIZE: Record<string, readonly [number, number]> = {
   'space-monkey': [433, 640],
   procreate: [411, 640],
   somia: [336, 519],
-  'concept-brand': [767, 633],
+  'concept-brand': [644, 633],
   'concept-portfolio': [561, 628],
   illustration: [430, 632],
 }

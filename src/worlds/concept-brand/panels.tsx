@@ -348,7 +348,7 @@ export function CastPanel({ item, onSelect }: { item: string | null; onSelect: P
           </li>
         ))}
       </ul>
-      <p className="w-concept-brand-note">Four faces, one grammar: pink whites with a dark pupil, a pink blush, and one of four mouths.</p>
+      <p className="w-concept-brand-note">Four faces, one grammar: big white eyes with a dark pupil, a pink blush, and one of four mouths.</p>
       <Bar>{BAR_LABEL.pen}</Bar>
       <ul className="w-concept-brand-list">
         {CAST_RULES.map((r) => (

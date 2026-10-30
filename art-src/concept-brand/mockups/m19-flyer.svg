@@ -18,7 +18,7 @@
 <filter id="soft-shadow-xs" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="1.5" dy="2.5" stdDeviation="2" flood-color="#211736" flood-opacity="0.28"/></filter>
 <filter id="grain" filterUnits="userSpaceOnUse" x="0" y="0" width="329" height="392" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="4" result="t"/><feColorMatrix in="t" type="matrix" values="0 0 0 0 0.129  0 0 0 0 0.090  0 0 0 0 0.208  0 0 0 -8 3.0" result="speck"/><feComposite in="speck" in2="SourceAlpha" operator="in"/></filter>
 <clipPath id="sheet-clip"><rect width="258" height="364" rx="4"/></clipPath>
-<clipPath id="xip-clip"><rect x="0" y="110" width="258" height="260"/></clipPath>
+<clipPath id="xip-clip"><rect x="0" y="98" width="258" height="272"/></clipPath>
 </defs>
 <g id="tile"><rect width="329" height="392" rx="28" fill="#FFD34E"/><rect width="329" height="392" rx="28" fill="#000" filter="url(#grain)" opacity="0.16"/></g>
 <g id="flyer" transform="translate(35.5 14)">
@@ -29,7 +29,7 @@
 <text class="fr" x="18" y="62" font-size="40" font-weight="900" fill="#FFD34E">VERMUT</text>
 <text class="fr" x="18" y="102" font-size="40" font-weight="900" fill="#FFD34E">I VINILS</text>
 <g id="vinyl"><circle cx="102" cy="200" r="76" fill="#211736"/><path d="M102 200 L33.4 175.03 A73 73 0 0 1 57.06 142.48 Z" fill="#2340C0"/><path d="M102 200 L170.6 224.97 A73 73 0 0 1 146.94 257.52 Z" fill="#2340C0"/><g fill="none" stroke="#211736" stroke-width="1.6"><circle cx="102" cy="200" r="67"/><circle cx="102" cy="200" r="56"/><circle cx="102" cy="200" r="45"/><circle cx="102" cy="200" r="34"/></g><g fill="none" stroke="#2340C0" stroke-width="1.6"><circle cx="102" cy="200" r="71.5"/><circle cx="102" cy="200" r="61.5"/><circle cx="102" cy="200" r="50.5"/><circle cx="102" cy="200" r="39.5"/></g><circle cx="102" cy="200" r="27.36" fill="#FFD34E"/><circle cx="102" cy="200" r="22.36" fill="none" stroke="#211736" stroke-width="2"/><circle cx="102" cy="200" r="4.2" fill="#211736"/></g>
-<image href="../mascots/xip-b.svg" x="109" y="50" width="150" height="165" clip-path="url(#xip-clip)"/>
+<image href="../mascots/xip-b.svg" x="114.6" y="75" width="131" height="144.1" clip-path="url(#xip-clip)"/>
 <rect id="panel" x="14" y="278" width="230" height="72" rx="8" fill="#F8D2D0"/>
 <text class="bs" x="24" y="297" font-size="12" font-weight="800" letter-spacing="2" fill="#2340C0">Cada diumenge a les 12 h</text>
 <text class="bs" x="24" y="311" font-size="10" font-weight="600" fill="#211736">Discos de vinil, olives i un raig de sifó.</text>

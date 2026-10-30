@@ -300,10 +300,10 @@ export interface Mascot {
 }
 
 export const MASCOTS: Mascot[] = [
-  { id: 'gotet', name: 'Gotet', cx: 496, colour: 'vermell', hit: { x: 222, y: 381, w: 500, h: 690 }, tip: { x: 47, y: 380 }, bob: { dur: 3.4, delay: -0.4 } },
-  { id: 'oliva', name: 'Oliva', cx: 1046, colour: 'oliva', hit: { x: 154, y: 290, w: 755, h: 780 }, tip: { x: 50, y: 300 }, bob: { dur: 3.9, delay: -1.7 } },
-  { id: 'sifo', name: 'Sifó', cx: 1726, colour: 'blau', hit: { x: 227, y: 110, w: 540, h: 960 }, tip: { x: 46, y: 130 }, bob: { dur: 3.1, delay: -2.3 } },
-  { id: 'xip', name: 'Xip', cx: 2386, colour: 'mantega', hit: { x: 100, y: 434, w: 800, h: 636 }, tip: { x: 52, y: 440 }, bob: { dur: 3.7, delay: -0.9 } },
+  { id: 'gotet', name: 'Gotet', cx: 496, colour: 'vermell', hit: { x: 271, y: 373, w: 459, h: 696 }, tip: { x: 47, y: 380 }, bob: { dur: 3.4, delay: -0.4 } },
+  { id: 'oliva', name: 'Oliva', cx: 1046, colour: 'oliva', hit: { x: 117, y: 285, w: 766, h: 784 }, tip: { x: 50, y: 300 }, bob: { dur: 3.9, delay: -1.7 } },
+  { id: 'sifo', name: 'Sifó', cx: 1726, colour: 'blau', hit: { x: 158, y: 108, w: 685, h: 961 }, tip: { x: 46, y: 130 }, bob: { dur: 3.1, delay: -2.3 } },
+  { id: 'xip', name: 'Xip', cx: 2386, colour: 'mantega', hit: { x: 137, y: 405, w: 727, h: 664 }, tip: { x: 52, y: 415 }, bob: { dur: 3.7, delay: -0.9 } },
 ]
 
 export const MASCOT: Record<MascotId, Mascot> = Object.fromEntries(MASCOTS.map((m) => [m.id, m])) as Record<MascotId, Mascot>

@@ -95,3 +95,14 @@ Read only: `art/board.webp`, `board-small.webp`, `board-hotspots.json`, `brand/*
 * **Dial**: reads FIT at the fit and then 2.4x, 3.0x ... relative to the fit (`store.fit`, `store.tenths`); the raw percent is in the aria-label.
 * **Panel**: the overview has one action (Take the tour); the brand kit tab lives at the bottom left only.
 * **Touch**: on a coarse pointer the first tap on a tile of another group flies to that group, the next tap picks the piece (tiles are 20 px high on the whole-board view).
+
+
+## 12. The cast redrawn (2026-10-30)
+
+The four mascots were redrawn in a **90s rubber-hose style** (thick even ink outline, flat colour with one lighter and one darker hard shape, huge white eyes, white three-finger gloves, chunky sneakers, a flat ground ellipse, sparkles); the characters, props, names, personalities and colours are the same. Prompts: `docs/image-prompts.md` (GT, v15); results GT-01..13.
+
+* `tools/ingest_gotet.py <folder>`: keys the cyan floor, finds each character's core (body, limbs, shoes, ground ellipse), scales each character with one factor (the core of pose A as tall as the old one, never wider than 1560) and puts every pose on the OLD canvas (2000 x 2200, ground ellipse ending on y 2138, core centred on x 1000; heads 2000 x 2000), so the mockups, posters, board and hit areas did not move. Splits the four-face sheets into E1 Hola / E2 Xin-xin / E3 Psst / E4 Mmm (`FACES` picks head-1 and head-2 of each character). The two "clean" Sifó versions (no soda arc, used by the posters) are the same art with the arc erased (`ERASE` boxes). Writes `mascot-*.webp`, `brand/s/*`, and the SVG wrappers in `art-src/concept-brand/mascots/` (raster inside a vector wrapper, so `<image href="../mascots/x.svg">` keeps working everywhere). The old 1930s vectors are in `mascots/_1930s/`.
+* `MASCOTS[].hit` in `data.ts` was re-measured from the new cores (`mascots.json`).
+* Pieces that changed: the 20 mockups and 3 posters (same SVG sources, re-rendered; m03, m04, m11, m19 and poster 3 had their cast placement adjusted), `board.webp` (+ small, bottom), `brand/cast.webp`, `cast-sheet.webp`, the Works card thumb / peek (`tools/build_gotet_cards.py`) and the folder interior. Render and export order: see the header of `tools/export_gotet.py`.
+* **M11 House siphon**: the pump head used to be a pasted vector that floated off the neck. It is now drawn in the mockup itself and sits on the bottle's neck (spout, lever knob and a collar over the neck).
+* Copy: the cast rules of the panel (`CAST_RULES`, `cast.lines`) now describe the 90s look.

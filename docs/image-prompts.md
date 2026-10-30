@@ -1517,3 +1517,183 @@ Format: landscape 4:3, full bleed, no border, no text.
 2. I add the frame, masking tape, a hard blue-black offset shadow, and extra pink scribbles in code over the edges so they cross into the neighbouring pieces.
 3. A light paper grain and a few pixels of colour misregistration so the panels sit with the hand-drawn pieces. If Pau prefers them perfectly flat like the reference, I leave them clean.
 4. The rest (text, layout, sheet, thumbs, pins) is the same as v12.
+
+---
+
+## GT: the Gotet cast redrawn in a 90s retro rubber-hose style (v15, 2026-10-30)
+
+Pau loves the 90s retro illustration of the whole Gotet brand but not how the CAST is executed (four mascots: Gotet the little glass, Oliva the olive in a barretina, Sifó the soda siphon, Xip the crisp). New reference: `_inbox/refs/STYLE-RETRO.jpg` (a retro font specimen with rubber-hose mascots: thick ink outline, flat saturated colour with a lighter and a darker hard shape, huge white cartoon eyes, white 3-finger gloves, chunky sneakers, a flat dark ground ellipse, sparkles). Only the drawing style is copied; the characters, props, names, personalities and brand colours stay.
+
+### Files and names
+- Results go to `C:\Users\User\Documents\Portofolio\_inbox\gotet\` named with their ID (`GT-01.png` ...). Several versions: add a letter (`GT-01b.png`).
+- References (in `_inbox\refs\`): `STYLE-RETRO.jpg` (the style), `GT-REF-cast.jpg` (the four characters today, whole sheet), `GT-REF-gotet.png`, `GT-REF-oliva.png`, `GT-REF-sifo.png`, `GT-REF-xip.png` (one column each: pose A, pose B and the two heads of today).
+- What a character needs (the site's files): pose A, pose B, and the faces E1 Hola / E2 Xin-xin / E3 Psst / E4 Mmm as heads. Today's choices: Gotet A "Hug the cube" (Mmm), B "Jump!" (Xin-xin); Oliva A "Wave and flag" (Hola), B "Tip the cap" (Mmm); Sifó A "Press the lever" (Hola), B "Pour and wink" (Psst); Xip A "Shrug" (Psst), B "Dance" (Xin-xin).
+
+### Order (ONE chat for all, so the family stays a family)
+Rules message, then GT-01 (Gotet A) and approve it. Every later prompt also attaches the approved GT-01 as the family look. Then GT-02, GT-03 (Gotet), GT-04 to GT-06 (Oliva), GT-07 to GT-09 (Sifó), GT-10 to GT-12 (Xip), and last GT-13 (the four together).
+
+### Rules message (new chat; attach `STYLE-RETRO.jpg` and `GT-REF-cast.jpg`; reply "ready")
+```text
+This chat redraws the CAST of Gotet, an invented vermuteria (a Catalan vermouth bar) in Cardedeu, as a family of four cartoon mascots. I will send one request per picture. Reply "ready" and nothing else.
+
+THE TWO IMAGES. STYLE-RETRO is the DRAWING STYLE to copy: a 90s retro rubber-hose cartoon. Copy ONLY how it is drawn. Never copy its words, fonts, layouts, windows, stickers, or its sun, camera and cup characters, and not its colours. GT-REF-cast shows the four characters as they are today: keep WHO they are (shape, props, name), redraw them in the new style.
+
+THE CAST (never change who they are):
+1. GOTET, "the little glass": a short tumbler is his body, filled with red vermouth, two pale ice cubes at the top, a lemon slice on the rim. Gentle, shy, sunny; he blushes first and talks second. Catch phrase "Un gotet?".
+2. OLIVA, "the olive in a barretina": a green olive with a red Catalan barretina (a soft long red cap that flops to one side) and a banderilla (a thin cocktail stick with a small pennant flag). The host: warm, talkative, welcomes everybody. "Passa, passa!"
+3. SIFO, "the soda siphon": the tallest, a slim blue siphon bottle with a brass-yellow pump head, a lever, a spout and a red bow tie. The maître: dramatic, vain, bubbly. "Psssh!"
+4. XIP, "the crisp": a ruffled yellow potato crisp with a bite taken out of its top right edge. The joker: dry wit, one raised eyebrow, one wink. "Crec!"
+
+STYLE LOCK (identical for every picture in this chat):
+- OUTLINE: one bold, even, blue-black ink line (#211736) round every shape, very thick (about 1.5 percent of the picture height), round line ends; inner detail lines at half that weight. Clean and confident, never sketchy, never thin.
+- COLOUR: flat opaque fills in the brand colours only: vermouth red #D8283B, olive green #86A22F, siphon blue #2340C0, butter yellow #FFD34E, pale pink #F8D2D0, white, ink #211736. Each body has ONE lighter hard-edged highlight shape (top left) and ONE darker hard-edged shade shape (bottom right), plus one or two tiny white glints. No gradients, no soft shading, no texture, no glow, no 3D.
+- EYES AND FACE: huge cartoon eyes: two tall white ovals with a thick ink outline, big black pupils with a small white glint, short thick eyebrows. A wide mouth with an ink outline, deep red inside, a pink tongue and white teeth when open. Two flat round pink cheek ovals.
+- LIMBS: thin black noodle arms and legs of one constant thickness (rubber hose), no elbows or knees. Hands are white cartoon gloves with THREE fingers and a thumb, a thick outline and a small cuff. Feet are chunky 90s sneakers with a white toe cap and a thick white sole and two short lace lines.
+- GROUND SHADOW: a flat solid ink-coloured ellipse under the feet (not for heads, not when a character is in the air: then it floats far below).
+- SPARKLES: one to three four-point sparkles (white or butter yellow, ink outline) near the character, and tiny motion marks where it moves.
+- LIFE: bouncy, slightly asymmetric poses, a big round chunky body, short legs. It must look inked by a human cartoonist, not generated: simple bold shapes, small imperfections in the line, no tiny details.
+- NOT: thin outlines, pastel, gradients, glossy or 3D, realistic, anime, a vector look without outlines, background pattern, props that were not named, extra characters.
+
+BACKGROUND. Perfectly flat cyan #00E5FF over the whole picture, edge to edge (a working colour I will remove). No gradient, no texture, no floor, no cast shadow except the character's own ink ellipse. Nothing in the characters may be cyan. Leave at least 8 percent of empty cyan all round.
+
+TEXT. No letters, words or numbers anywhere.
+```
+
+### The prompts
+
+**GT-01 · Gotet, pose A "Hug the cube"** (attach `GT-REF-gotet.png` and `STYLE-RETRO.jpg`)
+```text
+Attach GT-REF-gotet.png (IMAGE 1: what to draw: Gotet, the character and his props only) and STYLE-RETRO.jpg (IMAGE 2: how to draw it).
+Draw ONE full-body picture of GOTET, the little glass, in pose A "Hug the cube", in the 90s rubber-hose style of the rules.
+CHARACTER: a short tumbler is his body: pale glass rim, red vermouth #D8283B inside with a lighter highlight shape and a darker shade shape, two pale ice cubes floating at the top, three tiny bubbles, a butter-yellow #FFD34E lemon slice with a red rim perched on the upper left of the rim.
+FACE (Mmm): eyes closed in two happy arches with thick lashes, two flat pink cheeks, a small content closed smile.
+POSE: standing, three-quarter view, both white gloves hugging a big pale ice cube against his chest, shoulders hunched shyly, one noodle leg slightly bent. Blue #2340C0 sneakers with white soles. One sparkle at the upper right. Flat ink ground ellipse.
+Format: portrait 4:5, the figure filling 85 percent of the height, flat cyan #00E5FF background, no text.
+```
+
+**GT-02 · Gotet, pose B "Jump!"** (attach `GT-REF-gotet.png`, `STYLE-RETRO.jpg` and the approved `GT-01.png`)
+```text
+Attach GT-REF-gotet.png (IMAGE 1: what to draw), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look: copy its line weight, eyes, gloves and sneakers exactly).
+Draw ONE full-body picture of GOTET in pose B "Jump!": the same character as in IMAGE 3.
+FACE (Xin-xin): eyes squeezed into joyful arches, a huge open laughing mouth with a pink tongue, flat pink cheeks.
+POSE: mid-air leap, both arms thrown up with open white gloves, legs kicked out in a rubber-hose scissor, sneakers pointing in different directions; a few red vermouth drops and one ice cube flying out of the top; the lemon slice bouncing on the rim. Two sparkles and three small motion marks. The ink ground ellipse floats far below the feet, small and flat.
+Format: portrait 4:5, the figure filling 85 percent of the height, flat cyan #00E5FF background, no text.
+```
+
+**GT-03 · Gotet, the four faces** (same attachments as GT-02)
+```text
+Attach GT-REF-gotet.png (IMAGE 1: what to draw), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look).
+Draw FOUR HEADS of GOTET in one row, evenly spaced, all the same size. "Head" means the glass body only, with its lemon slice, ice and bubbles: NO arms, NO legs, NO gloves, NO sneakers, no ground shadow.
+From left to right, four faces:
+E1 HOLA: a wide open smile with teeth and tongue, eyes wide open, one eyebrow raised.
+E2 XIN-XIN: eyes squeezed into joyful arches, a huge open laughing mouth.
+E3 PSST: one eye winking, the other wide open, a mouth smirking to one side with the tongue sticking out.
+E4 MMM: eyes closed in relaxed arches, a small closed content smile, extra rosy cheeks.
+Everything else identical in the four. Format: landscape 3:2, one row, flat cyan #00E5FF background, no text.
+```
+
+**GT-04 · Oliva, pose A "Wave and flag"** (attach `GT-REF-oliva.png`, `STYLE-RETRO.jpg`, approved `GT-01.png`)
+```text
+Attach GT-REF-oliva.png (IMAGE 1: what to draw: Oliva, the character and her props only), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look: copy its line weight, eyes, gloves and sneakers exactly).
+Draw ONE full-body picture of OLIVA, the olive in a barretina, in pose A "Wave and flag".
+CHARACTER: a plump green olive #86A22F as the body with a lighter highlight shape and a darker shade shape; on top a red #D8283B barretina, a soft long Catalan cap that flops over to the right with a darker red shade and a white glint; in one glove a thin butter-yellow cocktail stick (a banderilla) with a small red pennant flag at the top.
+FACE (Hola): a wide open welcoming smile, eyes wide, flat pink cheeks.
+POSE: standing, leaning slightly forward, one white glove waving high, the other holding the stick planted on the ground like a flagpole. Red sneakers with white soles. Two sparkles. Flat ink ground ellipse.
+Format: portrait 4:5, the figure filling 85 percent of the height, flat cyan #00E5FF background, no text.
+```
+
+**GT-05 · Oliva, pose B "Tip the cap"**
+```text
+Attach GT-REF-oliva.png (IMAGE 1: what to draw), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look).
+Draw ONE full-body picture of OLIVA in pose B "Tip the cap": the same character as in IMAGE 1.
+FACE (Mmm): eyes closed in relaxed arches, a small content closed smile, rosy cheeks.
+POSE: a stylish greeting: one white glove lifts the barretina off the top of her head by its tip, the other holds the banderilla at her side; one foot stepping forward, the other heel up. Red sneakers with white soles. One sparkle by the lifted cap, a few small motion marks. Flat ink ground ellipse.
+Format: portrait 4:5, the figure filling 85 percent of the height, flat cyan #00E5FF background, no text.
+```
+
+**GT-06 · Oliva, the four faces**
+```text
+Attach GT-REF-oliva.png (IMAGE 1: what to draw), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look).
+Draw FOUR HEADS of OLIVA in one row, evenly spaced, all the same size. "Head" means the olive body with her red barretina only: NO arms, NO legs, NO gloves, NO sneakers, NO banderilla, no ground shadow.
+From left to right: E1 HOLA (wide open smile with teeth and tongue, eyes wide, one eyebrow raised), E2 XIN-XIN (eyes squeezed into joyful arches, a huge open laughing mouth), E3 PSST (one eye winking, a smirk to one side with the tongue out), E4 MMM (eyes closed in relaxed arches, a small closed content smile, extra rosy cheeks).
+Everything else identical in the four. Format: landscape 3:2, one row, flat cyan #00E5FF background, no text.
+```
+
+**GT-07 · Sifó, pose A "Press the lever"**
+```text
+Attach GT-REF-sifo.png (IMAGE 1: what to draw: Sifó, the character only), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look: copy its line weight, eyes, gloves and sneakers exactly).
+Draw ONE full-body picture of SIFO, the soda siphon, in pose A "Press the lever".
+CHARACTER: the tallest of the cast: a slim blue #2340C0 siphon bottle as the body with a lighter highlight shape, a darker shade shape and tiny white bubbles, a brass-yellow #FFD34E pump head with a lever and a curved spout, a red #D8283B bow tie at the neck.
+FACE (Hola): wide open showman smile, eyes wide, one eyebrow raised, flat pink cheeks.
+POSE: standing very upright and proud, one white glove raised high pressing the lever on top, a thin white arc of soda spraying out of the spout and ending in a few round bubbles, the other glove on his hip. Butter-yellow sneakers with white soles. Two sparkles. Flat ink ground ellipse.
+Format: portrait 4:5, the figure filling 88 percent of the height, flat cyan #00E5FF background, no text.
+```
+
+**GT-08 · Sifó, pose B "Pour and wink"**
+```text
+Attach GT-REF-sifo.png (IMAGE 1: what to draw), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look).
+Draw ONE full-body picture of SIFO in pose B "Pour and wink": the same character as in IMAGE 1.
+FACE (Psst): one eye winking, the other wide open, a smirk to one side with the tongue sticking out, flat pink cheeks.
+POSE: the body tilted back in a dramatic lean, one white glove on the lever, the spout pointing up and to the right with a long soda arc ending in bubbles, the other glove giving a thumbs-up; one leg kicked back. Butter-yellow sneakers with white soles. Two sparkles. Flat ink ground ellipse.
+Format: portrait 4:5, the figure filling 88 percent of the height, flat cyan #00E5FF background, no text.
+```
+
+**GT-09 · Sifó, the four faces**
+```text
+Attach GT-REF-sifo.png (IMAGE 1: what to draw), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look).
+Draw FOUR HEADS of SIFO in one row, evenly spaced, all the same size. "Head" means the blue bottle with its brass pump head and red bow tie only: NO arms, NO legs, NO gloves, NO sneakers, no soda arc, no ground shadow.
+From left to right: E1 HOLA (wide open smile with teeth and tongue, eyes wide, one eyebrow raised), E2 XIN-XIN (eyes squeezed into joyful arches, a huge open laughing mouth), E3 PSST (one eye winking, a smirk to one side with the tongue out), E4 MMM (eyes closed in relaxed arches, a small closed content smile, extra rosy cheeks).
+Everything else identical in the four. Format: landscape 3:2, one row, flat cyan #00E5FF background, no text.
+```
+
+**GT-10 · Xip, pose A "Shrug"**
+```text
+Attach GT-REF-xip.png (IMAGE 1: what to draw: Xip, the character only), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look: copy its line weight, eyes, gloves and sneakers exactly).
+Draw ONE full-body picture of XIP, the crisp, in pose A "Shrug".
+CHARACTER: a round ruffled potato crisp as the body, butter yellow #FFD34E with a lighter highlight shape, a darker shade shape, a few tiny crisp-seasoning dots, and a clean round bite taken out of the top right edge with two tiny crumbs.
+FACE (Psst): one eyebrow raised high, one eye winking, a smirk to one side with the tongue out, flat pink cheeks. Dry humour.
+POSE: standing, both white gloves held out to the sides with palms up in a big shrug, shoulders up, one foot crossed over the other. Blue #2340C0 sneakers with white soles. One sparkle. Flat ink ground ellipse.
+Format: portrait 4:5, the figure filling 85 percent of the height, flat cyan #00E5FF background, no text.
+```
+
+**GT-11 · Xip, pose B "Dance"**
+```text
+Attach GT-REF-xip.png (IMAGE 1: what to draw), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look).
+Draw ONE full-body picture of XIP in pose B "Dance": the same character as in IMAGE 1.
+FACE (Xin-xin): eyes squeezed into joyful arches, a huge open laughing mouth, flat pink cheeks.
+POSE: a retro dance move: one leg kicked high, the other bent, one white glove pointing up and the other swinging down, the body tilted. Blue sneakers with white soles. Two sparkles and four small music-like motion marks (no notes, only dashes and dots). Flat ink ground ellipse.
+Format: portrait 4:5, the figure filling 85 percent of the height, flat cyan #00E5FF background, no text.
+```
+
+**GT-12 · Xip, the four faces**
+```text
+Attach GT-REF-xip.png (IMAGE 1: what to draw), STYLE-RETRO.jpg (IMAGE 2: how to draw it) and the approved GT-01.png (IMAGE 3: the family look).
+Draw FOUR HEADS of XIP in one row, evenly spaced, all the same size. "Head" means the crisp body with its bite only: NO arms, NO legs, NO gloves, NO sneakers, no ground shadow.
+From left to right: E1 HOLA (wide open smile with teeth and tongue, eyes wide, one eyebrow raised), E2 XIN-XIN (eyes squeezed into joyful arches, a huge open laughing mouth), E3 PSST (one eye winking, a smirk to one side with the tongue out), E4 MMM (eyes closed in relaxed arches, a small closed content smile, extra rosy cheeks).
+Everything else identical in the four. Format: landscape 3:2, one row, flat cyan #00E5FF background, no text.
+```
+
+**GT-13 · The family** (attach `STYLE-RETRO.jpg` and the four approved poses A: `GT-01.png`, `GT-04.png`, `GT-07.png`, `GT-10.png`)
+```text
+Attach the four approved characters (IMAGES 1 to 4: Gotet, Oliva, Sifo and Xip: keep each one exactly as drawn) and STYLE-RETRO.jpg (IMAGE 5: the style).
+Draw ALL FOUR TOGETHER in one picture, standing shoulder to shoulder in a row, facing the viewer, in this order from left to right: Gotet, Oliva, Sifo (the tallest, clearly taller than the others), Xip. Each one in a friendly pose of its own (Gotet hugging his ice cube, Oliva waving with her flag, Sifo with a hand on the lever, Xip shrugging), all looking at the viewer, slightly overlapping at the gloves and sneakers. One shared flat ink ground ellipse under each pair of feet. Three sparkles between them. Same style, same line weight, same colours as the approved characters.
+Format: landscape 3:2, the group filling 90 percent of the width, flat cyan #00E5FF background, no text.
+```
+
+### One-line fixes (paste in the same chat)
+- Thin or sketchy line: `The outline is too thin. Redraw with one bold even blue-black ink line, very thick, round line ends, thinner inner lines at half weight.`
+- Gradients, 3D or glossy: `No gradients, no soft shading, no 3D, no gloss. Flat colour with one lighter hard shape and one darker hard shape only.`
+- Not retro enough: `Closer to STYLE-RETRO: huge white cartoon eyes, white three-finger gloves, chunky sneakers with white soles, noodle limbs, a bouncy pose.`
+- Looks generated or too perfect: `Make it feel inked by a human cartoonist: slightly asymmetric, a few small imperfections in the line, simpler shapes, no tiny details.`
+- Wrong hands: `White gloves with exactly three fingers and a thumb on each hand, a thick outline, a small cuff.`
+- Character drifts: `Keep the character exactly as in IMAGE 3 (the approved one): same body shape, props, eye style, gloves and sneakers.`
+- Off-brand colours: `Use only these colours: #D8283B, #86A22F, #2340C0, #FFD34E, #F8D2D0, white and ink #211736.`
+- Background not flat or has cyan on the character: `The background must be one perfectly flat cyan #00E5FF with nothing else; nothing in the character may be cyan.`
+- It has writing: `Remove all letters and words: no text anywhere.`
+- Sifó without the water (for the clean versions I need): `The same picture, same pose, but remove the soda arc and every bubble. Nothing else changes.`
+- Heads have a body: `Heads only: no arms, no legs, no gloves, no shoes, no ground shadow.`
+
+### What I do with it (no work for Pau)
+1. `tools/ingest_gotet.py`: key out the cyan, trim, split each four-faces sheet into its four heads, name the files `mascot-<name>-a / -b / -head-1 / -head-2` with the faces the copy says (Gotet E4 + E2, Oliva E1 + E4, Sifó E1 + E3, Xip E3 + E2) and keep all sixteen faces for the panel.
+2. Rebuild `cast.webp`, `cast-sheet.webp` and the small copies in `brand/s/`; the live top zone of the board takes the new files by itself; update the cast rules in the panel (white gloves and a 90s look instead of pink gloves and the 1930s) and the alt texts.
+3. **Pending decision:** the 20 mockups, the 3 posters and `board.webp` have the old cast baked in. After the cast is approved I either recompose them with the new characters or prepare their prompts.

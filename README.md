@@ -35,10 +35,23 @@ src/components/flip/        in-house page-curl flipbook (Contract and Spelled Gu
 src/worlds/                 one folder per project world + the shell that frames them
 src/lib/                    registry of the ten projects, copy, router, motion hooks, lettering data
 public/works/<slug>/        optimised card art and assets of each project (WebP, SVG, no originals)
-art-src/                    sources of the generated art (SVG builders and scripts), not shipped
+art-src/                    sources of the generated art (SVG builders and scripts), not shipped; art-src/pdf builds the interview PDF
+export/                     Pau-Monfort-Portfolio-2026.pdf: the 15-page attachment for job applications (not part of the site)
 docs/                       ART_DIRECTION.md (read section 12 first), ARCHITECTURE.md, COPY.md, docs/api/*
 tools/                      Playwright-based checks (screenshots, page audit, copy audit, link audit) and ingest_catalog.py / ingest_process.py / ingest_tokens.py / ingest_stickers.py / ingest_pf.py / ingest_gotet.py (file the Catalog friezes, the Process scenes, the tool icons, the stickers and the pieces of the A Portfolio deck, the Gotet cast); the deck's slides are composed from those pieces by `art-src/concept-portfolio/v2/`
 ```
+
+### The PDF for applications
+
+A 15-page, 16:9 PDF (about 5 MB, live links, selectable text) of the whole portfolio: cover, about, an index of the ten folders, one page per folder, process and contact. Every word comes from `src/lib/works.ts` and `src/lib/copy.ts`, every picture from `public/`, so it never says more than the site. Rebuild it after any change to those:
+
+```
+python -I -X utf8 art-src/pdf/prep.py      # JPEG/PNG copies of the pictures at the size the pages show them
+node art-src/pdf/build.mjs [--pages]       # HTML to PDF with Chrome (--pages also writes one PNG per page to art-src/pdf/_build/pages)
+python -I -X utf8 art-src/pdf/finish.py    # bookmarks, document properties, compression -> export/Pau-Monfort-Portfolio-2026.pdf
+```
+
+Python needs Pillow and PyMuPDF. Keep the file under 5 MB (SEEK and many application forms refuse more).
 
 `docs/api/` has one short note per unit (chrome, each section, each world, the primitives, the flipbook, the card-art contract).
 

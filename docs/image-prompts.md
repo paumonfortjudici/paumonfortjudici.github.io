@@ -1223,7 +1223,7 @@ Format: a wide strip about 4:1 centred in a 3:2 canvas (I will crop), flat hot m
 
 ---
 
-### CHAT 5: PANELS (slide 3, paste RULES first; each panel in its own technique)
+### CHAT 5: PANELS, hand-technique version (SUPERSEDED on 2026-10-30 by the flat-style version in "PF plan B (v14)" at the end of this file; kept for reference)
 
 **S3-01 "Salt Season" (risograph).** Attach `STYLE-COMIC-1.jpg`.
 ```text
@@ -1420,3 +1420,100 @@ Format: a wide strip about 4:1 centred in a 3:2 canvas (I will crop), flat hot m
 1. `tools/ingest_pf.py`: key the magenta out with a soft edge and a magenta de-spill, split the sheets, trim, name.
 2. In the compositions the 3D objects are the deliberate intruders in a hand-drawn poster. To make them sit on the same paper I treat each one as a die-cut sticker: a thin cream cut edge, a hard blue-black offset shadow, a touch of grain, plus tape and torn paper where it overlaps the drawn parts. I test it on slide 2 first and show Pau before doing the rest.
 3. The rest of the pipeline (text, layouts, sheet, thumbs, pins) is the same as in v12 above.
+
+---
+
+## PF plan B (v14): CHAT 5 PANELS redone in the bold flat style of a new reference (2026-10-30)
+
+Pau's verdict on the first panel results: they "looked AI-generated" (the risograph / brush / paper-collage prompts gave polished, detailed, over-textured images). New direction: **be faithful to a new reference and step outside the norm.** The reference (`C:\Users\User\Documents\Portofolio\_inbox\refs\STYLE-PANEL.jpg`) is a contemporary flat poster illustration: a woman with a boombox, giant sneaker in the foreground.
+
+What the style is (read from the reference, and what the prompts enforce):
+- **Flat, hard-edged colour shapes, no outlines**, no gradients, no highlights, no texture. Shading is one second, darker shape (deep violet) offset under the form.
+- **Six or seven colours only**: acid yellow, blaze orange, bubblegum pink, electric violet (+ deep violet), emerald green, cream for the small details (laces, nails, socks).
+- **Huge simple shapes**, little detail: a sneaker is five shapes.
+- **Extreme scale and crop**: a giant foreground element (the sneaker) thrown at the lens, the subject cropped by the canvas edges, a wild low angle.
+- **Fat pink zigzag scribbles laid over the subject**, crossing its edges (the signature).
+- **Patterns as design**: a checkerboard (shorts), stripes (socks).
+- **Minimal faces** (lips, no eyes), blocky hands with cream nails, slightly naive anatomy.
+- **Two-block background** split by an edge (yellow over orange).
+
+This is why the old prompts failed: they asked for many details and textures. The new ones cap the number of elements, forbid outlines, gradients and texture, and force the crop and the scribbles.
+
+This section **replaces** the old "CHAT 5: PANELS" (hand techniques, magenta background). There is **no key colour any more**: every panel runs full bleed to the four edges and I add the frame, shape and tape in code. Same IDs (S3-01 to S3-03). Landscape 4:3, square, landscape 4:3 as before. If any earlier panel result exists, move it to `_inbox\_old\`.
+
+- Use a NEW chat. Do not paste the plan B RULES block. Attach `STYLE-PANEL.jpg` to the rules message and to every prompt.
+
+### RULES block for the panels chat (attach `STYLE-PANEL.jpg`, paste, reply "ready")
+```text
+RULES FOR EVERY IMAGE IN THIS CHAT. They apply to all my requests until I say otherwise. Reply "ready" and nothing else.
+
+WHAT THIS IS. Each request is ONE bold poster-style illustration that I will use as a comic panel in a collage. The art runs FULL BLEED to all four edges of the canvas: no border, no frame, no margin, no paper edge, no drop shadow, no mockup, nothing outside the picture.
+
+STYLE (identical for every image in this chat). Copy the attached reference (STYLE-PANEL) as faithfully as you can: a contemporary flat poster illustration.
+- FLAT SHAPES ONLY: hard-edged areas of solid colour. NO outlines at all: shapes are separated only by colour. No gradients, no soft shading, no highlights, no glow, no blur, no texture, no grain, no rim light, no 3D. Shading is ONE second, darker flat shape (deep violet) placed under or beside a form, slightly offset.
+- FEW COLOURS: exactly six flat colours per image, named in the request, from this palette: acid yellow #F7EF35, blaze orange #FF5A00, bubblegum pink #FF6FD8, electric violet #6A1FD0, emerald green #1D9A5E, cream #FBF8E6. Deep violet #2B1068 is also allowed, only for shadow shapes and the darkest forms. Cream is for small details (laces, nails, socks, teeth, threads).
+- HUGE SIMPLE SHAPES: big blocky forms, nothing smaller than about 3% of the width (except a tiny hidden detail a request asks for). Simplify everything: a boot is five shapes, not fifty. If in doubt, remove detail. Few objects, each big and readable.
+- EXAGGERATED SCALE AND CROP: a wild low-angle view with a GIANT foreground element thrown at the lens and small things far away, like the huge sneaker in the reference. The main subject is cropped by the canvas edges. Bold, a little naive, slightly wonky proportions; shapes slightly irregular, not geometrically perfect, a few edges overshooting, a shadow shape slightly off-register.
+- PINK SCRIBBLES: 2 or 3 fat zigzag or looping scribbles in bubblegum pink, as if drawn with a thick round brush, laid OVER the subject and crossing its edges, like the pink squiggles in the reference. Rounded ends, uneven width.
+- PATTERN as a design device: one checkerboard or stripe area, like the checked shorts and striped socks in the reference.
+- FACES AND HANDS: minimal. A face is one or two flat shapes (the reference has lips and no eyes). Hands are blocky, with cream nails. Never realistic.
+- BACKGROUND: two flat colour blocks split by a diagonal or horizontal edge, like the yellow over orange in the reference.
+It must look like a human illustrator made it in an hour in a vector or Procreate tool: confident, graphic, slightly rough, intentional.
+FORBIDDEN: the typical AI look: smooth polished shading, soft gradients, glossy highlights, tiny decorative details, perfect symmetry, many small objects, cinematic lighting, texture overlays, 3D render, watercolour or painterly look, concept-art look.
+
+DO NOT COPY the reference's subject: no woman, no boombox, no sneakers (boots only where a request asks). Copy only its look.
+
+TEXT. No text, letters, numbers or logos anywhere.
+```
+
+### The three prompts (one message each; attach `STYLE-PANEL.jpg` to each)
+
+**S3-01 "Salt Season"**
+```text
+Attach STYLE-PANEL.jpg (copy its look exactly: flat hard-edged colour, no outlines, a giant foreground element, pink scribbles over the subject, a pattern; do not copy its woman, boombox or sneakers).
+Draw ONE full-bleed panel: a salt flat seen from ground level with a wild low-angle view. Foreground, HUGE and cropped by the bottom and right edges: two giant chunky boots mid-stomp coming at the viewer, legs cropped at the shin, in striped socks (one cream-and-emerald stripes, one cream-and-pink stripes), cream laces, violet soles with a wavy tread; the right boot is lifted high and close to the lens, the left one planted. They kick up a spray of salt: big flat cream blobs and dots flying in all directions. Far behind, small: EXACTLY six cream salt sacks tied at the top, piled at the left, and at the right a violet baking tray full of cream salt with a tiny microphone on a stand pointing at it. A huge flat sun disc low on the horizon.
+Background: two flat blocks split by a slightly diagonal horizon: blaze-orange sky with an acid-yellow sun disc, cream salt ground with a few deep-violet shadow shapes under the boots and sacks.
+COLOURS (exactly six, plus deep violet for shadows): blaze orange, acid yellow, cream, electric violet, emerald (the boots), bubblegum pink (the stripes of one sock and the scribbles).
+Two fat bubblegum-pink zigzag scribbles drawn over the boots and across the spray.
+Format: landscape 4:3, full bleed, no border, no text.
+```
+
+**S3-02 "Kettle & Crow"**
+```text
+Attach STYLE-PANEL.jpg (copy its look exactly: flat hard-edged colour, no outlines, a giant foreground element, pink scribbles over the subject, a pattern; do not copy its woman, boombox or sneakers).
+Draw ONE full-bleed panel: a huge crow flapping across the top, cropped by the top edge, in deep violet #2B1068, with a tiny pair of acid-yellow headphones on its head (exactly one pair). Its two wings are two big open umbrellas with scalloped edges and thin cream ribs, one emerald and one bubblegum pink, its feet dangling. Below, in the foreground, GIANT and cropped by the bottom edge: a blaze-orange kettle on a stove, thrown towards the lens, its face only a huge open screaming mouth in deep violet (no eyes, or two small cream dots), steam jetting from the spout as a thick bubblegum-pink zigzag scribble, two or three small flat flames under it. Rain falls from the umbrellas as short flat cream dashes; one big blaze-orange lightning bolt. In a small deep-violet window on the left, two acid-yellow cat eyes with slit pupils.
+Background: two flat blocks split by a diagonal: acid yellow above, electric violet below (the stove counter), with one checkerboard area of violet and deep violet on the counter.
+COLOURS (exactly six, plus deep violet): acid yellow, blaze orange, bubblegum pink, electric violet, emerald, cream.
+Two more pink scribbles over the crow and the umbrellas.
+Format: square, full bleed, no border, no text.
+```
+
+**S3-03 "The Understudy Moon"**
+```text
+Attach STYLE-PANEL.jpg (copy its look exactly: flat hard-edged colour, no outlines, a giant foreground element, pink scribbles over the subject, a pattern; do not copy its woman, boombox or sneakers).
+Draw ONE full-bleed panel: a stop-motion stage set made of cardboard and paper, drawn as flat shapes. A big acid-yellow crescent moon with a smiling mouth and one closed eye (a small deep-violet arc), with a visible round hinge at the jaw, held up by two thin cream threads and two cream rectangles of masking tape; EXACTLY eight small acid-yellow paper stars hanging from the top by thin cream threads; wavy emerald hills, one of them with a cream-and-emerald checkerboard pattern. In the foreground, GIANT and cropped by the bottom edge: two cardboard cut-out boots on sticks (blaze orange with darker orange corrugation stripes, thin cream sticks) walking towards the viewer; in one corner a pair of scissors lying flat with bubblegum-pink handles.
+Background: electric-violet sky above, the hills below, split by the horizon.
+COLOURS (exactly six, plus deep violet for shadows): electric violet, acid yellow, cream, emerald, blaze orange, bubblegum pink.
+Two fat bubblegum-pink zigzag scribbles drawn across the moon and the boots.
+Format: landscape 4:3, full bleed, no border, no text.
+```
+
+### One-line fixes for the panels chat (paste in the same chat)
+- Looks AI or too polished: `Too polished and too detailed. Redraw it like a bold flat poster by a human illustrator: huge simple shapes, no outlines, no gradients, no shading except one flat darker shape, no tiny details, a more extreme crop and scale.`
+- Has outlines: `Remove every outline. Shapes are separated only by colour changes.`
+- Gradients, texture or glow: `Completely flat colour: no gradients, no texture, no grain, no highlights, no glow.`
+- Too many colours: `Use only these six flat colours plus deep violet #2B1068 for shadows: [list]. Nothing else.`
+- Too clean or symmetrical: `Make the shapes slightly wonky and irregular, with a few edges overshooting and one shadow shape slightly off-register, like a hand-pulled screenprint. Not geometrically perfect.`
+- Too many things: `Fewer things: only [the boots, the sacks and the tray]. Each big and simple.`
+- No scribbles: `Add two fat bubblegum-pink zigzag scribbles drawn with a thick round brush OVER the subject, crossing its edges.`
+- Copies the reference: `Do not draw a woman, a boombox or sneakers. Take only the style from the reference.`
+- Has a border or margin: `Remove the border and any margin: the art runs to all four edges.`
+- It has writing: `Remove all writing: no letters, numbers or logos anywhere on this.`
+- Wrong count: `Exactly [six] [salt sacks / paper stars], count them.`
+- Face too realistic: `Simplify the face to one or two flat shapes, no nose, no shading, no realistic eyes.`
+
+### What I do with the panels
+1. No keying: the panel is already a full rectangle. I crop it to its shape (rectangle, rough torn edge or lopsided disc).
+2. I add the frame, masking tape, a hard blue-black offset shadow, and extra pink scribbles in code over the edges so they cross into the neighbouring pieces.
+3. A light paper grain and a few pixels of colour misregistration so the panels sit with the hand-drawn pieces. If Pau prefers them perfectly flat like the reference, I leave them clean.
+4. The rest (text, layout, sheet, thumbs, pins) is the same as v12.

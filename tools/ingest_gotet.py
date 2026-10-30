@@ -50,8 +50,8 @@ OLD_H = {'gotet': 1392, 'oliva': 1568, 'sifo': 1922, 'xip': 1328}
 WMAX = 1560
 # the soda arc and its bubbles, erased for the "clean" Sifo (boxes in the pose's own pixels, x0, y0, x1, y1)
 ERASE = {
-    'sifo-a': [(700, 310, 1122, 700), (880, 700, 1122, 860)],
-    'sifo-b': [(606, 40, 1122, 340), (980, 330, 1122, 440)],
+    'sifo-a': [(708, 310, 1122, 700), (880, 700, 1122, 860)],
+    'sifo-b': [(624, 40, 1122, 340), (980, 330, 1122, 440)],
 }
 
 

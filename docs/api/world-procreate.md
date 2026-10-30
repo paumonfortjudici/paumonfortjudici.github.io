@@ -1,126 +1,88 @@
-# World 6 · Procreate Sketchbook · "Sketchbook Wall" (API + behaviour note)
+# World 6 · Procreate Sketchbook · "Sketchbook" (API + behaviour note)
 
-Slug `procreate`, folder colour bubblegum `#FF8FC1` (ink text). Files: `src/worlds/ProcreateWorld.tsx` (default export) and `src/worlds/procreate/**`.
-Read this instead of the source. Nothing outside those paths was touched; the shell, primitives, copy and registry are used as documented.
+Slug `procreate`, folder colour bubblegum `#FF8FC1` (ink text). Files: `src/worlds/ProcreateWorld.tsx` (default export) and `src/worlds/procreate/**`. Read this instead of the source.
 
 ## What it is
 
-A hand-made wall. Four early pieces (public/works/procreate: the Vértice logo idea, the Yakisoba crest, the two portrait studies in four warm colours) hang on a sheet of kraft paper pinned to a cork board. Each print is a real `<button>` you can **drag** (framer-motion drag, momentum, soft bounce at the edges, it sways with the speed of the hand and settles), or move **without a pointer**. A tool tray holds a ruler, a pencil, an eraser and three tab buttons: **Tidy up** (the ruler), **Shuffle**, **Rub out the notes** (the eraser). Open a print in a **close-up** with its one-line description. Below the wall: an index card (the five, each with a little glued-on print, its description and a "Look closer" tab; the whole row is clickable), a palette card (the four colours the two portraits share) and the `WorldFacts` slate (the right-hand column is sticky while the five rows scroll past).
+A small, battered sketchbook open on a green cutting mat: twelve drawings Pau made in Procreate for the love of it (his statement of 2026-10-30: "not jobs"), printed, glued into the book and noted by hand. It replaces the first version of this world (a cork wall of pinned, draggable prints with a Vértice logo and a Yakisoba F.C. crest, which Pau asked to remove). Old-school and dirty on purpose: yellowed paper with foxing, coffee rings, thumbprints, graphite smears, eraser crumbs, tape, photo corners, pen tests, doodles in the margins, a scuffed black cloth cover with red spine tape.
 
-First screen (1280 x 720 and up): the hand-lettered title on the folder's bubblegum, the lede, then the wall filling the rest of the screen with the tool tray at its foot; a 36 px sliver of the next strip's cork rail shows under it, so the board plainly goes on. The wall is the one dominant thing.
+The book is the in-house page-curl `FlipBook` (`src/components/flip`, see `docs/api/flipbook.md`): 18 faces (cover, pages 2 to 17, back), 9 spreads plus the two closed states, hard boards. Every face is a picture (1200 x 1600 WebP, `public/works/procreate/book/`). The handwriting on the pictures and every word of the page are the same text (`procreate/book.json`).
+
+Above the book: the hand-lettered title "Just for fun", a taped lede, a NOT FOR WORK stamp. On the mat: a pencil, an eraser, a sharpener with shavings, a ruler, a coffee ring (SVG, `aria-hidden`). Under the book: a taped index card that says what is open (pages, drawing numbers, titles, lines) and the "Look closer" tab. Below the mat: a ruled contents page (twelve rows, each with a "p.N" tab that turns the book to it) beside the facts slate.
 
 ## Interaction map
 
 | Input | What happens |
 |---|---|
-| Hover a print (mouse only) | it lifts a hair (scale 1.02) and settles back on leave; none of it for touch, reduced or paused motion |
-| Pointer down on a print | it comes to the front |
-| Drag a print | follows the hand, lifts (scale 1.045), sways up to 5.5 degrees with its speed, glides on release (`power 0.17, timeConstant 300`), bounces softly (`dragElastic 0.12`) inside the wall; a pin hole / tape ghosts appear where it hung; the wall's "pick one up" note fades |
-| Press (no drag) on a print that is still travelling (entrance, Tidy, Shuffle) | framer stops the glide on pointer down; the click that follows lets it finish the trip (`resume()` in Print.tsx) |
-| Double-click a print (mouse) | opens the close-up. A single click only raises it |
-| Tap a print (touch, pen) | opens the close-up |
-| Tab | prints (reading order: logo, crest, cap, quiff), then Tidy up / Shuffle / Rub out the notes, then the four "Look closer" tabs |
-| Arrow keys on a focused print | nudge 12 px (Shift: 48 px), clamped to the wall; the page does not scroll |
-| R / Shift+R on a focused print | turn it by +6 / -6 degrees (wraps at 36) |
-| Enter / Space on a print | opens the close-up |
-| Click on an index row (picture, title or sentence) | opens the close-up of that print; focus returns to the row's "Look closer" tab on close. The tab itself is the keyboard / screen-reader route (its Enter / Space click bubbles to the same handler) |
-| Close-up: Left / Right / Home / End | previous / next / first / last print (wraps). A horizontal swipe on touch |
-| Close-up: click on the empty dark area | closes it (a click on the paper or the caption does not) |
-| Close-up: Tab / Shift+Tab | cycles inside the dialog (Previous, Next, Back to the wall); the shell's trap does not run |
-| Esc | closes the close-up first (focus returns to the element that opened it); with no close-up open it closes the world (shell) |
-| `[` `]` | still hop between projects (shell), also while the close-up is open |
-| Tidy up (tab, or click the ruler) | toggle: squares everything up, again = back to the way it was hung. `aria-pressed` on the tab |
-| Shuffle | scatters the prints (best-candidate placement that avoids piles), new z-order, new tilt |
-| Rub out the notes (tab, or click the eraser) | wipes every handwritten note and arrow left to right (clip-path); the label becomes "Write the notes back". On a phone (narrow wall) the tab reads "Rub out" / "Write back" so the three tabs share one line; the accessible name stays the full phrase |
+| Desk first well on screen | the cover opens by itself (page curl; dissolve under reduced or paused motion), unless a page was already turned; then the corner of the next page lifts once (a hint) |
+| Drag a page's outer 20 % / swipe / click the outer edge | turns the page (FlipBook) |
+| Arrow keys, Home, End | turn the book; they work anywhere while the desk is on screen (`keys="window"`), only with focus otherwise |
+| Prev / next tabs and the scrubber | the non-drag way to turn pages (FlipBook's own controls) |
+| "p.N" tab on a contents row | turns the book to the spread that holds the drawing (`goToPage`); the row of the open spread is highlighted |
+| "Look closer" | opens the page viewer on the first page of the spread that is showing |
+| Viewer: Left / Right / Home / End, swipe, tabs | previous / next page, first / last |
+| Viewer: click the empty dark area, Esc, "Back to the book" | closes it; focus returns to the tab that opened it and the book turns to the spread of the page last seen |
+| `[` `]` | still hop between projects (shell) |
 
-The ruler and the eraser are mouse shortcuts to the tabs next to them: `aria-hidden`, `tabIndex -1`. Cursor labels: prints `Drag`, index rows and "Look closer" `Open`, "Back to the wall" `Close`.
+Narrow containers (under 720 px) show one page at a time (FlipBook `mode: 'auto'`). On phones the card moves under the Look closer tab and the sharpener, ruler, pencil and eraser are hidden.
 
-Live region (`role="status"`, polite): "Prints squared up and lined up." / "Prints back where I hung them." / "Prints shuffled." / "Notes rubbed out." / "Notes written back."
+## Content (`procreate/book.json`, `procreate/data.ts`)
 
-## Layout engine (`procreate/layout.ts`, pure functions)
+`book.json` has one entry per face: `id` (`cover`, `p-02` .. `p-17`, `back`), `kind`, `n` (printed page number), `no` (drawing number 1 to 12), `short`, `title`, `line` (the pencil sentence under the drawing) and `alt` (what a person would see, handwriting included). `data.ts` exports `PAGES`, `DRAWINGS`, `pageSrc`, the spread helpers (`spreadOfPage`, `firstFaceOfSpread`, `spreadOfFace`) and `COPY` (every visible string of the world).
 
-The wall is measured (ResizeObserver on the wall and on the world's scroller) and one of three **kinds** is chosen: `wide` (wall >= 960 px wide and the viewport under the tab strip >= 640 px tall: one screen, the wall height comes from the viewport), `mid` (>= 600 px: two columns of prints, the wall is as tall as they are) and `narrow` (one column). The root carries `data-kind`; the tool tray follows it (on mid / narrow it moves to the top of the board: ruler and eraser on one line, the three tabs on the next).
+| Pages | What |
+|---|---|
+| cover | black cloth, red spine tape, label SKETCHBOOK / procreate · for fun / not for work! |
+| 2, 3 | "this sketchbook belongs to PAU" (reward: a coffee), contents list with tick boxes |
+| 4, 5 | 01 Hills & a tiny house, 02 Houses, stacked |
+| 6, 7 | 03 Hillside town, 04 Quick face (round glasses, drawn straight on the page with construction lines) |
+| 8, 9 | 05 Five faces in circles (labelled), 06 Yellow cap |
+| 10, 11 | 07 Four colours only, 08 Same four colours (die-cut stickers with the palette swatches) |
+| 12, 13 | 09 Very serious man, 10 An eye made of lines (torn clipping + a hatching test) |
+| 14, 15 | 11 Hatching, a body (small torn clipping), 12 Citrus & leaves |
+| 16, 17 | colour tests and a to-draw-next list, "that's all, for now." |
+| back | NOT FOR SALE (it's a sketchbook) |
 
-* Every print has a size (paper width `w`; border 4.5 %; writing strip 15-17 % of `w`; the height follows from the drawing's aspect ratio) and a pose `{ x, y, rot, scale? }` in wall pixels (top-left corner, transform origin at 50 % 42 %).
-* `planFor(kind, W, H)` returns `{ dims, loose, tidy, wallH }`. **loose** = the hand-hung composition (wide: the table `WIDE_LOOSE`, in a 1380 x 520 reference wall, scaled by `s = min(W/1380, H/520)` in size and spread to the real width / height in position; mid / narrow: jittered columns). **tidy** = wide: one row hung on the wall's middle line (the prints shrink just enough to fit, equal gaps, a faint pencil line shows); mid / narrow: plain columns at full size.
-* `scatter(plan, W, seed)` is the shuffle (seeded, repeatable).
-* A hand-made arrangement (after a drag, nudge or shuffle) is stored normalised (`toNorm`) and projected back (`fromNorm`) when the window is resized; a named arrangement (loose, tidy) is laid out again. When the kind changes the wall goes back to loose.
-* To retune the composition edit `WIDE_W` (print widths) and `WIDE_LOOSE` (positions, tilt) in `layout.ts`; to retune a print edit `procreate/data.ts`.
+Nothing in the copy is a claim: no dates, no briefs, no clients, no tools beyond Procreate, nobody named. Descriptions say what is in the picture ("round glasses, curly hair, big smile"), never who it shows.
 
-## Content (`procreate/data.ts`)
+## How the pages are made (`art-src/sketchbook/`)
 
-`PRINTS` (order = tab order and close-up order): `id`, `file` stem in `public/works/procreate/`, intrinsic sizes and the manifest `alt`, a short `title`, the one-line description `line` (shown in the close-up and the index), the paper `stock` (`sketch` torn from a spiral pad, `photo`, `grid` graph paper, `card`), how it is held (`hold`: tape pieces with colour / pattern / angle, a pin, a paper clip) and its handwritten `note`: lettering sits in the strip under the drawing, `mark` is either an arrow (`from` / `to` in picture coordinates, so it lands on a real detail: the sleeve outline, the ribbon, the armchair, the swatch dots) or an underline. `COPY` holds every visible string of the world (including the short phone labels `notesOffShort` / `notesOnShort`). `PORTRAIT_PALETTE` is the manifest palette of the two portraits.
+| File | Role |
+|---|---|
+| `sources/` | the drawings Pau sent (10 JPEGs, 736 px wide for eight of them, 445 and 480 for the other two) and the two orange portraits (transparent WebP) |
+| `lib.mjs` | the kit: paper (tone, dots, ruled, foxing), `hand()` handwriting (Reenie Beanie pencil, Gochi Hand felt-tip, biro / red pen, wobble filter, grain mask), SVG doodles and arrows, `print()` (glued print with tape and photo corners, torn clipping, bare drawing multiplied onto the paper, die-cut sticker), coffee ring, thumbprint, smear, stain, crumbs, blot, dog-ear, swatch, sticker, cloth `board()` for the covers |
+| `pages.mjs` | one function per page; takes its words from `book.json` |
+| `render.mjs` | `node art-src/sketchbook/render.mjs [id ...]` prints `_build/<id>.png` (Playwright + the installed Chrome) |
+| `export.py` | PNG to `public/works/procreate/book/<id>.webp` (q80) |
+| `cards.mjs`, `cards.py` | the card art: `thumb.webp` (720 x 900, a page on the cutting mat) and `peek.webp` (484 x 632, the closed book with a cream die-cut edge) |
+| `../folders/procreate.mjs` | the Works card's "inside of the folder" picture (`inside.webp`), built with the folder kit from two real pages of the book |
+
+Rebuild: `node art-src/sketchbook/render.mjs`, `python -I -X utf8 art-src/sketchbook/export.py`, then `node art-src/sketchbook/cards.mjs` and `python -I -X utf8 art-src/sketchbook/cards.py`, then `node art-src/folders/render.mjs procreate` and `python -I -X utf8 art-src/folders/export.py procreate`. To swap a drawing for its original, replace the file in `sources/` (same name), check its crop in `pages.mjs` and rebuild.
 
 ## Files
 
 | File | Role |
 |---|---|
-| `ProcreateWorld.tsx` | state (geometry, mode, z-order, notes on/off, "touched", close-up), tools, sections, WorldFacts; preloads the four small pictures when the chunk loads |
-| `procreate/Print.tsx` | one draggable / keyboard-operable print; motion values x, y, base rotation, sway, lift, scale; `PrintHandle { pose, moveTo, focus }`; `heading` (where a programmed move is going) lets a plain press finish an interrupted trip |
-| `procreate/PrintFace.tsx` | what a print looks like (paper, drawing, note, arrow, holders); used by the wall and the close-up at any size |
-| `procreate/Holders.tsx`, `Scars.tsx` | tape / pin / clip; the pin hole and tape ghosts left on the wall |
-| `procreate/Lightbox.tsx` | the close-up (portal into `.pm-world-body`, focus trap, Esc via `useWorldEscape`, swipe). Its column (`.w-procreate-lb-inner`) is centred when it fits and scrolls from the top when it does not (320 x 568 phones); the paper is sized from the *measured* heights of the caption and the tab row |
-| `procreate/aim.ts` | `aimBetween(fx, fy, tx, ty)`: size + turn a `<Scribble kind="arrow">` so its tail and tip land on two given points; used by the prints' notes (PrintFace) and by the wall's own "pick one up" note |
-| `procreate/Line.tsx` | the one-line description with "T-shirt" kept in one piece (index + close-up) |
-| `procreate/Props.tsx` | ruler, pencil, eraser, loupe icon as SVG |
-| `procreate/layout.ts`, `data.ts` | engine (incl. `pickupSpot(plan)`: where the wall's own note stands so its arrow ends just above the first print's torn edge at any wall size), content |
-| `procreate/procreate.css` | all styles, classes `w-procreate-*`; palette variables at the top |
-| `procreate/kraft.webp`, `cork.webp` | seamless 512 px tiles (displayed at 256 css px), made by `procreate/tools/make_textures.py` (Pillow + numpy, seeded) |
+| `ProcreateWorld.tsx` | state (spread, opened, viewer), the desk, the index card, contents, facts; cover auto-open and hint |
+| `procreate/Viewer.tsx` | the page viewer (portal into the folder body, focus trap, `useWorldEscape`, swipe) |
+| `procreate/Props.tsx` | pencil, eraser, sharpener, ruler (SVG, decoration) |
+| `procreate/data.ts`, `procreate/book.json` | content |
+| `procreate/procreate.css` | all styles, classes `w-procreate-*` |
 
-## Motion contract
+## Motion, accessibility, performance
 
-* Entrance: the prints drop onto the wall in a stagger (spring), the notes and arrows draw on afterwards (`Scribble draw` delays), the title is written on (clip-path). Every motion has a still path: `useWorld().reduced` (OS reduced motion or the visitor's Pause motion) makes placement instant, switches momentum / sway / lift / elastic edges off and shows everything at once. The wipe of the notes is a clip-path transition that base.css shortens under both switches.
-* Measured on a build (per-frame trace of one drag): full motion = the print keeps gliding after release and settles; OS reduced motion and "Pause motion" = it stops exactly where the hand let go (no glide, no sway, no lift, no overshoot), entrance settles in under 0.8 s.
-* Only transform, opacity and clip-path animate. No ambient loops, no rAF outside framer-motion, nothing runs while idle or off-screen. Listeners, observers and timers are cleaned up on unmount.
-* Interrupted entrance: the first-appearance fade is its own animation (`arriving`), so a Shuffle, Tidy up, nudge or press during the first second never leaves a print stuck invisible (regression-tested for all four).
-* In development framer-motion prints "You have Reduced Motion enabled on your device" once when the OS asks for reduced motion (it does so for every `motion` component of the site, not only this world; it does not exist in production).
-
-## Accessibility
-
-* Prints are `<button>`s named with the manifest `alt` + "Print n of 4", described by their note and by a visually hidden key hint. The decoration inside is `aria-hidden`.
-* Headings: `h2` title, `h3` "What is on the wall" / "Four colours, twice", `h4` per print. The close-up is `role="dialog" aria-modal`, labelled by the print's title, with a polite live caption; the world's own content is `inert` behind it.
-* Focus uses the global two-tone ring (the rotated print shows it round its box). Touch: `touch-action: none` only on the prints (and `pan-y` on the close-up's print); the wall and everything else scroll the page, so on phones the prints are narrower than the board and leave a scrolling gutter on one side. Verified with CDP touch events: a swipe on the lede or in the gutter scrolls the page, a touch drag on a print moves it with no page scroll, a tap opens the close-up, a horizontal swipe in the close-up changes print.
-* Contrast: ink on bubblegum, kraft, paper; oxblood on paper; cream on ink (close-up, key label); all above 4.5:1. Nothing in the world under 14 px (notes are `max(14.5px, 7.8 % of the print's width)`; tab labels, slate keys, stamp sub-line and hex values are raised to 14 px here).
-* Index rows: a click handler on the `<li>` is a pointer convenience only; each row has a real `<button>` (the tab) for keyboard and assistive tech.
+* Only transform, opacity and clip-path animate (the title write-on, the viewer's page swing). Under reduced or paused motion the book dissolves instead of curling, the cover opens at once and nothing is hinted. FlipBook keeps its own live region ("Pages 4 and 5 of 17").
+* Each page picture carries its `alt` (handwriting included). The index card is `aria-hidden` (it repeats what the live region says); the contents list is the text route to every drawing and its tabs are real buttons named "Open at page N: title". The viewer is `role="dialog" aria-modal`, labelled by the page title; the world behind it is not reachable.
+* Pictures: 18 pages at about 260 KB (4.6 MB in all) but a visitor loads only the spreads they turn to (FlipBook fetches the visible spread). The world chunk is small; fonts are Gloria Hallelujah (title) and Gochi Hand (notes, lazy).
 
 ## Honesty decisions
 
-* Early work, no dates, ages or clients are claimed. The crest and the logo are described as drawings ("A football crest drawing", "A logo idea"); nobody portrayed is named.
-* The brief's annotation "first crest" is written "a crest idea" (round 1: "early" implied an earlier crest, and the noodle bowl may be a stock icon, origin unknown). The index line says "A crest layout", never "my drawing".
-* The kids print (minors, a licensed cartoon on a T-shirt) is HELD BACK: removed from the world and its two files moved out of `public/` (see Round 3). Do not restore it before Pau confirms in writing.
-* No timeline: the notes hold no dates for these files. The "Which came first?" card shows four question marks on a blank pencil line to say exactly that.
-* Procreate: the folder is "Procreate sketchbook" by Pau's own naming and the registry lists the tool; the copy says "my Procreate folder", it does not date or certify anything.
-* The group portrait with a third-party logo is not in the repo and is not referenced.
-
-## Verified (production build in an isolated snapshot, plus the dev server)
-
-1440 x 900, 1920 x 1080, 1366 x 768, 1280 x 720, 1200 x 800, 1000 x 760, 768 x 1024, 390 x 844 (dpr 2), 360 / 375 / 414 / 480 widths for the tray, reduced motion, paused motion, deep link and opening from a Works card (shared-element flight), drag with momentum (per-frame traces) and at the wall edge, touch (CDP touch events), keyboard (arrows, Shift+arrows, R, Enter, Space, Esc, Tab trap, focus restore, `[` `]`), index rows (click on picture / words / tab / Enter on tab, each followed by Esc and a focus check), Tidy / Shuffle / notes, early interactions during the entrance, resize across wide / mid / narrow, no console errors or 404s. Production build: world chunk 34 KB (12.0 KB gzip) + 22 KB CSS (5.0 KB gzip) + two textures (35 KB + 10 KB), Gloria Hallelujah latin 18 KB. Page audit (`tools/audit-page.mjs`, 1440 x 900): no overflow, no text under 13 px, no nameless control, no contrast finding, no duplicate ids, every stop of the tab order shows a focus ring, CLS 0.
+* The drawings are Pau's own Procreate drawings, made for fun (his statement, confirmed in writing in chat on 2026-10-30 when asked). The files he sent are web-size copies (eight of ten are exactly 736 px wide): ask for the originals and swap them in.
+* Removed on his request: the Vértice logo idea and the Yakisoba F.C. crest (and their files). Still held back, as before: the group portrait with a third-party logo and the kids portrait.
+* The two orange portraits keep their palette story ("four colours only", the four dots) and "too orange?? (no. keep it)" stays as a sticky note.
+* Handwriting is decoration in Pau's voice, not a fact about the drawings: nothing says when, how long, with which brush, for whom.
 
 ## Known limits
 
-* Very small phones (320 x 568): the close-up's column scrolls a little for the two tall portraits (the paper never goes below 120 px wide). 360 x 640 and up fit without scrolling.
-* LCP of a deep link is dominated by the site's own startup bundle (the cork tile of the board is the world's candidate, about 0.1 s after the chunk); the world adds no blocking work of its own.
-* Shuffle may overlap two prints a little (it avoids piles, it does not forbid overlap): that is how a hand-pinned wall looks.
-
-## Round 1 fixes (critic review)
-
-* **Order and honesty**: PRINTS is now logo, crest, kids, cap, quiff (tab order, close-up order, index order). The wall's "pick one up" note (`pickupSpot`, `LEAD` in layout.ts) points at the logo sheet. Captions: "Portrait study, cap / quiff", "a crest idea", "same four colours"; the lede says "five early pieces from my Procreate folder, made very young. Always my passion." (Pau's own statement); "always the passion" is no longer written on a portrait.
-* **Tap targets**: every `.pm-tabbtn` inside the world and the close-up is at least 44 px high (CSS only; the shared tab button only grows on coarse pointers). Index lines and the lede hint are 17 px (`--fs-body`).
-* **Pictures**: all four on-wall thumbnails are `loading="eager"` (they are 20-40 KB and are also pre-fetched when the chunk loads); the index thumbs stay lazy.
-* **Instructions, once**: the lede keeps only "Double-click a print to look closer." when the wall shows its own "pick one up" note; the label-maker strip on the ledge reads "Procreate folder · early work · undated" and turns into the key hints (Arrows move, R turns, Enter opens) only while a print has keyboard focus (`:has(.w-procreate-print:focus-visible)`).
-* **Tidy up** draws pencil marks round the row (`Measure` in ProcreateWorld.tsx, `plan.row` from layout.ts): a number over each print in reading order and a measuring line with ticks and "hung level" under it, drawn left to right with a clip-path. A wooden rule is stuck along the foot of a wide wall (CSS `::after`).
-* **Shuffle** (`scatter`): 140 complete throws, each print going to the free-est of 90 random spots (neighbours are kept 9 px clear for tape and tilt); one of the three least-overlapping throws is kept. Measured over 7 shuffles at 1440 x 900 on rotated bounding boxes: worst cover 9-19 percent of the smaller print, never a pile.
-* **Close-up**: 26 px of air under the tab row; with the notes rubbed out the writing strip is trimmed to a margin (`dimsFor(id, w, strip)`).
-* **New small objects**: a paint-chip card taped between the prints on a wide wall (the four portrait colours, decorative), a "Which came first?" timeline card of five question marks beside the facts slate, and a FILED stamp that lands on a print when its close-up is put away (wide walls, full motion only, 1.9 s, opacity only).
-* **Title**: a little air above the hand-lettering (padding / negative margin 0.1em) and a roomier clip for the write-on animation. The taste inspector's `clipped-text` at 768 / 390 comes from the glyph box crossing the folder strip while the page is scrolled in its sampling; at rest the title is whole (shots t0 and t9).
-* The dashed rules between the index items are the pencil rules of an index card; the dashed / hairline / shadow / gradient items of the taste lint are the paper, tape and board of the world (allowed list).
-
-
-## Round 3 (mop-up): kids print held back, four prints
-
-* **Removed**: the kids print (`PrintId 'kids'`, its entry in `PRINTS`, the `Record<PrintId,...>` tables in layout.ts, `NARROW_ORDER`, `STACK`, the index thumb tilts, chips, close-up, alt and copy). `kids-portrait.webp` and `kids-portrait-thumb.webp` were moved out of `public/works/procreate/` to `scratchpad/held-back/procreate/` (so they are not shipped; nothing references them). `public/works/procreate/manifest.json` no longer lists the kids file nor the `held_back` entry (an unrelated group portrait with private notes); the untouched original is saved next to the held-back files as `manifest.original.json`. The card art `thumb.webp` and `peek.webp` use the orange portraits and are unchanged.
-* **Order now**: logo, crest, cap, quiff (tab order, close-up order, index order, "3 of 4"). Both portraits carry `closeUp: 'small'` (the close-up never loads the full-size file). Copy says "four": lede "four early pieces from my Procreate folder. Always my passion.", "Four prints you can move", "The same four pieces". "made very young" is no longer attached to any piece, and nothing says "early", "first" or "my drawing" about the crest ("a crest idea", "A crest layout").
-* **Wall retuned for four** (`WIDE_W` 410 / 350 / 285 / 245, new `WIDE_LOOSE`): the prints are larger and fill the board at 1440 and 1920 with no bare cork; the paint-chip card sits under the crest (`CHIP_AT` in layout.ts, 35 % / 74 % of the wall; the world reads left / top from the same constant). Mid walls put the first print in the left column; narrow walls stack logo, crest, cap, quiff.
-* **Shuffle keeps off the paint chip** (`Plan.chip`, wide walls): the chip card counts three times in the placement score and a throw that lands on it is ranked as badly as a pile. Tidy up now keeps the row at most the wall height minus 130 px tall (room for the pencil numbers and the "hung level" line, which the ruler no longer covers) and puts the chip card away (opacity) while squared up.
-* **Index** thumbs and row padding are bigger (`clamp(112px, 11.4vw, 170px)`), so the four-row card matches the height of the right column.
-* **Labels**: tab buttons, slate keys, the ledge strip, hex values and the stamp sub-line are at least 14 px inside this world.
+* The pictures are low resolution for the viewer (the clippings and the 736 px prints are shown at about native size). Originals would sharpen them.
+* The page-curl needs a modern browser with CSS 3D; FlipBook falls back to a dissolve under reduced motion.

@@ -1,0 +1,143 @@
+{
+  "_": "Content of the sketchbook: one entry per face of the book (cover, pages 2-17, back). Read by src/worlds/procreate/data.ts (captions, index, alt text) and by art-src/sketchbook/pages.mjs (the handwriting printed on each page), so the words in the pictures and the words on the screen are the same. Nothing here is a claim: no dates, no briefs, no clients, no names. The drawings are Pau's own Procreate pieces (statement of 2026-10-30).",
+  "pages": [
+    {
+      "id": "cover",
+      "kind": "cover",
+      "alt": "The closed sketchbook: a scuffed black cloth cover with red tape along the spine, a taped-on paper label that reads SKETCHBOOK, procreate, for fun, not for work, a round sticker, a coffee ring and a few white pen doodles."
+    },
+    {
+      "id": "p-02",
+      "n": 2,
+      "alt": "Page 2: the owner's label. This sketchbook belongs to Pau. If found, please return it. Reward: a coffee. A coffee ring and a thumbprint mark the paper."
+    },
+    {
+      "id": "p-03",
+      "n": 3,
+      "alt": "Page 3: a hand-written list of what is inside, twelve drawings with their page numbers and a tick box each, and a note in red: made in Procreate, printed, glued in, no brief and no client."
+    },
+    {
+      "id": "p-04",
+      "n": 4,
+      "no": 1,
+      "short": "Hills",
+      "title": "Hills & a tiny house",
+      "line": "blue hills, a red roof, a path that wanders off.",
+      "alt": "Page 4: a printed illustration taped into the book. Layers of blue hills fade into a pale sky with grainy clouds, green slopes in front, a tiny white house with a red roof and a winding cream path, all inside a tall pill shape. Handwritten title: Hills and a tiny house; a red arrow points at the house."
+    },
+    {
+      "id": "p-05",
+      "n": 5,
+      "no": 2,
+      "short": "Houses",
+      "title": "Houses, stacked",
+      "line": "only squares and triangles. no curves allowed.",
+      "alt": "Page 5: a tall printed illustration of flat, geometric houses piled on top of each other in purple, orange, yellow, pink, teal and mint, each with a dark roof and square windows, on a grey-green sky. Handwritten title: Houses, stacked."
+    },
+    {
+      "id": "p-06",
+      "n": 6,
+      "no": 3,
+      "short": "Hillside town",
+      "title": "Hillside town",
+      "line": "a whole town piled up a hill, every wall its own colour.",
+      "alt": "Page 6: a square printed illustration of a hillside town made of hundreds of flat-coloured blocks in orange, yellow, mint, lilac, red and cream with tiny windows, under a deep blue sky. Handwritten title: Hillside town, with a note and an arrow."
+    },
+    {
+      "id": "p-07",
+      "n": 7,
+      "no": 4,
+      "short": "Round glasses",
+      "title": "Quick face",
+      "line": "round glasses, curly hair, big smile. one line, no fuss.",
+      "alt": "Page 7: a black ink line drawing straight on the paper: a smiling man's face with curly hair, round glasses, a moustache and a small beard, with faint pencil guide lines. Handwritten title: Quick face, and a note about the glasses."
+    },
+    {
+      "id": "p-08",
+      "n": 8,
+      "no": 5,
+      "short": "Five faces",
+      "title": "Five faces in circles",
+      "line": "five little people: beanie, shades, hoodie, beard.",
+      "alt": "Page 8: a black print glued in with five round portraits in cream line art on black: a man in a striped beanie, a bearded man in sunglasses, a moustached man in round shades, a man in a hoodie and a frowning bearded man. Handwritten labels with arrows name each one."
+    },
+    {
+      "id": "p-09",
+      "n": 9,
+      "no": 6,
+      "short": "Yellow cap",
+      "title": "Yellow cap",
+      "line": "cap, big glasses, wavy hair. the whole page is yellow.",
+      "alt": "Page 9: a square printed illustration of a bearded man in a cap and thick square glasses with wavy hair and a dark shirt, drawn in black outline on a yellow background. Handwritten title: Yellow cap."
+    },
+    {
+      "id": "p-10",
+      "n": 10,
+      "no": 7,
+      "short": "Four colours",
+      "title": "Four colours only",
+      "line": "a bearded guy in a cap, four warm tones. no more.",
+      "alt": "Page 10: a flat-colour portrait of a bearded man in a cap looking up, made of four warm tones, stuck on the page like a sticker, with four colour swatches beside it and a yellow note: too orange? no. keep it."
+    },
+    {
+      "id": "p-11",
+      "n": 11,
+      "no": 8,
+      "short": "Same four",
+      "title": "Same four colours",
+      "line": "another face, the same four colours.",
+      "alt": "Page 11: a second flat-colour portrait in the same four warm tones, of a young man with a tall quiff and an earring, stuck on the page like a sticker, with the four colour swatches ticked off."
+    },
+    {
+      "id": "p-12",
+      "n": 12,
+      "no": 9,
+      "short": "Serious man",
+      "title": "Very serious man",
+      "line": "marker-ish. a very serious face on a very orange wall.",
+      "alt": "Page 12: a printed drawing of an older man with a furrowed brow and big ears in thick black marker lines and hatching, yellow skin, a green shirt, on a bright orange background. Handwritten title: Very serious man, and a strip of marker colour tests."
+    },
+    {
+      "id": "p-13",
+      "n": 13,
+      "no": 10,
+      "short": "Eye of lines",
+      "title": "An eye made of lines",
+      "line": "an eye, an ear, a curl of hair. only little lines.",
+      "alt": "Page 13: a torn clipping of a close-up black and white drawing built only from fine hatched lines: a curled lock of hair, an ear and an eye with a dark pupil. Handwritten title: An eye made of lines, and a small hatching test in pencil."
+    },
+    {
+      "id": "p-14",
+      "n": 14,
+      "no": 11,
+      "short": "Hatching, a body",
+      "title": "Hatching, a body",
+      "line": "same game, but a body: ribs, belly, folds of cloth.",
+      "alt": "Page 14: a small torn clipping of a hatched and cross-hatched black and white drawing of a torso with ribs, belly and a fold of cloth. Handwritten title: Hatching, a body."
+    },
+    {
+      "id": "p-15",
+      "n": 15,
+      "no": 12,
+      "short": "Citrus",
+      "title": "Citrus & leaves",
+      "line": "two fruits, a wedge and a few leaves. all tiny lines.",
+      "alt": "Page 15: a black ink drawing straight on the paper of two citrus fruits on a leafy branch with a loose wedge in front, shaded with tiny lines. Handwritten title: Citrus and leaves."
+    },
+    {
+      "id": "p-16",
+      "n": 16,
+      "alt": "Page 16: colour tests: scribbled swatches in the colours of the drawings, pen tests, and a short list headed to draw next: more hills, more lines, a hand (scary)."
+    },
+    {
+      "id": "p-17",
+      "n": 17,
+      "alt": "Page 17: the last page. A big handwritten that's all, for now, a few small doodles, an ink blot and a note that says thanks for flipping through."
+    },
+    {
+      "id": "back",
+      "kind": "back",
+      "alt": "The back cover: scuffed black cloth with a white sticker that says NOT FOR SALE in red marker, and in pencil, it's a sketchbook."
+    }
+  ]
+}

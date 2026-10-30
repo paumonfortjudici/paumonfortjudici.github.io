@@ -125,7 +125,7 @@ export interface Art {
   tape?: TapeArt[]
 }
 
-/** The files' real sizes (measured): contract 481x640, plana 695x640, 44 Lab 511x633, Spelled Guilty 428x640, Space Monkey 433x640, Procreate 411x640, Somia 336x519. */
+/** The files' real sizes (measured): contract 481x640, plana 695x640, 44 Lab 511x633, Spelled Guilty 428x640, Space Monkey 433x640, Procreate 484x632, Somia 336x519. */
 export const ART: Record<string, Art> = {
   contract: {
     alt: 'The inside of a grey proofing folder for Proyecto Contract: the issue cover as a press proof with crop marks, a PROOF stamp and a colour bar, tear sheets, a contact sheet under a loupe and red-pencil marks.',
@@ -150,8 +150,8 @@ export const ART: Record<string, Art> = {
     peek: { w: 433, h: 640, x: 25, rot: -4 },
   },
   procreate: {
-    alt: 'The inside of a pink art portfolio sleeve for Procreate Sketchbook: two portraits on sketch paper, tracing paper over one, colour swatch cards, a logo proof, a crest sticker, pencils and erasers.',
-    peek: { w: 411, h: 640, x: 66, rot: 3 },
+    alt: 'The inside of a dusty-pink folder for Procreate Sketchbook: a battered sketchbook open across it, with the hills drawing and a stack of coloured houses glued in, a loose black print of five faces, a cap portrait sticker, a yellow sticky note, a pencil, an eraser, a ruler and a coffee ring.',
+    peek: { w: 484, h: 632, x: 66, rot: 3, k: 0.92 },
   },
   somia: {
     alt: 'The inside of a teal Somia packaging folder: tissue paper, the SOMIA hang tag, a printed web page, a red and blue wool bag, fabric swatches, a thank-you card with a wax seal and a ribbon.',

@@ -1,80 +1,80 @@
-// The tools that lie on the ledge of the wall, drawn in SVG. They are not decoration: the ruler squares the prints up
-// (Tidy up) and the eraser rubs the notes out. Both are mouse shortcuts to the TabButtons next to them, so they are hidden
-// from assistive tech and left out of the tab order; the pencil only holds the ledge together.
+// The things lying on the desk beside the sketchbook, drawn in SVG: a pencil, an eraser, a sharpener and a short ruler.
+// Pure decoration (aria-hidden, not focusable): they only make the desk look used.
 import { useMemo } from 'react'
 
-/** a 30 cm boxwood ruler with millimetre ticks */
+/** a hexagonal pencil, point to the left */
+export function PencilArt() {
+  return (
+    <svg className="w-procreate-prop-art" viewBox="0 0 480 44" aria-hidden="true" focusable="false">
+      <path d="M2 22 L48 5 L48 39 Z" fill="#f1d3a3" />
+      <path d="M2 22 L16 16.8 L16 27.2 Z" fill="#3d3b42" />
+      <path d="M30 11 L48 5 L48 39 L30 33 Z" fill="#d9b27c" opacity=".55" />
+      <rect x="48" y="5" width="330" height="34" fill="#ffc83a" />
+      <rect x="48" y="5" width="330" height="9" fill="#ffe487" />
+      <rect x="48" y="30" width="330" height="9" fill="#d98e00" />
+      <rect x="378" y="3" width="42" height="38" fill="#b9bec7" />
+      <path d="M386 3v38M394 3v38M402 3v38M410 3v38" stroke="#7d8490" strokeWidth="2" />
+      <rect x="420" y="5" width="48" height="34" rx="9" fill="#ff8fc1" />
+      <rect x="420" y="5" width="48" height="9" rx="4" fill="#ffc0dc" />
+    </svg>
+  )
+}
+
+/** a white block eraser in a blue paper sleeve, worn at one end */
+export function EraserArt() {
+  return (
+    <svg className="w-procreate-prop-art" viewBox="0 0 170 76" aria-hidden="true" focusable="false">
+      <rect x="4" y="8" width="162" height="62" rx="10" fill="#cfc8ba" />
+      <rect x="4" y="3" width="162" height="62" rx="10" fill="#f7f2e7" />
+      <rect x="52" y="3" width="66" height="62" fill="#2b79d8" />
+      <rect x="52" y="3" width="66" height="10" fill="#5b9be9" />
+      <path d="M62 34h46M62 44h30" stroke="#f7f2e7" strokeWidth="4" strokeLinecap="round" />
+      <path d="M4 3 L26 3 L4 22 Z" fill="#cfc8ba" opacity=".7" />
+      <circle cx="142" cy="46" r="3" fill="#6f6a60" opacity=".35" />
+      <circle cx="152" cy="30" r="2" fill="#6f6a60" opacity=".3" />
+    </svg>
+  )
+}
+
+/** a metal pencil sharpener */
+export function SharpenerArt() {
+  return (
+    <svg className="w-procreate-prop-art" viewBox="0 0 100 64" aria-hidden="true" focusable="false">
+      <rect x="2" y="10" width="96" height="52" rx="9" fill="#7d8490" />
+      <rect x="2" y="4" width="96" height="52" rx="9" fill="#c3c8d0" />
+      <rect x="2" y="4" width="96" height="12" rx="6" fill="#e4e7ec" />
+      <circle cx="30" cy="32" r="12" fill="#2a2e36" />
+      <rect x="52" y="24" width="30" height="5" rx="2" fill="#7d8490" />
+      <circle cx="84" cy="44" r="4" fill="#7d8490" />
+    </svg>
+  )
+}
+
+/** a 15 cm ruler */
 export function RulerArt() {
   const ticks = useMemo(() => {
     let long = ''
     let mid = ''
     let short = ''
-    for (let mm = 0; mm <= 300; mm++) {
-      const px = 22 + mm * 2
-      if (mm % 10 === 0) long += `M${px} 8v26`
-      else if (mm % 5 === 0) mid += `M${px} 8v18`
-      else short += `M${px} 8v10`
+    for (let mm = 0; mm <= 150; mm++) {
+      const px = 20 + mm * 4
+      if (mm % 10 === 0) long += `M${px} 6v26`
+      else if (mm % 5 === 0) mid += `M${px} 6v18`
+      else short += `M${px} 6v11`
     }
     return { long, mid, short }
   }, [])
   return (
-    <svg className="w-procreate-ruler-art" viewBox="0 0 644 78" aria-hidden="true" focusable="false">
-      <rect className="w-procreate-ruler-edge" x="3" y="9" width="638" height="64" rx="6" />
-      <rect className="w-procreate-ruler-body" x="3" y="3" width="638" height="64" rx="6" />
-      <rect className="w-procreate-ruler-bevel" x="3" y="3" width="638" height="5" rx="2.5" />
-      <path className="w-procreate-ruler-tick" d={ticks.short} />
-      <path className="w-procreate-ruler-tick" d={ticks.mid} />
-      <path className="w-procreate-ruler-tick w-procreate-ruler-tick--long" d={ticks.long} />
-      <circle className="w-procreate-ruler-hole" cx="622" cy="46" r="7" />
-      <path className="w-procreate-ruler-mark" d="M70 52h120M70 59h72" />
-    </svg>
-  )
-}
-
-/** a hexagonal pencil, seen from above, point to the left */
-export function PencilArt() {
-  return (
-    <svg className="w-procreate-pencil-art" viewBox="0 0 310 30" aria-hidden="true" focusable="false">
-      <polygon className="w-procreate-pencil-wood" points="2,15 40,3 40,27" />
-      <polygon className="w-procreate-pencil-lead" points="2,15 15,10.5 15,19.5" />
-      <rect className="w-procreate-pencil-body" x="40" y="3" width="214" height="24" />
-      <rect className="w-procreate-pencil-lit" x="40" y="3" width="214" height="7" />
-      <rect className="w-procreate-pencil-shade" x="40" y="20" width="214" height="7" />
-      <path className="w-procreate-pencil-line" d="M62 3v24M70 3v24" />
-      <rect className="w-procreate-pencil-ferrule" x="254" y="3" width="24" height="24" />
-      <path className="w-procreate-pencil-groove" d="M262 3v24M270 3v24" />
-      <rect className="w-procreate-pencil-rubber" x="278" y="4" width="28" height="22" rx="6" />
-    </svg>
-  )
-}
-
-/** a hand-drawn magnifier for the "Look closer" tabs: a slightly wobbly lens and a thick handle, drawn in the tab's ink */
-export function LoupeIcon() {
-  return (
-    <svg className="w-procreate-loupe" viewBox="0 0 22 22" aria-hidden="true" focusable="false">
-      <path d="M9.4 3.1c3.4-.4 6.4 2.2 6.5 5.6.1 3.3-2.4 6.1-5.8 6.3-3.3.2-6.1-2.3-6.3-5.6-.2-3.2 2.2-6 5.6-6.3Z" />
-      <path d="M14.2 13.6l5.2 5.1" />
-      <path d="M6.4 7.2c.6-1.3 1.7-2 3-2.2" className="w-procreate-loupe-glint" />
-    </svg>
-  )
-}
-
-/** a pink eraser in a paper sleeve, one end worn round; the crumbs show while the notes are rubbed out */
-export function EraserArt() {
-  return (
-    <svg className="w-procreate-eraser-art" viewBox="0 0 150 84" aria-hidden="true" focusable="false">
-      <path className="w-procreate-eraser-edge" d="M16 18h112a10 10 0 0 1 10 10v36a10 10 0 0 1-10 10H22a14 14 0 0 1-12-8L4 56c-2-3-2-7 0-10l8-24a10 10 0 0 1 4-4Z" />
-      <path className="w-procreate-eraser-body" d="M16 12h112a10 10 0 0 1 10 10v36a10 10 0 0 1-10 10H22a14 14 0 0 1-12-8L4 50c-2-3-2-7 0-10l8-24a10 10 0 0 1 4-4Z" />
-      <rect className="w-procreate-eraser-sleeve" x="56" y="12" width="78" height="56" rx="0" />
-      <rect className="w-procreate-eraser-sleeve-lit" x="56" y="12" width="78" height="8" />
-      <path className="w-procreate-eraser-print" d="M70 34h50M70 44h34M70 54h42" />
-      <g className="w-procreate-crumbs">
-        <ellipse cx="14" cy="74" rx="3.2" ry="2" />
-        <ellipse cx="27" cy="79" rx="2.4" ry="1.6" />
-        <ellipse cx="38" cy="75" rx="3" ry="1.9" />
-        <ellipse cx="6" cy="68" rx="2" ry="1.4" />
-        <ellipse cx="46" cy="80" rx="2.2" ry="1.4" />
+    <svg className="w-procreate-prop-art" viewBox="0 0 640 74" aria-hidden="true" focusable="false">
+      <rect x="2" y="9" width="636" height="62" rx="5" fill="#bf9c5e" />
+      <rect x="2" y="3" width="636" height="62" rx="5" fill="#ecd08f" />
+      <rect x="2" y="3" width="636" height="5" rx="2.5" fill="#f7e2ae" />
+      <g stroke="#3d3b42" strokeWidth="1.6" fill="none" opacity=".85">
+        <path d={ticks.short} />
+        <path d={ticks.mid} />
+        <path d={ticks.long} strokeWidth="2.2" />
       </g>
+      <circle cx="616" cy="44" r="7" fill="#bf9c5e" />
     </svg>
   )
 }

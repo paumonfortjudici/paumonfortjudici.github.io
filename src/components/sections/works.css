@@ -817,7 +817,7 @@ html.js .pm-wk__ghost {
   object-position: 50% 30%;
 }
 .pm-wk-card[data-slug='procreate'] .pm-wk-print > img {
-  object-position: 50% 38%; /* the two faces */
+  object-position: 50% 52%; /* the open sketchbook */
 }
 .pm-wk-card[data-slug='somia'] .pm-wk-print > img {
   object-position: 50% 52%; /* the wordmark's gap and the bag */

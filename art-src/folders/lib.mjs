@@ -20,7 +20,7 @@ const v2 = (p) => pathToFileURL(path.join(ROOT, 'art-src', 'concept-portfolio', 
 
 const ff = (family, url, weight = 400, style = 'normal', extra = '') => `@font-face{font-family:"${family}";src:url("${url}") format("woff2");font-weight:${weight};font-style:${style};${extra}}`
 /** families you can use in font-family: names in quotes */
-const FONT_CSS = [
+export const FONT_CSS = [
   ff('Gochi Hand', nm('@fontsource/gochi-hand/files/gochi-hand-latin-400-normal.woff2')), // handwriting, marker
   ff('Reenie Beanie', nm('@fontsource/reenie-beanie/files/reenie-beanie-latin-400-normal.woff2')), // thin scribble
   ff('Gloria Hallelujah', nm('@fontsource/gloria-hallelujah/files/gloria-hallelujah-latin-400-normal.woff2')), // round pen
@@ -47,12 +47,12 @@ const FONT_CSS = [
   ff('DM Sans', v2('dm-sans-latin-wght-normal.woff2'), '100 1000'),
 ].join('\n')
 
-const grain = (f = 0.8, a = 1.1) =>
+export const grain = (f = 0.8, a = 1.1) =>
   encodeURIComponent(
     `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><filter id="n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="${f}" numOctaves="2" seed="5" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .1  0 0 0 0 .08  0 0 0 0 .06  0 0 0 ${a} -.42"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>`,
   )
 /** fibres, for kraft and cardboard */
-const fibre = encodeURIComponent(
+export const fibre = encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500"><filter id="f" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9 .06" numOctaves="3" seed="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .35  0 0 0 0 .22  0 0 0 0 .1  0 0 0 .55 -.14"/></filter><rect width="100%" height="100%" filter="url(#f)"/></svg>`,
 )
 

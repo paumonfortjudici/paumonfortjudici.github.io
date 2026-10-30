@@ -87,8 +87,9 @@ const ART = {
   ],
   procreate: [
     { k: 'in-procreate', x: 90, y: 150, w: 600, r: -2, z: 1 },
-    { k: 'p-procreate-crest', x: 650, y: 210, w: 340, r: 4, z: 2, f: 'flat' },
-    { k: 'p-procreate-vertice', x: 640, y: 640, w: 400, r: -3, z: 3, f: 'flat' },
+    { k: 'p-procreate-a', x: 620, y: 140, w: 340, r: 3, z: 2 },
+    { k: 'p-procreate-b', x: 790, y: 470, w: 290, r: -3, z: 3 },
+    { k: 'p-procreate-c', x: 560, y: 640, w: 250, r: 4, z: 4 },
   ],
   somia: [
     { k: 'in-somia', x: 90, y: 150, w: 560, r: -2, z: 1 },

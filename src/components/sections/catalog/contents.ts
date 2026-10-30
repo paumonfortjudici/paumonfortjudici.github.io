@@ -9,7 +9,7 @@ export const INSIDE: Readonly<Record<string, readonly string[]>> = {
   'fortyfour-lab': ['Thirteen dated posts', 'A devil walking the thread', 'Carousels to flip through'],
   'spelled-guilty': ['A flashlight in the dark', 'Sample pages of six cases', 'A board with red string'],
   'space-monkey': ['Two tilting posters', 'The dossier on their backs', 'My first project, at 13'],
-  procreate: ['Prints to drag around', 'Tidy them or shuffle them', 'A close look at each one'],
+  procreate: ['A sketchbook to flip through', 'Twelve drawings, hand-noted', 'Open any page up close'],
   somia: ['Laptop and phone mockups', 'A tailor’s tape scrubber', 'Logo, palette and values'],
   'concept-brand': ['The whole board, zoomable', 'A tour in nine stops', 'Brand kit: palette, type'],
   'concept-portfolio': ['Five slides to swipe', 'My design notes, pinned', 'Present it full screen'],

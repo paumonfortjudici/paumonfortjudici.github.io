@@ -123,13 +123,13 @@ export const COPY = {
     copied: 'Copied',
     copiedToast: (hex: string): string => `Copied ${hex}`,
     fontsTitle: 'Fonts',
-    fontsNote: 'Only Anybody is loaded on this page. Syne and DM Sans are named here and live inside the slide images.',
+    fontsNote: 'Only Anybody is loaded on this page. Syne and DM Sans are named here and live inside the slide images; the lettering is drawn, so it is not a font.',
     sampleLabel: 'Live sample of Anybody',
     widthLabel: 'Width axis',
     mixLabel: 'Mix the widths',
     mixOn: 'Per letter',
     mixOff: 'Even',
-    mixHelp: 'Every title on the deck gives each letter its own width, from tall and narrow to wide.',
+    mixHelp: 'The big titles are hand-lettered, so each has its own shapes. This is the width axis of Anybody, the face of the years and the seal: every letter can take its own width.',
     licence: 'SIL OFL 1.1',
   },
 
@@ -137,6 +137,6 @@ export const COPY = {
     title: 'How this deck was made',
     p1: 'Ona Ribas is not real. Her name, her studios, her films, her e-mail and her phone number are all made up (the address ends in .example and the phone is zeros).',
     stripCaption: 'Five slides, one family: teal, butter, deep teal, butter, teal.',
-    p2: 'What is real is the design. I wrote the brief, set the rules (grid, palette, type, the footprints and the sunbursts) and art-directed every slide.',
+    p2: 'What is real is the design. I wrote the brief, set the rules (grid, palette, type, the footprints and the sunbursts) and art-directed every slide. The pieces (the lettering, Ona, the props, the panels) were generated with AI-assisted tools under that direction, one at a time, then cut out and composed into the slides.',
   },
 }

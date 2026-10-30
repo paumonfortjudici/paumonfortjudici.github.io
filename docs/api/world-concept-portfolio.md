@@ -2,6 +2,16 @@
 
 Source: `src/worlds/ConceptPortfolioWorld.tsx` (default export, lazy chunk) + `src/worlds/concept-portfolio/**`. It renders only the body below the shell's strip (no title, no close, no prev / next) and uses `useWorld()` for `{ work, reduced, scrollRef }`. Nothing else in the repo imports from it. Chunk (production build): **20.7 KB gzip JS + 8.2 KB gzip CSS** (budget 120 KB) and the Anybody face (loaded by the shell with `loadWorldFonts('concept-portfolio')`). `tsc -b` clean for these files, no console output, no 404s, no horizontal scroll at 390.
 
+## 0. How the slides are made now (2026-10-30)
+
+The five slides are **composed from separate generated pieces**, not drawn as one picture (the one-shot versions read as AI at a glance). Pau generated 29 pieces in ChatGPT, each in its own technique (hand-lettered titles, Ona's model sheet and poses, sunbursts, sound bursts, boot-print stamps, marks, the neighbour, three flat comic panels in the style of a poster reference, and the props / console / speaker / paper and wall souvenirs / skyline as goofy 3D renders). The prompts are in `docs/image-prompts.md` (PF plan B, v12 to v14).
+
+* `tools/ingest_pf.py <folder>` keys the magenta floor out (magenta-ness key, soft edge, de-spill with colours borrowed from inside the piece), splits the sheets and names the pieces: `art-src/concept-portfolio/pieces/*.webp` + `pieces.json`. The three panels are full-bleed pictures and are only re-encoded.
+* `art-src/concept-portfolio/v2/`: `lib.mjs` (helpers, CSS, the SVG filters for the die-cut edge, hard shadow and torn paper, grain), `s1.mjs` to `s5.mjs` (one layout per slide: same layout, text, positions and sound as the first deck), `render.mjs` (Playwright prints 1080 x 1920 PNGs and `_build/anchors-N.json` with the box of every `data-id` element: pins and hotspots are measured from there), `card.mjs` (the card fans `thumb.webp` and `peek.webp`), `export.py` (WebPs, `sheet.webp`, `contact-sheet.webp`, `thumb.webp`). Order: `node render.mjs`, `node card.mjs`, `python export.py`.
+* Text is real type (Syne, DM Sans, Anybody for the years and the seal) set in an SVG layer on the old deck's coordinates; titles and bursts are the generated lettering.
+* The 3D objects are the deliberate intruders: each is cut out like a sticker (cream scissor edge, hard ink shadow); the hand-drawn pieces get a hard ink shadow only.
+* After any change to a layout: re-render, re-export, then re-check `SLIDES[i].pins` and `hotspots` in `data.ts` against `_build/anchors-N.json`, and rebuild the site.
+
 ## 1. What it is
 
 A small **presentation room** for the portfolio deck of an invented client (Ona Ribas, foley artist, Girona). The deck is the deliverable, so the world is built around showing it (a different family from the other nine worlds: a horizontal lane of paper-mounted slides plus tools, not a page):

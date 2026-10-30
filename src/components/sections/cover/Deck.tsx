@@ -37,7 +37,6 @@ function DeckFolder({ work, index, layout, deckWidth, peek, rest, ready }: DeckF
   const near = useInView(slotRef, { once: true, rootMargin: '40% 0px 60% 0px' })
   const showPeek = layout === 'wide' ? peek : ready && near
   const slot = DECK_SLOTS[index]
-  const nextSlot = DECK_SLOTS.find((s) => s.row === slot.row && s.col === slot.col + 1)
   const tab = layout === 'wide' ? fitTab(slot.tab.wide, deckWidth, slot.col === 4) : slot.tab[layout]
   const [peekFailed, setPeekFailed] = useState(false)
   // the year line of some folders is a phrase ("Early work") that opens with the same word as the kind ("Early illustration work"):
@@ -72,9 +71,6 @@ function DeckFolder({ work, index, layout, deckWidth, peek, rest, ready }: DeckF
     '--row': slot.row,
     '--jx': slot.jx,
     '--jy': slot.jy,
-    // where the right-hand neighbour sits relative to this folder (its own hand-made offsets): the hover cut follows its real edge, so no sliver of the folders behind shows between the two
-    '--dxn': nextSlot ? nextSlot.jx - slot.jx : 0,
-    '--dyn': nextSlot ? nextSlot.jy - slot.jy : 0,
     '--c2': index < 5 ? 0 : 1,
     '--r2': index % 5,
     '--t': tab,

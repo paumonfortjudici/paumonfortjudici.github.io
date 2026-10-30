@@ -351,15 +351,10 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
     opacity 0.28s ease calc(var(--i) * 50ms);
 }
 .cv-slot[data-edge] { --ov: 0%; }
-/* Only a FRONT-row folder comes forward of its right-hand neighbour when it is hovered or focused: its cut-out is stuck on the corner
-   that the neighbour covers, so it has to paint over it. The folder's own face is cut where the neighbour would have covered it
-   (clip-path, below the neighbour's top edge), so the neighbour's number and title stay readable. A back-row folder just lifts in place. */
-@media (hover: hover) {
-  .cv-slot:not([data-rest]):hover { z-index: calc(var(--row) * 20 + var(--col) + 6); }
-  .cv-deck[data-layout='wide'] .cv-slot:not([data-rest]):hover .cv-folder { clip-path: var(--under-next); }
-}
-.cv-slot:not([data-rest]):has(.cv-folder:focus-visible) { z-index: calc(var(--row) * 20 + var(--col) + 6); }
-.cv-deck[data-layout='wide'] .cv-slot:not([data-rest]):has(.cv-folder:focus-visible) .cv-folder { clip-path: var(--under-next); }
+/* A hovered or focused folder only lifts in place and stays UNDER its right-hand neighbour, in both rows. (It used to come forward of the
+   neighbour with a clip-path that cut its face along the neighbour's edge: the cut never matched the hand-made offsets of the neighbours, which
+   left slivers of the folders behind and let the lifted strip run over the next folder's tab.) The front row's cut-out is stuck on the part of
+   its face that the neighbour does not cover, so nothing needs to paint over the neighbour. */
 
 .cv-lift {
   position: absolute;
@@ -368,11 +363,6 @@ html.js .cv__note:not([data-in]) .cv__note-text { clip-path: inset(-0.4em 100% -
   transition: transform 0.5s var(--spring-lift);
 }
 .cv-folder.pm-folder {
-  /* the face minus the strip the right-hand neighbour covers (below that neighbour's top edge); the margins leave the ring and shadows alone */
-  /* --dxn / --dyn: the neighbour's own hand-made offset from this folder (tenths of 1cqw, Deck.tsx), so the cut follows its real top edge */
-  --cut-y: calc(var(--tab-h) + var(--lift) + var(--dyn, 0) * 0.1cqw);
-  --cut-x: calc(100% - var(--ov) + var(--dxn, 0) * 0.1cqw);
-  --under-next: polygon(-60px -60px, calc(100% + 60px) -60px, calc(100% + 60px) var(--cut-y), var(--cut-x) var(--cut-y), var(--cut-x) calc(100% + 60px), -60px calc(100% + 60px));
   position: absolute;
   inset: 0;
   width: 100%;
@@ -541,7 +531,7 @@ html.js .cv-deck[data-in] .cv-face__concept {
   --ph: min(calc(clamp(5rem, 6cqw, 8.4rem) * var(--pk, 1)), calc(5.8cqw / var(--ar, 0.75)));
   z-index: 3;
   left: auto;
-  right: calc(var(--ov) + 2.5%); /* on the part of the face the neighbour does not cover, so it never lands on the neighbour's words */
+  right: calc(var(--ov) + 4.5%); /* on the part of the face the neighbour does not cover, so it never lands on the neighbour's words */
   top: auto;
   bottom: 4%;
   transform: translateY(16%) rotate(0deg) scale(0.86);
